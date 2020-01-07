@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+
+    <% if(uid){ %>
+    <!-- 登入狀態下 -->
+    <div class="container">
+        <% if (locals.username) { %>
+          <h1>您好, <%= username %></h1>  
+        <% } %>
+        <input type='submit' value='登出' onclick="javascript: location.href='logout'">
+        
+    </div>
+    <% }else{ %>
+    <!-- 非登入狀態下 -->
+    <input type='submit' value='點選登入' onclick="javascript: location.href='/member/login'">
+    <input type='submit' value='點選註冊' onclick="javascript: location.href='/member/reg'">
+    <% } %>
+  </body>
+</html>

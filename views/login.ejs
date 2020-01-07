@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>登入</title>
+		<link rel='stylesheet' href='/stylesheets/style.css' />
+		<style type="text/css">
+			.tip{color: #f00;}
+		</style>
+	</head>
+	<body>
+	<div class="container">
+		<p><a href="/" rel="external nofollow" rel="external nofollow" rel="external nofollow" >回到首頁</a></p>
+		<h1>登入</h1>
+			<% if(errmsg){ %>
+			<p class="tip">*<%= errmsg %></p>
+			<% } %>
+		<form action="/login/" method="post">
+
+			<p>使用者名稱： <input type="text" name="username" ></p>
+			<p>密 碼： <input type="password" name="password" ></p>
+			<p><input type="submit" name="submit" value="登入"></p>
+		</form>
+
+		<p>還沒帳號？<a href="/member/reg" rel="external nofollow" >點選註冊</a></p>
+	</div>
+	</body>
+</html>

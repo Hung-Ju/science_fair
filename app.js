@@ -5,7 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/member');
+var memberRouter = require('./routes/member');
 
 var app = express();
 
@@ -29,7 +29,7 @@ app.use(session({
 }));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/member', memberRouter);
 
 app.use(function(req, res, next){
     // 如果session中存在，則說明已經登入
