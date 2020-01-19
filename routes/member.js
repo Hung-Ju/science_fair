@@ -14,7 +14,7 @@ router.get('/', function(req, res, next) {
 	// 		res.render('index',  {title: '問卷系統',survey_id:result[0].survey_id, survey_name:result[0].survey_name, survey_description:result[0].survey_description,editor_id:req.session.editor_id,editor_name:req.session.editor_name});
 	// 	}
 	// });
-    res.render('index', { title: '科展系統', editor_id:req.session.editor_id, editor_name:req.session.editor_name});
+    res.render('index', { title: '科展系統', member_id:req.session.member_id, member_name:req.session.member_name});
 });
 
 // 進入登入頁面
@@ -24,24 +24,21 @@ router.get('/login', function(req, res, next) {
 
 // 處理登入請求
 router.post('/login', function(req, res, next) {
-	// console.log(req.body.editor_account, req.body.editor_password);
-	var editor_account = req.body.editor_account || '',
-			editor_password = req.body.editor_password || '';
+	var member_account = req.body.member_account || '',
+		member_password = req.body.member_password || '';
 
-	var password_hash = editor.hash(editor_password);
-
-	editor.login(editor_account, password_hash, function(result){
-		//console.log(result);
+	var password_hash = member.hash(member_password);
+	//console.log(password_hash);
+	member.login(member_account, password_hash, function(result){
 		if(result.length){
-			// console.log( req.session );
-			req.session.editor_id = result[0].editor_id;
-			req.session.editor_name = result[0].editor_name;
+			req.session.member_id = result[0].member_id;
+			req.session.member_name = result[0].member_name;
 
-			console.log( req.session.editor_id );
-			res.redirect('/editor/surveyManage');
+			console.log( req.session.member_id );
+			res.send({message:"true"});
 		}else{
-			// console.log('登入失敗');
-			res.render('login', {errmsg:'帳號或密碼錯誤'});
+			//console.log(password_hash);
+			res.send({message:"false"});
 		}
 	});
 });
@@ -53,23 +50,22 @@ router.get('/reg', function(req, res, next){
 
 // 處理註冊資料
 router.post('/reg', function(req, res, next){
-    var editor_name = req.body.editor_name || '',
-            editor_account = req.body.editor_account || '',
-			editor_password = req.body.editor_password || '',
-			editor_password2 = req.body.editor_password2 || '';
+    var member_name = req.body.member_name || '',
+		member_city = req.body.member_city || '',
+		member_school = req.body.member_school || '',
+		member_account = req.body.member_account || '';
+		member_password = req.body.member_password || '';
 
-	if(editor_password!=editor_password2){
-		res.render('reg', {errmsg:'密碼不一致'});
-		return;
-	}
-	var password_hash = editor.hash(editor_password);
-	editor.reg(editor_name, editor_account, password_hash, function(result){
+	// if(member_password!=member_password2){
+	// 	res.render('reg', {errmsg:'密碼不一致'});
+	// 	return;
+	// }
+	var password_hash = member.hash(member_password);
+	//console.log(password_hash);
+	member.reg(member_name, member_city, member_school, member_account, password_hash, function(result){
 		if(result.isExisted){
-			res.render('reg', {errmsg:'使用者已存在'});
+			res.send({message:"false"});
 		}else if(result.affectedRows){
-
-			// req.session.editor_id = result[0].editor_id;
-			// req.session.editor_name = result[0].editor_name;
 
 			res.redirect('/');
 		}else{
@@ -78,6 +74,11 @@ router.post('/reg', function(req, res, next){
 		}
 	});
 	// res.render('reg', {errmsg:''});
+});
+
+// 進入專題管理頁面'
+router.get('/projectManage', function(req, res, next){
+	res.render('index', { title: '科展系統', member_id:req.session.member_id, member_name:req.session.member_name});
 });
 
 // 登出

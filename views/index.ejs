@@ -7,11 +7,11 @@
   <body>
     <h1><%= title %></h1>
 
-    <% if(uid){ %>
+    <% if(member_id){ %>
     <!-- 登入狀態下 -->
     <div class="container">
-        <% if (locals.username) { %>
-          <h1>您好, <%= username %></h1>  
+        <% if (locals.member_name) { %>
+          <h1>您好, <%= member_name %></h1>  
         <% } %>
         <input type='submit' value='登出' onclick="javascript: location.href='logout'">
         

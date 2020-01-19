@@ -15,17 +15,17 @@
 	<div class="container">
 		<p><a href="/">回到首頁</a></p>
 		<h1>註冊</h1>
-		<form action="/reg" method="post">
+
 			<% if(errmsg){ %>
   			<p class="tip">*<%= errmsg %></p>
   			<% } %>
 			
-			<div id="root"></div>
-			<p>用  戶  名： <input type="text" name="username" required="required"></p>
+			<div id="regRoot"></div>
+			<!-- <p>用  戶  名： <input type="text" name="username" required="required"></p>
 			<p>密  碼： <input type="password" name="password" required="required"></p>
-			<p>重複密碼： <input type="password" name="password2" required="required"></p>
-			<p><input type="submit" name="submit" value="註冊"></p>
-		</form>
+			<p>重複密碼： <input type="password" name="password2" required="required"></p> -->
+			<button id="register">註冊</button>
+
 		<p>已有帳號？ <a href="/member/login" rel="external nofollow" >點選登入</a></p>
 	</div>
 	</body>
