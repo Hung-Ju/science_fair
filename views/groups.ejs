@@ -3,6 +3,10 @@
   <head>
     <title><%= title %></title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
+
+    <script type="text/javascript" src="/javascripts/jquery.min.js"></script>
+    <script type="text/javascript" src="/javascripts/groups.js"></script>
+    
   </head>
   <body>
     <h1><%= title %></h1>
@@ -13,7 +17,23 @@
         <% if (locals.member_name) { %>
           <h1>您好, <%= member_name %></h1>  
         <% } %>
+        <input type='submit' value='新增專題組別' onclick="javascript: location.href='/groups/add'">
         <input type='submit' value='登出' onclick="javascript: location.href='/member/logout'">
+        
+      <div class="content">
+        <section>
+          <table>
+            <tr>
+              <th>小組名稱</th>
+              <th>創立時間</th>
+              <th>進入小組</th>
+            </tr>
+
+          </table>
+        </section>
+
+      </div>
+
         
     </div>
     <% }else{ %>

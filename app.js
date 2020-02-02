@@ -6,6 +6,8 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var memberRouter = require('./routes/member');
+var groupsRouter = require('./routes/groups');
+
 
 var app = express();
 
@@ -30,6 +32,7 @@ app.use(session({
 
 app.use('/', indexRouter);
 app.use('/member', memberRouter);
+app.use('/groups', groupsRouter);
 
 app.use(function(req, res, next){
     // 如果session中存在，則說明已經登入

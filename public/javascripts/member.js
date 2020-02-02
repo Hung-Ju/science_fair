@@ -88,7 +88,7 @@ $(function(){
                     }
                     else{
                         //alert('歡迎'+req.session.member_name);
-                        window.location.href="/member/projectManage";
+                        window.location.href="/groups";
                     }
                 }
             },

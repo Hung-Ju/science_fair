@@ -3,6 +3,10 @@
   <head>
     <title><%= title %></title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
+
+    <script type="text/javascript" src="/javascripts/jquery.min.js"></script>
+    <script type="text/javascript" src="/javascripts/groups.js"></script>
+
   </head>
   <body>
     <h1><%= title %></h1>
@@ -12,8 +16,13 @@
     <div class="container">
         <% if (locals.member_name) { %>
           <h1>您好, <%= member_name %></h1>  
+          <input type='submit' value='登出' onclick="javascript: location.href='/member/logout'">
         <% } %>
-        <input type='submit' value='登出' onclick="javascript: location.href='/member/logout'">
+        
+        <div id="groupsRoot"></div>
+        <button id="addGroups">送出</button>
+
+        
         
     </div>
     <% }else{ %>
