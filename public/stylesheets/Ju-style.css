@@ -1,0 +1,42 @@
+body,button, input,select, textarea,h1 ,h2, h3, h4, h5, h6 { font-family:微軟正黑體,MicrosoftYaHei,Tahoma,Helvetica,Arial,"\5b8b\4f53", sans-serif;}
+
+/* banner圖片區 */
+.banner-bg-image {
+    background-image: url(/stylesheets/images/science.jpg);  /*自己的電腦圖片資料夾位置*/
+    position: absolute;  /*絕對位置*/
+    width: 100%;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-position: center;
+    background-size: cover;
+    height:300px;
+    z-index: -999; /*設定圖片層級*/
+  }
+
+  /* .bg-parallax {
+    background-attachment: fixed;
+  } */
+
+#main-banner {
+  height: 30vh;  
+  /* vh是view height，指螢幕可視範圍高度的百分比 */
+}
+
+.groups-table{
+  background-color: #EEEBE5;
+}
+  
+.groups-container{
+  padding-top: 20px;
+}
+
+.banner-text-content {
+  position: absolute;
+  top: 30%;
+  bottom: 30%;
+  right: 15%;
+  left: 15%;
+  text-align: center;
+}

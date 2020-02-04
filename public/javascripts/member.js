@@ -50,7 +50,7 @@ $(function(){
             url: "/member/reg",
             data: {
                 member_name: $("#member_name").val(),
-                member_city: $("#member_city").val(),
+                member_city: $("#member_city :selected").val(),
                 member_school: $("#member_school").val(),
                 member_account: $("#member_account").val(),
                 member_password: $("#member_password").val()

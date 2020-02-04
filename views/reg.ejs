@@ -1,9 +1,33 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>使用者註冊</title>
-		<link rel='stylesheet' href='/stylesheets/style.css' />
+		<!-- <title>使用者註冊</title>
+		<link rel='stylesheet' href='/stylesheets/style.css' /> -->
 		
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!--===============================================================================================-->	
+			<link rel="icon" type="image/png" href="/stylesheets/images/icons/favicon.ico"/>
+		<!--===============================================================================================-->
+			<link rel="stylesheet" type="text/css" href="/stylesheets/vendor/bootstrap/css/bootstrap.min.css">
+		<!--===============================================================================================-->
+			<link rel="stylesheet" type="text/css" href="/stylesheets/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+		<!--===============================================================================================-->
+			<link rel="stylesheet" type="text/css" href="/stylesheets/fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
+		<!--===============================================================================================-->
+			<link rel="stylesheet" type="text/css" href="/stylesheets/vendor/animate/animate.css">
+		<!--===============================================================================================-->	
+			<link rel="stylesheet" type="text/css" href="/stylesheets/vendor/css-hamburgers/hamburgers.min.css">
+		<!--===============================================================================================-->
+			<link rel="stylesheet" type="text/css" href="/stylesheets/vendor/animsition/css/animsition.min.css">
+		<!--===============================================================================================-->
+			<link rel="stylesheet" type="text/css" href="/stylesheets/vendor/select2/select2.min.css">
+		<!--===============================================================================================-->	
+			<link rel="stylesheet" type="text/css" href="/stylesheets/vendor/daterangepicker/daterangepicker.css">
+		<!--===============================================================================================-->
+			<link rel="stylesheet" type="text/css" href="/stylesheets/css/util.css">
+			<link rel="stylesheet" type="text/css" href="/stylesheets/css/main.css">
+		<!--===============================================================================================-->
+
 		<script type="text/javascript" src="/javascripts/jquery.min.js"></script>
 		<script type="text/javascript" src="/javascripts/member.js"></script>
 	
@@ -12,7 +36,83 @@
 		</style>
 	</head>
 	<body>
-	<div class="container">
+		<div class="limiter">
+			<div class="container-login100">
+				<div class="wrap-login100 p-l-85 p-r-85 p-t-55 p-b-55">		
+						<span class="login100-form-title p-b-32">
+							使用者註冊
+						</span>
+							
+						<span class="txt1 p-b-11">
+							<% if(errmsg){ %>
+							<p class="tip">*<%= errmsg %></p>
+							<% } %>
+							姓名
+	
+						</span>
+						<div class="wrap-input100 validate-input m-b-36" data-validate = "請填入正確姓名">
+							<input class="input100" type="text" name="member_name" id="member_name" >
+							<span class="focus-input100"></span>
+						</div>
+						
+						<span class="txt1 p-b-11">
+							城市
+						</span>
+						<div class="dropdown">
+							<select class="wrap-input100 m-b-36 " name="member_city" id="member_city" style="height: 55px;padding: 0 25px 0 25px;">
+								<option value="台北">台北</option>
+								<option value="桃園">桃園</option>
+								<option value="新竹">新竹</option>
+								<option value="苗栗">苗栗</option>
+							</select>
+							<span class="focus-input100"></span>
+						</div>
+
+						<span class="txt1 p-b-11">
+							學校
+						</span>
+						<div class="wrap-input100 validate-input m-b-12" data-validate = "請填入正確學校名稱">
+							<input class="input100" type="text" name="member_school" id="member_school">
+							<span class="focus-input100"></span>
+						</div>
+
+						<span class="txt1 p-b-11">
+							帳號
+						</span>
+						<div class="wrap-input100 validate-input m-b-12" data-validate = "請填入正確帳號">
+							<input class="input100" type="text" name="member_account" id="member_account">
+							<span class="focus-input100"></span>
+						</div>
+
+						<span class="txt1 p-b-11">
+							密碼
+						</span>
+						<div class="wrap-input100 validate-input m-b-12" data-validate = "請填入正確密碼">
+							<span class="btn-show-pass">
+								<i class="fa fa-eye"></i>
+							</span>
+							<input class="input100" type="password" name="member_password" id="member_password">
+							<span class="focus-input100"></span>
+						</div>
+						
+						<div class="flex-sb-m w-full p-b-48">
+						</div>
+	
+						<div class="container-login100-form-btn">
+							<button id="register" class="login100-form-btn">
+								註冊
+							</button>
+						</div>
+					
+				<p><a href="/" rel="external nofollow" rel="external nofollow" rel="external nofollow" >回到首頁</a>   |   已有帳號？<a href="/member/login" rel="external nofollow" >點選登入</a></p>
+			</div>
+		</div>
+	</div>
+		
+	
+	<!-- <div id="dropDownSelect1"></div> -->
+	
+	<!-- <div class="container">
 		<p><a href="/">回到首頁</a></p>
 		<h1>註冊</h1>
 
@@ -21,12 +121,28 @@
   			<% } %>
 			
 			<div id="regRoot"></div>
-			<!-- <p>用  戶  名： <input type="text" name="username" required="required"></p>
-			<p>密  碼： <input type="password" name="password" required="required"></p>
-			<p>重複密碼： <input type="password" name="password2" required="required"></p> -->
+			
 			<button id="register">註冊</button>
 
 		<p>已有帳號？ <a href="/member/login" rel="external nofollow" >點選登入</a></p>
-	</div>
+	</div> -->
+
+	<!--===============================================================================================-->
+	<script src="/stylesheets/vendor/jquery/jquery-3.2.1.min.js"></script>
+	<!--===============================================================================================-->
+		<script src="/stylesheets/vendor/animsition/js/animsition.min.js"></script>
+	<!--===============================================================================================-->
+		<script src="/stylesheets/vendor/bootstrap/js/popper.js"></script>
+		<script src="/stylesheets/vendor/bootstrap/js/bootstrap.min.js"></script>
+	<!--===============================================================================================-->
+		<script src="/stylesheets/vendor/select2/select2.min.js"></script>
+	<!--===============================================================================================-->
+		<script src="/stylesheets/vendor/daterangepicker/moment.min.js"></script>
+		<script src="/stylesheets/vendor/daterangepicker/daterangepicker.js"></script>
+	<!--===============================================================================================-->
+		<script src="/stylesheets/vendor/countdowntime/countdowntime.js"></script>
+	<!--===============================================================================================-->
+		<script src="/stylesheets/js/main.js"></script>
+
 	</body>
 </html>

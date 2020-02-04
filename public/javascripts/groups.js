@@ -18,6 +18,8 @@ function addGroupInput(){
     })  
 };
 
+
+
 // var member_id_student_member = <%=session("Username")%>;
 $(function(){
     addGroupInput();
