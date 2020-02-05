@@ -14,7 +14,7 @@ router.get('/', function(req, res, next) {
 	// 		res.render('index',  {title: '問卷系統',survey_id:result[0].survey_id, survey_name:result[0].survey_name, survey_description:result[0].survey_description,editor_id:req.session.editor_id,editor_name:req.session.editor_name});
 	// 	}
 	// });
-    res.render('index', { title: '科展系統', member_id:req.session.member_id, member_name:req.session.member_name});
+    res.render('index', { title: 'Science Fair科學探究專題系統', member_id:req.session.member_id, member_name:req.session.member_name});
 });
 
 // 進入登入頁面
@@ -79,7 +79,7 @@ router.post('/reg', function(req, res, next){
 
 // 進入專題管理頁面'
 router.get('/projectManage', function(req, res, next){
-	res.render('index', { title: '科展系統', member_id:req.session.member_id, member_name:req.session.member_name});
+	res.render('index', { title: 'Science Fair科學探究專題系統', member_id:req.session.member_id, member_name:req.session.member_name});
 });
 
 // 登出

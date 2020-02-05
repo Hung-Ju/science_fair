@@ -5,23 +5,15 @@ var groups = require('../models/groups');
 //進入組別管理頁面
 router.get('/',function(req, res, next) {
     var member_id = req.session.member_id;
-    //抓取所有已登入使用者id未加入的組別資料
-    // groups.selectGroupsDataMemberNotJoin(member_id, function(result){
-    //     if (result){
-    //         console.log(result);
-    //         //抓取所有已登入使用者id已經加入的組別資料
-    //         groups.selectGroupsDataMemberJoin(member_id, function(result2){
-    //             res.render('groups', { title: '科展系統', notJoinGroups:result, JoinGroups:result2,member_id:req.session.member_id, member_name:req.session.member_name});
-    //         })
-            
-    //     } 
-    // }); 
+    if(!member_id){
+        res.redirect('/');
+    }
     groups.selectAllGroupsData(member_id, function(result){
         if (result){
             console.log(result);
             //抓取所有已登入使用者id已經加入的組別資料
             groups.selectGroupsDataMemberJoin(member_id, function(result2){
-                res.render('groups', { title: '科展系統', notJoinGroups:result, JoinGroups:result2,member_id:req.session.member_id, member_name:req.session.member_name});
+                res.render('groups', { title: 'Science Fair科學探究專題系統', notJoinGroups:result, JoinGroups:result2,member_id:req.session.member_id, member_name:req.session.member_name});
             })
             
         } 
@@ -31,7 +23,7 @@ router.get('/',function(req, res, next) {
 
 //進入新增組別頁面
 router.get('/add',function(req, res, next) {
-    res.render('groupsFile', { title: '科展系統', member_id:req.session.member_id, member_name:req.session.member_name});
+    res.render('groupsFile', { title: 'Science Fair科學探究專題系統', member_id:req.session.member_id, member_name:req.session.member_name});
 });
 
 //新增組別
