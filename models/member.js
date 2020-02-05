@@ -39,7 +39,6 @@ module.exports = {
 
 		    connection.query('SELECT * FROM `member` WHERE `member_account`=? AND `member_password`=?', [member_account, member_password], function(err, result){
 		        if(err) throw err;
-
 		        cb(result);
 		        connection.release();
 		        // 接下来connection已經無法使用，它已經被返回到連接池中 

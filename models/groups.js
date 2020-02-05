@@ -3,7 +3,19 @@ var pool = require('./db'),
 
 module.exports = {
 
-	//抓取所有已登入使用者id未加入的組別資料
+	//抓取所有組別資料
+	selectAllGroupsData : function(member_id, cb){
+		pool.getConnection(function(err, connection){
+			if(err) throw err;
+			connection.query('SELECT * FROM `groups`', function(err, result){
+				if(err) throw err;
+				cb(result);
+				connection.release();
+			})
+		});
+	},
+
+	//抓取所有已登入使用者id未加入的組別資料(有錯誤)
 	selectGroupsDataMemberNotJoin : function(member_id, cb){
 		var member_id = member_id;
 		pool.getConnection(function(err, connection){
@@ -59,6 +71,30 @@ module.exports = {
 				connection.release();
 			})
 
+		});
+	},
+
+	//未加入組別的成員透過密碼申請加入，比對密碼是否正確
+	checkGroupsPassword : function(groups_id, groups_key, cb){
+		pool.getConnection(function(err, connection){
+			if(err) throw err;
+			connection.query('SELECT * FROM `groups` WHERE `groups_id`=? AND `groups_key`=?', [groups_id, groups_key], function(err, result){
+				if(err) throw err;
+				cb(result);
+				connection.release();
+			})
+		});
+	},
+
+	//確定該成員尚未加入申請加入的組別
+	checkGroupsAlready : function(groups_id, member_id, cb){
+		pool.getConnection(function(err, connection){
+			if(err) throw err;
+			connection.query('SELECT * FROM `groups_member` WHERE `groups_id_groups`=? AND `member_id_member`=?', [groups_id, member_id], function(err, result){
+				if(err) throw err;
+				cb(result);
+				connection.release();
+			})
 		});
 	}
 

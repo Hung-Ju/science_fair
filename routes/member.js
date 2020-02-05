@@ -31,6 +31,7 @@ router.post('/login', function(req, res, next) {
 	//console.log(password_hash);
 	member.login(member_account, password_hash, function(result){
 		if(result.length){
+			//console.log(result[0].member_name);
 			req.session.member_id = result[0].member_id;
 			req.session.member_name = result[0].member_name;
 

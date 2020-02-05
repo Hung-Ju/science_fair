@@ -79,11 +79,11 @@
     </div> -->
 
 
-    <% if(member_id){ %>
     <!-- 登入狀態下 -->
-    
-    <!-- <center><input class="btn btn-primary btn-lg" type='submit' value='新增專題組別' onclick="javascript: location.href='/groups/add'"></center> -->
+    <% if(member_id){ %>
+
     <!-- 中間的已加入組別和未加入組別列表區域 -->
+    <!-- 已加入的專題組別標題欄 -->
     <div class="container col-md-8 col-md-offset-2 groups-container">
       <div class="row">
         <div class="col" style="background-color: #31625C;">
@@ -91,7 +91,7 @@
         </div>
       </div>
       
-
+      <!-- 已加入的專題組別表格 -->
       <div class="groups-table row">
         <div class="content col">
           <section>
@@ -120,15 +120,14 @@
       </div>  
     </div>
 
+    <!-- 已加入的專題組別標題欄 -->
     <div class="container col-md-8 col-md-offset-2">
       <div class="row">
         <div class="col" style="background-color: #31625C;">
           <h5 class="text-white">未加入的專題組別</h5>
         </div>
       </div>
-      
-
-      
+      <!-- 已加入的專題組別表格 -->
       <div class="groups-table row">
         <div class="content col">
           <section>
@@ -147,7 +146,15 @@
                   <td class="table-light"><%= notJoinGroups[i].groups_name  %></td>
                   <td class="table-light"><%=day.getFullYear(); %>/<%=day.getMonth()+1;%>/<%=day.getDate();%></td>
                   <td class="table-light">
-                    <button class="btn btn-primary btn-sm">申請加入</button>
+                    <button class="btn btn-primary btn-sm" data-toggle="collapse" href="#groups<%= notJoinGroups[i].groups_id  %>" aria-expanded="false" aria-controls="groups<%= notJoinGroups[i].groups_id  %>">申請加入</button>
+                  </td>
+                  
+                </tr>
+                <tr>
+                  <td class="table-light collapse" colspan="3" id="groups<%= notJoinGroups[i].groups_id  %>">
+                    <%= notJoinGroups[i].groups_id  %>請輸入社群密碼：<input type="text" name="groups<%= notJoinGroups[i].groups_id  %>" id="groupsKey<%= notJoinGroups[i].groups_id  %>" >
+                    <button class="btn btn-success btn-sm" id="joinGroups" onclick="joinGroups('<%= notJoinGroups[i].groups_id  %>');">送出</button>
+                    <button class="btn btn-primary btn-sm" data-toggle="collapse" href="#groups<%= notJoinGroups[i].groups_id  %>" aria-expanded="false" aria-controls="groups<%= notJoinGroups[i].groups_id  %>">取消</button>
                   </td>
                 </tr>
               <% } %>

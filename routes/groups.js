@@ -6,7 +6,17 @@ var groups = require('../models/groups');
 router.get('/',function(req, res, next) {
     var member_id = req.session.member_id;
     //抓取所有已登入使用者id未加入的組別資料
-    groups.selectGroupsDataMemberNotJoin(member_id, function(result){
+    // groups.selectGroupsDataMemberNotJoin(member_id, function(result){
+    //     if (result){
+    //         console.log(result);
+    //         //抓取所有已登入使用者id已經加入的組別資料
+    //         groups.selectGroupsDataMemberJoin(member_id, function(result2){
+    //             res.render('groups', { title: '科展系統', notJoinGroups:result, JoinGroups:result2,member_id:req.session.member_id, member_name:req.session.member_name});
+    //         })
+            
+    //     } 
+    // }); 
+    groups.selectAllGroupsData(member_id, function(result){
         if (result){
             console.log(result);
             //抓取所有已登入使用者id已經加入的組別資料
@@ -44,5 +54,36 @@ router.post('/add',function(req, res, next) {
         }
     });
 });
+
+//未加入組別的成員輸入密碼申請加入組別
+router.post('/joinGroups',function(req, res, next) {
+    var groups_id = req.body.groups_id || '',
+        groups_key = req.body.groups_key || '';
+
+    groups.checkGroupsPassword(groups_id, groups_key, function(result){
+        if(result.length){
+            var member_id = req.session.member_id;
+            groups.checkGroupsAlready(groups_id, member_id, function(result2){
+                if(result2.length != 0){
+                    console.log(result2.length);
+                    res.send({message:"already"});
+                }
+                else{
+                    var groups_id_groups = result[0].groups_id,
+                    member_id_member = req.session.member_id,
+                    member_name = req.session.member_name;
+                    groups.addGroupsMember(groups_id_groups, member_id_member, member_name, function(result3){
+                        if(result3){
+                            res.send({message:"true"});
+                        }
+                    })
+                }
+            })    
+        }
+        else{
+            res.send({message:"false"});
+        }
+    })
+})
 
 module.exports = router;

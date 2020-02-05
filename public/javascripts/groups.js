@@ -18,6 +18,36 @@ function addGroupInput(){
     })  
 };
 
+function joinGroups(groups_id){
+    $.ajax({  
+        type: "POST",
+        url: "/groups/joinGroups",
+        data: {
+            groups_id: groups_id,
+            groups_key: $("#groupsKey"+groups_id).val(),
+        },
+        success: function(data){
+            if(data){
+                if(data.message=="true"){
+                    alert('成功加入');
+                    window.location.href="/groups";
+                }
+                else if(data.message=="already"){
+                    alert('重複加入，請重新搜尋要加入的組別');
+                    window.location.href="/groups";
+                }
+                else{
+                    alert('加入失敗請重新嘗試');
+                    window.location.href="/groups";
+                }
+            }
+        },
+        error: function(){
+            alert('失敗');
+        }
+    });
+}
+
 
 
 // var member_id_student_member = <%=session("Username")%>;
@@ -51,5 +81,34 @@ $(function(){
             }
         });
     });
+
+    //將小組加入申請透過ajax傳送執行
+    // $("#joinGroups").click(function () {
+
+    //     $.ajax({  
+    //         type: "POST",
+    //         url: "/groups/joinGroups",
+    //         data: {
+    //             groups_id: $("#groups_name").val(),
+    //             groups_key: $("#groups_key").val(),
+    //         },
+    //         success: function(data){
+    //             if(data){
+    //                 if(data.message=="true"){
+    //                     alert('小組新增成功');
+    //                     window.location.href="/groups";
+    //                 }
+    //                 else{
+    //                     alert('新增失敗請重新輸入');
+    //                     window.location.href="/groups/groupsFile";
+    //                 }
+    //             }
+    //         },
+    //         error: function(){
+    //             alert('失敗');
+    //         }
+    //     });
+    // });
+
 
 });
