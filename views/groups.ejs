@@ -27,6 +27,10 @@
           <img src="/stylesheets/images/atoms-science-svgrepo-com.svg" width="30" height="30" class="d-inline-block align-top" alt="">
           Science Fair科學探究專題系統
         </a>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
         
         <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
           <ul class="navbar-nav">
@@ -60,29 +64,47 @@
 
     <!-- banner圖片區 -->
 
-    <div class="carousel slide" data-ride="carousel">
+    <div class="carousel slide clearfix" data-ride="carousel">
       <div class="carousel-inner">
         <div class="carousel-item active ">
           <img class="d-block w-100" src="/stylesheets/images/science4.jpg" alt="First slide">
           <div class="banner-text-content">
             <h1>歡迎來到科學探究專題系統</h1>
             <p>沒有要加入的組別嗎？</p>
-            <input class="btn btn-primary btn-lg" type='submit' value='新增專題組別' onclick="javascript: location.href='/groups/add'">
+            <!-- <input class="btn btn-primary btn-lg" type='submit' value='新增專題組別' onclick="javascript: location.href='/groups/add'"> -->
+            <input class="btn btn-primary btn-lg" type='submit' value='新增專題組別' data-toggle="modal" data-target="#addNewGroups">
+            
+            <div class="modal fade" id="addNewGroups" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">新增專題組別</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <div id="groupsRoot"></div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="addGroups">新增組別</button>
+                  </div>
+                </div>
+              </div>
+            </div>
 
           </div>
         </div>
       </div>
     </div>
 
-    <!-- <div id="main-banner">
-      <div class="banner-bg-image bg-parallax"></div>
-    </div> -->
 
 
     <!-- 登入狀態下 -->
     <% if(member_id){ %>
 
-    <!-- 中間的已加入組別和未加入組別列表區域 -->
+    <!-- 中間的已加入組別和全部組別列表區域 -->
     <!-- 已加入的專題組別標題欄 -->
     <div class="container col-md-8 col-md-offset-2 groups-container">
       <div class="row">
@@ -92,25 +114,25 @@
       </div>
       
       <!-- 已加入的專題組別表格 -->
-      <div class="groups-table row">
-        <div class="content col">
+      <div class="groups-table row pre-scrollable">
+        <div class="content col table-responsive">
           <section>
-            <table class="table">
+            <table class="table" style="word-break:break-all; word-wrap:break-all;">
               <thead class="thead-light table-sm">
                 <tr>
-                  <th scope="col">已加入組別名稱</th>
-                  <th scope="col">創立時間</th>
-                  <th scope="col">進入組別</th>
+                  <th scope="col" width='34%'>已加入組別名稱</th>
+                  <th scope="col" width='34%'>創立時間</th>
+                  <th scope="col" width='32%'>進入組別</th>
                 </tr>
               </thead>
               
               <% for ( var i = 0 ; i < JoinGroups.length ; i++){ %>
                 <% var day = new Date(JoinGroups[i].groups_createtime);%>
                 <tr>
-                  <td class="table-light"><%= JoinGroups[i].groups_name  %></td>
+                  <td class="table-light des"><%= JoinGroups[i].groups_name  %></td>
                   <td class="table-light"><%=day.getFullYear(); %>/<%=day.getMonth()+1;%>/<%=day.getDate();%></td>
                   <td class="table-light">
-                    <button class="btn btn-primary btn-sm">進入組別</button>
+                    <button class="btn btn-primary btn-sm" onclick="enterProject('<%= JoinGroups[i].groups_id  %>')">進入組別</button>
                   </td>
                 </tr>
               <% } %>
@@ -120,30 +142,30 @@
       </div>  
     </div>
 
-    <!-- 已加入的專題組別標題欄 -->
+    <!-- 全部的專題組別標題欄 -->
     <div class="container col-md-8 col-md-offset-2">
       <div class="row">
         <div class="col" style="background-color: #31625C;">
           <h5 class="text-white">未加入的專題組別</h5>
         </div>
       </div>
-      <!-- 已加入的專題組別表格 -->
-      <div class="groups-table row">
+      <!-- 全部的專題組別表格 -->
+      <div class="groups-table row pre-scrollable">
         <div class="content col">
           <section>
             <table class="table">
               <thead class="thead-light table-sm">
                 <tr>
-                  <th>未加入組別名稱</th>
-                  <th>創立時間</th>
-                  <th>申請加入</th>
+                  <th scope="col" width='34%'>未加入組別名稱</th>
+                  <th scope="col" width='34%'>創立時間</th>
+                  <th scope="col" width='32%'>申請加入</th>
                 </tr>
               </thead>
              
               <% for ( var i = 0 ; i < notJoinGroups.length ; i++){ %>
                 <% var day = new Date(notJoinGroups[i].groups_createtime);%>
                 <tr>
-                  <td class="table-light"><%= notJoinGroups[i].groups_name  %></td>
+                  <td class="table-light des"><%= notJoinGroups[i].groups_name  %></td>
                   <td class="table-light"><%=day.getFullYear(); %>/<%=day.getMonth()+1;%>/<%=day.getDate();%></td>
                   <td class="table-light">
                     <button class="btn btn-primary btn-sm" data-toggle="collapse" href="#groups<%= notJoinGroups[i].groups_id  %>" aria-expanded="false" aria-controls="groups<%= notJoinGroups[i].groups_id  %>">申請加入</button>

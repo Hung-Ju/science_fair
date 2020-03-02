@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <!-- Bootstrap CSS -->
+    <link rel='stylesheet' href='/stylesheets/bootstrap/bootstrap.min.css' />
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script type="text/javascript" src="/javascripts/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="/javascripts/bootstrap/bootstrap.js"></script>
+    <link rel='stylesheet' href='/stylesheets/Ju-style.css' />
+    <!-- <link rel="stylesheet" href="/assets/css/main.css" /> -->
+    <!-- <noscript><link rel="stylesheet" href="/assets/css/noscript.css" /></noscript> -->
+
+    
+    <script type="text/javascript" src="/javascripts/groups.js"></script>
+
+    
+  </head>
+  <body>
+    <!-- Header(上方的標題和選單條) -->
+    <header id="header">
+      <!-- <h1 id="logo"><a href="/">Science Fair <span>科展系統</span></a></h1> -->
+      <div class="fixed-top">
+        <nav id="nav" class="navbar navbar-expand-lg navbar-light" style="background-color: #AACBBA;">
+          <!-- .navbar-brand 左上LOGO位置 -->
+          <a class="navbar-brand" href="/">
+            <img src="/stylesheets/images/atoms-science-svgrepo-com.svg" width="30" height="30" class="d-inline-block align-top" alt="">
+            Science Fair科學探究專題系統
+          </a>
+  
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+              <!-- .dropdown Navbar選項使用下拉式選單 -->
+              <li class="nav-item dropdown">
+              <% if(member_id){ %>
+                <% if (locals.member_name) { %>
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    您好,  <%= member_name %>
+                  </a>
+                <% } %>
+                <!-- .dropdown-menu 下拉選單內容 -->
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                  <a class="dropdown-item" onclick="javascript: location.href='/member/logout'">登出</a>
+                </div>
+              <% }else{ %>
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  您好, 遊客使用者
+                </a>
+                <!-- .dropdown-menu 下拉選單內容 -->
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                  <a class="dropdown-item" onclick="javascript: location.href='member/login'">登入</a>
+                  <a class="dropdown-item" onclick="javascript: location.href='member/reg'">註冊</a>
+                </div>
+              <% } %>
+              </li>
+            </ul>
+          </div>
+        </nav>
+        <nav id="nav" class="navbar navbar-expand-lg navbar-light" style="background-color: #64AD88; height:30px;">
+          <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"> -->
+            <a class="navbar-toggler" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" style="font-size: 1rem; line-height:0; border-color: rgba(0,0,0,0);">工具列</a>
+          <!-- </button> -->
+          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+              <a class="nav-item nav-link" href="#">離開專題</a>
+              <a class="nav-item nav-link" href="#">專題寫作</a>
+              <a class="nav-item nav-link" href="#">專題管理</a>
+              <a class="nav-item nav-link" href="#">檔案管理</a>
+              <a class="nav-item nav-link" href="#">個人空間</a>
+              <a class="nav-item nav-link" href="#">分析工具</a>
+            </div>
+          </div>
+        </nav>
+      </div>
+      
+    </header>
+
+    <div id="cneter-content">
+      <div class="row">
+        <div class="col-1 choose-stage">
+          <div class="row justify-content-center">
+            <nav class="nav flex-column nav-pills nav-pills2 position-fixed" role="tablist">
+              <a class="nav-link active" href="#" data-toggle="pill">形成問題</a>
+              <a class="nav-link" href="#" data-toggle="pill">研究規劃</a>
+              <a class="nav-link" href="#" data-toggle="pill">執行</a>
+              <a class="nav-link" href="#" data-toggle="pill">分析與詮釋</a>
+              <a class="nav-link" href="#" data-toggle="pill">統整報告</a>
+              <button class="stage-btn btn btn-sm">切換階段</button>
+              <button class="stage-btn btn btn-sm">參考資料</button>
+            </nav>
+          </div>
+          
+        </div>
+
+        
+  
+        <div class="col-11">
+          <!-- 內容撰寫和想法討論的切換按鈕 -->
+          <div class="row justify-content-center"  style="background-color: rgb(255, 255, 255);">
+            <div class=" btn-group btn-group-toggle stage-switch-btn position-fixed" data-toggle="buttons">
+              <label class="btn btn-success active">
+                <input type="radio" name="options" id="option1" autocomplete="off" checked> 內容撰寫
+              </label>
+              <label class="btn btn-success">
+                <input type="radio" name="options" id="option3" autocomplete="off"> 想法討論
+              </label>
+            </div>
+          </div>
+          
+          <!-- 研究動機章節區塊 -->
+          <div class="row" style="margin-top: 44px;">
+            <div class="col chapter-title-box" style="background-color: #31625C;">
+              <h5 class="text-white chapter-title-text"><b>研究動機</b></h5>
+            </div>
+          </div>
+          <!-- 章節區塊中的內容 -->
+          <div class="row">
+            <!-- 階段說明區塊 -->
+            <div class="col-2" style="background-color: #FDFFE6;">
+              <!-- 左上 -->
+              <div class="row ">
+                <div class="col chapter-title-box" style="background-color: #C1CA57;">
+                  <h5 class="text-black text-blod chapter-title-text"><b>階段說明</b></h5>
+                </div>
+              </div>
+              <!-- 左下 -->
+              <div class="row">
+                <p class="margin10">
+                  <b>研究動機：</b><br>
+                  須說明為何要研究這個題目？是因為什麼原因或興趣讓你想研究這個題目？<br>
+                  <b>如何找主題？</b><br>
+                  題目來源：學習與日常生活中的疑惑與問題，從中加深加廣、可參考歷屆的優秀科展作品並從中找尋靈感、題目若能新穎則更好。
+                </p>
+              </div>
+            </div>
+            <!-- 中間內容編輯區塊 -->
+            <div class="col-7" style="background-color: #EEEBE5;">
+              <div class="content-margin">
+                <center>
+                  <div class="margin-bottom10 form-group row">
+                    <label class="col-sm-2">研究題目：</label>
+                    <input class="col-sm-10 form-control" style="max-width: 80%;" type="text" name="research_title" id="research_title">
+                  </div>
+                  <div class="margin-bottom10 form-group row">
+                    <label class="col-sm-2">研究動機：</label>
+                    <textarea rows="5" class="col-sm-10 form-control" style="max-width: 80%;"></textarea>
+                  </div>
+                </center>
+                
+                <div class="btn-save-box margin-bottom10">
+                  <button class="btn btn-sm btn-save">儲存</button>
+                </div>
+                
+                
+              </div>
+            </div>
+            <!-- 小組想法區塊 -->
+            <div class="col-3" style="background-color: #FFF5E0;">
+              <!-- 右上 -->
+              <div class="row">
+                <div class="col chapter-title-box" style="background-color: #A37F60;">
+                  <h5 class="text-black text-blod chapter-title-text"><b>小組想法</b></h5>
+                </div>
+              </div>
+              <!-- 右下 -->
+              <div class="row">
+                
+              </div>
+            </div>
+          </div>
+
+
+
+          <!-- 研究目的章節區塊 -->
+          <div class="row">
+            <div class="col chapter-title-box" style="background-color: #31625C;">
+              <h5 class="text-white chapter-title-text"><b>研究目的</b></h5>
+            </div>
+          </div>
+          <!-- 章節區塊中的內容 -->
+          <div class="row">
+            <!-- 階段說明區塊 -->
+            <div class="col-2" style="background-color: #FDFFE6;">
+              <!-- 左上 -->
+              <div class="row">
+                <div class="col chapter-title-box" style="background-color: #C1CA57;">
+                  <h5 class="text-black text-blod chapter-title-text"><b>階段說明</b></h5>
+                </div>
+              </div>
+              <!-- 左下 -->
+              <div class="row">
+                <p class="margin10">
+                  <b>研究目的：</b><br>
+                  研究這個題目有何目的？是否對人類有貢獻？或只為滿足自己的好奇心呢？
+                </p>
+
+              </div>
+            </div>
+            <!-- 中間內容編輯區塊 -->
+            <div class="col-7" style="background-color: #EEEBE5;">
+              <div class="content-margin">
+                <center>
+                  <div class="margin-bottom10 form-group row">
+                    <!-- <label class="col-sm-3">新增研究目的</label> -->
+                    <button class="btn btn-sm btn-primary margin-left10 height30">新增研究目的</button>
+                  </div>
+                  <div class="margin-bottom10 form-group row">
+                    <label class="col-sm-2">研究目的1：</label>
+                    <input class="col-sm-8 form-control maring-right10" type="text">&nbsp;
+                    <button class="col-auto btn btn-sm btn-primary my-1 height30">編輯</button>&nbsp;
+                    <button class="col-auto btn btn-sm btn-danger my-1 height30">刪除</button>
+                  </div>
+                    
+                </center>
+                
+              </div>
+            </div>
+            <!-- 小組想法區塊 -->
+            <div class="col-3" style="background-color: #FFF5E0;">
+              <!-- 右上 -->
+              <div class="row">
+                <div class="col chapter-title-box" style="background-color: #A37F60;">
+                  <h5 class="text-black text-blod chapter-title-text"><b>小組想法</b></h5>
+                </div>
+              </div>
+              <!-- 右下 -->
+              <div class="row">
+                
+              </div>
+            </div>
+          </div>
+          <!-- 研究目的章節區塊 -->
+
+
+
+          <!-- 實驗步驟章節區塊 -->
+          <div class="row">
+            <div class="col chapter-title-box" style="background-color: #31625C;">
+              <h5 class="text-white chapter-title-text"><b>實驗步驟</b></h5>
+            </div>
+          </div>
+          <!-- 章節區塊中的內容 -->
+          <div class="row">
+            <!-- 階段說明區塊 -->
+            <div class="col-2" style="background-color: #FDFFE6;">
+              <!-- 左上 -->
+              <div class="row">
+                <div class="col chapter-title-box" style="background-color: #C1CA57;">
+                  <h5 class="text-black text-blod chapter-title-text"><b>階段說明</b></h5>
+                </div>
+              </div>
+              <!-- 左下 -->
+              <div class="row">
+                <p class="margin10">
+                  <b>實驗設計：</b>
+                  <br>1.符合邏輯架構
+                  <br>2.研究取樣有代表性、正確性
+                  <br>3.應有預備實驗
+                  <br>4.足夠實驗次數並須在「重覆實驗」獲得一致的結果
+                  <br>5.以分工合作方式進行實驗的分組、分項培養個別與整體的實驗特質
+                  <br>6.紀錄的完整性、全盤性、過程性
+                </p>
+
+              </div>
+            </div>
+            <!-- 中間內容編輯區塊 -->
+            <div class="col-7" style="background-color: #EEEBE5;">
+              <div class="content-margin">
+                <center>
+                  <div class="margin-bottom10 form-group row">
+                    <!-- <label class="col-sm-3">新增實驗項目</label> -->
+                    <button class="btn btn-sm btn-primary margin-left10">新增實驗項目</button>
+                  </div>
+                  <div class="margin-bottom10 form-group row">
+                    <label class="col-sm-2">實驗項目1：</label>
+                    <textarea rows="3" class="col-sm-8 form-control maring-right10"></textarea>&nbsp;
+                    <button class="col-auto btn btn-sm btn-primary my-1 height30">編輯</button>&nbsp;
+                    <button class="col-auto btn btn-sm btn-danger my-1 height30">刪除</button>
+                  </div>
+                    
+                </center>
+                
+              </div>
+            </div>
+            <!-- 小組想法區塊 -->
+            <div class="col-3" style="background-color: #FFF5E0;">
+              <!-- 右上 -->
+              <div class="row">
+                <div class="col chapter-title-box" style="background-color: #A37F60;">
+                  <h5 class="text-black text-blod chapter-title-text"><b>小組想法</b></h5>
+                </div>
+              </div>
+              <!-- 右下 -->
+              <div class="row">
+                
+              </div>
+            </div>
+          </div>
+          <!-- 實驗步驟章節區塊 -->
+
+          <!-- 研究設備及器材章節區塊 -->
+          <div class="row">
+            <div class="col chapter-title-box" style="background-color: #31625C;">
+              <h5 class="text-white chapter-title-text"><b>研究設備及器材</b></h5>
+            </div>
+          </div>
+          <!-- 章節區塊中的內容 -->
+          <div class="row">
+            <!-- 階段說明區塊 -->
+            <div class="col-2" style="background-color: #FDFFE6;">
+              <!-- 左上 -->
+              <div class="row">
+                <div class="col chapter-title-box" style="background-color: #C1CA57;">
+                  <h5 class="text-black text-blod chapter-title-text"><b>階段說明</b></h5>
+                </div>
+              </div>
+              <!-- 左下 -->
+              <div class="row">
+                <p class="margin10">
+                  <b>研究設備及器材：</b>
+                  <br>學生在進行實驗時勢必將用到實驗器材，這些器材有可能是學校有的實驗設備，或是需要學生自行動手製作的器材。
+                      在設計實驗步驟時，學生必須列出一份器材清單，並清楚描述使用器材的規格、材質，若有照片則更好。
+                </p>
+
+              </div>
+            </div>
+            <!-- 中間內容編輯區塊 -->
+            <div class="col-7" style="background-color: #EEEBE5;">
+              <div class="content-margin">
+                <center>
+                  <div class="margin-bottom10 form-group row">
+                    <!-- <label class="col-sm-3">新增研究材料與工具</label> -->
+                    <button class="btn btn-sm btn-primary margin-left10">新增研究材料與工具</button>
+                  </div>
+                  <div class="margin-bottom10 form-group row">
+                    <div class="card-group">
+                      <div class="card" style="width: 12rem;">
+                        <img src="https://fs1.shop123.com.tw/300063/upload/product/3000633213pic_big_943291.jpg" class="card-img-top">
+                        <div class="card-body">
+                          <h5 class="card-title">燒杯</h5>
+                          <p class="card-text">數量：3</p>
+                          <button class="btn btn-sm btn-primary margin-left10">編輯</button><button class="btn btn-sm btn-danger margin-left10">刪除</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                    
+                </center>
+                
+              </div>
+            </div>
+            <!-- 小組想法區塊 -->
+            <div class="col-3" style="background-color: #FFF5E0;">
+              <!-- 右上 -->
+              <div class="row">
+                <div class="col chapter-title-box" style="background-color: #A37F60;">
+                  <h5 class="text-black text-blod chapter-title-text"><b>小組想法</b></h5>
+                </div>
+              </div>
+              <!-- 右下 -->
+              <div class="row">
+                
+              </div>
+            </div>
+          </div>
+          <!-- 研究設備及器材章節區塊 -->
+
+
+          <!-- 實驗記錄章節區塊 -->
+          <div class="row">
+            <div class="col chapter-title-box" style="background-color: #31625C;">
+              <h5 class="text-white chapter-title-text"><b>實驗記錄</b></h5>
+            </div>
+          </div>
+          <!-- 章節區塊中的內容 -->
+          <div class="row">
+            <!-- 階段說明區塊 -->
+            <div class="col-2" style="background-color: #FDFFE6;">
+              <!-- 左上 -->
+              <div class="row">
+                <div class="col chapter-title-box" style="background-color: #C1CA57;">
+                  <h5 class="text-black text-blod chapter-title-text"><b>階段說明</b></h5>
+                </div>
+              </div>
+              <!-- 左下 -->
+              <div class="row">
+                <p class="margin10">
+                  <b>實驗記錄：</b>
+                  <br>即為研究步驟及方法，學生在進行實驗實的器材與材料使用方法與步驟，需要記錄下來，實驗中與後得到的數據也要完整地紀錄下來。
+                </p>
+
+              </div>
+            </div>
+            <!-- 中間內容編輯區塊 -->
+            <div class="col-7" style="background-color: #EEEBE5;">
+              <div class="content-margin">
+                <center>
+                  <div class="margin-bottom10 form-group row">
+                    <button class="btn btn-sm btn-primary margin-left10">新增實驗記錄</button>
+                  </div>
+                  <div class="margin-bottom10 form-group row">
+                    <label class="col-sm-2">實驗紀錄1：</label>
+                    <textarea rows="4" class="col-sm-8 form-control maring-right10"></textarea>&nbsp;
+                    <button class="col-auto btn btn-sm btn-primary my-1 height30">編輯</button>&nbsp;
+                    <button class="col-auto btn btn-sm btn-danger my-1 height30">刪除</button>
+                  </div>
+                    
+                </center>
+                
+              </div>
+            </div>
+            <!-- 小組想法區塊 -->
+            <div class="col-3" style="background-color: #FFF5E0;">
+              <!-- 右上 -->
+              <div class="row">
+                <div class="col chapter-title-box" style="background-color: #A37F60;">
+                  <h5 class="text-black text-blod chapter-title-text"><b>小組想法</b></h5>
+                </div>
+              </div>
+              <!-- 右下 -->
+              <div class="row">
+                
+              </div>
+            </div>
+          </div>
+          <!-- 實驗記錄章節區塊 -->
+
+
+          <!-- 研究結果(分析及圖表)章節區塊 -->
+          <div class="row">
+            <div class="col chapter-title-box" style="background-color: #31625C;">
+              <h5 class="text-white chapter-title-text"><b>研究結果(分析及圖表)</b></h5>
+            </div>
+          </div>
+          <!-- 章節區塊中的內容 -->
+          <div class="row">
+            <!-- 階段說明區塊 -->
+            <div class="col-2" style="background-color: #FDFFE6;">
+              <!-- 左上 -->
+              <div class="row">
+                <div class="col chapter-title-box" style="background-color: #C1CA57;">
+                  <h5 class="text-black text-blod chapter-title-text"><b>階段說明</b></h5>
+                </div>
+              </div>
+              <!-- 左下 -->
+              <div class="row">
+                <p class="margin10">
+                  <b>研究結果：</b>
+                  <br>從步驟或方法中找到所得到的結果(須與研究目的相吻合)。
+                </p>
+
+              </div>
+            </div>
+            <!-- 中間內容編輯區塊 -->
+            <div class="col-7" style="background-color: #EEEBE5;">
+              <div class="content-margin">
+                <center>
+                  <div class="margin-bottom10 form-group row">
+                    <button class="btn btn-sm btn-primary margin-left10">新增分析項目</button>
+                  </div>
+                  <div class="margin-bottom10 form-group row">
+                    <label class="col-sm-2">分析項目1：</label>
+                    <textarea rows="4" class="col-sm-8 form-control maring-right10"></textarea>&nbsp;
+                    <button class="col-auto btn btn-sm btn-primary my-1 height30">編輯</button>&nbsp;
+                    <button class="col-auto btn btn-sm btn-danger my-1 height30">刪除</button>
+                  </div>
+                    
+                </center>
+                
+              </div>
+            </div>
+            <!-- 小組想法區塊 -->
+            <div class="col-3" style="background-color: #FFF5E0;">
+              <!-- 右上 -->
+              <div class="row">
+                <div class="col chapter-title-box" style="background-color: #A37F60;">
+                  <h5 class="text-black text-blod chapter-title-text"><b>小組想法</b></h5>
+                </div>
+              </div>
+              <!-- 右下 -->
+              <div class="row">
+                
+              </div>
+            </div>
+          </div>
+          <!-- 研究結果(分析及圖表)章節區塊 -->
+
+
+          <!-- 討論章節區塊 -->
+          <div class="row">
+            <div class="col chapter-title-box" style="background-color: #31625C;">
+              <h5 class="text-white chapter-title-text"><b>討論</b></h5>
+            </div>
+          </div>
+          <!-- 章節區塊中的內容 -->
+          <div class="row">
+            <!-- 階段說明區塊 -->
+            <div class="col-2" style="background-color: #FDFFE6;">
+              <!-- 左上 -->
+              <div class="row">
+                <div class="col chapter-title-box" style="background-color: #C1CA57;">
+                  <h5 class="text-black text-blod chapter-title-text"><b>階段說明</b></h5>
+                </div>
+              </div>
+              <!-- 左下 -->
+              <div class="row">
+                <p class="margin10">
+                  <b>討論：</b>
+                  <br>可將實驗或方法中，所遭遇到的問題或影響實驗的誤差進行討論與分析。
+                </p>
+
+              </div>
+            </div>
+            <!-- 中間內容編輯區塊 -->
+            <div class="col-7" style="background-color: #EEEBE5;">
+              <div class="content-margin">
+                <center>
+                  <div class="margin-bottom10 form-group row">
+                    <button class="btn btn-sm btn-primary margin-left10">新增討論項目</button>
+                  </div>
+                  <div class="margin-bottom10 form-group row">
+                    <label class="col-sm-2">討論項目1：</label>
+                    <textarea rows="4" class="col-sm-8 form-control maring-right10"></textarea>&nbsp;
+                    <button class="col-auto btn btn-sm btn-primary my-1 height30">編輯</button>&nbsp;
+                    <button class="col-auto btn btn-sm btn-danger my-1 height30">刪除</button>
+                  </div>
+                    
+                </center>
+                
+              </div>
+            </div>
+            <!-- 小組想法區塊 -->
+            <div class="col-3" style="background-color: #FFF5E0;">
+              <!-- 右上 -->
+              <div class="row">
+                <div class="col chapter-title-box" style="background-color: #A37F60;">
+                  <h5 class="text-black text-blod chapter-title-text"><b>小組想法</b></h5>
+                </div>
+              </div>
+              <!-- 右下 -->
+              <div class="row">
+                
+              </div>
+            </div>
+          </div>
+          <!-- 討論章節區塊 -->
+
+
+          <!-- 結論章節區塊 -->
+          <div class="row">
+            <div class="col chapter-title-box" style="background-color: #31625C;">
+              <h5 class="text-white chapter-title-text"><b>結論</b></h5>
+            </div>
+          </div>
+          <!-- 章節區塊中的內容 -->
+          <div class="row">
+            <!-- 階段說明區塊 -->
+            <div class="col-2" style="background-color: #FDFFE6;">
+              <!-- 左上 -->
+              <div class="row">
+                <div class="col chapter-title-box" style="background-color: #C1CA57;">
+                  <h5 class="text-black text-blod chapter-title-text"><b>階段說明</b></h5>
+                </div>
+              </div>
+              <!-- 左下 -->
+              <div class="row">
+                <p class="margin10">
+                  <b>結論：</b>
+                  <br>實驗或方法中所得到歸納或整理,以簡要的句子來論述(須與研究目的相呼應)。
+                </p>
+
+              </div>
+            </div>
+            <!-- 中間內容編輯區塊 -->
+            <div class="col-7" style="background-color: #EEEBE5;">
+              <div class="content-margin">
+                <center>
+                  <div class="margin-bottom10 form-group row">
+                    <button class="btn btn-sm btn-primary margin-left10">新增討論項目</button>
+                  </div>
+                  <div class="margin-bottom10 form-group row">
+                    <label class="col-sm-2">研究動機：</label>
+                    <textarea rows="5" class="col-sm-10 form-control" style="max-width: 80%;"></textarea>
+                  </div>
+                    
+                </center>
+                
+                <div class="btn-save-box margin-bottom10">
+                  <button class="btn btn-sm btn-save">儲存</button>
+                </div>
+                
+              </div>
+            </div>
+            <!-- 小組想法區塊 -->
+            <div class="col-3" style="background-color: #FFF5E0;">
+              <!-- 右上 -->
+              <div class="row">
+                <div class="col chapter-title-box" style="background-color: #A37F60;">
+                  <h5 class="text-black text-blod chapter-title-text"><b>小組想法</b></h5>
+                </div>
+              </div>
+              <!-- 右下 -->
+              <div class="row">
+                
+              </div>
+            </div>
+          </div>
+          <!-- 結論章節區塊 -->
+        </div>
+      </div>
+      
+    </div>
+
+
+
+		<!-- Scripts -->
+    <!-- <script src="/javascripts/clipboard.min.js"></script>
+
+    <script src="/assets/js/jquery.dropotron.min.js"></script>
+    <script src="/assets/js/jquery.scrolly.min.js"></script>
+    <script src="/assets/js/browser.min.js"></script>
+    <script src="/assets/js/breakpoints.min.js"></script>
+    <script src="/assets/js/util.js"></script>
+    <script src="/assets/js/main.js"></script> -->
+
+  </body>
+</html>

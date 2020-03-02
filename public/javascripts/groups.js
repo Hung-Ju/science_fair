@@ -9,7 +9,7 @@ function addGroupInput(){
     var inputAdd = document.getElementById('groupsRoot');  
     groupsInputData.map(function(data){
         if (data.useFor=="all"){
-            var html = ['<p>'+ data.title +'<input type="'+data.type+'" name="'+data.name+'"id="'+data.name+'" required="required"></p>'];
+            var html = ['<p>'+ data.title + '：' +'<input class="form-control" type="'+data.type+'" name="'+data.name+'"id="'+data.name+'" required="required"></p>'];
             $(inputAdd).append(html);
         }
         else {
@@ -18,6 +18,7 @@ function addGroupInput(){
     })  
 };
 
+//使用者輸入組別密碼後送出，
 function joinGroups(groups_id){
     $.ajax({  
         type: "POST",
@@ -46,6 +47,12 @@ function joinGroups(groups_id){
             alert('失敗');
         }
     });
+};
+
+//點選進入組別按鈕進入該組的專題編輯頁面
+function enterProject(groups_id){
+    //依據 id 值加在網址後面，讓編輯頁面能以 get 方式取得 key
+    window.location.href = "/project/?gid="+groups_id;
 }
 
 

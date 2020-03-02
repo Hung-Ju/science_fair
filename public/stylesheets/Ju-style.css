@@ -1,24 +1,5 @@
 body,button, input,select, textarea,h1 ,h2, h3, h4, h5, h6 { font-family:微軟正黑體,MicrosoftYaHei,Tahoma,Helvetica,Arial,"\5b8b\4f53", sans-serif;}
 
-/* banner圖片區 */
-.banner-bg-image {
-    background-image: url(/stylesheets/images/science.jpg);  /*自己的電腦圖片資料夾位置*/
-    position: absolute;  /*絕對位置*/
-    width: 100%;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    background-position: center;
-    background-size: cover;
-    height:300px;
-    z-index: -999; /*設定圖片層級*/
-  }
-
-  /* .bg-parallax {
-    background-attachment: fixed;
-  } */
-
 #main-banner {
   height: 30vh;  
   /* vh是view height，指螢幕可視範圍高度的百分比 */
@@ -32,6 +13,7 @@ body,button, input,select, textarea,h1 ,h2, h3, h4, h5, h6 { font-family:微軟�
   padding-top: 20px;
 }
 
+/* 組別管理頁面groups.ejs的banner區塊文字 */
 .banner-text-content {
   position: absolute;
   top: 30%;
@@ -40,3 +22,98 @@ body,button, input,select, textarea,h1 ,h2, h3, h4, h5, h6 { font-family:微軟�
   left: 15%;
   text-align: center;
 }
+
+#cneter-content {
+  /* padding-top: 50px; */
+  margin-left: 40px;
+  margin-right: 40px;
+  margin-top: 96px;
+  margin-bottom: 10px;
+}
+
+.nav-pills2{
+
+  text-align:center;
+  /* border-color: #31625C; */
+}
+
+.choose-stage {
+  padding-top: 50px;
+}
+
+.chapter-title-box {
+  height: 35px;
+}
+
+.chapter-title-text {
+  text-align: center;
+  margin-top: 0.3rem;
+}
+
+.stage-switch-btn {
+  margin-bottom: 10px;
+}
+
+.stage-btn {
+  margin-top: 10px;
+  border-color: #31625C;
+  border-width: 2px;
+}
+
+.content-margin {
+  margin: 15px;
+}
+
+.label-title{
+  float: left;
+}
+
+.margin-bottom10 {
+  margin-bottom: 10px;
+}
+
+.btn-save{
+  background-color: #31623C;
+  color: #FFFFFF;
+  /* float: right; */
+}
+
+.btn-save-box{
+  float: right;
+}
+
+.margin10 {
+  margin-top: 10px;
+  margin-left: 15px;
+}
+
+.margin-right10 {
+  margin-right: 10px;
+}
+
+.position-fixed{
+  position: fixed;
+  z-index: 1030;
+}
+
+.margin-left10{
+  margin-left: 10px;
+}
+
+.height30{
+  height: 30px;
+}
+
+/* td.des { */
+	/* text-overflow: ellipsis; */
+  /* overflow: hidden;   */
+	/* white-space: nowrap; */
+	/* cursor: pointer;   */
+	/* } */
+/* td.des:hover{ */
+	/* text-align: top; */
+	/* text-overflow: inherit; */
+	/* overflow: visible;   */
+	/* white-space: pre-wrap; */
+	/* cursor: pointer;   */
+	/* } */

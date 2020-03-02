@@ -75,7 +75,7 @@ router.post('/joinGroups',function(req, res, next) {
         else{
             res.send({message:"false"});
         }
-    })
-})
+    });
+});
 
 module.exports = router;
