@@ -27,11 +27,11 @@ body,button, input,select, textarea,h1 ,h2, h3, h4, h5, h6 { font-family:微軟�
   /* padding-top: 50px; */
   margin-left: 40px;
   margin-right: 40px;
-  margin-top: 96px;
+  margin-top: 86px;
   margin-bottom: 10px;
 }
 
-.nav-pills2{
+.text-center{
 
   text-align:center;
   /* border-color: #31625C; */
@@ -51,7 +51,8 @@ body,button, input,select, textarea,h1 ,h2, h3, h4, h5, h6 { font-family:微軟�
 }
 
 .stage-switch-btn {
-  margin-bottom: 10px;
+  margin-bottom: 5px;
+  margin-top: 5px;
 }
 
 .stage-btn {
@@ -104,6 +105,12 @@ body,button, input,select, textarea,h1 ,h2, h3, h4, h5, h6 { font-family:微軟�
   height: 30px;
 }
 
+.stage-switch-box {
+  height: 50px;
+  width: 90%;
+  background-color: rgb(255, 255, 255);
+  text-align:center;
+}
 /* td.des { */
 	/* text-overflow: ellipsis; */
   /* overflow: hidden;   */
