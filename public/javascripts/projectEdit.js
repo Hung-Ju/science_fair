@@ -1,7 +1,20 @@
-//summernote 網頁文字編輯器套件
-function summernote(){
+//增加研究目的
+function addPurposes(){
+    var purposes = ['<div class="purposes-item margin-bottom10 form-group row">' +
+                        '<label class="col-sm-2 text-center">研究目的：</label>' +
+                        '<input class="col-sm-8 form-control maring-right10" type="text">&nbsp;' +
+                        '<button class="delete-purposes-btn col-auto btn btn-sm btn-danger my-1 height30">刪除</button>' +
+                   '</div>']
+    $('#research_purposes_content').append(purposes);
+    deletePurposesItem();
+}
 
-};
+function deletePurposesItem(){
+    $('.delete-purposes-btn').click(function(){
+    $(this).parents('.purposes-item').remove();
+});
+}
+
 
 //使用者輸入組別密碼後送出，
 function joinGroups(groups_id){
@@ -44,7 +57,6 @@ function enterProject(groups_id){
 
 // var member_id_student_member = <%=session("Username")%>;
 $(function(){
-
     //研究動機的Editor
     $('#research-motivation').summernote({
         placeholder: '是因為什麼原因或興趣讓你想研究這個題目？',

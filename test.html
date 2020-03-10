@@ -1,16 +1,87 @@
-<div class="radio-optios">
-    <button class="radio-add" onclick="addRadioOption(this)">增加選項</button>
-    <div class="item">
-        <input type="radio" class="mdl-radio__button" name="question1">
-        <input type="text" style="display: inline;" class="form-control" name="question_option[]" placeholder="請輸入選項內容">
-    </div>
-    <div class="item">
-        <input type="radio" class="mdl-radio__button" name="question1">
-        <input type="text" style="display: inline;" class="form-control" name="question_option[]" placeholder="請輸入選項內容">
-    </div>
-    <div class="item item-add">
-        <input type="radio" class="mdl-radio__button" name="question1">
-        <input type="text" style="display: inline;" class="form-control" name="question_option[]" placeholder="請輸入選項內容" value=""
-        ><button class="radio-del que-del" style="display: none;">X</button>
+
+<div class="que">
+    <p>題型選擇：
+        <select class="select_question_type" id="select_question_type1">
+            <option value="text">簡答題</option>
+            <option value="radio">單選題</option>
+            <option value="checkbox">多選題</option>
+            <option value="linear">多點量表題</option>
+        </select>
+        <button class="que-del">刪除問題</button>
+    </p>
+    
+    <div class="question" id="question1" name="que_option[]">
+        <div class="add-item radio active" id="radio">
+            <div class="radio-content" id="question_type">
+                <input type="hidden" value="radio" name="que_type[]">
+                <p>單選題問題標題：<input type="text" style="display: inline;" class="form-control" placeholder="問題標題" id="radio-title" name="questionTitle[]"></p>
+                <p class="add-option"><label><input type="checkbox" class="radio-other" id="radio-switch"> 其他（是否增加其他選項）</label></p>
+                <div class="radio-optios"><button class="radio-add" onclick="addRadioOption(this)">增加選項</button>
+                    <div class="item">
+                        <input type="radio" class="mdl-radio__button" name="question1">
+                        <input type="text" style="display: inline;" class="form-control" name="question_option[]" placeholder="請輸入選項內容">
+                    </div>
+                    <div class="item">
+                        <input type="radio" class="mdl-radio__button" name="question1">
+                        <input type="text" style="display: inline;" class="form-control" name="question_option[]" placeholder="請輸入選項內容">
+                    </div>
+                    <div class="item item-add">
+                        <input type="radio" class="mdl-radio__button" name="question1">
+                        <input type="text" style="display: inline;" class="form-control" name="question_option[]" placeholder="請輸入選項內容" value="">
+                        <button class="radio-del que-del" style="display: none;">X</button>
+                    </div>
+                    <div class="item item-add">
+                        <input type="radio" class="mdl-radio__button" name="question1">
+                        <input type="text" style="display: inline;" class="form-control" name="question_option[]" placeholder="請輸入選項內容" value="">
+                        <button class="radio-del que-del" style="display: none;">X</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
+<script>
+    function addRadioOption(elem){
+    var a = $(elem).parents('.question').attr("id");
+    var html = ['<div class="item item-add">'+
+                    '<input type="radio" class="mdl-radio__button" name="'+a+'"><input type="text" style="display: inline;" class="form-control" name = "question_option[]" placeholder="請輸入選項內容" value=""><button class="radio-del que-del">X</button>'+
+                '</div>'];
+    $(elem).parents('.radio-optios').append( html ); 
+    // var a = $(elem).parents('.question').attr("id");
+    // alert(a);
+    bindDel();
+}
+
+    //給新增的選項增加刪除的功能	
+function bindDel(){
+    $('.item').mouseenter(function(){
+        $(this).find('.radio-del').show();
+    });
+    $('.item').mouseleave(function(){
+        $(this).find('.radio-del').hide();
+    });
+    $('.radio-del').click(function(){
+        $(this).parents('.item').remove();
+    });
+}
+
+var p = 2;
+var pn = 1;
+//增加段落
+function addParagraph(){
+    var para = p;
+    var para_now = pn;
+    var paragraph = ['<div class="paragraph" id="paragraph'+para+'" name="paraID[]" onclick="chooseParagraph(this)">'+
+                        '<button class="para-del">刪除段落</button>'+
+                        '<p>段落標題：<input type="text" style="display: inline;" placeholder="段落標題" id="para-title" name="paraTitle[]"></p>'+
+                        '<p>段落說明：<input type="text" style="display: inline;" placeholder="段落說明" id="para-content" name="paraContent[]"></p>'+
+                    '</div>'];
+    $('#content').append(paragraph);
+    para++;
+    para_now++;
+    p = para;
+    pn = para_now;
+    paraDel();
+}
+</script>
