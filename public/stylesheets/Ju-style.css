@@ -32,7 +32,6 @@ body,button, input,select, textarea,h1 ,h2, h3, h4, h5, h6 { font-family:微軟�
 }
 
 .text-center{
-
   text-align:center;
   /* border-color: #31625C; */
 }
@@ -97,6 +96,12 @@ body,button, input,select, textarea,h1 ,h2, h3, h4, h5, h6 { font-family:微軟�
   z-index: 1030;
 }
 
+.position-fixed2{
+  position: fixed;
+  z-index: 1040;
+}
+
+
 .margin-left10{
   margin-left: 10px;
 }
@@ -111,16 +116,3 @@ body,button, input,select, textarea,h1 ,h2, h3, h4, h5, h6 { font-family:微軟�
   background-color: rgb(255, 255, 255);
   text-align:center;
 }
-/* td.des { */
-	/* text-overflow: ellipsis; */
-  /* overflow: hidden;   */
-	/* white-space: nowrap; */
-	/* cursor: pointer;   */
-	/* } */
-/* td.des:hover{ */
-	/* text-align: top; */
-	/* text-overflow: inherit; */
-	/* overflow: visible;   */
-	/* white-space: pre-wrap; */
-	/* cursor: pointer;   */
-	/* } */

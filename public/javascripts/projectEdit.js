@@ -53,21 +53,55 @@ function enterProject(groups_id){
     window.location.href = "/project/?gid="+groups_id;
 }
 
-//
-// $(function() {
-//     $('.changet').click(function() {
-//         var target = $(this.hash);
-//         event.preventDefault(); //防止連結打開URL
-//         $('html, body').animate({
-//                 scrollTop: target.offset().top + -160
-//             }, 500);
-//     });
-// });
+//新增summernote編輯器
+function summernoteCreate(){
+    $('.create-summernote').summernote({
+        height: 120,
+        width: 600,
+        toolbar: [
+            ['style', ['style']],
+            ['font', ['bold', 'underline', 'clear']],
+            ['color', ['color']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['table', ['table']],
+            ['insert', ['link', 'picture', 'video']]
+        ]
+    });
+}
 
 
-// var member_id_student_member = <%=session("Username")%>;
+//階段切換彈出modal欄位內容
+// function changeStageInput(){
+//     var inputAdd = document.getElementById('groupsRoot');  
+//     var html = ['<p>'];
+//     groupsInputData.map(function(data){
+//         if (data.useFor=="all"){
+//             var html = ['<p>'+ data.title + '：' +'<input class="form-control" type="'+data.type+'" name="'+data.name+'"id="'+data.name+'" required="required"></p>'];
+//             $(inputAdd).append(html);
+//         }
+//         else {
+//         }
+//     })  
+// };
+
+
 $(function(){
-    //利用錨點滑動葉面
+
+    $('#selectStage').change(function () {
+        if ($("#selectStage").val() == "形成問題"){
+            $('#researchMotivation *').removeAttr('disabled');
+            summernoteCreate();
+            $("#research-motivation-summernote").summernote("enable");
+
+        } else if ($("#selectStage").val() == "研究規劃"){
+            $('#researchMotivation *').attr('disabled', true);
+            $("#research-motivation-summernote").summernote("disable");
+
+        } 
+        
+    }).change();
+
+    //利用錨點滑動頁面
     $('.changet').click(function() {
         var target = $(this.hash);
         event.preventDefault(); //防止連結打開URL
@@ -77,33 +111,33 @@ $(function(){
     });
 
     //研究動機的Editor
-    $('#research-motivation').summernote({
-        placeholder: '是因為什麼原因或興趣讓你想研究這個題目？',
-        height: 120,
-        width: 600,
-        toolbar: [
-            ['style', ['style']],
-            ['font', ['bold', 'underline', 'clear']],
-            ['color', ['color']],
-            ['para', ['ul', 'ol', 'paragraph']],
-            ['table', ['table']],
-            ['insert', ['link', 'picture', 'video']]
-        ]
-      });
+    // $('#research-motivation').summernote({
+    //     placeholder: '是因為什麼原因或興趣讓你想研究這個題目？',
+    //     height: 120,
+    //     width: 600,
+    //     toolbar: [
+    //         ['style', ['style']],
+    //         ['font', ['bold', 'underline', 'clear']],
+    //         ['color', ['color']],
+    //         ['para', ['ul', 'ol', 'paragraph']],
+    //         ['table', ['table']],
+    //         ['insert', ['link', 'picture', 'video']]
+    //     ]
+    //   });
 
     //研究結論的Editor
-    $('#conclusion').summernote({
-        placeholder: '實驗或方法中所得到歸納或整理,以簡要的句子來論述(須與研究目的相呼應)。',
-        height: 120,
-        width: 600,
-        toolbar: [
-            ['style', ['style']],
-            ['font', ['bold', 'underline', 'clear']],
-            ['color', ['color']],
-            ['para', ['ul', 'ol', 'paragraph']],
-            ['table', ['table']],
-            ['insert', ['link', 'picture', 'video']]
-        ]
-    })
+    // $('#conclusion-summernote').summernote({
+    //     placeholder: '實驗或方法中所得到歸納或整理,以簡要的句子來論述(須與研究目的相呼應)。',
+    //     height: 120,
+    //     width: 600,
+    //     toolbar: [
+    //         ['style', ['style']],
+    //         ['font', ['bold', 'underline', 'clear']],
+    //         ['color', ['color']],
+    //         ['para', ['ul', 'ol', 'paragraph']],
+    //         ['table', ['table']],
+    //         ['insert', ['link', 'picture', 'video']]
+    //     ]
+    // })
 });
 

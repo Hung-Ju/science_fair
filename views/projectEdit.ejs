@@ -87,15 +87,48 @@
       <div class="row">
         <div class="col-1 choose-stage">
           <div class="row justify-content-center">
-            <nav id="left_nav" class="nav flex-column nav-pills text-center position-fixed ">
+            <!-- 左邊的階段切換選單 -->
+            <nav id="left_nav" class="nav flex-column nav-pills text-center position-fixed2">
               <a class="changet nav-link active" href="#research_motivation_box" data-toggle="pill">形成問題</a>
               <a class="changet nav-link" href="#research_steps_box" data-toggle="pill">研究規劃</a>
               <a class="changet nav-link" href="#research_record_box" data-toggle="pill">執行</a>
               <a class="changet nav-link" href="#research_analysis_box" data-toggle="pill">分析與詮釋</a>
               <a class="changet nav-link" href="#research_motivation_box" data-toggle="pill">統整報告</a>
-              <button class="stage-btn btn btn-sm">切換階段</button>
+              <button class="stage-btn btn btn-sm" type='submit' data-toggle="modal" data-target="#changeStage">切換階段</button>
               <button class="stage-btn btn btn-sm">參考資料</button>
+
+              <!-- 測試 -->
+              <select name="sampleSelect" id="selectStage">
+                <option value="形成問題">形成問題</option>
+                <option value="研究規劃">研究規劃</option>
+                <option value="執行">執行</option>
+              </select>
+              <!-- 測試 -->
+
             </nav>
+
+            <!-- 階段切換的彈出視窗 -->
+            <div class="modal fade" id="changeStage" tabindex="-1" role="dialog" aria-labelledby="changeStageCenterTitle" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="changeStageLongTitle">切換編輯階段</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <div id="changeStageRoot"></div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="addGroups">切換</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- 階段切換的彈出視窗 -->
+
           </div>
           
         </div>
@@ -144,7 +177,7 @@
               </div>
             </div>
             <!-- 中間內容編輯區塊 -->
-            <div class="col-7" style="background-color: #EEEBE5;">
+            <div class="col-7" style="background-color: #EEEBE5;" id="researchMotivation">
               <div class="content-margin">
 
                   <div class="margin-bottom10 form-group row">
@@ -153,7 +186,7 @@
                   </div>
                   <div class="margin-bottom10 form-group row">
                     <label class="col-sm-2 text-center">研究動機：</label>
-                    <textarea id="research-motivation" rows="5" class="col-sm-10 form-control" style="max-width: 80%;"></textarea>
+                    <textarea id="research-motivation-summernote" rows="5" class="col-sm-10 form-control create-summernote" style="max-width: 80%;"></textarea>
                   </div>
                 
                 <div class="btn-save-box margin-bottom10">
@@ -598,7 +631,7 @@
 
                   <div class="margin-bottom10 form-group row">
                     <label class="col-sm-2 text-center">結論：</label>
-                    <textarea id="conclusion" rows="5" class="col-sm-10 form-control" style="max-width: 80%;"></textarea>
+                    <textarea id="conclusion-summernote" rows="5" class="col-sm-10 form-control create-summernote" style="max-width: 80%;"></textarea>
                   </div>
 
                 
