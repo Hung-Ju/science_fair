@@ -87,12 +87,12 @@
       <div class="row">
         <div class="col-1 choose-stage">
           <div class="row justify-content-center">
-            <nav class="nav flex-column nav-pills text-center position-fixed" role="tablist">
-              <a class="nav-link active" href="#" data-toggle="pill">形成問題</a>
-              <a class="nav-link" href="#" data-toggle="pill">研究規劃</a>
-              <a class="nav-link" href="#" data-toggle="pill">執行</a>
-              <a class="nav-link" href="#" data-toggle="pill">分析與詮釋</a>
-              <a class="nav-link" href="#" data-toggle="pill">統整報告</a>
+            <nav id="left_nav" class="nav flex-column nav-pills text-center position-fixed ">
+              <a class="changet nav-link active" href="#research_motivation_box" data-toggle="pill">形成問題</a>
+              <a class="changet nav-link" href="#research_steps_box" data-toggle="pill">研究規劃</a>
+              <a class="changet nav-link" href="#research_record_box" data-toggle="pill">執行</a>
+              <a class="changet nav-link" href="#research_analysis_box" data-toggle="pill">分析與詮釋</a>
+              <a class="changet nav-link" href="#research_motivation_box" data-toggle="pill">統整報告</a>
               <button class="stage-btn btn btn-sm">切換階段</button>
               <button class="stage-btn btn btn-sm">參考資料</button>
             </nav>
@@ -104,7 +104,7 @@
   
         <div class="col-11">
           <!-- 內容撰寫和想法討論的切換按鈕 -->
-          <div class="row">
+          <div class="row" >
             <div class="stage-switch-box position-fixed">
                 <div class=" btn-group btn-group-toggle stage-switch-btn" data-toggle="buttons">
                   <label class="btn btn-success active">
@@ -118,7 +118,7 @@
           </div>
           
           <!-- 研究動機章節區塊  -->
-          <div class="row" style="margin-top: 53px;">
+          <div class="row" id="research_motivation_box" style="margin-top: 53px;">
             <div class="col chapter-title-box" style="background-color: #31625C;">
               <h5 class="text-white chapter-title-text"><b>研究動機</b></h5>
             </div>
@@ -243,7 +243,7 @@
 
 
           <!-- 實驗步驟章節區塊 -->
-          <div class="row">
+          <div class="row" id="research_steps_box">
             <div class="col chapter-title-box" style="background-color: #31625C;">
               <h5 class="text-white chapter-title-text"><b>實驗步驟</b></h5>
             </div>
@@ -379,7 +379,7 @@
 
 
           <!-- 實驗記錄章節區塊 -->
-          <div class="row">
+          <div class="row" id="research_record_box">
             <div class="col chapter-title-box" style="background-color: #31625C;">
               <h5 class="text-white chapter-title-text"><b>實驗記錄</b></h5>
             </div>
@@ -442,7 +442,7 @@
 
 
           <!-- 研究結果(分析及圖表)章節區塊 -->
-          <div class="row">
+          <div class="row" id="research_analysis_box">
             <div class="col chapter-title-box" style="background-color: #31625C;">
               <h5 class="text-white chapter-title-text"><b>研究結果(分析及圖表)</b></h5>
             </div>

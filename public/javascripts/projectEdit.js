@@ -53,10 +53,29 @@ function enterProject(groups_id){
     window.location.href = "/project/?gid="+groups_id;
 }
 
+//
+// $(function() {
+//     $('.changet').click(function() {
+//         var target = $(this.hash);
+//         event.preventDefault(); //防止連結打開URL
+//         $('html, body').animate({
+//                 scrollTop: target.offset().top + -160
+//             }, 500);
+//     });
+// });
 
 
 // var member_id_student_member = <%=session("Username")%>;
 $(function(){
+    //利用錨點滑動葉面
+    $('.changet').click(function() {
+        var target = $(this.hash);
+        event.preventDefault(); //防止連結打開URL
+        $('html, body').animate({
+                scrollTop: target.offset().top + -140
+            }, 500);
+    });
+
     //研究動機的Editor
     $('#research-motivation').summernote({
         placeholder: '是因為什麼原因或興趣讓你想研究這個題目？',
@@ -86,6 +105,5 @@ $(function(){
             ['insert', ['link', 'picture', 'video']]
         ]
     })
-
-
 });
+
