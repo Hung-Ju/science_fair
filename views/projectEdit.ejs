@@ -102,6 +102,8 @@
                 <option value="形成問題">形成問題</option>
                 <option value="研究規劃">研究規劃</option>
                 <option value="執行">執行</option>
+                <option value="分析與詮釋">分析與詮釋</option>
+                <option value="統整報告">統整報告</option>
               </select>
               <!-- 測試 -->
 
@@ -135,7 +137,7 @@
 
         
   
-        <div class="col-11">
+        <div class="col-11" id="writing_content">
           <!-- 內容撰寫和想法討論的切換按鈕 -->
           <div class="row" >
             <div class="stage-switch-box position-fixed">
@@ -177,16 +179,19 @@
               </div>
             </div>
             <!-- 中間內容編輯區塊 -->
-            <div class="col-7" style="background-color: #EEEBE5;" id="researchMotivation">
+            <div class="col-7" style="background-color: #EEEBE5;" id="research_motivation">
               <div class="content-margin">
 
                   <div class="margin-bottom10 form-group row">
                     <label class="col-sm-2 text-center">研究題目：</label>
-                    <input class="col-sm-10 form-control" style="max-width: 70%;" type="text" name="research_title" id="research_title">
+                    <input class="col-sm-10 form-control" style="max-width: 75%;" type="text" name="research_title" id="research_title">
                   </div>
                   <div class="margin-bottom10 form-group row">
                     <label class="col-sm-2 text-center">研究動機：</label>
-                    <textarea id="research-motivation-summernote" rows="5" class="col-sm-10 form-control create-summernote" style="max-width: 80%;"></textarea>
+                    <div style="width:75%">
+                      <textarea id="research-motivation-summernote" rows="5" class="col-sm-10 form-control create-motivation-summernote" style="max-width: 75%;"></textarea>
+                    </div>
+                    
                   </div>
                 
                 <div class="btn-save-box margin-bottom10">
@@ -240,7 +245,7 @@
               </div>
             </div>
             <!-- 中間內容編輯區塊 -->
-            <div class="col-7" style="background-color: #EEEBE5;">
+            <div class="col-7" style="background-color: #EEEBE5;" id="research_purposes">
               <div id="research_purposes_content" class="content-margin">
                 <div class="margin-bottom10 form-group row">
                   <button id="add_purposes_btn" onclick="addPurposes()" class="btn btn-sm btn-primary margin-left10 height30">新增研究目的</button>
@@ -248,7 +253,7 @@
 
                 <div class="purposes-item margin-bottom10 form-group row">
                   <label class="col-sm-2 text-center">研究目的：</label>
-                  <input class="col-sm-8 form-control maring-right10" type="text">&nbsp;
+                  <input class="col-sm-10 form-control margin-right10" style="max-width: 75%;" type="text">&nbsp;
                   
                 </div>
                 
@@ -306,7 +311,7 @@
               </div>
             </div>
             <!-- 中間內容編輯區塊 -->
-            <div class="col-7" style="background-color: #EEEBE5;">
+            <div class="col-7" style="background-color: #EEEBE5;" id="experimental_project">
               <div class="content-margin">
 
                   <div class="margin-bottom10 form-group row">
@@ -315,15 +320,14 @@
                   </div>
                   <div class="margin-bottom10 form-group row">
                     <label class="col-sm-2 text-center">實驗項目1：</label>
-                    <textarea rows="3" class="col-sm-8 form-control maring-right10"></textarea>&nbsp;
-                    <!-- <button class="col-auto btn btn-sm btn-save my-1 height30">儲存</button>&nbsp; -->
+                    <div style="width:75%">
+                      <textarea rows="3" class="col-sm-8 form-control  create-experiment-summernote"></textarea>
+                    </div>&nbsp;
                     <button class="col-auto btn btn-sm btn-danger my-1 height30">刪除</button>
                   </div>
-
-                  
-                
+ 
               </div>
-              <div class="btn-save-box margin-bottom10">
+              <div class="btn-save-box margin-bottom10 content-margin">
                     <button class="btn btn-sm btn-save">儲存</button>
               </div>
             </div>
@@ -370,7 +374,7 @@
               </div>
             </div>
             <!-- 中間內容編輯區塊 -->
-            <div class="col-7" style="background-color: #EEEBE5;">
+            <div class="col-7" style="background-color: #EEEBE5;" id="research_material">
               <div class="content-margin">
                 <center>
                   <div class="margin-bottom10 form-group row">
@@ -437,7 +441,7 @@
               </div>
             </div>
             <!-- 中間內容編輯區塊 -->
-            <div class="col-7" style="background-color: #EEEBE5;">
+            <div class="col-7" style="background-color: #EEEBE5;" id="research_record">
               <div class="content-margin">
 
                   <div class="margin-bottom10 form-group row">
@@ -445,7 +449,10 @@
                   </div>
                   <div class="margin-bottom10 form-group row">
                     <label class="col-sm-2 text-center">實驗紀錄1：</label>
-                    <textarea rows="4" class="col-sm-8 form-control maring-right10"></textarea>&nbsp;
+                    <div style="width:75%">
+                      <textarea rows="4" class="col-sm-8 form-control create-record-summernote"></textarea>
+                    </div>
+                    &nbsp;
                     <!-- <button class="col-auto btn btn-sm btn-save my-1 height30">儲存</button>&nbsp; -->
                     <button class="col-auto btn btn-sm btn-danger my-1 height30">刪除</button>
                   </div>
@@ -500,7 +507,7 @@
               </div>
             </div>
             <!-- 中間內容編輯區塊 -->
-            <div class="col-7" style="background-color: #EEEBE5;">
+            <div class="col-7" style="background-color: #EEEBE5;" id="research_analysis">
               <div class="content-margin">
 
                   <div class="margin-bottom10 form-group row">
@@ -508,7 +515,10 @@
                   </div>
                   <div class="margin-bottom10 form-group row">
                     <label class="col-sm-2 text-center">分析項目1：</label>
-                    <textarea rows="4" class="col-sm-8 form-control maring-right10"></textarea>&nbsp;
+                    <div style="width:75%">
+                      <textarea rows="4" class="col-sm-8 form-control create-analysis-summernote"></textarea>
+                    </div>
+                    &nbsp;
                     <!-- <button class="col-auto btn btn-sm btn-save my-1 height30">儲存</button>&nbsp; -->
                     <button class="col-auto btn btn-sm btn-danger my-1 height30">刪除</button>
                   </div>
@@ -563,7 +573,7 @@
               </div>
             </div>
             <!-- 中間內容編輯區塊 -->
-            <div class="col-7" style="background-color: #EEEBE5;">
+            <div class="col-7" style="background-color: #EEEBE5;" id="research_discussion">
               <div class="content-margin">
 
                   <div class="margin-bottom10 form-group row">
@@ -571,7 +581,10 @@
                   </div>
                   <div class="margin-bottom10 form-group row">
                     <label class="col-sm-2 text-center">討論項目1：</label>
-                    <textarea rows="4" class="col-sm-8 form-control maring-right10"></textarea>&nbsp;
+                    <div style="width:75%">
+                      <textarea rows="4" class="col-sm-8 form-control create-discussion-summernote"></textarea>
+                    </div>
+                    &nbsp;
                     <!-- <button class="col-auto btn btn-sm btn-save my-1 height30">儲存</button>&nbsp; -->
                     <button class="col-auto btn btn-sm btn-danger my-1 height30">刪除</button>
                   </div>
@@ -626,12 +639,15 @@
               </div>
             </div>
             <!-- 中間內容編輯區塊 -->
-            <div class="col-7" style="background-color: #EEEBE5;">
+            <div class="col-7" style="background-color: #EEEBE5;" id="research_conclusion">
               <div class="content-margin">
 
                   <div class="margin-bottom10 form-group row">
                     <label class="col-sm-2 text-center">結論：</label>
-                    <textarea id="conclusion-summernote" rows="5" class="col-sm-10 form-control create-summernote" style="max-width: 80%;"></textarea>
+                    <div style="width:75%">
+                      <textarea id="conclusion-summernote" rows="5" class="col-sm-10 form-control create-conclusion-summernote" style="max-width: 80%;"></textarea>
+                    </div>
+                    
                   </div>
 
                 
