@@ -1,5 +1,7 @@
 body,button, input,select, textarea,h1 ,h2, h3, h4, h5, h6 { font-family:微軟正黑體,MicrosoftYaHei,Tahoma,Helvetica,Arial,"\5b8b\4f53", sans-serif;}
 
+body { position: relative; }
+
 #main-banner {
   height: 30vh;  
   /* vh是view height，指螢幕可視範圍高度的百分比 */
@@ -115,4 +117,21 @@ body,button, input,select, textarea,h1 ,h2, h3, h4, h5, h6 { font-family:微軟�
   width: 90%;
   background-color: rgb(255, 255, 255);
   text-align:center;
+}
+
+#writing_content {
+  position: relative;
+}
+
+.purpose-content{
+  width: 100%;
+  min-height: 150px;
+  border: none;
+  resize: none;
+  /* background-color: #EEEBE5; */
+}
+
+.purpose-content:disabled {
+  color: -internal-light-dark-color(rgb(255, 255, 255), rgb(255, 255, 255));
+  background-color: white;
 }

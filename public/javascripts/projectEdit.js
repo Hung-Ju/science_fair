@@ -11,8 +11,48 @@ function addPurposes(){
 //刪除新增的研究目的
 function deletePurposesItem(){
     $('.delete-purposes-btn').click(function(){
-    $(this).parents('.purposes-item').remove();
-});
+        $(this).parents('.purposes-item').remove();
+    });
+}
+
+//增加實驗步驟(實驗項目)
+function addExperiment(){
+    var experiment = ['<div class="experiment-item margin-bottom10 form-group row">' +
+                            '<label class="col-sm-2 text-center">實驗項目：</label>' +
+                            '<div style="width:75%">' +
+                                '<textarea rows="3" class="col-sm-8 form-control  create-experiment-summernote"></textarea>' +
+                            '</div>&nbsp;' +
+                            '<button class="delete-experiment-btn col-auto btn btn-sm btn-danger my-1 height30">刪除</button>' +
+                        '</div>']
+    $('#research_experiment_content').append(experiment);
+    newSummer();
+    deleteExperimentItem();
+}
+//刪除新增的實驗步驟(實驗項目)
+function deleteExperimentItem(){
+    $('.delete-experiment-btn').click(function(){
+        $(this).parents('.experiment-item').remove();
+    });
+}
+
+//增加討論項目
+function addDiscussion(){
+    var discussion = ['<div class="discussion-item margin-bottom10 form-group row">' +
+                            '<label class="col-sm-2 text-center">討論項目：</label>' +
+                            '<div style="width:75%">' +
+                                '<textarea rows="4" class="col-sm-8 form-control  create-experiment-summernote"></textarea>' +
+                            '</div>&nbsp;' +
+                            '<button class="delete-discussion-btn col-auto btn btn-sm btn-danger my-1 height30">刪除</button>' +
+                        '</div>']
+    $('#research_discussion_content').append(discussion);
+    newSummer();
+    deleteDiscussionItem();
+}
+//刪除新增的討論項目
+function deleteDiscussionItem(){
+    $('.delete-discussion-btn').click(function(){
+        $(this).parents('.discussion-item').remove();
+    });
 }
 
 
@@ -53,6 +93,21 @@ function enterProject(groups_id){
     window.location.href = "/project/?gid="+groups_id;
 }
 
+function newSummer(){
+    $('.create-experiment-summernote, .create-record-summernote, .create-analysis-summernote, .create-discussion-summernote').summernote({
+    disable:true,
+    height: 120,
+    // width: 570,
+    toolbar: [
+        ['style', ['style']],
+        ['font', ['bold', 'underline', 'clear']],
+        ['color', ['color']],
+        ['para', ['ul', 'ol', 'paragraph']],
+        ['table', ['table']],
+        ['insert', ['link', 'picture', 'video']]
+    ]
+})};
+
 //新增summernote編輯器
 function summernoteCreate(){
     $('.create-motivation-summernote, .create-conclusion-summernote').summernote({
@@ -68,25 +123,20 @@ function summernoteCreate(){
         ]
     });
 
-    $('.create-experiment-summernote, .create-record-summernote, .create-analysis-summernote, .create-discussion-summernote').summernote({
-        disable:true,
-        height: 120,
-        // width: 570,
-        toolbar: [
-            ['style', ['style']],
-            ['font', ['bold', 'underline', 'clear']],
-            ['color', ['color']],
-            ['para', ['ul', 'ol', 'paragraph']],
-            ['table', ['table']],
-            ['insert', ['link', 'picture', 'video']]
-        ]
-    });
-
+    newSummer();
     $('.create-motivation-summernote').summernote('disable');
-    $('.create-experiment-summernote').summernote('disable');
-    $('.create-record-summernote').summernote('disable');
-    $('.create-analysis-summernote').summernote('disable');
-    $('.create-discussion-summernote').summernote('disable');
+    $( ".create-experiment-summernote" ).each(function() {
+        $(this).summernote('disable');
+    });
+    $( ".create-record-summernote" ).each(function() {
+        $(this).summernote('disable');
+    });
+    $( ".create-analysis-summernote" ).each(function() {
+        $(this).summernote('disable');
+    });
+    $( ".create-discussion-summernote" ).each(function() {
+        $(this).summernote('disable');
+    });
     $('.create-conclusion-summernote').summernote('disable');
 
 }
@@ -116,43 +166,67 @@ $(function(){
             $('#research_motivation *, #research_purposes *').removeAttr('disabled');
 
             summernoteCreate();
-            $(".create-motivation-summernote").summernote("enable");
-            
+            $(".create-motivation-summernote").summernote("enable"); 
+            $('#L1').addClass("active");
+            $('#L2, #L3, #L4, #L5').removeClass("active") ;
         //只開啟實驗步驟和研究設備及器材的編輯區塊
         } else if ($("#selectStage").val() == "研究規劃"){
             $('#writing_content *').attr('disabled', true);
             $('#experimental_project *, #research_material *').removeAttr('disabled');
 
             summernoteCreate();
-            $(".create-experiment-summernote").summernote("enable");
-
+            $( ".create-experiment-summernote" ).each(function() {
+                $(this).summernote('enable');
+            });
+            $('#L2').addClass("active");
+            $('#L1, #L3, #L4, #L5').removeClass("active") ;
         //只開啟實驗記錄和研究結果(分析及圖表)的編輯區塊
         } else if ($("#selectStage").val() == "執行"){
             $('#writing_content *').attr('disabled', true);
             $('#research_record *, #research_analysis *').removeAttr('disabled');
 
             summernoteCreate();
-            $(".create-record-summernote").summernote("enable");
-            $(".create-analysis-summernote").summernote("enable");
-
+            $( ".create-record-summernote" ).each(function() {
+                $(this).summernote('enable');
+            });
+            $( ".create-analysis-summernote" ).each(function() {
+                $(this).summernote('enable');
+            });
+            $('#L3').addClass("active");
+            $('#L1, #L2, #L4, #L5').removeClass("active") ;
         //只開啟討論和結論的編輯區塊
         } else if ($("#selectStage").val() == "分析與詮釋"){
             $('#writing_content *').attr('disabled', true);
             $('#research_discussion *, #research_conclusion *').removeAttr('disabled');
 
             summernoteCreate();
-            $(".create-discussion-summernote").summernote("enable");
+            $( ".create-discussion-summernote" ).each(function() {
+                $(this).summernote('enable');
+            });
             $(".create-conclusion-summernote").summernote("enable");
+            $('#L4').addClass("active");
+            $('#L1, #L2, #L3, #L5').removeClass("active") ;
         //全部編輯區塊開啟
         }  else if ($("#selectStage").val() == "統整報告"){
             $('#writing_content *').attr('disabled', false);
+
             summernoteCreate();
             $(".create-motivation-summernote").summernote("enable");
-            $(".create-experiment-summernote").summernote("enable");
-            $(".create-record-summernote").summernote("enable");
-            $(".create-analysis-summernote").summernote("enable");
-            $(".create-discussion-summernote").summernote("enable");
+            $( ".create-experiment-summernote" ).each(function() {
+                $(this).summernote('enable');
+            });
+            $( ".create-record-summernote" ).each(function() {
+                $(this).summernote('enable');
+            });
+            $( ".create-analysis-summernote" ).each(function() {
+                $(this).summernote('enable');
+            });
+            $( ".create-discussion-summernote" ).each(function() {
+                $(this).summernote('enable');
+            });
             $(".create-conclusion-summernote").summernote("enable");
+            $('#L5').addClass("active");
+            $('#L1, #L2, #L3, #L4').removeClass("active") ;
         } 
         
         
