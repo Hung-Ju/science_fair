@@ -1,3 +1,18 @@
+//增加新增小組資料填寫欄位
+function addExperimentInput(){
+    var inputAdd = document.getElementById('addExperimentRoot');  
+    var experiment = ['<']
+    groupsInputData.map(function(data){
+        if (data.useFor=="all"){
+            var html = ['<p>'+ data.title + '：' +'<input class="form-control" type="'+data.type+'" name="'+data.name+'"id="'+data.name+'" required="required"></p>'];
+            $(inputAdd).append(html);
+        }
+        else {
+
+        }
+    })  
+};
+
 //增加研究目的
 function addPurposes(){
     var purposes = ['<div class="purposes-item margin-bottom10 form-group row">' +
@@ -15,7 +30,7 @@ function deletePurposesItem(){
     });
 }
 
-//增加實驗步驟(實驗項目)
+//增加實驗項目
 function addExperiment(){
     var experiment = ['<div class="experiment-item margin-bottom10 form-group row">' +
                             '<label class="col-sm-2 text-center">實驗項目：</label>' +
@@ -180,6 +195,15 @@ $(function(){
             });
             $('#L2').addClass("active");
             $('#L1, #L3, #L4, #L5').removeClass("active") ;
+            //table列拖拉和數字排序
+            $( "table tbody" ).sortable( {
+                update: function( event, ui ) {
+                $(this).children().each(function(index) {
+                        $(this).find('td').first().html(index + 1)
+                });
+            }
+            });
+
         //只開啟實驗記錄和研究結果(分析及圖表)的編輯區塊
         } else if ($("#selectStage").val() == "執行"){
             $('#writing_content *').attr('disabled', true);
@@ -231,6 +255,15 @@ $(function(){
         
         
     }).change();
+
+    //table列拖拉和數字排序
+    // $( "table tbody" ).sortable( {
+    //     update: function( event, ui ) {
+    //     $(this).children().each(function(index) {
+    //             $(this).find('td').first().html(index + 1)
+    //     });
+    //   }
+    // });
 
     //利用錨點滑動頁面
     $('.changet').click(function() {

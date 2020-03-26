@@ -3,11 +3,25 @@ var pool = require('./db'),
 
 module.exports = {
 
-	//抓取所有組別資料
-	selectAllGroupsData : function(member_id, cb){
+	//抓取專題中研究題目的資料
+	selectResearchTitleData : function(groups_id_groups, cb){
+		var groups_id_groups = groups_id_groups;
 		pool.getConnection(function(err, connection){
 			if(err) throw err;
-			connection.query('SELECT * FROM `groups`', function(err, result){
+			connection.query('SELECT * FROM `project_data` WHERE `project_data_type`="研究題目" AND `groups_id_groups`=?', groups_id_groups,function(err, result){
+				if(err) throw err;
+				cb(result);
+				connection.release();
+			})
+		});
+	},
+
+	//抓取專題中研究動機的資料
+	selectResearchMotivation : function(groups_id_groups, cb){
+		var groups_id_groups = groups_id_groups;
+		pool.getConnection(function(err, connection){
+			if(err) throw err;
+			connection.query('SELECT * FROM `project_data` WHERE `project_data_type`="研究動機" AND `groups_id_groups`=?', groups_id_groups,function(err, result){
 				if(err) throw err;
 				cb(result);
 				connection.release();

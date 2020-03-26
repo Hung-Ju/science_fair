@@ -2,6 +2,8 @@
 <html>
   <head>
     <title><%= title %></title>
+
+    
     <!-- Bootstrap CSS -->
     <link rel='stylesheet' href='/stylesheets/bootstrap/bootstrap.min.css' />
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -9,6 +11,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script type="text/javascript" src="/javascripts/bootstrap/bootstrap.js"></script>
 
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script> -->
+    <!-- <link href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css" /> -->
     <script type="text/javascript" src="/stylesheets/summernote/summernote-bs4.min.js"></script>
     <link rel='stylesheet' href='/stylesheets/summernote/summernote-bs4.css' />
 
@@ -184,12 +188,12 @@
 
                   <div class="margin-bottom10 form-group row">
                     <label class="col-sm-2 text-center">研究題目：</label>
-                    <input class="col-sm-10 form-control" style="max-width: 75%;" type="text" name="research_title" id="research_title">
+                    <input class="col-sm-10 form-control" style="max-width: 75%;" type="text" name="research_title" id="research_title" value="<%= researchTitle %>">
                   </div>
                   <div class="margin-bottom10 form-group row">
                     <label class="col-sm-2 text-center">研究動機：</label>
                     <div style="width:75%">
-                      <textarea id="research-motivation-summernote" rows="5" class="col-sm-10 form-control create-motivation-summernote" style="max-width: 75%;"></textarea>
+                      <textarea id="research-motivation-summernote" rows="5" class="col-sm-10 form-control create-motivation-summernote" style="max-width: 75%;" value="<%= researchMotivation %>"><%= researchMotivation %></textarea>
                     </div>
                     
                   </div>
@@ -314,8 +318,38 @@
             <div class="col-7" style="background-color: #EEEBE5;" id="experimental_project">
               <div id="research_experiment_content" class="content-margin">
                   <div class="margin-bottom10 form-group row">
-                    <button id="add_experiment_btn" onclick="addExperiment()" class="btn btn-sm btn-primary margin-left10">新增實驗項目</button>
+                    <button id="add_experiment_btn" class="btn btn-sm btn-primary margin-left10" data-toggle="modal" data-target="#add_experiment_model">新增實驗項目</button>
                   </div>
+
+                  <!-- 新增實驗項目的彈出視窗 -->
+                  <div class="modal fade" id="add_experiment_model" tabindex="-1" role="dialog" aria-labelledby="addExperimentCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="addExperimentLongTitle">新增實驗項目</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <div id="addExperimentRoot">
+                            <p>對應的研究目的：
+                              <input class="form-control" type="text" name="purpose_correspond" id="purpose_correspond" required="required">
+                            </p>
+                            <p>實驗項目設計：
+                              <textarea rows="4" class="col-sm-8 form-control create-experiment-summernote"></textarea>
+                            </p>
+                          </div>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                          <button type="button" class="btn btn-primary" id="addGroups">新增</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- 新增實驗項目的彈出視窗 -->
+
                   <div style="background-color:white;">
                     <table class="table">
                       <thead>
@@ -328,8 +362,8 @@
                       </thead>
                       <tbody>
                         <tr>
-                          <th scope="row">1</th>
-                          <td>研究目的1,研究目的2</td>
+                          <td scope="row">1</td>
+                          <td>月球天平動現象的形成原因是什麼呢？、探究月球一日內的天平動現象及規律。</td>
                           <td>
                             <textarea readonly class="purpose-content">1</textarea>
                           </td>
@@ -339,7 +373,7 @@
                           </td>
                         </tr>
                         <tr>
-                          <th scope="row">2</th>
+                          <td scope="row">2</td>
                           <td>研究目的3</td>
                           <td>
                             <textarea readonly class="purpose-content">2</textarea>
@@ -702,16 +736,6 @@
     </div>
 
 
-
-		<!-- Scripts -->
-    <!-- <script src="/javascripts/clipboard.min.js"></script>
-
-    <script src="/assets/js/jquery.dropotron.min.js"></script>
-    <script src="/assets/js/jquery.scrolly.min.js"></script>
-    <script src="/assets/js/browser.min.js"></script>
-    <script src="/assets/js/breakpoints.min.js"></script>
-    <script src="/assets/js/util.js"></script>
-    <script src="/assets/js/main.js"></script> -->
 
   </body>
 </html>
