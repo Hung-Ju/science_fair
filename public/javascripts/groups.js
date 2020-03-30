@@ -55,12 +55,90 @@ function enterProject(groups_id){
     window.location.href = "/project/?gid="+groups_id;
 }
 
+//用bootstrap-table創已加入組別table
+function joinGroupsTable(){
+    var JoinGroups = document.getElementById("memberJoinGroups").value;
+    // console.log(JoinGroups);
+    var memberJoinGroups = JSON.parse(JoinGroups);
+    var $groupsTable = $('#joinGroups');
+    $groupsTable.bootstrapTable({
+        columns: [
+            {title: '已經加入組別名稱', field: 'groups_name'},
+            {title: '創立時間', field: 'groups_createtime', width: 300},
+            {title: '進入組別', field: 'groups_id', formatter: 'enterProjectButton', width: 200}
+            ],
+        theadClasses: 'thead-light table-sm',
+        classes: 'table table-bordered table-light',
+        pagination: true,
+        locale: "zh-TW"
+    });
+    $groupsTable.bootstrapTable('load',memberJoinGroups);
+}
+
+function enterProjectButton(value, row){
+    return ['<button class="btn btn-primary btn-sm" onclick="enterProject('+value+')">進入組別</button>']
+}
+
+//用bootstrap-table創全部組別table
+function allGroupsTable(){
+    var allGroups = document.getElementById("allGroups").value;
+    // console.log(JoinGroups);
+    var memberAllGroups = JSON.parse(allGroups);
+    var $allGroupsTable = $('#allGroupsTable');
+    $allGroupsTable.bootstrapTable({
+        columns: [
+            {title: '未加入組別名稱', field: 'groups_name'},
+            {title: '創立時間', field: 'groups_createtime', width: 300},
+            {title: '申請加入', field: 'groups_id', formatter: 'joinProjectButton', width: 200}
+            ],
+        theadClasses: 'thead-light table-sm',
+        classes: 'table table-bordered table-light',
+        pagination: true,
+        detailView: true,
+        detailViewIcon: false,
+        detailFormatter: 'groupsDetailFormatter'
+    });
+    $allGroupsTable.bootstrapTable('load',memberAllGroups);
+}
+
+function joinProjectButton(index, row){
+    //console.log(index);
+    return ['<button id="expandRowId'+row.groups_id+'" class="btn btn-primary btn-sm" onclick="joinProject('+row.groups_index+','+row.groups_id+')">申請加入</button>']
+}
+
+
+//在這裡加進onclick的jquery去改變function
+function joinProject(index, groups_id){
+     console.log(index);
+    //console.log(groups_id);
+    var $allGroupsTable = $('#allGroupsTable');
+    $allGroupsTable.bootstrapTable('expandRow',index);
+    $('#expandRowId'+groups_id).attr("onclick","collapseJoinProject("+index+","+groups_id+")");
+    // $this.attr("onclick","collapseJoinProject(row.groups_index,row.groups_id)")
+}
+
+function collapseJoinProject(index, groups_id){
+    var $allGroupsTable = $('#allGroupsTable');
+    $allGroupsTable.bootstrapTable('collapseRow',index);
+    $('#expandRowId'+groups_id).attr("onclick","joinProject("+index+","+groups_id+")");
+}
+
+function groupsDetailFormatter(index, row) {
+    return ['請輸入社群密碼：<input type="text" name="groups'+row.groups_id+'" id="groupsKey'+row.groups_id+'" >'+
+            '<button class="btn btn-success btn-sm" onclick="joinGroups('+row.groups_id+');">送出</button>']
+    // var html = []
+    // $.each(row, function (key, value) {
+    //   html.push('<p><b>' + key + ':</b> ' + value + '</p>')
+    // })
+    // return html.join('')
+}
 
 
 // var member_id_student_member = <%=session("Username")%>;
 $(function(){
     addGroupInput();
-
+    joinGroupsTable();
+    allGroupsTable()
     //將註冊資料透過ajax傳送執行
     $("#addGroups").click(function () {
 

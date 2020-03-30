@@ -1,34 +1,37 @@
-//增加新增小組資料填寫欄位
-function addExperimentInput(){
-    var inputAdd = document.getElementById('addExperimentRoot');  
-    var experiment = ['<']
-    groupsInputData.map(function(data){
-        if (data.useFor=="all"){
-            var html = ['<p>'+ data.title + '：' +'<input class="form-control" type="'+data.type+'" name="'+data.name+'"id="'+data.name+'" required="required"></p>'];
-            $(inputAdd).append(html);
-        }
-        else {
-
-        }
-    })  
-};
-
-//增加研究目的
-function addPurposes(){
-    var purposes = ['<div class="purposes-item margin-bottom10 form-group row">' +
-                        '<label class="col-sm-2 text-center">研究目的：</label>' +
-                        '<input class="col-sm-10 form-control maring-right10" type="text" style="max-width: 75%;">&nbsp;' +
-                        '<button class="delete-purposes-btn col-auto btn btn-sm btn-danger my-1 height30">刪除</button>' +
-                   '</div>']
-    $('#research_purposes_content').append(purposes);
-    deletePurposesItem();
-}
-//刪除新增的研究目的
-function deletePurposesItem(){
-    $('.delete-purposes-btn').click(function(){
-        $(this).parents('.purposes-item').remove();
+//研究目的表格的初始化設定
+function researchPurposesTable(){
+    var JoinGroups = document.getElementById("memberJoinGroups").value;
+    // console.log(JoinGroups);
+    var memberJoinGroups = JSON.parse(JoinGroups);
+    var $groupsTable = $('#joinGroups');
+    $groupsTable.bootstrapTable({
+        columns: [
+            {title: '已經加入組別名稱', field: 'groups_name'},
+            {title: '創立時間', field: 'groups_createtime', width: 300},
+            {title: '進入組別', field: 'groups_id', formatter: 'enterProjectButton', width: 200}
+            ],
+        theadClasses: 'thead-light table-sm',
+        classes: 'table table-bordered table-light',
+        pagination: true
     });
+    $groupsTable.bootstrapTable('load',memberJoinGroups);
 }
+//增加研究目的
+// function addPurposes(){
+//     var purposes = ['<div class="purposes-item margin-bottom10 form-group row">' +
+//                         '<label class="col-sm-2 text-center">研究目的：</label>' +
+//                         '<input class="col-sm-10 form-control maring-right10" type="text" style="max-width: 75%;">&nbsp;' +
+//                         '<button class="delete-purposes-btn col-auto btn btn-sm btn-danger my-1 height30">刪除</button>' +
+//                    '</div>']
+//     $('#research_purposes_content').append(purposes);
+//     deletePurposesItem();
+// }
+//刪除新增的研究目的
+// function deletePurposesItem(){
+//     $('.delete-purposes-btn').click(function(){
+//         $(this).parents('.purposes-item').remove();
+//     });
+// }
 
 //增加實驗項目
 function addExperiment(){
@@ -63,13 +66,13 @@ function addDiscussion(){
     newSummer();
     deleteDiscussionItem();
 }
+
 //刪除新增的討論項目
 function deleteDiscussionItem(){
     $('.delete-discussion-btn').click(function(){
         $(this).parents('.discussion-item').remove();
     });
 }
-
 
 //使用者輸入組別密碼後送出，POST回傳true為加入成功，回傳already為重複加入
 function joinGroups(groups_id){
@@ -108,6 +111,7 @@ function enterProject(groups_id){
     window.location.href = "/project/?gid="+groups_id;
 }
 
+//summernote編輯器的初始化新增
 function newSummer(){
     $('.create-experiment-summernote, .create-record-summernote, .create-analysis-summernote, .create-discussion-summernote').summernote({
     disable:true,
@@ -123,7 +127,7 @@ function newSummer(){
     ]
 })};
 
-//新增summernote編輯器
+//summernote編輯器的初始化新增
 function summernoteCreate(){
     $('.create-motivation-summernote, .create-conclusion-summernote').summernote({
         height: 120,
@@ -198,10 +202,10 @@ $(function(){
             //table列拖拉和數字排序
             $( "table tbody" ).sortable( {
                 update: function( event, ui ) {
-                $(this).children().each(function(index) {
-                        $(this).find('td').first().html(index + 1)
-                });
-            }
+                    $(this).children().each(function(index) {
+                            $(this).find('td').first().html(index + 1)
+                    });
+                }   
             });
 
         //只開啟實驗記錄和研究結果(分析及圖表)的編輯區塊
@@ -255,6 +259,8 @@ $(function(){
         
         
     }).change();
+
+
 
     //table列拖拉和數字排序
     // $( "table tbody" ).sortable( {

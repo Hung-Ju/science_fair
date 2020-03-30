@@ -7,19 +7,23 @@
     <!-- Bootstrap CSS -->
     <link rel='stylesheet' href='/stylesheets/bootstrap/bootstrap.min.css' />
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script type="text/javascript" src="/javascripts/jquery.min.js"></script>
+    <script type="text/javascript" src="/javascripts/jquery-3.4.1.min.js"></script>
+    <!-- <script type="text/javascript" src="/javascripts/jquery.min.js"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script type="text/javascript" src="/javascripts/bootstrap/bootstrap.js"></script>
 
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script> -->
-    <!-- <link href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css" /> -->
+    <!-- summernote -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <link href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="/stylesheets/summernote/summernote-bs4.min.js"></script>
     <link rel='stylesheet' href='/stylesheets/summernote/summernote-bs4.css' />
 
-    <link rel='stylesheet' href='/stylesheets/Ju-style.css' />
-    <!-- <link rel="stylesheet" href="/assets/css/main.css" /> -->
-    <!-- <noscript><link rel="stylesheet" href="/assets/css/noscript.css" /></noscript> -->
+    <!-- bootstrap-table -->
+    <link href="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table-locale-all.min.js"></script>
 
+    <link rel='stylesheet' href='/stylesheets/Ju-style.css' />
     <script type="text/javascript" src="/javascripts/projectEdit.js"></script>
 
     
@@ -255,16 +259,50 @@
                   <button id="add_purposes_btn" onclick="addPurposes()" class="btn btn-sm btn-primary margin-left10 height30">新增研究目的</button>
                 </div>
 
-                <div class="purposes-item margin-bottom10 form-group row">
+
+
+                <div style="background-color:white;">
+                  <table class="table">
+                    <thead>
+                      <tr class="table-active">
+                        <th scope="col" width='5%'>#</th>
+                        <th scope="col"width='85%'>研究目的</th>
+                        <th scope="col"width='10%'></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td scope="row">1</td>
+                        <td>月球天平動現象的形成原因是什麼呢？、探究月球一日內的天平動現象及規律。</td>
+
+                        <td style="vertical-align: inherit;">
+                          <button class="btn btn-primary btn-sm">編輯</button><br>
+                          <button class="btn btn-danger btn-sm stage-switch-btn">刪除</button>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td scope="row">1</td>
+                        <td>月球天平動現象的形成原因是什麼呢？、探究月球一日內的天平動現象及規律。</td>
+
+                        <td style="vertical-align: inherit;">
+                          <button class="btn btn-primary btn-sm">編輯</button><br>
+                          <button class="btn btn-danger btn-sm stage-switch-btn">刪除</button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <!-- <div class="purposes-item margin-bottom10 form-group row">
                   <label class="col-sm-2 text-center">研究目的：</label>
                   <input class="col-sm-10 form-control margin-right10" style="max-width: 75%;" type="text">&nbsp;
                   
-                </div>
+                </div> -->
                 
               </div>
-              <div class="btn-save-box margin-bottom10 content-margin">
+              <!-- <div class="btn-save-box margin-bottom10 content-margin">
                 <button class="btn btn-sm btn-save">儲存</button>
-              </div>
+              </div> -->
             </div>
             <!-- 小組想法區塊 -->
             <div class="col-3" style="background-color: #FFF5E0;">

@@ -27,6 +27,19 @@ module.exports = {
 				connection.release();
 			})
 		});
+	},
+
+	//抓取專題中的研究目的的資料
+	selectResearchPurposes : function(groups_id_groups, cb){
+		var groups_id_groups = groups_id_groups;
+		pool.getConnection(function(err, connection){
+			if(err) throw err;
+			connection.query('SELECT * FROM `project_data` WHERE `project_data_type`="研究目的" AND `groups_id_groups`=?', groups_id_groups,function(err, result){
+				if(err) throw err;
+				cb(result);
+				connection.release();
+			})
+		})
 	}
 
 }

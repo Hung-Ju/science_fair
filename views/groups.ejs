@@ -2,16 +2,21 @@
 <html>
   <head>
     <title><%= title %></title>
-    <!-- Bootstrap CSS -->
+    
+    <!-- Bootstrap -->
     <link rel='stylesheet' href='/stylesheets/bootstrap/bootstrap.min.css' />
+
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script type="text/javascript" src="/javascripts/jquery.min.js"></script>
+    <script type="text/javascript" src="/javascripts/jquery-3.4.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script type="text/javascript" src="/javascripts/bootstrap/bootstrap.js"></script>
     <link rel='stylesheet' href='/stylesheets/Ju-style.css' />
-    <!-- <link rel="stylesheet" href="/assets/css/main.css" /> -->
-    <!-- <noscript><link rel="stylesheet" href="/assets/css/noscript.css" /></noscript> -->
 
+
+    
+    <link href="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table-locale-all.min.js"></script>
     
     <script type="text/javascript" src="/javascripts/groups.js"></script>
 
@@ -105,16 +110,26 @@
     <% if(member_id){ %>
 
     <!-- 中間的已加入組別和全部組別列表區域 -->
+
+    <!-- 從資料庫撈出的以加入組別資料和全部組別資料 -->
+    <input type='hidden' id="allGroups" value="<%= JSON.stringify(notJoinGroups) %>">
+    <input type='hidden' id="memberJoinGroups" value="<%= JSON.stringify(JoinGroups) %>">
     <!-- 已加入的專題組別標題欄 -->
     <div class="container col-md-8 col-md-offset-2 groups-container">
       <div class="row">
-        <div class="col" style="background-color: #31625C;">
-          <h5 class="text-white">已加入的專題組別</h5>
+        <div class="col" style="background-color: #31625C; height: 50px;">
+          <h5 class="text-white" style="margin-top: 0.8rem;">已加入的專題組別</h5>
         </div>
       </div>
       
       <!-- 已加入的專題組別表格 -->
-      <div class="groups-table row pre-scrollable">
+      <div class="groups-table row">
+        <div class="content col table-responsive">
+          <table id="joinGroups" class="table"></table>
+        </div>
+      </div>
+      
+      <!-- <div class="groups-table row pre-scrollable">
         <div class="content col table-responsive">
           <section>
             <table class="table" style="word-break:break-all; word-wrap:break-all;">
@@ -139,18 +154,24 @@
             </table>
           </section> 
         </div>
-      </div>  
+      </div>   -->
     </div>
 
     <!-- 全部的專題組別標題欄 -->
     <div class="container col-md-8 col-md-offset-2">
       <div class="row">
-        <div class="col" style="background-color: #31625C;">
-          <h5 class="text-white">未加入的專題組別</h5>
+        <div class="col" style="background-color: #31625C; height: 50px;">
+          <h5 class="text-white" style="margin-top: 0.8rem;">未加入的專題組別</h5>
         </div>
       </div>
       <!-- 全部的專題組別表格 -->
-      <div class="groups-table row pre-scrollable">
+      <div class="groups-table row">
+        <div class="content col table-responsive">
+          <table id="allGroupsTable" class="table"></table>
+        </div>
+      </div>
+
+      <!-- <div class="groups-table row pre-scrollable">
         <div class="content col">
           <section>
             <table class="table">
@@ -184,7 +205,7 @@
           </section>
   
         </div>
-      </div>   
+      </div>    -->
     </div>
 
     <% }else{ %>

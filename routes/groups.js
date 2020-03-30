@@ -8,16 +8,59 @@ router.get('/',function(req, res, next) {
     if(!member_id){
         res.redirect('/');
     }
-    groups.selectAllGroupsData(member_id, function(result){
-        if (result){
-            console.log(result);
-            //抓取所有已登入使用者id已經加入的組別資料
-            groups.selectGroupsDataMemberJoin(member_id, function(result2){
-                res.render('groups', { title: 'Science Fair科學探究專題系統', notJoinGroups:result, JoinGroups:result2,member_id:req.session.member_id, member_name:req.session.member_name});
-            })
+    // groups.selectAllGroupsData(member_id, function(result){
+    //     if (result){
+    //         //console.log(result);
+    //         //抓取所有已登入使用者id已經加入的組別資料
+    //         groups.selectGroupsDataMemberJoin(member_id, function(result2){
+    //             console.log(result2);
+    //             res.render('groups', { title: 'Science Fair科學探究專題系統', notJoinGroups:result, JoinGroups:result2,member_id:req.session.member_id, member_name:req.session.member_name});
+    //         })
             
-        } 
-    }); 
+    //     } 
+    // }); 
+
+    var allGroupsArray = [];
+    var memberJoinGroupsArray = [];
+    groups.selectAllGroupsData(member_id, function(allGroups){
+        if (allGroups){
+            for (var i = 0; i < allGroups.length; i++){
+                var day = new Date(allGroups[i].groups_createtime);
+                var groups_index = i;
+                var groups_id = allGroups[i].groups_id;
+                var groups_name = allGroups[i].groups_name;
+                var groups_key = allGroups[i].groups_key;
+                var member_id_student_member = allGroups[i].member_id_student_member;
+                var groups_create_student = allGroups[i].groups_create_student;
+                var member_id_teacher_member = allGroups[i].member_id_teacher_member;
+                var groups_teacher = allGroups[i].groups_teacher;
+                var groups_createtime = day.getFullYear()+'/'+day.getMonth()+1+'/'+day.getDate();
+                var groups_stage = allGroups[i].groups_stage;
+                var allGroupsData = {groups_index:groups_index, groups_id:groups_id, groups_name:groups_name, groups_key:groups_key, member_id_student_member:member_id_student_member, 
+                                    groups_create_student:groups_create_student, member_id_teacher_member:member_id_teacher_member, groups_teacher:groups_teacher, 
+                                    groups_createtime:groups_createtime, groups_stage:groups_stage};
+                allGroupsArray.push(allGroupsData);
+                //console.log(allGroupsArray);
+            }
+
+            groups.selectGroupsDataMemberJoin(member_id, function(memberJoinGroups){
+                for (var j = 0; j < memberJoinGroups.length; j++){
+                    var day = new Date(memberJoinGroups[j].groups_createtime);
+                    var groups_id = memberJoinGroups[j].groups_id;
+                    var groups_name = memberJoinGroups[j].groups_name;
+                    var groups_createtime = day.getFullYear()+'/'+day.getMonth()+1+'/'+day.getDate();
+                    var groups_member_id = memberJoinGroups[j].groups_member_id;
+                    var member_name = memberJoinGroups[j].member_name;
+                    var memberJoinGroupsData = {groups_id:groups_id, groups_name:groups_name, groups_createtime:groups_createtime, groups_member_id:groups_member_id,
+                                                member_name:member_name};
+                    memberJoinGroupsArray.push(memberJoinGroupsData);
+                }
+                //console.log(memberJoinGroupsArray);
+                res.render('groups', { title: 'Science Fair科學探究專題系統', notJoinGroups:allGroupsArray, JoinGroups:memberJoinGroupsArray,member_id:req.session.member_id, member_name:req.session.member_name});
+
+            })
+        }
+    })
 
 });
 

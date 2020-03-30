@@ -36,7 +36,7 @@ module.exports = {
 		var member_id = member_id;
 		pool.getConnection(function(err, connection){
 			if(err) throw err;
-			//從小組成員表groups_member裡抓取登入使用者沒有加入的組別id
+			//從小組成員表groups_member裡抓取登入使用者加入的組別id
 			connection.query('SELECT `groups`.groups_id,`groups`.groups_name,`groups`.groups_createtime, `groups_member`.groups_member_id, `groups_member`.member_name ' +
 							 'FROM `groups` INNER JOIN `groups_member` ON `groups`.groups_id=`groups_member`.groups_id_groups ' +
 							 'WHERE `groups_member`.member_id_member = ? ' , [member_id], function(err, sele_res){

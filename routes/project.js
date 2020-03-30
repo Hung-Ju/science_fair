@@ -12,6 +12,23 @@ router.get('/',function(req, res, next) {
         res.redirect('/');
     }
     else {
+        var researchPurposesArray = [];
+        project.selectResearchPurposes(gid, function(researchPurposes){
+            if(researchPurposes){
+                for (var i = 0; i < researchPurposes.length; i++){
+                    var groups_id_groups = researchPurposes[i].groups_id_groups;
+                    var project_data_content = researchPurposes[i].project_data_content;
+                    var member_id_member = researchPurposes[i].member_id_member;
+                    var member_name = researchPurposes[i].member_name;
+                    var researchPurposesData = {groups_id_groups:groups_id_groups, project_data_content:project_data_content, member_id_member:member_id_member, member_name:member_name};
+                    researchPurposesArray.push(researchPurposesData);
+                    //console.log(allGroupsArray);
+                }
+                console.log(researchPurposesArray);
+                
+            }
+        })
+        
         project.selectResearchTitleData(gid, function(researchTitle){
                 if(researchTitle == ""){
                     var researchTitle = "";
