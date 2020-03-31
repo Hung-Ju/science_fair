@@ -54,6 +54,49 @@ module.exports = {
 				connection.release();
 			})
 		})
-	}
+	}, 
+
+	//刪除研究目的
+	//修改研究目的
+
+	//修改研究題目
+	updateResearchTitle :function(groups_id_groups, project_data_type, project_data_content, member_id_member, member_name, cb){
+		pool.getConnection(function(err, connection){
+			if(err) throw err;
+			var update_params = {project_data_content:project_data_content, member_id_member:member_id_member, member_name:member_name};
+			connection.query('UPDATE `project_data` SET ? WHERE `groups_id_groups`='+groups_id_groups+' AND `project_data_type`='+'"'+project_data_type+'"', update_params, function(err, update_res){
+				if(err) throw err;
+				cb(update_res);
+				connection.release();
+			})
+		})
+	},
+
+	//修改研究動機
+	updateResearchMotivation :function(groups_id_groups, project_data_type, project_data_content, member_id_member, member_name, cb){
+		pool.getConnection(function(err, connection){
+			if(err) throw err;
+			var update_params = {project_data_content:project_data_content, member_id_member:member_id_member, member_name:member_name};
+			connection.query('UPDATE `project_data` SET ? WHERE `groups_id_groups`='+groups_id_groups+' AND `project_data_type`='+'"'+project_data_type+'"', update_params, function(err, update_res){
+				if(err) throw err;
+				cb(update_res);
+				connection.release();
+			})
+		})
+	},
+
+	//新增研究題目(功能和內容跟新增目的一樣)
+	addResearchTitle :function(groups_id_groups, project_data_type, project_data_content, member_id_member, member_name, cb){
+		var groups_id_groups = groups_id_groups;
+		pool.getConnection(function(err, connection){
+			if(err) throw err;
+			var params = {groups_id_groups:groups_id_groups, project_data_type:project_data_type, project_data_content:project_data_content, member_id_member:member_id_member, member_name:member_name};
+			connection.query('INSERT INTO `project_data` SET ?', params, function(err, insert_res){
+				if(err) throw err;
+				cb(insert_res);
+				connection.release();
+			})
+		})
+	}, 
 
 }

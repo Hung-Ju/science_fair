@@ -59,6 +59,28 @@ router.get('/',function(req, res, next) {
     }
 });
 
+//修改研究題目
+router.post('/updateResearchTitle', function(req, res, next){
+    var gid = req.body.gid;
+    var project_data_type1 = "研究題目";
+    var project_data_type2 = "研究動機";
+    var project_data_content1 = req.body.project_data_content1;
+    var project_data_content2 = req.body.project_data_content2;
+    var member_id_member = req.session.member_id;
+    var member_name = req.session.member_name;
+
+    project.updateResearchTitle(gid,  project_data_type1, project_data_content1, member_id_member, member_name, function(result){
+        if(result){
+            project.updateResearchMotivation(gid, project_data_type2, project_data_content2, member_id_member, member_name, function(result2){
+                if(result2){
+                    res.send({message:"true"});
+                }
+            })
+            
+        }
+    })
+})
+
 //新增研究目的
 router.post('/addPurposes',function(req, res, next) {
     var gid = req.body.gid;

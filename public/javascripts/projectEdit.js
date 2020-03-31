@@ -299,6 +299,39 @@ $(function(){
         });
     });
 
+    //用ajax的方式修改研究題目
+    $("#saveResearchMotivation").click(function () {
+        var gid = document.getElementById("groups_id").value;
+        var project_data_content2 = $(".create-motivation-summernote").val();
+        // console.log(gid);
+        
+        $.ajax({  
+            type: "POST",
+            url: "/project/updateResearchTitle",
+            data: {
+                gid: gid,
+                project_data_content1: $("#research_title").val(),
+                project_data_content2: project_data_content2
+            },
+            success: function(data){
+                if(data){
+                    //  alert(project_data_content2);
+                    if(data.message=="true"){
+                        alert('修改成功');
+                        window.location.href="/project/?gid="+gid;
+                    }
+                    else{
+                        alert('修改失敗請重新輸入');
+                        window.location.href="/groups";
+                    }
+                }
+            },
+            error: function(){
+                alert('失敗');
+            }
+        });
+    });
+
 
 
     //table列拖拉和數字排序
