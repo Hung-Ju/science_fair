@@ -9,7 +9,7 @@ function addGroupInput(){
     var inputAdd = document.getElementById('groupsRoot');  
     groupsInputData.map(function(data){
         if (data.useFor=="all"){
-            var html = ['<p>'+ data.title + '：' +'<input class="form-control" type="'+data.type+'" name="'+data.name+'"id="'+data.name+'" required="required"></p>'];
+            var html = ['<p>'+ data.title + '：' +'<input class="form-control" type="'+data.type+'" name="'+data.name+'"id="'+data.name+'" required></p>'];
             $(inputAdd).append(html);
         }
         else {
@@ -42,6 +42,7 @@ function joinGroups(groups_id){
                     window.location.href="/groups";
                 }
             }
+
         },
         error: function(){
             alert('失敗');
@@ -140,6 +141,7 @@ $(function(){
     joinGroupsTable();
     allGroupsTable()
     //將註冊資料透過ajax傳送執行
+
     $("#addGroups").click(function () {
 
         $.ajax({  

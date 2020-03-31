@@ -40,6 +40,20 @@ module.exports = {
 				connection.release();
 			})
 		})
+	},
+	
+	//新增研究目的
+	addPurposes :function(groups_id_groups, project_data_type, project_data_content, member_id_member, member_name, cb){
+		var groups_id_groups = groups_id_groups;
+		pool.getConnection(function(err, connection){
+			if(err) throw err;
+			var params = {groups_id_groups:groups_id_groups, project_data_type:project_data_type, project_data_content:project_data_content, member_id_member:member_id_member, member_name:member_name};
+			connection.query('INSERT INTO `project_data` SET ?', params, function(err, insert_res){
+				if(err) throw err;
+				cb(insert_res);
+				connection.release();
+			})
+		})
 	}
 
 }

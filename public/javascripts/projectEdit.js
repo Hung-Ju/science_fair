@@ -1,21 +1,27 @@
 //研究目的表格的初始化設定
 function researchPurposesTable(){
-    var JoinGroups = document.getElementById("memberJoinGroups").value;
-    // console.log(JoinGroups);
-    var memberJoinGroups = JSON.parse(JoinGroups);
-    var $groupsTable = $('#joinGroups');
-    $groupsTable.bootstrapTable({
+    var researchPurposesTableData = document.getElementById("researchPurposes").value;
+    var allResearchPurposes = JSON.parse(researchPurposesTableData);
+    var $allResearchPurposesTable = $('#researchPurposesTable');
+    
+    $allResearchPurposesTable.bootstrapTable({
         columns: [
-            {title: '已經加入組別名稱', field: 'groups_name'},
-            {title: '創立時間', field: 'groups_createtime', width: 300},
-            {title: '進入組別', field: 'groups_id', formatter: 'enterProjectButton', width: 200}
+            {title: '研究目的', field: 'project_data_content'},
+            {title: '', field: 'project_data_id', formatter: 'researchPurposesButton',width:100}
             ],
-        theadClasses: 'thead-light table-sm',
+        theadClasses: 'thead-light',
         classes: 'table table-bordered table-light',
         pagination: true
     });
-    $groupsTable.bootstrapTable('load',memberJoinGroups);
+    $allResearchPurposesTable.bootstrapTable('load',allResearchPurposes);
 }
+
+//研究目的表格裡的編輯按鈕和刪除按鈕
+function researchPurposesButton(index, groups_id){
+    return ['<button class="btn btn-primary btn-sm">編輯</button><br>' + 
+            '<button class="btn btn-danger btn-sm stage-switch-btn">刪除</button>']
+}
+
 //增加研究目的
 // function addPurposes(){
 //     var purposes = ['<div class="purposes-item margin-bottom10 form-group row">' +
@@ -75,35 +81,35 @@ function deleteDiscussionItem(){
 }
 
 //使用者輸入組別密碼後送出，POST回傳true為加入成功，回傳already為重複加入
-function joinGroups(groups_id){
-    $.ajax({  
-        type: "POST",
-        url: "/groups/joinGroups",
-        data: {
-            groups_id: groups_id,
-            groups_key: $("#groupsKey"+groups_id).val(),
-        },
-        success: function(data){
-            if(data){
-                if(data.message=="true"){
-                    alert('成功加入');
-                    window.location.href="/groups";
-                }
-                else if(data.message=="already"){
-                    alert('重複加入，請重新搜尋要加入的組別');
-                    window.location.href="/groups";
-                }
-                else{
-                    alert('加入失敗請重新嘗試');
-                    window.location.href="/groups";
-                }
-            }
-        },
-        error: function(){
-            alert('失敗');
-        }
-    });
-};
+// function joinGroups(groups_id){
+//     $.ajax({  
+//         type: "POST",
+//         url: "/groups/joinGroups",
+//         data: {
+//             groups_id: groups_id,
+//             groups_key: $("#groupsKey"+groups_id).val(),
+//         },
+//         success: function(data){
+//             if(data){
+//                 if(data.message=="true"){
+//                     alert('成功加入');
+//                     window.location.href="/groups";
+//                 }
+//                 else if(data.message=="already"){
+//                     alert('重複加入，請重新搜尋要加入的組別');
+//                     window.location.href="/groups";
+//                 }
+//                 else{
+//                     alert('加入失敗請重新嘗試');
+//                     window.location.href="/groups";
+//                 }
+//             }
+//         },
+//         error: function(){
+//             alert('失敗');
+//         }
+//     });
+// };
 
 //點選進入組別按鈕進入該組的專題編輯頁面
 function enterProject(groups_id){
@@ -177,7 +183,9 @@ function summernoteCreate(){
 
 
 $(function(){
+    researchPurposesTable();
     
+    //切換階段顯示
     $('#selectStage').change(function () {
         //只開啟研究動機和研究目的的編輯區塊
         if ($("#selectStage").val() == "形成問題"){
@@ -260,6 +268,37 @@ $(function(){
         
     }).change();
 
+    //用ajax的方式新增研究目的
+    $("#addPurposesModalButton").click(function () {
+        var gid = document.getElementById("groups_id").value;
+        // console.log(gid);
+        
+        $.ajax({  
+            type: "POST",
+            url: "/project/addPurposes",
+            data: {
+                gid: gid,
+                project_data_content: $("#research_purposes_add").val()
+            },
+            success: function(data){
+                if(data){
+                    // alert(123);
+                    if(data.message=="true"){
+                        alert('新增成功');
+                        window.location.href="/project/?gid="+gid;
+                    }
+                    else{
+                        alert('新增失敗請重新輸入');
+                        window.location.href="/groups";
+                    }
+                }
+            },
+            error: function(){
+                alert('失敗');
+            }
+        });
+    });
+
 
 
     //table列拖拉和數字排序
@@ -279,35 +318,5 @@ $(function(){
                 scrollTop: target.offset().top + -140
             }, 500);
     });
-
-    //研究動機的Editor
-    // $('#research-motivation').summernote({
-    //     placeholder: '是因為什麼原因或興趣讓你想研究這個題目？',
-    //     height: 120,
-    //     width: 600,
-    //     toolbar: [
-    //         ['style', ['style']],
-    //         ['font', ['bold', 'underline', 'clear']],
-    //         ['color', ['color']],
-    //         ['para', ['ul', 'ol', 'paragraph']],
-    //         ['table', ['table']],
-    //         ['insert', ['link', 'picture', 'video']]
-    //     ]
-    //   });
-
-    //研究結論的Editor
-    // $('#conclusion-summernote').summernote({
-    //     placeholder: '實驗或方法中所得到歸納或整理,以簡要的句子來論述(須與研究目的相呼應)。',
-    //     height: 120,
-    //     width: 600,
-    //     toolbar: [
-    //         ['style', ['style']],
-    //         ['font', ['bold', 'underline', 'clear']],
-    //         ['color', ['color']],
-    //         ['para', ['ul', 'ol', 'paragraph']],
-    //         ['table', ['table']],
-    //         ['insert', ['link', 'picture', 'video']]
-    //     ]
-    // })
 });
 

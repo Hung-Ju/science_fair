@@ -83,7 +83,6 @@ router.post('/add',function(req, res, next) {
             groups.addGroupsMember(groups_id_groups, member_id_student_member, groups_create_student, function(result2){
                 if(result){
                     res.send({message:"true"});
-
                 }
             })
         }

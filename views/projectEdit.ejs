@@ -8,7 +8,6 @@
     <link rel='stylesheet' href='/stylesheets/bootstrap/bootstrap.min.css' />
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script type="text/javascript" src="/javascripts/jquery-3.4.1.min.js"></script>
-    <!-- <script type="text/javascript" src="/javascripts/jquery.min.js"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script type="text/javascript" src="/javascripts/bootstrap/bootstrap.js"></script>
 
@@ -97,7 +96,7 @@
           <div class="row justify-content-center">
             <!-- 左邊的階段切換選單 -->
             <nav id="left_nav" class="nav flex-column nav-pills text-center position-fixed2">
-              <a id="L1" class="changet nav-link" href="#research_motivation_box" data-toggle="pill">形成問題</a>
+              <a id="L1" class="changet nav-link active" href="#research_motivation_box" data-toggle="pill">形成問題</a>
               <a id="L2" class="changet nav-link" href="#research_steps_box" data-toggle="pill">研究規劃</a>
               <a id="L3" class="changet nav-link" href="#research_record_box" data-toggle="pill">執行</a>
               <a id="L4" class="changet nav-link" href="#research_analysis_box" data-toggle="pill">分析與詮釋</a>
@@ -159,6 +158,8 @@
                 </div>     
             </div>
           </div>
+
+          <input type='hidden' id="groups_id" value="<%= gid %>">
           
           <!-- 研究動機章節區塊  -->
           <div class="row" id="research_motivation_box" style="margin-top: 53px;">
@@ -256,12 +257,36 @@
             <div class="col-7" style="background-color: #EEEBE5;" id="research_purposes">
               <div id="research_purposes_content" class="content-margin">
                 <div class="margin-bottom10 form-group row">
-                  <button id="add_purposes_btn" onclick="addPurposes()" class="btn btn-sm btn-primary margin-left10 height30">新增研究目的</button>
+                  <button id="add_purposes_btn" class="btn btn-sm btn-primary margin-left10 height30"  data-toggle="modal" data-target="#addPurposesModal">新增研究目的</button>
+                  <!-- 新增研究目的的彈出視窗 -->
+                  <div class="modal fade" id="addPurposesModal" tabindex="-1" role="dialog" aria-labelledby="addPurposesModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="changeStageLongTitle">新增研究目的</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <div id="addPurposesModalRoot">
+                            <p>研究目的<input class="form-control" type="text" name="research_purposes" id="research_purposes_add" required="required"></p>
+                          </div>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                          <button type="button" class="btn btn-primary" id="addPurposesModalButton">新增</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- 新增研究目的的彈出視窗 -->
                 </div>
 
+                <input type='hidden' id="researchPurposes" value="<%= JSON.stringify(researchPurposes) %>">
+                <table id="researchPurposesTable" class="table"></table>
 
-
-                <div style="background-color:white;">
+                <!-- <div style="background-color:white;">
                   <table class="table">
                     <thead>
                       <tr class="table-active">
@@ -291,18 +316,10 @@
                       </tr>
                     </tbody>
                   </table>
-                </div>
-
-                <!-- <div class="purposes-item margin-bottom10 form-group row">
-                  <label class="col-sm-2 text-center">研究目的：</label>
-                  <input class="col-sm-10 form-control margin-right10" style="max-width: 75%;" type="text">&nbsp;
-                  
                 </div> -->
                 
               </div>
-              <!-- <div class="btn-save-box margin-bottom10 content-margin">
-                <button class="btn btn-sm btn-save">儲存</button>
-              </div> -->
+
             </div>
             <!-- 小組想法區塊 -->
             <div class="col-3" style="background-color: #FFF5E0;">
