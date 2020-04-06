@@ -1,4 +1,6 @@
 //研究目的表格的初始化設定
+
+
 function researchPurposesTable(){
     var researchPurposesTableData = document.getElementById("researchPurposes").value;
     var allResearchPurposes = JSON.parse(researchPurposesTableData);
@@ -7,7 +9,7 @@ function researchPurposesTable(){
     $allResearchPurposesTable.bootstrapTable({
         columns: [
             {title: '研究目的', field: 'project_data_content'},
-            {title: '', field: 'project_data_id', formatter: 'researchPurposesButton',width:100}
+            {title: '', field: 'project_data_id',event: 'window.operateEvents' , formatter: 'researchPurposesButton',width:100}
             ],
         theadClasses: 'thead-light',
         classes: 'table table-bordered table-light',
@@ -16,11 +18,20 @@ function researchPurposesTable(){
     $allResearchPurposesTable.bootstrapTable('load',allResearchPurposes);
 }
 
+window.operateEvents = {
+    'click .editPurposesBtn': function (e, value, row, index) {
+        console.log('You click action, row: ' + JSON.stringify(row))
+      }
+}
+
+
+
 //研究目的表格裡的編輯按鈕和刪除按鈕
 function researchPurposesButton(index, groups_id){
-    return ['<button class="btn btn-primary btn-sm">編輯</button><br>' + 
+    return ['<button class="btn btn-primary btn-sm editPurposesBtn" type="submit" data-toggle="modal" data-target="#editPurposesModal">編輯</button><br>' + 
             '<button class="btn btn-danger btn-sm stage-switch-btn">刪除</button>']
 }
+
 
 //增加研究目的
 // function addPurposes(){
@@ -79,6 +90,7 @@ function deleteDiscussionItem(){
         $(this).parents('.discussion-item').remove();
     });
 }
+
 
 //使用者輸入組別密碼後送出，POST回傳true為加入成功，回傳already為重複加入
 // function joinGroups(groups_id){
@@ -299,7 +311,7 @@ $(function(){
         });
     });
 
-    //用ajax的方式修改研究題目
+    //用ajax的方式儲存和修改研究題目跟研究動機
     $("#saveResearchMotivation").click(function () {
         var gid = document.getElementById("groups_id").value;
         var project_data_content2 = $(".create-motivation-summernote").val();
@@ -317,11 +329,11 @@ $(function(){
                 if(data){
                     //  alert(project_data_content2);
                     if(data.message=="true"){
-                        alert('修改成功');
+                        alert('成功');
                         window.location.href="/project/?gid="+gid;
                     }
                     else{
-                        alert('修改失敗請重新輸入');
+                        alert('失敗，請重新輸入');
                         window.location.href="/groups";
                     }
                 }
@@ -351,5 +363,8 @@ $(function(){
                 scrollTop: target.offset().top + -140
             }, 500);
     });
+
+
+
 });
 

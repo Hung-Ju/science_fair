@@ -72,7 +72,7 @@ module.exports = {
 		})
 	},
 
-	//修改研究動機
+	//修改研究動機(和修改研究題目一樣)
 	updateResearchMotivation :function(groups_id_groups, project_data_type, project_data_content, member_id_member, member_name, cb){
 		pool.getConnection(function(err, connection){
 			if(err) throw err;
