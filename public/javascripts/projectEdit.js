@@ -1,6 +1,4 @@
 //研究目的表格的初始化設定
-
-
 function researchPurposesTable(){
     var researchPurposesTableData = document.getElementById("researchPurposes").value;
     var allResearchPurposes = JSON.parse(researchPurposesTableData);
@@ -9,7 +7,7 @@ function researchPurposesTable(){
     $allResearchPurposesTable.bootstrapTable({
         columns: [
             {title: '研究目的', field: 'project_data_content'},
-            {title: '', field: 'project_data_id',event: 'window.operateEvents' , formatter: 'researchPurposesButton',width:100}
+            {title: '', field: 'project_data_id',events: 'window.operateEvents' , formatter: 'researchPurposesButton',width:100}
             ],
         theadClasses: 'thead-light',
         classes: 'table table-bordered table-light',
@@ -20,16 +18,74 @@ function researchPurposesTable(){
 
 window.operateEvents = {
     'click .editPurposesBtn': function (e, value, row, index) {
-        console.log('You click action, row: ' + JSON.stringify(row))
-      }
+        // console.log(row);
+        //顯示視窗前呼叫
+        $("#editPurposesModal").on("show.bs.modal",function(event){
+            document.getElementById("research_purposes_edit").value = row.project_data_content;
+            $("#savePurposesModalButton").click(function(){
+                var gid = document.getElementById("groups_id").value;
+                console.log(row.project_data_id);
+                $.ajax({  
+                    type: "POST",
+                    url: "/project/editPurposes",
+                    data: {
+                        gid: gid,
+                        project_data_id: row.project_data_id,
+                        project_data_content: $("#research_purposes_edit").val(),
+                    },
+                    success: function(data){
+                        if(data){
+                            // alert(123);
+                            if(data.message=="true"){
+                                alert('修改成功');
+                                window.location.href="/project/?gid="+gid;
+                            }
+                            else{
+                                alert('修改失敗請重新輸入');
+                                window.location.href="/project/?gid="+gid;
+                            }
+                        }
+                    },
+                    error: function(){
+                        alert('失敗');
+                    }
+                });
+            })
+        });
+    }
 }
 
-
+function deletePurposes(project_data_id){
+    var gid = document.getElementById("groups_id").value;
+    $.ajax({  
+        type: "POST",
+        url: "/project/deletePurposes",
+        data: {
+            project_data_id: project_data_id
+        },
+        success: function(data){
+            if(data){
+                // alert(123);
+                if(data.message=="true"){
+                    alert('刪除成功');
+                    window.location.href="/project/?gid="+gid;
+                }
+                else{
+                    alert('刪除失敗請重新輸入');
+                    window.location.href="/project/?gid="+gid;
+                }
+            }
+        },
+        error: function(){
+            alert('失敗');
+        }
+    });
+}
 
 //研究目的表格裡的編輯按鈕和刪除按鈕
-function researchPurposesButton(index, groups_id){
+function researchPurposesButton(index, row){
     return ['<button class="btn btn-primary btn-sm editPurposesBtn" type="submit" data-toggle="modal" data-target="#editPurposesModal">編輯</button><br>' + 
-            '<button class="btn btn-danger btn-sm stage-switch-btn">刪除</button>']
+            '<button class="btn btn-danger btn-sm stage-switch-btn deletePurposesBtn" onclick="deletePurposes('+row.project_data_id+')">刪除</button>']
 }
 
 

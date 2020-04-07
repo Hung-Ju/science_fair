@@ -59,7 +59,7 @@ router.get('/',function(req, res, next) {
     }
 });
 
-//修改研究題目
+//新增或修改研究題目和研究動機
 router.post('/updateResearchTitle', function(req, res, next){
     var gid = req.body.gid;
     var project_data_type1 = "研究題目";
@@ -72,9 +72,9 @@ router.post('/updateResearchTitle', function(req, res, next){
     project.selectResearchTitleData(gid, function(researchTitle){
         project.selectResearchMotivation([gid,researchTitle],function(researchMotivation){
             if(researchTitle != "" && researchMotivation != ""){
-                project.updateResearchTitle(gid, project_data_type1, project_data_content1, member_id_member, member_name, function(result){
+                project.updateProjectDataContentForOne(gid, project_data_type1, project_data_content1, member_id_member, member_name, function(result){
                     if(result){
-                        project.updateResearchMotivation(gid, project_data_type2, project_data_content2, member_id_member, member_name, function(result2){
+                        project.updateProjectDataContentForOne(gid, project_data_type2, project_data_content2, member_id_member, member_name, function(result2){
                             if(result2){
                                 res.send({message:"true"});
                             }
@@ -82,24 +82,24 @@ router.post('/updateResearchTitle', function(req, res, next){
                     }
                 })
             }else if(researchTitle == "" && researchMotivation != ""){
-                project.addPurposes(gid, project_data_type1, project_data_content1, member_id_member, member_name, function(result){
-                    project.updateResearchMotivation(gid, project_data_type2, project_data_content2, member_id_member, member_name, function(result2){
+                project.addProjectDataContent(gid, project_data_type1, project_data_content1, member_id_member, member_name, function(result){
+                    project.updateProjectDataContentForOne(gid, project_data_type2, project_data_content2, member_id_member, member_name, function(result2){
                         if(result2){
                             res.send({message:"true"});
                         }
                     })
                 })
             }else if(researchTitle != "" && researchMotivation == ""){
-                project.addPurposes(gid, project_data_type2, project_data_content2, member_id_member, member_name, function(result){
-                    project.updateResearchTitle(gid, project_data_type1, project_data_content1, member_id_member, member_name, function(result2){
+                project.addProjectDataContent(gid, project_data_type2, project_data_content2, member_id_member, member_name, function(result){
+                    project.updateProjectDataContentForOne(gid, project_data_type1, project_data_content1, member_id_member, member_name, function(result2){
                         if(result2){
                             res.send({message:"true"});
                         }
                     })
                 })
             }else{
-                project.addPurposes(gid, project_data_type1, project_data_content1, member_id_member, member_name, function(result){
-                    project.addPurposes(gid, project_data_type2, project_data_content2, member_id_member, member_name, function(result2){
+                project.addProjectDataContent(gid, project_data_type1, project_data_content1, member_id_member, member_name, function(result){
+                    project.addProjectDataContent(gid, project_data_type2, project_data_content2, member_id_member, member_name, function(result2){
                         if(result2){
                             res.send({message:"true"});
                         }
@@ -108,17 +108,6 @@ router.post('/updateResearchTitle', function(req, res, next){
             }
         })
     })
-
-    // project.updateResearchTitle(gid,  project_data_type1, project_data_content1, member_id_member, member_name, function(result){
-    //     if(result){
-    //         project.updateResearchMotivation(gid, project_data_type2, project_data_content2, member_id_member, member_name, function(result2){
-    //             if(result2){
-    //                 res.send({message:"true"});
-    //             }
-    //         })
-            
-    //     }
-    // })
 })
 
 //新增研究目的
@@ -131,11 +120,38 @@ router.post('/addPurposes',function(req, res, next) {
 
     console.log(gid);
     // res.send({message:"true"});
-    project.addPurposes(gid, project_data_type, project_data_content, member_id_member, member_name, function(result){
+    project.addProjectDataContent(gid, project_data_type, project_data_content, member_id_member, member_name, function(result){
         if(result){
             // console.log(result.insertId);
             res.send({message:"true"});
         }
+    });
+});
+
+//修改研究目的
+router.post('/editPurposes',function(req, res, next) {
+    var gid = req.body.gid;
+    var project_data_id = req.body.project_data_id; //該筆研究目的在資料表中的資料id
+    var project_data_type = "研究目的";
+    var project_data_content = req.body.project_data_content; //研究目的的內容
+    var member_id_member = req.session.member_id;
+    var member_name = req.session.member_name;
+    project.updateProjectDataContentForMany(gid, project_data_id, project_data_type, project_data_content, member_id_member, member_name, function(result){
+        if(result){
+            res.send({message:"true"});
+        }
+    });
+});
+
+//刪除研究目的
+router.post('/deletePurposes',function(req, res, next) {
+    var project_data_id = req.body.project_data_id; //該筆研究目的在資料表中的資料id
+    project.deleteProjectDataContentForMany(project_data_id, function(result){
+        // console.log(result.affectedRows);
+        // if(result){
+            console.log(result);
+            res.send({message:"true"});
+        // }
     });
 });
 

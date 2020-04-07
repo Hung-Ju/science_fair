@@ -41,9 +41,9 @@ module.exports = {
 			})
 		})
 	},
-	
-	//新增研究目的
-	addPurposes :function(groups_id_groups, project_data_type, project_data_content, member_id_member, member_name, cb){
+
+	//新增研究題目or新增研究動機or新增研究目的(新增project_data資料表的資料)
+	addProjectDataContent :function(groups_id_groups, project_data_type, project_data_content, member_id_member, member_name, cb){
 		var groups_id_groups = groups_id_groups;
 		pool.getConnection(function(err, connection){
 			if(err) throw err;
@@ -54,49 +54,71 @@ module.exports = {
 				connection.release();
 			})
 		})
-	}, 
+	},
+	
+	//修改研究題目or修改研究動機(修改project_data資料表中只有單筆的project_data_type的資料)
+	updateProjectDataContentForOne :function(groups_id_groups, project_data_type, project_data_content, member_id_member, member_name, cb){
+		pool.getConnection(function(err, connection){
+			if(err) throw err;
+			var update_params = {project_data_content:project_data_content, member_id_member:member_id_member, member_name:member_name};
+			connection.query('UPDATE `project_data` SET ? WHERE `groups_id_groups`='+groups_id_groups+' AND `project_data_type`='+'"'+project_data_type+'"', update_params, function(err, update_res){
+				if(err) throw err;
+				cb(update_res);
+				connection.release();
+			})
+		})
+	},
 
-	//刪除研究目的
-	//修改研究目的
+	//修改研究目的(修改project_data資料表中有多筆的project_data_type的資料)
+	updateProjectDataContentForMany :function(groups_id_groups, project_data_id, project_data_type, project_data_content, member_id_member, member_name, cb){
+		pool.getConnection(function(err, connection){
+			if(err) throw err;
+			var update_params = {project_data_content:project_data_content, member_id_member:member_id_member, member_name:member_name};
+			connection.query('UPDAtE `project_data` SET ? WHERE `groups_id_groups`='+groups_id_groups+' AND `project_data_type`='+'"'+project_data_type+'"'+'AND `project_data_id`='+project_data_id, update_params, function(err, update_res){
+				if(err) throw err;
+				cb(update_res);
+				connection.release();
+			})
+		})
+	},
+
+	//刪除研究目的(刪除project_data資料表中有多筆的project_data_type的其中一筆資料)
+	deleteProjectDataContentForMany :function(project_data_id,cb){
+		pool.getConnection(function(err, connection){
+			if(err) throw err;
+			connection.query('DELETE FROM `project_data` WHERE `project_data_id`=?',project_data_id,function(result){
+				if(err) throw err;
+				cb(result);
+				connection.release();
+			})
+		})
+	}
+
 
 	//修改研究題目
-	updateResearchTitle :function(groups_id_groups, project_data_type, project_data_content, member_id_member, member_name, cb){
-		pool.getConnection(function(err, connection){
-			if(err) throw err;
-			var update_params = {project_data_content:project_data_content, member_id_member:member_id_member, member_name:member_name};
-			connection.query('UPDATE `project_data` SET ? WHERE `groups_id_groups`='+groups_id_groups+' AND `project_data_type`='+'"'+project_data_type+'"', update_params, function(err, update_res){
-				if(err) throw err;
-				cb(update_res);
-				connection.release();
-			})
-		})
-	},
+	// updateResearchTitle :function(groups_id_groups, project_data_type, project_data_content, member_id_member, member_name, cb){
+	// 	pool.getConnection(function(err, connection){
+	// 		if(err) throw err;
+	// 		var update_params = {project_data_content:project_data_content, member_id_member:member_id_member, member_name:member_name};
+	// 		connection.query('UPDATE `project_data` SET ? WHERE `groups_id_groups`='+groups_id_groups+' AND `project_data_type`='+'"'+project_data_type+'"', update_params, function(err, update_res){
+	// 			if(err) throw err;
+	// 			cb(update_res);
+	// 			connection.release();
+	// 		})
+	// 	})
+	// },
 
 	//修改研究動機(和修改研究題目一樣)
-	updateResearchMotivation :function(groups_id_groups, project_data_type, project_data_content, member_id_member, member_name, cb){
-		pool.getConnection(function(err, connection){
-			if(err) throw err;
-			var update_params = {project_data_content:project_data_content, member_id_member:member_id_member, member_name:member_name};
-			connection.query('UPDATE `project_data` SET ? WHERE `groups_id_groups`='+groups_id_groups+' AND `project_data_type`='+'"'+project_data_type+'"', update_params, function(err, update_res){
-				if(err) throw err;
-				cb(update_res);
-				connection.release();
-			})
-		})
-	},
-
-	//新增研究題目(功能和內容跟新增目的一樣)
-	addResearchTitle :function(groups_id_groups, project_data_type, project_data_content, member_id_member, member_name, cb){
-		var groups_id_groups = groups_id_groups;
-		pool.getConnection(function(err, connection){
-			if(err) throw err;
-			var params = {groups_id_groups:groups_id_groups, project_data_type:project_data_type, project_data_content:project_data_content, member_id_member:member_id_member, member_name:member_name};
-			connection.query('INSERT INTO `project_data` SET ?', params, function(err, insert_res){
-				if(err) throw err;
-				cb(insert_res);
-				connection.release();
-			})
-		})
-	}, 
+	// updateResearchMotivation :function(groups_id_groups, project_data_type, project_data_content, member_id_member, member_name, cb){
+	// 	pool.getConnection(function(err, connection){
+	// 		if(err) throw err;
+	// 		var update_params = {project_data_content:project_data_content, member_id_member:member_id_member, member_name:member_name};
+	// 		connection.query('UPDATE `project_data` SET ? WHERE `groups_id_groups`='+groups_id_groups+' AND `project_data_type`='+'"'+project_data_type+'"', update_params, function(err, update_res){
+	// 			if(err) throw err;
+	// 			cb(update_res);
+	// 			connection.release();
+	// 		})
+	// 	})
+	// },
 
 }
