@@ -13,49 +13,112 @@ router.get('/',function(req, res, next) {
     }
     else {
         var researchPurposesArray = [];
-        project.selectResearchPurposes(gid, function(researchPurposes){
-            if(researchPurposes){
-                for (var i = 0; i < researchPurposes.length; i++){
-                    var project_data_id = researchPurposes[i].project_data_id;
-                    var groups_id_groups = researchPurposes[i].groups_id_groups;
-                    var project_data_content = researchPurposes[i].project_data_content;
-                    var member_id_member = researchPurposes[i].member_id_member;
-                    var member_name = researchPurposes[i].member_name;
-                    var researchPurposesData = {project_data_id:project_data_id,groups_id_groups:groups_id_groups, project_data_content:project_data_content, member_id_member:member_id_member, member_name:member_name};
-                    researchPurposesArray.push(researchPurposesData);
-                    //console.log(allGroupsArray);
+        var researchExperimentArray = [];
+        //抓取專題實作內容資料
+        project.selectResearchExperiment(gid, function(researchExperiment){
+            if(researchExperiment){
+                for (var j = 0; j < researchExperiment.length; j++){
+                    var project_data_multi_id = researchExperiment[j].project_data_multi_id;
+                    var groups_id_groups = researchExperiment[j].groups_id_groups;
+                    var project_data_multi_correspond = researchExperiment[j].project_data_multi_correspond;
+                    var project_data_multi_title = researchExperiment[j].project_data_multi_title;
+                    var project_data_multi_content = researchExperiment[j].project_data_multi_content;
+                    var member_id_member = researchExperiment[j].member_id_member;
+                    var member_name = researchExperiment[j].member_name;
+                    var researchExperimentData = {project_data_multi_id:project_data_multi_id, groups_id_groups:groups_id_groups, project_data_multi_correspond:project_data_multi_correspond, project_data_multi_title:project_data_multi_title, project_data_multi_content:project_data_multi_content, member_id_member:member_id_member, member_name:member_name};
+                    researchExperimentArray.push(researchExperimentData);
+                    console.log(researchExperimentArray)
                 }
-                //console.log(researchPurposesArray);
-                project.selectResearchTitleData(gid, function(researchTitle){
-                                if(researchTitle == ""){
-                                    var researchTitle = "";
-                                    console.log("1");
-                                    project.selectResearchMotivation([gid,researchTitle],function(researchMotivation){
-                                        if(researchMotivation == ""){      
-                                            var researchMotivation = "";
-                                            res.render('projectEdit',  {title: 'Science Fair科學探究專題系統', gid:gid, member_id:req.session.member_id, member_name:req.session.member_name, researchTitle:researchTitle, researchMotivation:researchMotivation,researchPurposes:researchPurposesArray});
+                project.selectResearchPurposes(gid, function(researchPurposes){
+                    if(researchPurposes){
+                        for (var i = 0; i < researchPurposes.length; i++){
+                            var project_data_id = researchPurposes[i].project_data_id;
+                            var groups_id_groups = researchPurposes[i].groups_id_groups;
+                            var project_data_content = researchPurposes[i].project_data_content;
+                            var member_id_member = researchPurposes[i].member_id_member;
+                            var member_name = researchPurposes[i].member_name;
+                            var researchPurposesData = {project_data_id:project_data_id,groups_id_groups:groups_id_groups, project_data_content:project_data_content, member_id_member:member_id_member, member_name:member_name};
+                            researchPurposesArray.push(researchPurposesData);
+                            //console.log(allGroupsArray);
+                        }
+                        //console.log(researchPurposesArray);
+                        project.selectResearchTitleData(gid, function(researchTitle){
+                                        if(researchTitle == ""){
+                                            var researchTitle = "";
+                                            console.log("1");
+                                            project.selectResearchMotivation([gid,researchTitle],function(researchMotivation){
+                                                if(researchMotivation == ""){      
+                                                    var researchMotivation = "";
+                                                    res.render('projectEdit',  {title: 'Science Fair科學探究專題系統', gid:gid, member_id:req.session.member_id, member_name:req.session.member_name, researchTitle:researchTitle, researchMotivation:researchMotivation, researchPurposes:researchPurposesArray, researchExperiment:researchExperimentArray});
+                                                }else{
+                                                    var researchMotivation = researchMotivation[0].project_data_content;
+                                                    res.render('projectEdit',  {title: 'Science Fair科學探究專題系統', gid:gid, member_id:req.session.member_id, member_name:req.session.member_name, researchTitle:researchTitle, researchMotivation:researchMotivation, researchPurposes:researchPurposesArray, researchExperiment:researchExperimentArray});
+                                                }
+                                            })
                                         }else{
-                                            var researchMotivation = researchMotivation[0].project_data_content;
-                                            res.render('projectEdit',  {title: 'Science Fair科學探究專題系統', gid:gid, member_id:req.session.member_id, member_name:req.session.member_name, researchTitle:researchTitle, researchMotivation:researchMotivation,researchPurposes:researchPurposesArray});
-                                        }
+                                            console.log("2");
+                                            var researchTitle = researchTitle[0].project_data_content;
+                                            project.selectResearchMotivation([gid,researchTitle],function(researchMotivation){
+                                                if(researchMotivation == ""){      
+                                                    var researchMotivation = "";
+                                                    res.render('projectEdit',  {title: 'Science Fair科學探究專題系統', gid:gid, member_id:req.session.member_id, member_name:req.session.member_name, researchTitle:researchTitle, researchMotivation:researchMotivation,researchPurposes:researchPurposesArray, researchExperiment:researchExperimentArray});
+                                                }else{
+                                                    var researchMotivation = researchMotivation[0].project_data_content;
+                                                    // console.log(researchPurposesArray);
+                                                    res.render('projectEdit',  {title: 'Science Fair科學探究專題系統', gid:gid, member_id:req.session.member_id, member_name:req.session.member_name, researchTitle:researchTitle, researchMotivation:researchMotivation, researchPurposes:researchPurposesArray, researchExperiment:researchExperimentArray});
+                                                }
+                                            })
+                                        } 
                                     })
-                                }else{
-                                    console.log("2");
-                                    var researchTitle = researchTitle[0].project_data_content;
-                                    project.selectResearchMotivation([gid,researchTitle],function(researchMotivation){
-                                        if(researchMotivation == ""){      
-                                            var researchMotivation = "";
-                                            res.render('projectEdit',  {title: 'Science Fair科學探究專題系統', gid:gid, member_id:req.session.member_id, member_name:req.session.member_name, researchTitle:researchTitle, researchMotivation:researchMotivation,researchPurposes:researchPurposesArray});
-                                        }else{
-                                            var researchMotivation = researchMotivation[0].project_data_content;
-                                            // console.log(researchPurposesArray);
-                                            res.render('projectEdit',  {title: 'Science Fair科學探究專題系統', gid:gid, member_id:req.session.member_id, member_name:req.session.member_name, researchTitle:researchTitle, researchMotivation:researchMotivation, researchPurposes:researchPurposesArray});
-                                        }
-                                    })
-                                } 
-                            })
+                    }
+                }) 
             }
-        })  
+        }) //selectResearchExperiment結束
+
+
+        // project.selectResearchPurposes(gid, function(researchPurposes){
+        //     if(researchPurposes){
+        //         for (var i = 0; i < researchPurposes.length; i++){
+        //             var project_data_id = researchPurposes[i].project_data_id;
+        //             var groups_id_groups = researchPurposes[i].groups_id_groups;
+        //             var project_data_content = researchPurposes[i].project_data_content;
+        //             var member_id_member = researchPurposes[i].member_id_member;
+        //             var member_name = researchPurposes[i].member_name;
+        //             var researchPurposesData = {project_data_id:project_data_id,groups_id_groups:groups_id_groups, project_data_content:project_data_content, member_id_member:member_id_member, member_name:member_name};
+        //             researchPurposesArray.push(researchPurposesData);
+        //             //console.log(allGroupsArray);
+        //         }
+        //         //console.log(researchPurposesArray);
+        //         project.selectResearchTitleData(gid, function(researchTitle){
+        //                         if(researchTitle == ""){
+        //                             var researchTitle = "";
+        //                             console.log("1");
+        //                             project.selectResearchMotivation([gid,researchTitle],function(researchMotivation){
+        //                                 if(researchMotivation == ""){      
+        //                                     var researchMotivation = "";
+        //                                     res.render('projectEdit',  {title: 'Science Fair科學探究專題系統', gid:gid, member_id:req.session.member_id, member_name:req.session.member_name, researchTitle:researchTitle, researchMotivation:researchMotivation,researchPurposes:researchPurposesArray});
+        //                                 }else{
+        //                                     var researchMotivation = researchMotivation[0].project_data_content;
+        //                                     res.render('projectEdit',  {title: 'Science Fair科學探究專題系統', gid:gid, member_id:req.session.member_id, member_name:req.session.member_name, researchTitle:researchTitle, researchMotivation:researchMotivation,researchPurposes:researchPurposesArray});
+        //                                 }
+        //                             })
+        //                         }else{
+        //                             console.log("2");
+        //                             var researchTitle = researchTitle[0].project_data_content;
+        //                             project.selectResearchMotivation([gid,researchTitle],function(researchMotivation){
+        //                                 if(researchMotivation == ""){      
+        //                                     var researchMotivation = "";
+        //                                     res.render('projectEdit',  {title: 'Science Fair科學探究專題系統', gid:gid, member_id:req.session.member_id, member_name:req.session.member_name, researchTitle:researchTitle, researchMotivation:researchMotivation,researchPurposes:researchPurposesArray});
+        //                                 }else{
+        //                                     var researchMotivation = researchMotivation[0].project_data_content;
+        //                                     // console.log(researchPurposesArray);
+        //                                     res.render('projectEdit',  {title: 'Science Fair科學探究專題系統', gid:gid, member_id:req.session.member_id, member_name:req.session.member_name, researchTitle:researchTitle, researchMotivation:researchMotivation, researchPurposes:researchPurposesArray});
+        //                                 }
+        //                             })
+        //                         } 
+        //                     })
+        //     }
+        // })  
     }
 });
 
@@ -152,6 +215,26 @@ router.post('/deletePurposes',function(req, res, next) {
             console.log(result);
             res.send({message:"true"});
         // }
+    });
+});
+
+//新增實驗項目
+router.post('/addExperiment',function(req, res, next) {
+    var gid = req.body.gid;
+    var project_data_multi_type = "實驗項目";
+    var project_data_multi_correspond = req.body.project_data_multi_correspond;
+    var project_data_multi_title = req.body.project_data_multi_title;
+    var project_data_multi_content = req.body.project_data_multi_content;
+    var member_id_member = req.session.member_id;
+    var member_name = req.session.member_name;
+
+    //console.log(gid);
+    // res.send({message:"true"});
+    project.addProjectDataMultiContent(gid, project_data_multi_type, project_data_multi_correspond, project_data_multi_title, project_data_multi_content, member_id_member, member_name, function(result){
+        if(result){
+            // console.log(result.insertId);
+            res.send({message:"true"});
+        }
     });
 });
 

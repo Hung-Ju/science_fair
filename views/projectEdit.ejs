@@ -20,12 +20,13 @@
     <!-- bootstrap-table -->
     <link href="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.css" rel="stylesheet">
     <script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.js"></script>
-    <script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table-locale-all.min.js"></script>
+    <script type="text/javascript" src="/javascripts/bootstrap-table/bootstrap-table-zh-TW.js"></script>
 
     <link rel='stylesheet' href='/stylesheets/Ju-style.css' />
     <script type="text/javascript" src="/javascripts/projectEdit.js"></script>
 
-    
+    <link rel="icon" type="image/png" href="/stylesheets/images/atoms-science-svgrepo-com.svg"/>
+
   </head>
   <body>
     <!-- Header(上方的標題和選單條) -->
@@ -401,7 +402,7 @@
 
                   <!-- 新增實驗項目的彈出視窗 -->
                   <div class="modal fade" id="add_experiment_model" tabindex="-1" role="dialog" aria-labelledby="addExperimentCenterTitle" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                       <div class="modal-content">
                         <div class="modal-header">
                           <h5 class="modal-title" id="addExperimentLongTitle">新增實驗項目</h5>
@@ -411,10 +412,15 @@
                         </div>
                         <div class="modal-body">
                           <div id="addExperimentRoot">
-                            <p>對應的研究目的：
+                            <p><b>研究項目標題：</b>
                               <input class="form-control" type="text" name="purpose_correspond" id="purpose_correspond" required="required">
                             </p>
-                            <p>實驗項目設計：
+                            <p><b>對應的研究目的：</b>
+                              <div id="correspond_purposes"></div>
+                              
+                              <!-- <input class="form-control" type="text" name="purpose_correspond" id="purpose_correspond" required="required"> -->
+                            </p>
+                            <p><b>實驗項目設計：</b>
                               <textarea rows="4" class="col-sm-8 form-control create-experiment-summernote"></textarea>
                             </p>
                           </div>
@@ -428,7 +434,11 @@
                   </div>
                   <!-- 新增實驗項目的彈出視窗 -->
 
-                  <div style="background-color:white;">
+                  <input type='hidden' id="researchExperiment" value="<%= JSON.stringify(researchExperiment) %>">
+                  <table id="researchExperimentTable" class="table"></table>
+
+                  <!-- <div style="background-color:white;">
+                    
                     <table class="table">
                       <thead>
                         <tr class="table-active">
@@ -463,7 +473,7 @@
                         </tr>
                       </tbody>
                     </table>
-                  </div>
+                  </div> -->
                   
                   <!-- <div class="experiment-item margin-bottom10 form-group row">
                     <label class="col-sm-2 text-center">實驗項目：</label>
@@ -472,9 +482,9 @@
                     </div>&nbsp;
                   </div> -->
               </div>
-              <div class="btn-save-box margin-bottom10 content-margin">
+              <!-- <div class="btn-save-box margin-bottom10 content-margin">
                     <button class="btn btn-sm btn-save">儲存</button>
-              </div>
+              </div> -->
             </div>
             <!-- 小組想法區塊 -->
             <div class="col-3" style="background-color: #FFF5E0;">

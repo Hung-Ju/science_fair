@@ -42,6 +42,19 @@ module.exports = {
 		})
 	},
 
+	//抓取專題中的實驗項目的資料
+	selectResearchExperiment : function(groups_id_groups, cb){
+		var groups_id_groups = groups_id_groups;
+		pool.getConnection(function(err, connection){
+			if(err) throw err;
+			connection.query('SELECT * FROM `project_data_multi` WHERE `project_data_multi_type`="實驗項目" AND `groups_id_groups`=?', groups_id_groups,function(err, result){
+				if(err) throw err;
+				cb(result);
+				connection.release();
+			})
+		})
+	},
+
 	//新增研究題目or新增研究動機or新增研究目的(新增project_data資料表的資料)
 	addProjectDataContent :function(groups_id_groups, project_data_type, project_data_content, member_id_member, member_name, cb){
 		var groups_id_groups = groups_id_groups;
@@ -49,6 +62,20 @@ module.exports = {
 			if(err) throw err;
 			var params = {groups_id_groups:groups_id_groups, project_data_type:project_data_type, project_data_content:project_data_content, member_id_member:member_id_member, member_name:member_name};
 			connection.query('INSERT INTO `project_data` SET ?', params, function(err, insert_res){
+				if(err) throw err;
+				cb(insert_res);
+				connection.release();
+			})
+		})
+	},
+
+	//新增實驗項目(新增project_data_multi資料表的資料)
+	addProjectDataMultiContent :function(groups_id_groups, project_data_multi_type, project_data_multi_correspond, project_data_multi_title, project_data_multi_content, member_id_member, member_name, cb){
+		var groups_id_groups = groups_id_groups;
+		pool.getConnection(function(err, connection){
+			if(err) throw err;
+			var params = {groups_id_groups:groups_id_groups, project_data_multi_type:project_data_multi_type, project_data_multi_correspond:project_data_multi_correspond, project_data_multi_title:project_data_multi_title, project_data_multi_content:project_data_multi_content, member_id_member:member_id_member, member_name:member_name};
+			connection.query('INSERT INTO `project_data_multi` SET ?', params, function(err,insert_res){
 				if(err) throw err;
 				cb(insert_res);
 				connection.release();

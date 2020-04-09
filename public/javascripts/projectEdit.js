@@ -10,18 +10,21 @@ function researchPurposesTable(){
             {title: '', field: 'project_data_id',events: 'window.operateEvents' , formatter: 'researchPurposesButton',width:100}
             ],
         theadClasses: 'thead-light',
-        classes: 'table table-bordered table-light',
+        classes: 'table table-bordered bg-light',
         pagination: true
     });
     $allResearchPurposesTable.bootstrapTable('load',allResearchPurposes);
 }
 
 window.operateEvents = {
+    //研究目的表格裡的編輯按鈕
     'click .editPurposesBtn': function (e, value, row, index) {
         // console.log(row);
         //顯示視窗前呼叫
         $("#editPurposesModal").on("show.bs.modal",function(event){
+            //用operateEvents把要編輯的那筆資料傳送到要開啟的編輯用modal
             document.getElementById("research_purposes_edit").value = row.project_data_content;
+            //研究目的的編輯用modal裡的儲存按鈕，update研究目的用的AJAX
             $("#savePurposesModalButton").click(function(){
                 var gid = document.getElementById("groups_id").value;
                 console.log(row.project_data_id);
@@ -55,6 +58,7 @@ window.operateEvents = {
     }
 }
 
+//刪除研究目的的AJAX
 function deletePurposes(project_data_id){
     var gid = document.getElementById("groups_id").value;
     $.ajax({  
@@ -86,6 +90,53 @@ function deletePurposes(project_data_id){
 function researchPurposesButton(index, row){
     return ['<button class="btn btn-primary btn-sm editPurposesBtn" type="submit" data-toggle="modal" data-target="#editPurposesModal">編輯</button><br>' + 
             '<button class="btn btn-danger btn-sm stage-switch-btn deletePurposesBtn" onclick="deletePurposes('+row.project_data_id+')">刪除</button>']
+}
+
+//實驗項目表格的初始化設定
+function researchExperimentTable(){
+    var researchExperimentTableData = document.getElementById("researchExperiment").value;
+    var allResearchExperiment = JSON.parse(researchExperimentTableData);
+    var $allResearchExperimentTable = $('#researchExperimentTable');
+    
+    $allResearchExperimentTable.bootstrapTable({
+        columns: [
+            {title: '實驗項目標題', field: 'project_data_multi_title'},
+            {title: '對應的實驗目的', field: 'project_data_multi_correspond'},
+            {title: '實驗項目內容', field: 'project_data_multi_content'},
+            {title: '', field: 'project_data_multi_id', formatter: 'researchExperimentButton',width:100}
+            ],
+        theadClasses: 'thead-light',
+        classes: 'table table-bordered bg-light',
+        pagination: true
+    });
+    $allResearchExperimentTable.bootstrapTable('load',allResearchExperiment);
+}
+
+//實驗項目表格裡的第一個欄位的實驗項目數字
+// function researchExperimentIndex(value, row, index){
+//     return index+1
+// }
+
+//實驗項目表格裡的編輯按鈕和刪除按鈕
+function researchExperimentButton(value, row, index){
+    return ['<button class="btn btn-primary btn-sm editExperimentBtn" type="submit" data-toggle="modal" data-target="#editPurposesModal">編輯</button><br>' + 
+            '<button class="btn btn-danger btn-sm stage-switch-btn deleteExperimentBtn" onclick="deletePurposes('+row.project_data_multi_id+')">刪除</button>']
+}
+
+//實驗項目
+function correspond_purposes_select(){
+    var researchPurposesData = document.getElementById("researchPurposes").value;
+    var allResearchPurposes = JSON.parse(researchPurposesData);
+    $correspond_purposes = $('#correspond_purposes');
+    for (var i = 0; i < allResearchPurposes.length; i++){
+        var purposes = allResearchPurposes[i];
+        var purposes_content = purposes.project_data_content;
+        var purposes_options = ['<div class="custom-control custom-checkbox">'+
+                                '<input type="checkbox" class="custom-control-input" id="'+purposes_content+'" name="purposes_select">'+
+                                '<label class="custom-control-label" for="'+purposes_content+'">'+purposes_content+'</label>'+
+                              '</div>'];
+        $correspond_purposes.append(purposes_options);
+    }
 }
 
 
@@ -252,7 +303,8 @@ function summernoteCreate(){
 
 $(function(){
     researchPurposesTable();
-    
+    researchExperimentTable();
+    correspond_purposes_select();
     //切換階段顯示
     $('#selectStage').change(function () {
         //只開啟研究動機和研究目的的編輯區塊
@@ -276,13 +328,13 @@ $(function(){
             $('#L2').addClass("active");
             $('#L1, #L3, #L4, #L5').removeClass("active") ;
             //table列拖拉和數字排序
-            $( "table tbody" ).sortable( {
-                update: function( event, ui ) {
-                    $(this).children().each(function(index) {
-                            $(this).find('td').first().html(index + 1)
-                    });
-                }   
-            });
+            // $( "table tbody" ).sortable( {
+            //     update: function( event, ui ) {
+            //         $(this).children().each(function(index) {
+            //                 $(this).find('td').first().html(index + 1)
+            //         });
+            //     }   
+            // });
 
         //只開啟實驗記錄和研究結果(分析及圖表)的編輯區塊
         } else if ($("#selectStage").val() == "執行"){
