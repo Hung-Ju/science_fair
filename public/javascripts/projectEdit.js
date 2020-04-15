@@ -102,7 +102,7 @@ function researchExperimentTable(){
         columns: [
             {title: '實驗項目標題', field: 'project_data_multi_title'},
             {title: '對應的實驗目的', field: 'project_data_multi_correspond'},
-            {title: '實驗項目內容', field: 'project_data_multi_content'},
+            {title: '實驗項目內容(說明與步驟)', field: 'project_data_multi_content'},
             {title: '', field: 'project_data_multi_id', formatter: 'researchExperimentButton',width:100}
             ],
         theadClasses: 'thead-light',
@@ -123,7 +123,7 @@ function researchExperimentButton(value, row, index){
             '<button class="btn btn-danger btn-sm stage-switch-btn deleteExperimentBtn" onclick="deletePurposes('+row.project_data_multi_id+')">刪除</button>']
 }
 
-//實驗項目
+//實驗項目編輯用modal裡選擇對應的研究目的用的checkbox
 function correspond_purposes_select(){
     var researchPurposesData = document.getElementById("researchPurposes").value;
     var allResearchPurposes = JSON.parse(researchPurposesData);
@@ -132,13 +132,88 @@ function correspond_purposes_select(){
         var purposes = allResearchPurposes[i];
         var purposes_content = purposes.project_data_content;
         var purposes_options = ['<div class="custom-control custom-checkbox">'+
-                                '<input type="checkbox" class="custom-control-input" id="'+purposes_content+'" name="purposes_select">'+
+                                '<input type="checkbox" class="custom-control-input" id="'+purposes_content+'" name="purposes_select" value="'+purposes_content+'">'+
                                 '<label class="custom-control-label" for="'+purposes_content+'">'+purposes_content+'</label>'+
                               '</div>'];
         $correspond_purposes.append(purposes_options);
     }
 }
 
+//研究設備及器材表格的初始化設定
+function researchMaterialTable(){
+    var researchMaterialTableData = document.getElementById("researchMaterial").value;
+    var allResearchMaterial = JSON.parse(researchMaterialTableData);
+    var $allResearchMaterialTable = $('#researchMaterialTable');
+    
+    $allResearchMaterialTable.bootstrapTable({
+        columns: [
+            {title: '實驗材料名稱', field: 'material_name'},
+            {title: '實驗材料數量(單位)', field: 'material_amount'},
+            // {title: '補充說明', field: ''},
+            {title: '', field: 'material_id', formatter: 'researchExperimentButton',width:100}
+            ],
+        theadClasses: 'thead-light',
+        classes: 'table table-bordered bg-light',
+        pagination: true
+    });
+    $allResearchMaterialTable.bootstrapTable('load',allResearchMaterial);
+}
+
+//實驗記錄表格的初始化設定
+function researchRecordTable(){
+    var researchRecordTableData = document.getElementById("researchRecord").value;
+    var allResearchRecord = JSON.parse(researchRecordTableData);
+    var $allResearchRecordTable = $('#researchRecordTable');
+    
+    $allResearchRecordTable.bootstrapTable({
+        columns: [
+            {title: '對應的實驗項目', field: 'project_data_multi_correspond'},
+            {title: '實驗記錄內容', field: 'project_data_multi_content'},
+            {title: '', field: 'project_data_multi_id', formatter: 'researchExperimentButton',width:100}
+            ],
+        theadClasses: 'thead-light',
+        classes: 'table table-bordered bg-light',
+        pagination: true
+    });
+    $allResearchRecordTable.bootstrapTable('load',allResearchRecord);
+}
+
+//研究結果(分析及圖表)表格的初始化設定
+function researchAnalysisTable(){
+    var researchAnalysisTableData = document.getElementById("researchAnalysis").value;
+    var allResearchAnalysis = JSON.parse(researchAnalysisTableData);
+    var $allResearchAnalysisTable = $('#researchAnalysisTable');
+    
+    $allResearchAnalysisTable.bootstrapTable({
+        columns: [
+            {title: '對應的研究目的', field: 'project_data_multi_correspond'},
+            {title: '分析項目內容', field: 'project_data_multi_content'},
+            {title: '', field: 'project_data_multi_id', formatter: 'researchExperimentButton',width:100}
+            ],
+        theadClasses: 'thead-light',
+        classes: 'table table-bordered bg-light',
+        pagination: true
+    });
+    $allResearchAnalysisTable.bootstrapTable('load',allResearchAnalysis);
+}
+
+//討論表格的初始化設定
+function researchDiscussionTable(){
+    var researchDiscussionTableData = document.getElementById("researchDiscussion").value;
+    var allResearchDiscussion = JSON.parse(researchDiscussionTableData);
+    var $allresearchDiscussionTable = $('#researchDiscussionTable');
+    
+    $allresearchDiscussionTable.bootstrapTable({
+        columns: [
+            {title: '討論內容', field: 'project_data_content'},
+            {title: '', field: 'project_data_id',events: 'window.operateEvents' , formatter: 'researchPurposesButton',width:100}
+            ],
+        theadClasses: 'thead-light',
+        classes: 'table table-bordered bg-light',
+        pagination: true
+    });
+    $allresearchDiscussionTable.bootstrapTable('load',allResearchDiscussion);
+}
 
 //增加研究目的
 // function addPurposes(){
@@ -304,6 +379,10 @@ function summernoteCreate(){
 $(function(){
     researchPurposesTable();
     researchExperimentTable();
+    researchMaterialTable();
+    researchRecordTable();
+    researchAnalysisTable();
+    researchDiscussionTable();
     correspond_purposes_select();
     //切換階段顯示
     $('#selectStage').change(function () {
@@ -383,10 +462,45 @@ $(function(){
             $(".create-conclusion-summernote").summernote("enable");
             $('#L5').addClass("active");
             $('#L1, #L2, #L3, #L4').removeClass("active") ;
-        } 
-        
-        
+        }    
     }).change();
+
+    //用ajax的方式新增實驗項目
+    $("#addExperimentModalButton").click(function () {
+        var gid = document.getElementById("groups_id").value;
+        // console.log(gid);
+        var cbxPurposesSelect = [];
+        $('input[name="purposes_select"]:checked').each(function() { 
+            cbxPurposesSelect.push($(this).val());
+        });
+              
+        $.ajax({  
+            type: "POST",
+            url: "/project/addExperiment",
+            data: {
+                gid: gid,
+                project_data_multi_title: $("#research_experiment_title_add").val(),
+                project_data_multi_correspond: cbxPurposesSelect.toString(),
+                project_data_multi_content: $(".create-experiment-summernote").val(),
+            },
+            success: function(data){
+                if(data){
+                    // alert(123);
+                    if(data.message=="true"){
+                        alert('新增成功');
+                        window.location.href="/project/?gid="+gid;
+                    }
+                    else{
+                        alert('新增失敗請重新輸入');
+                        window.location.href="/groups";
+                    }
+                }
+            },
+            error: function(){
+                alert('失敗');
+            }
+        });
+    });
 
     //用ajax的方式新增研究目的
     $("#addPurposesModalButton").click(function () {
@@ -437,8 +551,9 @@ $(function(){
                 if(data){
                     //  alert(project_data_content2);
                     if(data.message=="true"){
-                        alert('成功');
-                        window.location.href="/project/?gid="+gid;
+                        alert('儲存成功');
+                        $('.create-motivation-summernote').removeClass("editing");
+                        // window.location.href="/project/?gid="+gid;
                     }
                     else{
                         alert('失敗，請重新輸入');
@@ -472,6 +587,19 @@ $(function(){
             }, 500);
     });
 
+    //偵測如果有改變但是尚未儲存進資料庫就會跳出系統提醒
+    $(".create-motivation-summernote").on("summernote.change", function (e) {   // callback as jquery custom event 
+        $(this).addClass("editing");
+    });
+    // $(".create-motivation-summernote").change(function () {
+    //     isChange = true;
+    //     $(this).addClass("editing");
+    // });
+    $(window).bind('beforeunload', function (e) {
+        if ($(".editing").get().length > 0) {
+            return '資料尚未存檔，確定是否要離開？';
+        }
+    })
 
 
 });

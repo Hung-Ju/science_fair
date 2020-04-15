@@ -34,7 +34,8 @@ router.get('/',function(req, res, next) {
                 var groups_create_student = allGroups[i].groups_create_student;
                 var member_id_teacher_member = allGroups[i].member_id_teacher_member;
                 var groups_teacher = allGroups[i].groups_teacher;
-                var groups_createtime = day.getFullYear()+'/'+day.getMonth()+1+'/'+day.getDate();
+                var groups_createtime_month = day.getMonth()+1;
+                var groups_createtime = day.getFullYear()+'/'+groups_createtime_month+'/'+day.getDate();
                 var groups_stage = allGroups[i].groups_stage;
                 var allGroupsData = {groups_index:groups_index, groups_id:groups_id, groups_name:groups_name, groups_key:groups_key, member_id_student_member:member_id_student_member, 
                                     groups_create_student:groups_create_student, member_id_teacher_member:member_id_teacher_member, groups_teacher:groups_teacher, 
@@ -48,7 +49,8 @@ router.get('/',function(req, res, next) {
                     var day = new Date(memberJoinGroups[j].groups_createtime);
                     var groups_id = memberJoinGroups[j].groups_id;
                     var groups_name = memberJoinGroups[j].groups_name;
-                    var groups_createtime = day.getFullYear()+'/'+day.getMonth()+1+'/'+day.getDate();
+                    var groups_createtime_month = day.getMonth()+1;
+                    var groups_createtime = day.getFullYear()+'/'+groups_createtime_month+'/'+day.getDate();
                     var groups_member_id = memberJoinGroups[j].groups_member_id;
                     var member_name = memberJoinGroups[j].member_name;
                     var memberJoinGroupsData = {groups_id:groups_id, groups_name:groups_name, groups_createtime:groups_createtime, groups_member_id:groups_member_id,

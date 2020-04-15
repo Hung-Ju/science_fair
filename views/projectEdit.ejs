@@ -39,6 +39,9 @@
             <img src="/stylesheets/images/atoms-science-svgrepo-com.svg" width="30" height="30" class="d-inline-block align-top" alt="">
             Science Fair科學探究專題系統
           </a>
+          <!-- <a class="">
+            第一組
+          </a> -->
   
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -271,7 +274,7 @@
                         </div>
                         <div class="modal-body">
                           <div id="addPurposesModalRoot">
-                            <p>研究目的<input class="form-control" type="text" name="research_purposes" id="research_purposes_add" required="required"></p>
+                            <p><b>研究目的</b><input class="form-control" type="text" name="research_purposes" id="research_purposes_add" required="required"></p>
                           </div>
                         </div>
                         <div class="modal-footer">
@@ -298,7 +301,7 @@
                       </div>
                       <div class="modal-body">
                         <div id="addPurposesModalRoot">
-                          <p>研究目的<input class="form-control" type="text" name="research_purposes" id="research_purposes_edit" required="required"></p>
+                          <p><b>研究目的</b><input class="form-control" type="text" name="research_purposes" id="research_purposes_edit" required="required"></p>
                         </div>
                       </div>
                       <div class="modal-footer">
@@ -362,7 +365,6 @@
           <!-- 研究目的章節區塊 -->
 
 
-
           <!-- 實驗步驟章節區塊 -->
           <div class="row" id="research_steps_box">
             <div class="col chapter-title-box" style="background-color: #31625C;">
@@ -412,13 +414,12 @@
                         </div>
                         <div class="modal-body">
                           <div id="addExperimentRoot">
-                            <p><b>研究項目標題：</b>
-                              <input class="form-control" type="text" name="purpose_correspond" id="purpose_correspond" required="required">
+                            <p><b>實驗項目標題：</b>
+                              <input class="form-control" type="text" name="research_experiment" id="research_experiment_title_add" required="required">
                             </p>
                             <p><b>對應的研究目的：</b>
                               <div id="correspond_purposes"></div>
-                              
-                              <!-- <input class="form-control" type="text" name="purpose_correspond" id="purpose_correspond" required="required"> -->
+
                             </p>
                             <p><b>實驗項目設計：</b>
                               <textarea rows="4" class="col-sm-8 form-control create-experiment-summernote"></textarea>
@@ -427,15 +428,17 @@
                         </div>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                          <button type="button" class="btn btn-primary" id="addGroups">新增</button>
+                          <button type="button" class="btn btn-primary" id="addExperimentModalButton">新增</button>
                         </div>
                       </div>
                     </div>
                   </div>
                   <!-- 新增實驗項目的彈出視窗 -->
 
+                  <!-- 實驗項目的表格 -->
                   <input type='hidden' id="researchExperiment" value="<%= JSON.stringify(researchExperiment) %>">
                   <table id="researchExperimentTable" class="table"></table>
+                  <!-- 實驗項目的表格 -->
 
                   <!-- <div style="background-color:white;">
                     
@@ -533,11 +536,16 @@
               <div class="content-margin">
                 <center>
                   <div class="margin-bottom10 form-group row">
-                    <!-- <label class="col-sm-3">新增研究材料與工具</label> -->
-                    <button class="btn btn-sm btn-primary margin-left10">新增研究材料與工具</button>
+                    <!-- <label class="col-sm-3">新增研究設備及器材</label> -->
+                    <button class="btn btn-sm btn-primary margin-left10">新增研究設備及器材</button>
                   </div>
+                  <!-- 研究設備及器材的表格 -->
+                  <input type='hidden' id="researchMaterial" value="<%= JSON.stringify(researchMaterial) %>">
+                  <table id="researchMaterialTable" class="table"></table>
+                  <!-- 研究設備及器材的表格 -->
                   <div class="margin-bottom10 form-group row">
-                    <div class="card-group">
+
+                    <!-- <div class="card-group">
                       <div class="card" style="width: 12rem;">
                         <img src="https://fs1.shop123.com.tw/300063/upload/product/3000633213pic_big_943291.jpg" class="card-img-top">
                         <div class="card-body">
@@ -546,7 +554,8 @@
                           <button class="btn btn-sm btn-primary margin-left10">編輯</button><button class="btn btn-sm btn-danger margin-left10">刪除</button>
                         </div>
                       </div>
-                    </div>
+                    </div> -->
+
                   </div>
                     
                 </center>
@@ -601,17 +610,20 @@
                   <div class="margin-bottom10 form-group row">
                     <button id="add_record_btn" class="btn btn-sm btn-primary margin-left10">新增實驗記錄</button>
                   </div>
-                  <div class="record-item margin-bottom10 form-group row">
+
+                  <!-- 實驗記錄的表格 -->
+                  <input type='hidden' id="researchRecord" value="<%= JSON.stringify(researchRecord) %>">
+                  <table id="researchRecordTable" class="table"></table>
+                  <!-- 實驗記錄的表格 -->
+
+                  <!-- <div class="record-item margin-bottom10 form-group row">
                     <label class="col-sm-2 text-center">實驗紀錄：</label>
                     <div style="width:75%">
                       <textarea rows="4" class="col-sm-8 form-control create-record-summernote"></textarea>
                     </div>
                     &nbsp;
                     <button class="col-auto btn btn-sm btn-danger my-1 height30">刪除</button>
-                  </div>
-              </div>
-              <div class="btn-save-box margin-bottom10">
-                <button class="btn btn-sm btn-save">儲存</button>
+                  </div> -->
               </div>
             </div>
             <!-- 小組想法區塊 -->
@@ -660,22 +672,28 @@
             <div class="col-7" style="background-color: #EEEBE5;" id="research_analysis">
               <div class="content-margin">
 
-                  <div class="margin-bottom10 form-group row">
-                    <button class="btn btn-sm btn-primary margin-left10">新增分析項目</button>
-                  </div>
-                  <div class="margin-bottom10 form-group row">
+                <div class="margin-bottom10 form-group row">
+                  <button class="btn btn-sm btn-primary margin-left10">新增分析項目</button>
+                </div>
+                <!-- 研究結果(分析及圖表)的表格 -->
+                <input type='hidden' id="researchAnalysis" value="<%= JSON.stringify(researchAnalysis) %>">
+                <table id="researchAnalysisTable" class="table"></table>
+                <!-- 研究結果(分析及圖表)的表格 -->
+
+
+                  <!-- <div class="margin-bottom10 form-group row">
                     <label class="col-sm-2 text-center">分析項目1：</label>
                     <div style="width:75%">
                       <textarea rows="4" class="col-sm-8 form-control create-analysis-summernote"></textarea>
                     </div>
                     &nbsp;
-                    <!-- <button class="col-auto btn btn-sm btn-save my-1 height30">儲存</button>&nbsp; -->
+                    <button class="col-auto btn btn-sm btn-save my-1 height30">儲存</button>&nbsp;
                     <button class="col-auto btn btn-sm btn-danger my-1 height30">刪除</button>
                   </div>
 
                   <div class="btn-save-box margin-bottom10">
                     <button class="btn btn-sm btn-save">儲存</button>
-                  </div>
+                  </div> -->
                     
                 
               </div>
@@ -725,22 +743,26 @@
             <!-- 中間內容編輯區塊 -->
             <div class="col-7" style="background-color: #EEEBE5;" id="research_discussion">
               <div id="research_discussion_content" class="content-margin">
-                  <div class="margin-bottom10 form-group row">
-                    <button id="add_discussion_btn" onclick="addDiscussion()" class="btn btn-sm btn-primary margin-left10">新增討論項目</button>
-                  </div>
-                  <div class="discussion-item margin-bottom10 form-group row">
+                <div class="margin-bottom10 form-group row">
+                  <button id="add_discussion_btn" onclick="addDiscussion()" class="btn btn-sm btn-primary margin-left10">新增討論項目</button>
+                </div>
+
+                <!-- 討論的表格 -->
+                <input type='hidden' id="researchDiscussion" value="<%= JSON.stringify(researchDiscussion) %>">
+                <table id="researchDiscussionTable" class="table"></table>
+                <!-- 討論的表格 -->
+
+                  <!-- <div class="discussion-item margin-bottom10 form-group row">
                     <label class="col-sm-2 text-center">討論項目：</label>
                     <div style="width:75%">
                       <textarea rows="4" class="col-sm-8 form-control create-discussion-summernote"></textarea>
                     </div>&nbsp;
                     <button class="col-auto btn btn-sm btn-danger my-1 height30">刪除</button>
-                  </div>
-
-                  
+                  </div> -->    
               </div>
-              <div class="btn-save-box margin-bottom10">
+              <!-- <div class="btn-save-box margin-bottom10">
                 <button class="btn btn-sm btn-save">儲存</button>
-              </div>
+              </div> -->
             </div>
             <!-- 小組想法區塊 -->
             <div class="col-3" style="background-color: #FFF5E0;">
