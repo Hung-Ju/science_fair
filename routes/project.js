@@ -13,20 +13,28 @@ router.get('/',function(req, res, next) {
         res.redirect('/');
     }
     else {
+        var researchTitleArray = [];
+        var researchMotivationArray = [];
         var researchPurposesArray = [];
         var researchExperimentArray = [];
         var researchMaterialArray = [];
         var researchRecordArray = [];
         var researchAnalysisArray = [];
         var researchDiscussionArray = [];
+        var researchConclusionArray = [];
 
         //抓取專題實作內容資料
-
-
-        
-
-        //抓取討論的資料
-        project.selectResearchDiscussion(gid, function(researchDiscussion){
+        project.selectResearchConclusion(gid)
+        .then(function(researchConclusion){
+            if(researchConclusion){
+                for (var c = 0; c < researchConclusion.length; c++){
+                    var researchConclusionData = researchConclusion[c].project_data_content;
+                    researchConclusionArray.push(researchConclusionData);
+                }
+            }
+            return project.selectResearchDiscussion(gid)
+        })
+        .then(function(researchDiscussion){
             if(researchDiscussion){
                 for (var n = 0; n < researchDiscussion.length; n++){
                     var project_data_id = researchDiscussion[n].project_data_id;
@@ -37,181 +45,254 @@ router.get('/',function(req, res, next) {
                     var researchDiscussionData = {project_data_id:project_data_id,groups_id_groups:groups_id_groups, project_data_content:project_data_content, member_id_member:member_id_member, member_name:member_name};
                     researchDiscussionArray.push(researchDiscussionData);
                     // console.log(researchDiscussionArray);
-                }
-                //抓取研究結果(分析及圖表)的資料
-                project.selectResearchAnalysis(gid, function(researchAnalysis){
-                    if(researchAnalysis){
-                        for (var m = 0; m < researchAnalysis.length; m++){
-                            var project_data_multi_id = researchAnalysis[m].project_data_multi_id;
-                            var groups_id_groups = researchAnalysis[m].groups_id_groups;
-                            var project_data_multi_correspond = researchAnalysis[m].project_data_multi_correspond;
-                            var project_data_multi_title = researchAnalysis[m].project_data_multi_title;
-                            var project_data_multi_content = researchAnalysis[m].project_data_multi_content;
-                            var member_id_member = researchAnalysis[m].member_id_member;
-                            var member_name = researchAnalysis[m].member_name;
-                            var researchAnalysisData = {project_data_multi_id:project_data_multi_id, groups_id_groups:groups_id_groups, project_data_multi_correspond:project_data_multi_correspond, project_data_multi_title:project_data_multi_title, project_data_multi_content:project_data_multi_content, member_id_member:member_id_member, member_name:member_name};
-                            researchAnalysisArray.push(researchAnalysisData);
-                            // console.log(researchAnalysisArray);
-                        }
-                        //抓取實驗記錄的資料
-                        project.selectResearchRecord(gid, function(researchRecord){
-                            // console.log(researchRecord);
-                            if(researchRecord){
-                                for (var l = 0; l < researchRecord.length; l++){
-                                    var project_data_multi_id = researchRecord[l].project_data_multi_id;
-                                    var groups_id_groups = researchRecord[l].groups_id_groups;
-                                    var project_data_multi_correspond = researchRecord[l].project_data_multi_correspond;
-                                    var project_data_multi_title = researchRecord[l].project_data_multi_title;
-                                    var project_data_multi_content = researchRecord[l].project_data_multi_content;
-                                    var member_id_member = researchRecord[l].member_id_member;
-                                    var member_name = researchRecord[l].member_name;
-                                    var researchRecordData = {project_data_multi_id:project_data_multi_id, groups_id_groups:groups_id_groups, project_data_multi_correspond:project_data_multi_correspond, project_data_multi_title:project_data_multi_title, project_data_multi_content:project_data_multi_content, member_id_member:member_id_member, member_name:member_name};
-                                    researchRecordArray.push(researchRecordData);
-                                    // console.log(researchRecordArray)
-                                }//抓取研究材料及器材的資料
-                                project.selectResearchMaterial(gid, function(researchMaterial){
-                                    // console.log(researchMaterial);
-                                    if(researchMaterial){
-                                        for (var k = 0; k< researchMaterial.length; k++){
-                                            var material_id = researchMaterial[k].material_id;
-                                            var groups_id_groups = researchMaterial[k].groups_id_groups;
-                                            var material_name = researchMaterial[k].material_name;
-                                            var material_amount = researchMaterial[k].material_amount;
-                                            var material_img_url = researchMaterial[k].material_img_url;
-                                            var member_id_member = researchMaterial[k].member_id_member;
-                                            var member_name = researchMaterial[k].member_name;
-                                            var researchMaterialData = {material_id:material_id, groups_id_groups:groups_id_groups, material_name:material_name, material_amount:material_amount, material_img_url:material_img_url, member_id_member:member_id_member, member_name:member_name};
-                                            researchMaterialArray.push(researchMaterialData);
-                                            // console.log(researchPurposesArray);
-                                        }
-                                        //抓取實驗項目的資料
-                                        project.selectResearchExperiment(gid, function(researchExperiment){
-                                            // console.log(researchExperiment);
-                                            if(researchExperiment){
-                                                for (var j = 0; j < researchExperiment.length; j++){
-                                                    var project_data_multi_id = researchExperiment[j].project_data_multi_id;
-                                                    var groups_id_groups = researchExperiment[j].groups_id_groups;
-                                                    var project_data_multi_correspond = researchExperiment[j].project_data_multi_correspond;
-                                                    var project_data_multi_title = researchExperiment[j].project_data_multi_title;
-                                                    var project_data_multi_content = researchExperiment[j].project_data_multi_content;
-                                                    var member_id_member = researchExperiment[j].member_id_member;
-                                                    var member_name = researchExperiment[j].member_name;
-                                                    var researchExperimentData = {project_data_multi_id:project_data_multi_id, groups_id_groups:groups_id_groups, project_data_multi_correspond:project_data_multi_correspond, project_data_multi_title:project_data_multi_title, project_data_multi_content:project_data_multi_content, member_id_member:member_id_member, member_name:member_name};
-                                                    researchExperimentArray.push(researchExperimentData);
-                                                    // console.log(researchExperimentArray)
-                                                }
-                                                //抓取研究目的的資料
-                                                project.selectResearchPurposes(gid, function(researchPurposes){
-                                                    // console.log(researchPurposes);
-                                                    if(researchPurposes){
-                                                        for (var i = 0; i < researchPurposes.length; i++){
-                                                            var project_data_id = researchPurposes[i].project_data_id;
-                                                            var groups_id_groups = researchPurposes[i].groups_id_groups;
-                                                            var project_data_content = researchPurposes[i].project_data_content;
-                                                            var member_id_member = researchPurposes[i].member_id_member;
-                                                            var member_name = researchPurposes[i].member_name;
-                                                            var researchPurposesData = {project_data_id:project_data_id,groups_id_groups:groups_id_groups, project_data_content:project_data_content, member_id_member:member_id_member, member_name:member_name};
-                                                            researchPurposesArray.push(researchPurposesData);
-                                                            //console.log(allGroupsArray);
-                                                        }
-                                                        //console.log(researchPurposesArray);
-                                                        //抓取研究標題的資料
-                                                        project.selectResearchTitleData(gid, function(researchTitle){
-                                                            if(researchTitle == ""){
-                                                                var researchTitle = "";
-                                                                console.log("1");
-                                                                //抓取研究動機的資料
-                                                                project.selectResearchMotivation([gid,researchTitle],function(researchMotivation){
-                                                                    if(researchMotivation == ""){      
-                                                                        var researchMotivation = "";
-                                                                        res.render('projectEdit',  {title: 'Science Fair科學探究專題系統', gid:gid, member_id:req.session.member_id, member_name:req.session.member_name, researchTitle:researchTitle, researchMotivation:researchMotivation, researchPurposes:researchPurposesArray, researchExperiment:researchExperimentArray, researchMaterial:researchMaterialArray, researchRecord:researchRecordArray, researchAnalysis:researchAnalysisArray, researchDiscussion:researchDiscussionArray});
-                                                                    }else{
-                                                                        var researchMotivation = researchMotivation[0].project_data_content;
-                                                                        res.render('projectEdit',  {title: 'Science Fair科學探究專題系統', gid:gid, member_id:req.session.member_id, member_name:req.session.member_name, researchTitle:researchTitle, researchMotivation:researchMotivation, researchPurposes:researchPurposesArray, researchExperiment:researchExperimentArray, researchMaterial:researchMaterialArray, researchRecord:researchRecordArray, researchAnalysis:researchAnalysisArray, researchDiscussion:researchDiscussionArray});
-                                                                    }
-                                                                }) //selectResearchMotivation結束
-                                                            }else{
-                                                                console.log("2");
-                                                                var researchTitle = researchTitle[0].project_data_content;
-                                                                //抓取研究動機的資料
-                                                                project.selectResearchMotivation([gid,researchTitle],function(researchMotivation){
-                                                                    if(researchMotivation == ""){      
-                                                                        var researchMotivation = "";
-                                                                        res.render('projectEdit',  {title: 'Science Fair科學探究專題系統', gid:gid, member_id:req.session.member_id, member_name:req.session.member_name, researchTitle:researchTitle, researchMotivation:researchMotivation,researchPurposes:researchPurposesArray, researchExperiment:researchExperimentArray, researchMaterial:researchMaterialArray, researchRecord:researchRecordArray, researchAnalysis:researchAnalysisArray, researchDiscussion:researchDiscussionArray});
-                                                                    }else{
-                                                                        var researchMotivation = researchMotivation[0].project_data_content;
-                                                                        // console.log(researchPurposesArray);
-                                                                        res.render('projectEdit',  {title: 'Science Fair科學探究專題系統', gid:gid, member_id:req.session.member_id, member_name:req.session.member_name, researchTitle:researchTitle, researchMotivation:researchMotivation, researchPurposes:researchPurposesArray, researchExperiment:researchExperimentArray, researchMaterial:researchMaterialArray, researchRecord:researchRecordArray, researchAnalysis:researchAnalysisArray, researchDiscussion:researchDiscussionArray});
-                                                                    }
-                                                                }) //selectResearchMotivation結束
-                                                            } 
-                                                        }) //selectResearchTitleData結束
-                                                    }
-                                                }) //selectResearchPurposes結束
-                                            }
-                                        }) //selectResearchExperiment結束
-                                    }
-                                }) //selectResearchMaterial結束
-                            }
-                        }) //selectResearchRecord結束
-                    }
-                }) //selectResearchDiscussion結束
+                } 
             }
+            return project.selectResearchAnalysis(gid)
+        })
+        .then(function(researchAnalysis){
+            if(researchAnalysis){
+                for (var m = 0; m < researchAnalysis.length; m++){
+                    var project_data_multi_id = researchAnalysis[m].project_data_multi_id;
+                    var groups_id_groups = researchAnalysis[m].groups_id_groups;
+                    var project_data_multi_correspond = researchAnalysis[m].project_data_multi_correspond;
+                    var project_data_multi_title = researchAnalysis[m].project_data_multi_title;
+                    var project_data_multi_content = researchAnalysis[m].project_data_multi_content;
+                    var member_id_member = researchAnalysis[m].member_id_member;
+                    var member_name = researchAnalysis[m].member_name;
+                    var researchAnalysisData = {project_data_multi_id:project_data_multi_id, groups_id_groups:groups_id_groups, project_data_multi_correspond:project_data_multi_correspond, project_data_multi_title:project_data_multi_title, project_data_multi_content:project_data_multi_content, member_id_member:member_id_member, member_name:member_name};
+                    researchAnalysisArray.push(researchAnalysisData);
+                    //console.log(researchAnalysisArray);
+                } 
+            }
+            return project.selectResearchRecord(gid)
+        })
+        .then(function(researchRecord){
+            if(researchRecord){
+                for (var l = 0; l < researchRecord.length; l++){
+                    var project_data_multi_id = researchRecord[l].project_data_multi_id;
+                    var groups_id_groups = researchRecord[l].groups_id_groups;
+                    var project_data_multi_correspond = researchRecord[l].project_data_multi_correspond;
+                    var project_data_multi_title = researchRecord[l].project_data_multi_title;
+                    var project_data_multi_content = researchRecord[l].project_data_multi_content;
+                    var member_id_member = researchRecord[l].member_id_member;
+                    var member_name = researchRecord[l].member_name;
+                    var researchRecordData = {project_data_multi_id:project_data_multi_id, groups_id_groups:groups_id_groups, project_data_multi_correspond:project_data_multi_correspond, project_data_multi_title:project_data_multi_title, project_data_multi_content:project_data_multi_content, member_id_member:member_id_member, member_name:member_name};
+                    researchRecordArray.push(researchRecordData);
+                    //console.log(researchRecordArray)
+                }
+            }
+            return project.selectResearchMaterial(gid)
+        })
+        .then(function(researchMaterial){
+            if(researchMaterial){
+                for (var k = 0; k< researchMaterial.length; k++){
+                    var material_id = researchMaterial[k].material_id;
+                    var groups_id_groups = researchMaterial[k].groups_id_groups;
+                    var material_name = researchMaterial[k].material_name;
+                    var material_amount = researchMaterial[k].material_amount;
+                    var material_img_url = researchMaterial[k].material_img_url;
+                    var member_id_member = researchMaterial[k].member_id_member;
+                    var member_name = researchMaterial[k].member_name;
+                    var researchMaterialData = {material_id:material_id, groups_id_groups:groups_id_groups, material_name:material_name, material_amount:material_amount, material_img_url:material_img_url, member_id_member:member_id_member, member_name:member_name};
+                    researchMaterialArray.push(researchMaterialData);
+                    //console.log(researchPurposesArray);
+                }
+            }
+            return project.selectResearchExperiment(gid)
+        })
+        .then(function(researchExperiment){
+            if(researchExperiment){
+                for (var j = 0; j < researchExperiment.length; j++){
+                    var project_data_multi_id = researchExperiment[j].project_data_multi_id;
+                    var groups_id_groups = researchExperiment[j].groups_id_groups;
+                    var project_data_multi_correspond = researchExperiment[j].project_data_multi_correspond;
+                    var project_data_multi_title = researchExperiment[j].project_data_multi_title;
+                    var project_data_multi_content = researchExperiment[j].project_data_multi_content;
+                    var member_id_member = researchExperiment[j].member_id_member;
+                    var member_name = researchExperiment[j].member_name;
+                    var researchExperimentData = {project_data_multi_id:project_data_multi_id, groups_id_groups:groups_id_groups, project_data_multi_correspond:project_data_multi_correspond, project_data_multi_title:project_data_multi_title, project_data_multi_content:project_data_multi_content, member_id_member:member_id_member, member_name:member_name};
+                    researchExperimentArray.push(researchExperimentData);
+                    //console.log(researchExperimentArray)
+                }
+            }
+            return project.selectResearchPurposes(gid)
+        })
+        .then(function(researchPurposes){
+            if(researchPurposes){
+                for (var i = 0; i < researchPurposes.length; i++){
+                    var project_data_id = researchPurposes[i].project_data_id;
+                    var groups_id_groups = researchPurposes[i].groups_id_groups;
+                    var project_data_content = researchPurposes[i].project_data_content;
+                    var member_id_member = researchPurposes[i].member_id_member;
+                    var member_name = researchPurposes[i].member_name;
+                    var researchPurposesData = {project_data_id:project_data_id,groups_id_groups:groups_id_groups, project_data_content:project_data_content, member_id_member:member_id_member, member_name:member_name};
+                    researchPurposesArray.push(researchPurposesData);
+                    //console.log(researchPurposesArray);
+                }
+            }
+            return project.selectResearchMotivation(gid)
+        })
+        .then(function(researchMotivation){
+            if(researchMotivation){
+                for (var a = 0; a < researchMotivation.length; a++){
+                    var researchMotivationData = researchMotivation[a].project_data_content;
+                    researchMotivationArray.push(researchMotivationData);
+                }
+            }
+            return project.selectResearchTitleData(gid)
+        })
+        .then(function(researchTitle){
+            if(researchTitle){
+                for (var b = 0; b < researchTitle.length; b++){
+                    var researchTitleData = researchTitle[b].project_data_content;
+                    researchTitleArray.push(researchTitleData);
+                }
+            }
+            res.render('projectEdit',  {title: 'Science Fair科學探究專題系統', gid:gid, member_id:req.session.member_id, member_name:req.session.member_name, researchTitle:researchTitleArray, researchMotivation:researchMotivationArray, researchPurposes:researchPurposesArray, researchExperiment:researchExperimentArray, researchMaterial:researchMaterialArray, researchRecord:researchRecordArray, researchAnalysis:researchAnalysisArray, researchDiscussion:researchDiscussionArray, researchConclusion:researchConclusionArray});
         })
 
-        
-        
-                
-
-        
-        
-
-        
-
-
-        // project.selectResearchPurposes(gid, function(researchPurposes){
-        //     if(researchPurposes){
-        //         for (var i = 0; i < researchPurposes.length; i++){
-        //             var project_data_id = researchPurposes[i].project_data_id;
-        //             var groups_id_groups = researchPurposes[i].groups_id_groups;
-        //             var project_data_content = researchPurposes[i].project_data_content;
-        //             var member_id_member = researchPurposes[i].member_id_member;
-        //             var member_name = researchPurposes[i].member_name;
-        //             var researchPurposesData = {project_data_id:project_data_id,groups_id_groups:groups_id_groups, project_data_content:project_data_content, member_id_member:member_id_member, member_name:member_name};
-        //             researchPurposesArray.push(researchPurposesData);
-        //             //console.log(allGroupsArray);
+        // 抓取討論的資料
+        // project.selectResearchDiscussion(gid, function(researchDiscussion){
+        //     if(researchDiscussion){
+        //         for (var n = 0; n < researchDiscussion.length; n++){
+        //             var project_data_id = researchDiscussion[n].project_data_id;
+        //             var groups_id_groups = researchDiscussion[n].groups_id_groups;
+        //             var project_data_content = researchDiscussion[n].project_data_content;
+        //             var member_id_member = researchDiscussion[n].member_id_member;
+        //             var member_name = researchDiscussion[n].member_name;
+        //             var researchDiscussionData = {project_data_id:project_data_id,groups_id_groups:groups_id_groups, project_data_content:project_data_content, member_id_member:member_id_member, member_name:member_name};
+        //             researchDiscussionArray.push(researchDiscussionData);
+        //             console.log(researchDiscussionArray);
         //         }
-        //         //console.log(researchPurposesArray);
-        //         project.selectResearchTitleData(gid, function(researchTitle){
-        //                         if(researchTitle == ""){
-        //                             var researchTitle = "";
-        //                             console.log("1");
-        //                             project.selectResearchMotivation([gid,researchTitle],function(researchMotivation){
-        //                                 if(researchMotivation == ""){      
-        //                                     var researchMotivation = "";
-        //                                     res.render('projectEdit',  {title: 'Science Fair科學探究專題系統', gid:gid, member_id:req.session.member_id, member_name:req.session.member_name, researchTitle:researchTitle, researchMotivation:researchMotivation,researchPurposes:researchPurposesArray});
-        //                                 }else{
-        //                                     var researchMotivation = researchMotivation[0].project_data_content;
-        //                                     res.render('projectEdit',  {title: 'Science Fair科學探究專題系統', gid:gid, member_id:req.session.member_id, member_name:req.session.member_name, researchTitle:researchTitle, researchMotivation:researchMotivation,researchPurposes:researchPurposesArray});
+        //         抓取研究結果(分析及圖表)的資料
+        //         project.selectResearchAnalysis(gid, function(researchAnalysis){
+        //             if(researchAnalysis){
+        //                 for (var m = 0; m < researchAnalysis.length; m++){
+        //                     var project_data_multi_id = researchAnalysis[m].project_data_multi_id;
+        //                     var groups_id_groups = researchAnalysis[m].groups_id_groups;
+        //                     var project_data_multi_correspond = researchAnalysis[m].project_data_multi_correspond;
+        //                     var project_data_multi_title = researchAnalysis[m].project_data_multi_title;
+        //                     var project_data_multi_content = researchAnalysis[m].project_data_multi_content;
+        //                     var member_id_member = researchAnalysis[m].member_id_member;
+        //                     var member_name = researchAnalysis[m].member_name;
+        //                     var researchAnalysisData = {project_data_multi_id:project_data_multi_id, groups_id_groups:groups_id_groups, project_data_multi_correspond:project_data_multi_correspond, project_data_multi_title:project_data_multi_title, project_data_multi_content:project_data_multi_content, member_id_member:member_id_member, member_name:member_name};
+        //                     researchAnalysisArray.push(researchAnalysisData);
+        //                     console.log(researchAnalysisArray);
+        //                 }
+        //                 抓取實驗記錄的資料
+        //                 project.selectResearchRecord(gid, function(researchRecord){
+        //                     console.log(researchRecord);
+        //                     if(researchRecord){
+        //                         for (var l = 0; l < researchRecord.length; l++){
+        //                             var project_data_multi_id = researchRecord[l].project_data_multi_id;
+        //                             var groups_id_groups = researchRecord[l].groups_id_groups;
+        //                             var project_data_multi_correspond = researchRecord[l].project_data_multi_correspond;
+        //                             var project_data_multi_title = researchRecord[l].project_data_multi_title;
+        //                             var project_data_multi_content = researchRecord[l].project_data_multi_content;
+        //                             var member_id_member = researchRecord[l].member_id_member;
+        //                             var member_name = researchRecord[l].member_name;
+        //                             var researchRecordData = {project_data_multi_id:project_data_multi_id, groups_id_groups:groups_id_groups, project_data_multi_correspond:project_data_multi_correspond, project_data_multi_title:project_data_multi_title, project_data_multi_content:project_data_multi_content, member_id_member:member_id_member, member_name:member_name};
+        //                             researchRecordArray.push(researchRecordData);
+        //                             console.log(researchRecordArray)
+        //                         }
+        //                         抓取研究材料及器材的資料
+        //                         project.selectResearchMaterial(gid, function(researchMaterial){
+        //                             console.log(researchMaterial);
+        //                             if(researchMaterial){
+        //                                 for (var k = 0; k< researchMaterial.length; k++){
+        //                                     var material_id = researchMaterial[k].material_id;
+        //                                     var groups_id_groups = researchMaterial[k].groups_id_groups;
+        //                                     var material_name = researchMaterial[k].material_name;
+        //                                     var material_amount = researchMaterial[k].material_amount;
+        //                                     var material_img_url = researchMaterial[k].material_img_url;
+        //                                     var member_id_member = researchMaterial[k].member_id_member;
+        //                                     var member_name = researchMaterial[k].member_name;
+        //                                     var researchMaterialData = {material_id:material_id, groups_id_groups:groups_id_groups, material_name:material_name, material_amount:material_amount, material_img_url:material_img_url, member_id_member:member_id_member, member_name:member_name};
+        //                                     researchMaterialArray.push(researchMaterialData);
+        //                                     console.log(researchPurposesArray);
         //                                 }
-        //                             })
-        //                         }else{
-        //                             console.log("2");
-        //                             var researchTitle = researchTitle[0].project_data_content;
-        //                             project.selectResearchMotivation([gid,researchTitle],function(researchMotivation){
-        //                                 if(researchMotivation == ""){      
-        //                                     var researchMotivation = "";
-        //                                     res.render('projectEdit',  {title: 'Science Fair科學探究專題系統', gid:gid, member_id:req.session.member_id, member_name:req.session.member_name, researchTitle:researchTitle, researchMotivation:researchMotivation,researchPurposes:researchPurposesArray});
-        //                                 }else{
-        //                                     var researchMotivation = researchMotivation[0].project_data_content;
-        //                                     // console.log(researchPurposesArray);
-        //                                     res.render('projectEdit',  {title: 'Science Fair科學探究專題系統', gid:gid, member_id:req.session.member_id, member_name:req.session.member_name, researchTitle:researchTitle, researchMotivation:researchMotivation, researchPurposes:researchPurposesArray});
-        //                                 }
-        //                             })
-        //                         } 
-        //                     })
+        //                                 抓取實驗項目的資料
+        //                                 project.selectResearchExperiment(gid, function(researchExperiment){
+        //                                     console.log(researchExperiment);
+        //                                     if(researchExperiment){
+        //                                         for (var j = 0; j < researchExperiment.length; j++){
+        //                                             var project_data_multi_id = researchExperiment[j].project_data_multi_id;
+        //                                             var groups_id_groups = researchExperiment[j].groups_id_groups;
+        //                                             var project_data_multi_correspond = researchExperiment[j].project_data_multi_correspond;
+        //                                             var project_data_multi_title = researchExperiment[j].project_data_multi_title;
+        //                                             var project_data_multi_content = researchExperiment[j].project_data_multi_content;
+        //                                             var member_id_member = researchExperiment[j].member_id_member;
+        //                                             var member_name = researchExperiment[j].member_name;
+        //                                             var researchExperimentData = {project_data_multi_id:project_data_multi_id, groups_id_groups:groups_id_groups, project_data_multi_correspond:project_data_multi_correspond, project_data_multi_title:project_data_multi_title, project_data_multi_content:project_data_multi_content, member_id_member:member_id_member, member_name:member_name};
+        //                                             researchExperimentArray.push(researchExperimentData);
+        //                                             console.log(researchExperimentArray)
+        //                                         }
+        //                                         抓取研究目的的資料
+        //                                         project.selectResearchPurposes(gid, function(researchPurposes){
+        //                                             console.log(researchPurposes);
+        //                                             if(researchPurposes){
+        //                                                 for (var i = 0; i < researchPurposes.length; i++){
+        //                                                     var project_data_id = researchPurposes[i].project_data_id;
+        //                                                     var groups_id_groups = researchPurposes[i].groups_id_groups;
+        //                                                     var project_data_content = researchPurposes[i].project_data_content;
+        //                                                     var member_id_member = researchPurposes[i].member_id_member;
+        //                                                     var member_name = researchPurposes[i].member_name;
+        //                                                     var researchPurposesData = {project_data_id:project_data_id,groups_id_groups:groups_id_groups, project_data_content:project_data_content, member_id_member:member_id_member, member_name:member_name};
+        //                                                     researchPurposesArray.push(researchPurposesData);
+        //                                                     console.log(allGroupsArray);
+        //                                                 }
+        //                                                 console.log(researchPurposesArray);
+        //                                                 抓取研究標題的資料
+        //                                                 project.selectResearchTitleData(gid, function(researchTitle){
+        //                                                     if(researchTitle == ""){
+        //                                                         var researchTitle = "";
+        //                                                         console.log("1");
+        //                                                         抓取研究動機的資料
+        //                                                         project.selectResearchMotivation([gid,researchTitle],function(researchMotivation){
+        //                                                             if(researchMotivation == ""){      
+        //                                                                 var researchMotivation = "";
+        //                                                                 res.render('projectEdit',  {title: 'Science Fair科學探究專題系統', gid:gid, member_id:req.session.member_id, member_name:req.session.member_name, researchTitle:researchTitle, researchMotivation:researchMotivation, researchPurposes:researchPurposesArray, researchExperiment:researchExperimentArray, researchMaterial:researchMaterialArray, researchRecord:researchRecordArray, researchAnalysis:researchAnalysisArray, researchDiscussion:researchDiscussionArray});
+        //                                                             }else{
+        //                                                                 var researchMotivation = researchMotivation[0].project_data_content;
+        //                                                                 res.render('projectEdit',  {title: 'Science Fair科學探究專題系統', gid:gid, member_id:req.session.member_id, member_name:req.session.member_name, researchTitle:researchTitle, researchMotivation:researchMotivation, researchPurposes:researchPurposesArray, researchExperiment:researchExperimentArray, researchMaterial:researchMaterialArray, researchRecord:researchRecordArray, researchAnalysis:researchAnalysisArray, researchDiscussion:researchDiscussionArray});
+        //                                                             }
+        //                                                         }) 
+        //                                                         selectResearchMotivation結束
+        //                                                     }else{
+        //                                                         console.log("2");
+        //                                                         var researchTitle = researchTitle[0].project_data_content;
+        //                                                         抓取研究動機的資料
+        //                                                         project.selectResearchMotivation([gid,researchTitle],function(researchMotivation){
+        //                                                             if(researchMotivation == ""){      
+        //                                                                 var researchMotivation = "";
+        //                                                                 res.render('projectEdit',  {title: 'Science Fair科學探究專題系統', gid:gid, member_id:req.session.member_id, member_name:req.session.member_name, researchTitle:researchTitle, researchMotivation:researchMotivation,researchPurposes:researchPurposesArray, researchExperiment:researchExperimentArray, researchMaterial:researchMaterialArray, researchRecord:researchRecordArray, researchAnalysis:researchAnalysisArray, researchDiscussion:researchDiscussionArray});
+        //                                                             }else{
+        //                                                                 var researchMotivation = researchMotivation[0].project_data_content;
+        //                                                                 console.log(researchPurposesArray);
+        //                                                                 res.render('projectEdit',  {title: 'Science Fair科學探究專題系統', gid:gid, member_id:req.session.member_id, member_name:req.session.member_name, researchTitle:researchTitle, researchMotivation:researchMotivation, researchPurposes:researchPurposesArray, researchExperiment:researchExperimentArray, researchMaterial:researchMaterialArray, researchRecord:researchRecordArray, researchAnalysis:researchAnalysisArray, researchDiscussion:researchDiscussionArray});
+        //                                                             }
+        //                                                         }) 
+        //                                                         selectResearchMotivation結束
+        //                                                     } 
+        //                                                 }) 
+        //                                                 selectResearchTitleData結束
+        //                                             }
+        //                                         }) 
+        //                                         selectResearchPurposes結束
+        //                                     }
+        //                                 }) 
+        //                                 selectResearchExperiment結束
+        //                             }
+        //                         }) 
+        //                         selectResearchMaterial結束
+        //                     }
+        //                 }) 
+        //                 selectResearchRecord結束
+        //             }
+        //         }) 
+        //         selectResearchDiscussion結束
         //     }
-        // })  
+        // })
     }
 });
 
