@@ -305,49 +305,106 @@ router.post('/updateResearchTitle', function(req, res, next){
     var project_data_content2 = req.body.project_data_content2; //研究動機的內容
     var member_id_member = req.session.member_id;
     var member_name = req.session.member_name;
+    // console.log(req.body);
 
-    project.selectResearchTitleData(gid, function(researchTitle){
-        project.selectResearchMotivation([gid,researchTitle],function(researchMotivation){
-            if(researchTitle != "" && researchMotivation != ""){
-                project.updateProjectDataContentForOne(gid, project_data_type1, project_data_content1, member_id_member, member_name, function(result){
-                    if(result){
-                        project.updateProjectDataContentForOne(gid, project_data_type2, project_data_content2, member_id_member, member_name, function(result2){
-                            if(result2){
-                                res.send({message:"true"});
-                            }
-                        })
+    if(!member_id_member){
+        res.send({message:"false"});
+        // res.redirect('/');
+        // alert('帳號已被系統自動登出，請重新登入')
+    }else{
+        var researchTitle;
+
+        project.selectResearchTitleData(gid)
+        .then(function(researchTitleData){
+            researchTitle = researchTitleData;
+            return project.selectResearchMotivation(gid)
+        })
+        .then(function(researchMotivation){
+            if(researchTitle.length == 1 && researchMotivation.length == 1){
+                return project.updateProjectDataContentForOne(gid, project_data_type1, project_data_content1, member_id_member, member_name)
+                .then(function(result){
+                    return project.updateProjectDataContentForOne(gid, project_data_type2, project_data_content2, member_id_member, member_name)
+                })
+                .then(function(result2){
+                    if(result2){
+                        res.send({message:"true"});
                     }
                 })
-            }else if(researchTitle == "" && researchMotivation != ""){
-                project.addProjectDataContent(gid, project_data_type1, project_data_content1, member_id_member, member_name, function(result){
-                    project.updateProjectDataContentForOne(gid, project_data_type2, project_data_content2, member_id_member, member_name, function(result2){
-                        if(result2){
-                            res.send({message:"true"});
-                        }
-                    })
+            }else if(researchTitle.length == 0 && researchMotivation.length == 1){
+                return project.addProjectDataContent(gid, project_data_type1, project_data_content1, member_id_member, member_name)
+                .then(function(result){
+                    return project.updateProjectDataContentForOne(gid, project_data_type2, project_data_content2, member_id_member, member_name)
                 })
-            }else if(researchTitle != "" && researchMotivation == ""){
-                project.addProjectDataContent(gid, project_data_type2, project_data_content2, member_id_member, member_name, function(result){
-                    project.updateProjectDataContentForOne(gid, project_data_type1, project_data_content1, member_id_member, member_name, function(result2){
-                        if(result2){
-                            res.send({message:"true"});
-                        }
-                    })
+                .then(function(result2){
+                    if(result2){
+                        res.send({message:"true"});
+                    }
                 })
-            }else{
-                project.addProjectDataContent(gid, project_data_type1, project_data_content1, member_id_member, member_name, function(result){
-                    project.addProjectDataContent(gid, project_data_type2, project_data_content2, member_id_member, member_name, function(result2){
-                        if(result2){
-                            res.send({message:"true"});
-                        }
-                    })
+            }else if(researchTitle.length == 1 && researchMotivation.length == 0){
+                return project.updateProjectDataContentForOne(gid, project_data_type1, project_data_content1, member_id_member, member_name)
+                .then(function(result){
+                    return project.addProjectDataContent(gid, project_data_type2, project_data_content2, member_id_member, member_name)
+                })
+                .then(function(result2){
+                    if(result2){
+                        res.send({message:"true"});
+                    }
+                })
+            }else if(researchTitle.length == 0 && researchMotivation.length == 0){
+                return project.addProjectDataContent(gid, project_data_type1, project_data_content1, member_id_member, member_name)
+                .then(function(result){
+                    return project.addProjectDataContent(gid, project_data_type2, project_data_content2, member_id_member, member_name)
+                })
+                .then(function(result2){
+                    if(result2){
+                        res.send({message:"true"});
+                    }
                 })
             }
         })
-    })
+        // project.selectResearchTitleData(gid, function(researchTitle){
+        //     project.selectResearchMotivation([gid,researchTitle],function(researchMotivation){
+        //         if(researchTitle != "" && researchMotivation != ""){
+        //             project.updateProjectDataContentForOne(gid, project_data_type1, project_data_content1, member_id_member, member_name, function(result){
+        //                 if(result){
+        //                     project.updateProjectDataContentForOne(gid, project_data_type2, project_data_content2, member_id_member, member_name, function(result2){
+        //                         if(result2){
+        //                             res.send({message:"true"});
+        //                         }
+        //                     })
+        //                 }
+        //             })
+        //         }else if(researchTitle == "" && researchMotivation != ""){
+        //             project.addProjectDataContent(gid, project_data_type1, project_data_content1, member_id_member, member_name, function(result){
+        //                 project.updateProjectDataContentForOne(gid, project_data_type2, project_data_content2, member_id_member, member_name, function(result2){
+        //                     if(result2){
+        //                         res.send({message:"true"});
+        //                     }
+        //                 })
+        //             })
+        //         }else if(researchTitle != "" && researchMotivation == ""){
+        //             project.addProjectDataContent(gid, project_data_type2, project_data_content2, member_id_member, member_name, function(result){
+        //                 project.updateProjectDataContentForOne(gid, project_data_type1, project_data_content1, member_id_member, member_name, function(result2){
+        //                     if(result2){
+        //                         res.send({message:"true"});
+        //                     }
+        //                 })
+        //             })
+        //         }else{
+        //             project.addProjectDataContent(gid, project_data_type1, project_data_content1, member_id_member, member_name, function(result){
+        //                 project.addProjectDataContent(gid, project_data_type2, project_data_content2, member_id_member, member_name, function(result2){
+        //                     if(result2){
+        //                         res.send({message:"true"});
+        //                     }
+        //                 })
+        //             })
+        //         }
+        //     })
+        // })
+    }
 })
 
-//新增研究目的
+//新增研究目的(還沒改好)
 router.post('/addPurposes',function(req, res, next) {
     var gid = req.body.gid;
     var project_data_type = "研究目的";

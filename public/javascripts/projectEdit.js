@@ -556,8 +556,8 @@ $(function(){
                         // window.location.href="/project/?gid="+gid;
                     }
                     else{
-                        alert('失敗，請重新輸入');
-                        window.location.href="/groups";
+                        alert('帳號已被系統自動登出，請重新登入');
+                        window.location.href="/";
                     }
                 }
             },
