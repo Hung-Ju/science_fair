@@ -404,7 +404,7 @@ router.post('/updateResearchTitle', function(req, res, next){
     }
 })
 
-//新增研究目的(還沒改好)
+//新增研究目的
 router.post('/addPurposes',function(req, res, next) {
     var gid = req.body.gid;
     var project_data_type = "研究目的";
@@ -413,13 +413,25 @@ router.post('/addPurposes',function(req, res, next) {
     var member_name = req.session.member_name;
 
     console.log(gid);
-    // res.send({message:"true"});
-    project.addProjectDataContent(gid, project_data_type, project_data_content, member_id_member, member_name, function(result){
-        if(result){
-            // console.log(result.insertId);
-            res.send({message:"true"});
-        }
-    });
+
+    if(!member_id_member){
+        res.send({message:"false"});
+    }else{
+        project.addProjectDataContent(gid, project_data_type, project_data_content, member_id_member, member_name)
+        .then(function(result){
+            if(result){
+                // console.log(result.insertId);
+                res.send({message:"true"});
+            }
+        })
+    }
+    //callback function版本
+    // project.addProjectDataContent(gid, project_data_type, project_data_content, member_id_member, member_name, function(result){
+    //     if(result){
+    //         // console.log(result.insertId);
+    //         res.send({message:"true"});
+    //     }
+    // });
 });
 
 //修改研究目的
@@ -430,23 +442,44 @@ router.post('/editPurposes',function(req, res, next) {
     var project_data_content = req.body.project_data_content; //研究目的的內容
     var member_id_member = req.session.member_id;
     var member_name = req.session.member_name;
-    project.updateProjectDataContentForMany(gid, project_data_id, project_data_type, project_data_content, member_id_member, member_name, function(result){
-        if(result){
-            res.send({message:"true"});
-        }
-    });
+    if(!member_id_member){
+        res.send({message:"false"});
+    }else{
+        project.updateProjectDataContentForMany(gid, project_data_id, project_data_type, project_data_content, member_id_member, member_name)
+        .then(function(result){
+            if(result){
+                res.send({message:"true"});
+            }
+        })
+    }
+    // project.updateProjectDataContentForMany(gid, project_data_id, project_data_type, project_data_content, member_id_member, member_name, function(result){
+    //     if(result){
+    //         res.send({message:"true"});
+    //     }
+    // });
 });
 
 //刪除研究目的
 router.post('/deletePurposes',function(req, res, next) {
     var project_data_id = req.body.project_data_id; //該筆研究目的在資料表中的資料id
-    project.deleteProjectDataContentForMany(project_data_id, function(result){
-        // console.log(result.affectedRows);
-        // if(result){
+    var member_id_member = req.session.member_id;
+    if(!member_id_member){
+        res.send({message:"false"});
+    }else{
+        project.deleteProjectDataContentForMany(project_data_id)
+        .then(function(result){
             console.log(result);
             res.send({message:"true"});
-        // }
-    });
+        })
+    }
+
+    // project.deleteProjectDataContentForMany(project_data_id, function(result){
+    //     // console.log(result.affectedRows);
+    //     // if(result){
+    //         console.log(result);
+    //         res.send({message:"true"});
+    //     // }
+    // });
 });
 
 //新增實驗項目
@@ -458,15 +491,23 @@ router.post('/addExperiment',function(req, res, next) {
     var project_data_multi_content = req.body.project_data_multi_content;
     var member_id_member = req.session.member_id;
     var member_name = req.session.member_name;
-
-    //console.log(gid);
-    // res.send({message:"true"});
-    project.addProjectDataMultiContent(gid, project_data_multi_type, project_data_multi_correspond, project_data_multi_title, project_data_multi_content, member_id_member, member_name, function(result){
-        if(result){
-            // console.log(result.insertId);
-            res.send({message:"true"});
-        }
-    });
+    if(!member_id_member){
+        res.send({message:"false"});
+    }else{
+        project.addProjectDataMultiContent(gid, project_data_multi_type, project_data_multi_correspond, project_data_multi_title, project_data_multi_content, member_id_member, member_name)
+        .then(function(result){
+            if(result){
+                // console.log(result.insertId);
+                res.send({message:"true"});
+            }
+        })
+    }
+    // project.addProjectDataMultiContent(gid, project_data_multi_type, project_data_multi_correspond, project_data_multi_title, project_data_multi_content, member_id_member, member_name, function(result){
+    //     if(result){
+    //         // console.log(result.insertId);
+    //         res.send({message:"true"});
+    //     }
+    // });
 });
 
 module.exports = router;

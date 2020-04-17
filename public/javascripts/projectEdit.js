@@ -101,7 +101,7 @@ function researchExperimentTable(){
     $allResearchExperimentTable.bootstrapTable({
         columns: [
             {title: '實驗項目標題', field: 'project_data_multi_title'},
-            {title: '對應的實驗目的', field: 'project_data_multi_correspond'},
+            {title: '對應的研究目的', field: 'project_data_multi_correspond'},
             {title: '實驗項目內容(說明與步驟)', field: 'project_data_multi_content'},
             {title: '', field: 'project_data_multi_id', formatter: 'researchExperimentButton',width:100}
             ],
@@ -491,8 +491,8 @@ $(function(){
                         window.location.href="/project/?gid="+gid;
                     }
                     else{
-                        alert('新增失敗請重新輸入');
-                        window.location.href="/groups";
+                        alert('帳號已被系統自動登出，請重新登入');
+                        window.location.href="/";
                     }
                 }
             },
@@ -505,8 +505,7 @@ $(function(){
     //用ajax的方式新增研究目的
     $("#addPurposesModalButton").click(function () {
         var gid = document.getElementById("groups_id").value;
-        // console.log(gid);
-        
+
         $.ajax({  
             type: "POST",
             url: "/project/addPurposes",
@@ -522,8 +521,8 @@ $(function(){
                         window.location.href="/project/?gid="+gid;
                     }
                     else{
-                        alert('新增失敗請重新輸入');
-                        window.location.href="/groups";
+                        alert('帳號已被系統自動登出，請重新登入');
+                        window.location.href="/";
                     }
                 }
             },
@@ -537,7 +536,6 @@ $(function(){
     $("#saveResearchMotivation").click(function () {
         var gid = document.getElementById("groups_id").value;
         var project_data_content2 = $(".create-motivation-summernote").val();
-        // console.log(gid);
         
         $.ajax({  
             type: "POST",
@@ -568,16 +566,6 @@ $(function(){
     });
 
 
-
-    //table列拖拉和數字排序
-    // $( "table tbody" ).sortable( {
-    //     update: function( event, ui ) {
-    //     $(this).children().each(function(index) {
-    //             $(this).find('td').first().html(index + 1)
-    //     });
-    //   }
-    // });
-
     //利用錨點滑動頁面
     $('.changet').click(function() {
         var target = $(this.hash);
@@ -591,10 +579,7 @@ $(function(){
     $(".create-motivation-summernote").on("summernote.change", function (e) {   // callback as jquery custom event 
         $(this).addClass("editing");
     });
-    // $(".create-motivation-summernote").change(function () {
-    //     isChange = true;
-    //     $(this).addClass("editing");
-    // });
+
     $(window).bind('beforeunload', function (e) {
         if ($(".editing").get().length > 0) {
             return '資料尚未存檔，確定是否要離開？';
