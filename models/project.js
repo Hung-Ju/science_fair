@@ -344,9 +344,40 @@ module.exports = {
 			pool.getConnection(function(err, connection){
 				if(err) return reject(err);
 				var update_params = {project_data_content:project_data_content, member_id_member:member_id_member, member_name:member_name};
-				connection.query('UPDAtE `project_data` SET ? WHERE `groups_id_groups`='+groups_id_groups+' AND `project_data_type`='+'"'+project_data_type+'"'+'AND `project_data_id`='+project_data_id, update_params, function(err, update_res){
+				connection.query('UPDATE `project_data` SET ? WHERE `groups_id_groups`='+groups_id_groups+' AND `project_data_type`='+'"'+project_data_type+'"'+'AND `project_data_id`='+project_data_id, update_params, function(err, update_res){
 					if(err) return reject(err);
 					resolve(update_res);
+					connection.release();
+				})
+			})
+		})
+	},
+
+	//抓取要修改的該筆資料(研究目的)
+	selectPurposeEdit :function(project_data_id){
+		return new Promise(function(resolve, reject){
+			pool.getConnection(function(err, connection){
+				if(err) return reject(err);
+				connection.query('SELECT `project_data_content` FROM `project_data` WHERE `project_data_id`=?', project_data_id,function(err, result){
+					if(err) return reject(err);
+					//console.log(result);
+					resolve(result);
+					connection.release();
+				})
+			})
+		})
+	},
+
+	//修改研究目的的時候同時修改對應欄位中的資料
+	updateProjectDataCorrespond :function(groups_id_groups,origin_data,replace_data){
+		return new Promise(function(resolve, reject){
+			pool.getConnection(function(err, connection){
+				if(err) return reject(err);
+				connection.query('UPDATE `project_data_multi` SET `project_data_multi_correspond` = REPLACE(`project_data_multi_correspond`,'+'"'+origin_data+'","'+replace_data+'"'+')'+
+				' WHERE `groups_id_groups`='+groups_id_groups+' AND `project_data_multi_correspond` LIKE "%'+origin_data+'%"', function(err, result){
+					if(err) return reject(err);
+					console.log(result);
+					resolve(result);
 					connection.release();
 				})
 			})
@@ -371,7 +402,37 @@ module.exports = {
 				if(err) return reject(err);
 				connection.query('DELETE FROM `project_data` WHERE `project_data_id`=?',project_data_id,function(result){
 					if(err) return reject(err);
-					cb(result);
+					resolve(result);
+					connection.release();
+				})
+			})
+		})
+	},
+
+	//找出對應項目中有需要刪除研究目的的資料
+	selectCorrespondNeedDelete :function(origin_data){
+		return new Promise(function(resolve, reject){
+			pool.getConnection(function(err, connection){
+				if(err) return reject(err);
+				connection.query('SELECT * FROM `project_data_multi` WHERE `project_data_multi_correspond` LIKE "%'+origin_data+'%"', function(err, result){
+					if(err) return reject(err);
+					//console.log(result);
+					resolve(result);
+					connection.release();
+				})
+			})
+		})
+	},
+
+	//刪除研究目的同時修改對應欄位，把刪除的那筆重新儲存
+	updatePurposesDeleteCorrespond :function(groups_id_groups,project_data_multi_id,replace_data){
+		return new Promise(function(resolve, reject){
+			pool.getConnection(function(err, connection){
+				if(err) return reject(err);
+				var update_params = {project_data_multi_content:replace_data}
+				connection.query('UPDATE `project_data_multi` SET `project_data_multi_correspond`='+'"'+replace_data+'"'+' WHERE `groups_id_groups`='+groups_id_groups+' AND `project_data_multi_id`='+project_data_multi_id, function(err, update_res){
+					if(err) return reject(err);
+					resolve(update_res);
 					connection.release();
 				})
 			})

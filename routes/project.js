@@ -445,12 +445,27 @@ router.post('/editPurposes',function(req, res, next) {
     if(!member_id_member){
         res.send({message:"false"});
     }else{
-        project.updateProjectDataContentForMany(gid, project_data_id, project_data_type, project_data_content, member_id_member, member_name)
+        var origin_data;
+        project.selectPurposeEdit(project_data_id)
         .then(function(result){
-            if(result){
+            origin_data = result[0].project_data_content;
+            return project.updateProjectDataContentForMany(gid, project_data_id, project_data_type, project_data_content, member_id_member, member_name)
+        })
+        .then(function(reesult2){
+            return project.updateProjectDataCorrespond(gid, origin_data, project_data_content)
+        })
+        .then(function(result3){
+            if (result3){
                 res.send({message:"true"});
             }
         })
+
+        // project.updateProjectDataContentForMany(gid, project_data_id, project_data_type, project_data_content, member_id_member, member_name)
+        // .then(function(result){
+        //     if(result){
+        //         res.send({message:"true"});
+        //     }
+        // })
     }
     // project.updateProjectDataContentForMany(gid, project_data_id, project_data_type, project_data_content, member_id_member, member_name, function(result){
     //     if(result){
@@ -459,18 +474,54 @@ router.post('/editPurposes',function(req, res, next) {
     // });
 });
 
-//刪除研究目的
+//刪除研究目的(還沒改完，)
 router.post('/deletePurposes',function(req, res, next) {
+    var gid = req.body.gid;
     var project_data_id = req.body.project_data_id; //該筆研究目的在資料表中的資料id
     var member_id_member = req.session.member_id;
     if(!member_id_member){
         res.send({message:"false"});
     }else{
-        project.deleteProjectDataContentForMany(project_data_id)
+        var origin_data;
+        
+        project.selectPurposeEdit(project_data_id)
         .then(function(result){
-            console.log(result);
-            res.send({message:"true"});
+            origin_data = result[0].project_data_content;
+            return project.selectCorrespondNeedDelete(origin_data)
         })
+        .then(function(result2){
+            // var needUpdateDataArray = [];
+            var needUpdateDataArray;
+            var newCorrespondDataArray = [];
+            for(var i = 0; i < result2.length; i++){
+                var needUpdateData = result2[i].project_data_multi_correspond;
+                needUpdateDataArray = needUpdateData.split(',');
+                var project_data_multi_id = result2[i].project_data_multi_id;
+                //needUpdateDataArray.push(needUpdateData);
+                for(var j = 0; j < needUpdateDataArray.length; j++){
+                    if(needUpdateDataArray[j] != origin_data){
+                        newCorrespondDataArray.push(needUpdateDataArray[j]);
+                    }
+                }
+                var newCorrespondData = newCorrespondDataArray.toString();
+
+                //這裡只會執行一次，要可以執行多次修改多筆資料
+                // return project.updatePurposesDeleteCorrespond(gid, project_data_multi_id, newCorrespondData)
+                // .then(function(result3){
+                //     console.log(needUpdateDataArray);
+                //     console.log(newCorrespondDataArray);
+                //     res.send({message:"true"});
+                // })
+                
+            }
+            
+            
+        })
+        // project.deleteProjectDataContentForMany(project_data_id)
+        // .then(function(result){
+        //     console.log(result);
+        //     res.send({message:"true"});
+        // })
     }
 
     // project.deleteProjectDataContentForMany(project_data_id, function(result){

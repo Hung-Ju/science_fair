@@ -65,6 +65,7 @@ function deletePurposes(project_data_id){
         type: "POST",
         url: "/project/deletePurposes",
         data: {
+            gid:gid,
             project_data_id: project_data_id
         },
         success: function(data){
