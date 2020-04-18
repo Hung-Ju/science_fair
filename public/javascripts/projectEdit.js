@@ -104,7 +104,7 @@ function researchExperimentTable(){
             {title: '實驗項目標題', field: 'project_data_multi_title'},
             {title: '對應的研究目的', field: 'project_data_multi_correspond'},
             {title: '實驗項目內容(說明與步驟)', field: 'project_data_multi_content'},
-            {title: '', field: 'project_data_multi_id', formatter: 'researchExperimentButton',width:100}
+            {title: '', field: 'project_data_multi_id', events: 'window.operateEvents2', formatter: 'researchExperimentButton',width:100}
             ],
         theadClasses: 'thead-light',
         classes: 'table table-bordered bg-light',
@@ -113,14 +113,9 @@ function researchExperimentTable(){
     $allResearchExperimentTable.bootstrapTable('load',allResearchExperiment);
 }
 
-//實驗項目表格裡的第一個欄位的實驗項目數字
-// function researchExperimentIndex(value, row, index){
-//     return index+1
-// }
-
 //實驗項目表格裡的編輯按鈕和刪除按鈕
 function researchExperimentButton(value, row, index){
-    return ['<button class="btn btn-primary btn-sm editExperimentBtn" type="submit" data-toggle="modal" data-target="#editPurposesModal">編輯</button><br>' + 
+    return ['<button class="btn btn-primary btn-sm editExperimentBtn" type="submit" data-toggle="modal" data-target="#editExperimentModal">編輯</button><br>' + 
             '<button class="btn btn-danger btn-sm stage-switch-btn deleteExperimentBtn" onclick="deletePurposes('+row.project_data_multi_id+')">刪除</button>']
 }
 
@@ -128,7 +123,7 @@ function researchExperimentButton(value, row, index){
 function correspond_purposes_select(){
     var researchPurposesData = document.getElementById("researchPurposes").value;
     var allResearchPurposes = JSON.parse(researchPurposesData);
-    $correspond_purposes = $('#correspond_purposes');
+    $correspond_purposes = $('.correspond_purposes');
     for (var i = 0; i < allResearchPurposes.length; i++){
         var purposes = allResearchPurposes[i];
         var purposes_content = purposes.project_data_content;
@@ -137,6 +132,48 @@ function correspond_purposes_select(){
                                 '<label class="custom-control-label" for="'+purposes_content+'">'+purposes_content+'</label>'+
                               '</div>'];
         $correspond_purposes.append(purposes_options);
+    }
+}
+
+window.operateEvents2 = {
+    //實驗項目表格裡的編輯按鈕
+    'click .editExperimentBtn': function (e, value, row, index) {
+        // console.log(row);
+        //顯示視窗前呼叫
+        $("#editExperimentModal").on("show.bs.modal",function(event){
+            //用operateEvents2把要編輯的那筆資料傳送到要開啟的編輯用modal
+            document.getElementById("research_purposes_edit").value = row.project_data_content;
+            //研究目的的編輯用modal裡的儲存按鈕，update研究目的用的AJAX
+            $("#saveExperimentModalButton").click(function(){
+                var gid = document.getElementById("groups_id").value;
+                console.log(row.project_data_id);
+                $.ajax({  
+                    type: "POST",
+                    url: "/project/editPurposes",
+                    data: {
+                        gid: gid,
+                        project_data_id: row.project_data_id,
+                        project_data_content: $("#research_purposes_edit").val(),
+                    },
+                    success: function(data){
+                        if(data){
+                            // alert(123);
+                            if(data.message=="true"){
+                                alert('修改成功');
+                                window.location.href="/project/?gid="+gid;
+                            }
+                            else{
+                                alert('修改失敗請重新輸入');
+                                window.location.href="/project/?gid="+gid;
+                            }
+                        }
+                    },
+                    error: function(){
+                        alert('失敗');
+                    }
+                });
+            })
+        });
     }
 }
 

@@ -418,7 +418,7 @@
                               <input class="form-control" type="text" name="research_experiment" id="research_experiment_title_add" required="required">
                             </p>
                             <p><b>對應的研究目的：</b>
-                              <div id="correspond_purposes"></div>
+                              <div class="correspond_purposes"></div>
 
                             </p>
                             <p><b>實驗項目設計：</b>
@@ -439,6 +439,38 @@
                   <input type='hidden' id="researchExperiment" value="<%= JSON.stringify(researchExperiment) %>">
                   <table id="researchExperimentTable" class="table"></table>
                   <!-- 實驗項目的表格 -->
+                  <!-- 編輯實驗項目的彈出視窗 -->
+                  <div class="modal fade" id="editExperimentModal" tabindex="-1" role="dialog" aria-labelledby="editExperimentModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="changeStageLongTitle">編輯實驗項目</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <div id="editExperimentRoot">
+                            <p><b>實驗項目標題：</b>
+                              <input class="form-control" type="text" name="research_experiment" id="research_experiment_title_edit" required="required">
+                            </p>
+                            <p><b>對應的研究目的：</b>
+                              <div class="correspond_purposes"></div>
+
+                            </p>
+                            <p><b>實驗項目設計：</b>
+                              <textarea rows="4" class="col-sm-8 form-control create-experiment-summernote"></textarea>
+                            </p>
+                          </div>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                          <button type="button" class="btn btn-primary" id="saveExperimentModalButton">儲存</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- 編輯實驗項目的彈出視窗 -->
 
                   <!-- <div style="background-color:white;">
                     

@@ -425,18 +425,39 @@ module.exports = {
 	},
 
 	//刪除研究目的同時修改對應欄位，把刪除的那筆重新儲存
-	updatePurposesDeleteCorrespond :function(groups_id_groups,project_data_multi_id,replace_data){
+	updatePurposesDeleteCorrespond :function(newDataArray){
+		return Promise.all(
+			newDataArray.map(function(data){
+				return new Promise(function(resolve, reject){
+					pool.getConnection(function(err, connection){
+						if(err) return reject(err);
+						var groups_id_groups = data.gid;
+						var project_data_multi_id = data.project_data_multi_id;
+						var replace_data = data.newCorrespondData;
+						connection.query('UPDATE `project_data_multi` SET `project_data_multi_correspond`='+'"'+replace_data+'"'+' WHERE `groups_id_groups`='+groups_id_groups+' AND `project_data_multi_id`='+project_data_multi_id, function(err, update_res){
+							if(err) return reject(err);
+							resolve(update_res);
+							connection.release();
+						})
+					})
+				})
+			})
+		)
+	},
+
+	//抓取要修改的該筆資料(實驗項目的實驗項目標題)
+	selectExperimentEdit :function(project_data_multi_id){
 		return new Promise(function(resolve, reject){
 			pool.getConnection(function(err, connection){
 				if(err) return reject(err);
-				var update_params = {project_data_multi_content:replace_data}
-				connection.query('UPDATE `project_data_multi` SET `project_data_multi_correspond`='+'"'+replace_data+'"'+' WHERE `groups_id_groups`='+groups_id_groups+' AND `project_data_multi_id`='+project_data_multi_id, function(err, update_res){
+				connection.query('SELECT `project_data_multi_title` FROM `project_data_multi` WHERE `project_data_multi_id`=?', project_data_multi_id,function(err, result){
 					if(err) return reject(err);
-					resolve(update_res);
+					//console.log(result);
+					resolve(result);
 					connection.release();
 				})
 			})
 		})
-	}
+	},
 
 }

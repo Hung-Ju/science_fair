@@ -459,22 +459,10 @@ router.post('/editPurposes',function(req, res, next) {
                 res.send({message:"true"});
             }
         })
-
-        // project.updateProjectDataContentForMany(gid, project_data_id, project_data_type, project_data_content, member_id_member, member_name)
-        // .then(function(result){
-        //     if(result){
-        //         res.send({message:"true"});
-        //     }
-        // })
     }
-    // project.updateProjectDataContentForMany(gid, project_data_id, project_data_type, project_data_content, member_id_member, member_name, function(result){
-    //     if(result){
-    //         res.send({message:"true"});
-    //     }
-    // });
 });
 
-//刪除研究目的(還沒改完，)
+//刪除研究目的
 router.post('/deletePurposes',function(req, res, next) {
     var gid = req.body.gid;
     var project_data_id = req.body.project_data_id; //該筆研究目的在資料表中的資料id
@@ -492,45 +480,35 @@ router.post('/deletePurposes',function(req, res, next) {
         .then(function(result2){
             // var needUpdateDataArray = [];
             var needUpdateDataArray;
-            var newCorrespondDataArray = [];
+            var newDataArray = [];
             for(var i = 0; i < result2.length; i++){
+                var newCorrespondDataArray = [];
                 var needUpdateData = result2[i].project_data_multi_correspond;
                 needUpdateDataArray = needUpdateData.split(',');
                 var project_data_multi_id = result2[i].project_data_multi_id;
-                //needUpdateDataArray.push(needUpdateData);
+
                 for(var j = 0; j < needUpdateDataArray.length; j++){
                     if(needUpdateDataArray[j] != origin_data){
                         newCorrespondDataArray.push(needUpdateDataArray[j]);
                     }
                 }
                 var newCorrespondData = newCorrespondDataArray.toString();
+                // console.log(needUpdateDataArray);
+                // console.log(newCorrespondDataArray);     
+                var newData = {gid:gid, project_data_multi_id:project_data_multi_id, newCorrespondData:newCorrespondData}
+                newDataArray.push(newData);
 
-                //這裡只會執行一次，要可以執行多次修改多筆資料
-                // return project.updatePurposesDeleteCorrespond(gid, project_data_multi_id, newCorrespondData)
-                // .then(function(result3){
-                //     console.log(needUpdateDataArray);
-                //     console.log(newCorrespondDataArray);
-                //     res.send({message:"true"});
-                // })
-                
             }
-            
-            
+            console.log(newDataArray);
+            return project.updatePurposesDeleteCorrespond(newDataArray)
         })
-        // project.deleteProjectDataContentForMany(project_data_id)
-        // .then(function(result){
-        //     console.log(result);
-        //     res.send({message:"true"});
-        // })
+        .then(function(result3){
+            return project.deleteProjectDataContentForMany(project_data_id)
+        })
+        .then(function(result4){
+            res.send({message:"true"});
+        })
     }
-
-    // project.deleteProjectDataContentForMany(project_data_id, function(result){
-    //     // console.log(result.affectedRows);
-    //     // if(result){
-    //         console.log(result);
-    //         res.send({message:"true"});
-    //     // }
-    // });
 });
 
 //新增實驗項目
@@ -553,12 +531,6 @@ router.post('/addExperiment',function(req, res, next) {
             }
         })
     }
-    // project.addProjectDataMultiContent(gid, project_data_multi_type, project_data_multi_correspond, project_data_multi_title, project_data_multi_content, member_id_member, member_name, function(result){
-    //     if(result){
-    //         // console.log(result.insertId);
-    //         res.send({message:"true"});
-    //     }
-    // });
 });
 
 module.exports = router;
