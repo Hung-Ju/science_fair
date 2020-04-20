@@ -439,6 +439,7 @@ router.post('/editPurposes',function(req, res, next) {
     var gid = req.body.gid;
     var project_data_id = req.body.project_data_id; //該筆研究目的在資料表中的資料id
     var project_data_type = "研究目的";
+    var project_data_type2 = "實驗項目";
     var project_data_content = req.body.project_data_content; //研究目的的內容
     var member_id_member = req.session.member_id;
     var member_name = req.session.member_name;
@@ -451,8 +452,8 @@ router.post('/editPurposes',function(req, res, next) {
             origin_data = result[0].project_data_content;
             return project.updateProjectDataContentForMany(gid, project_data_id, project_data_type, project_data_content, member_id_member, member_name)
         })
-        .then(function(reesult2){
-            return project.updateProjectDataCorrespond(gid, origin_data, project_data_content)
+        .then(function(result2){
+            return project.updateProjectDataCorrespond(gid, project_data_type2, origin_data, project_data_content)
         })
         .then(function(result3){
             if (result3){
@@ -517,6 +518,167 @@ router.post('/addExperiment',function(req, res, next) {
     var project_data_multi_type = "實驗項目";
     var project_data_multi_correspond = req.body.project_data_multi_correspond;
     var project_data_multi_title = req.body.project_data_multi_title;
+    var project_data_multi_content = req.body.project_data_multi_content;
+    var member_id_member = req.session.member_id;
+    var member_name = req.session.member_name;
+    if(!member_id_member){
+        res.send({message:"false"});
+    }else{
+        project.addProjectDataMultiContent(gid, project_data_multi_type, project_data_multi_correspond, project_data_multi_title, project_data_multi_content, member_id_member, member_name)
+        .then(function(result){
+            if(result){
+                // console.log(result.insertId);
+                res.send({message:"true"});
+            }
+        })
+    }
+});
+
+//修改實驗項目
+router.post('/editExperiment',function(req, res, next) {
+    var gid = req.body.gid;
+    var project_data_multi_id = req.body.project_data_multi_id; //該筆實驗項目在資料表中的資料id
+    var project_data_multi_type = "實驗項目";
+    var project_data_multi_type2 = "實驗記錄";
+    var project_data_multi_correspond = req.body.project_data_multi_correspond;
+    var project_data_multi_title = req.body.project_data_multi_title;
+    var project_data_multi_content = req.body.project_data_multi_content;
+    var member_id_member = req.session.member_id;
+    var member_name = req.session.member_name;
+    if(!member_id_member){
+        res.send({message:"false"});
+    }else{
+        var origin_data;
+        //先把修改過的實驗項目標題select出來
+        project.selectExperimentEdit(project_data_multi_id)
+        .then(function(result){
+            origin_data = result[0].project_data_multi_title;
+            //update該筆要修改的實驗項目資料
+            return project.updateProjectDataMultiContentForMany(gid, project_data_multi_id, project_data_multi_type, project_data_multi_correspond, project_data_multi_title, project_data_multi_content, member_id_member, member_name)
+        })
+        .then(function(result2){
+            //update該筆修改過的實驗項目標題對應紀錄的實驗記錄
+            return project.updateProjectDataCorrespond(gid,project_data_multi_type2, origin_data, project_data_multi_title)
+        })
+        .then(function(result3){
+            if (result3){
+                // console.log(result3);
+                res.send({message:"true"});
+            }
+        })
+    }
+});
+
+//刪除實驗項目
+router.post('/deleteExperiment',function(req, res, next) {
+    var gid = req.body.gid;
+    var project_data_multi_id = req.body.project_data_multi_id; //該筆實驗項目在資料表中的資料id
+    var member_id_member = req.session.member_id;
+    if(!member_id_member){
+        res.send({message:"false"});
+    }else{
+        var origin_data;
+        
+        project.selectExperimentEdit(project_data_multi_id)
+        .then(function(result){
+            origin_data = result[0].project_data_multi_title;
+            return project.selectCorrespondNeedDelete(origin_data)
+        })
+        .then(function(result2){
+            // var needUpdateDataArray = [];
+            var needUpdateDataArray;
+            var newDataArray = [];
+            for(var i = 0; i < result2.length; i++){
+                var newCorrespondDataArray = [];
+                var needUpdateData = result2[i].project_data_multi_correspond;
+                needUpdateDataArray = needUpdateData.split(',');
+                var project_data_multi_id2 = result2[i].project_data_multi_id;
+
+                for(var j = 0; j < needUpdateDataArray.length; j++){
+                    if(needUpdateDataArray[j] != origin_data){
+                        newCorrespondDataArray.push(needUpdateDataArray[j]);
+                    }
+                }
+                var newCorrespondData = newCorrespondDataArray.toString();   
+                var newData = {gid:gid, project_data_multi_id:project_data_multi_id2, newCorrespondData:newCorrespondData}
+                newDataArray.push(newData);
+
+            }
+            console.log(newDataArray);
+            return project.updatePurposesDeleteCorrespond(newDataArray)
+        })
+        .then(function(result3){
+            return project.deleteProjectDataMultiContentForMany(project_data_multi_id)
+        })
+        .then(function(result4){
+            res.send({message:"true"});
+        })
+    }
+});
+
+//新增研究設備及器材
+router.post('/addMaterial',function(req, res, next) {
+    var gid = req.body.gid;
+    var material_name = req.body.material_name;
+    var material_amount = req.body.material_amount;
+    var member_id_member = req.session.member_id;
+    var member_name = req.session.member_name;
+
+    if(!member_id_member){
+        res.send({message:"false"});
+    }else{
+        project.addMaterial(gid, material_name, material_amount, member_id_member, member_name)
+        .then(function(result){
+            if(result){
+                // console.log(result.insertId);
+                res.send({message:"true"});
+            }
+        })
+    }
+});
+
+//修改研究設備及器材
+router.post('/editMaterial',function(req, res, next) {
+    var gid = req.body.gid;
+    var material_id = req.body.material_id;
+    var material_name = req.body.material_name;
+    var material_amount = req.body.material_amount;
+    var member_id_member = req.session.member_id;
+    var member_name = req.session.member_name;
+    if(!member_id_member){
+        res.send({message:"false"});
+    }else{
+        project.updateMaterialForMany(gid, material_id, material_name, material_amount, member_id_member, member_name)
+        .then(function(result){
+            if (result){
+                // console.log(result3);
+                res.send({message:"true"});
+            }
+        })
+    }
+});
+
+//刪除研究設備及器材
+router.post('/deleteMaterial',function(req, res, next) {
+    var material_id = req.body.material_id; //該筆實驗項目在資料表中的資料id
+    var member_id_member = req.session.member_id;
+    if(!member_id_member){
+        res.send({message:"false"});
+    }else{
+
+        project.deleteMaterialForMany(material_id)
+        .then(function(result){
+            res.send({message:"true"});
+        })
+    }
+});
+
+//新增實驗記錄
+router.post('/addRecord',function(req, res, next) {
+    var gid = req.body.gid;
+    var project_data_multi_type = "實驗記錄";
+    var project_data_multi_correspond = req.body.project_data_multi_correspond;
+    var project_data_multi_title = "";
     var project_data_multi_content = req.body.project_data_multi_content;
     var member_id_member = req.session.member_id;
     var member_name = req.session.member_name;

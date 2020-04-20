@@ -279,7 +279,7 @@ module.exports = {
 		
 	},
 
-	//新增實驗項目(新增project_data_multi資料表的資料)
+	//新增project_data_multi資料表的資料(新增實驗項目、實驗記錄)
 	// addProjectDataMultiContent :function(groups_id_groups, project_data_multi_type, project_data_multi_correspond, project_data_multi_title, project_data_multi_content, member_id_member, member_name, cb){
 	// 	var groups_id_groups = groups_id_groups;
 	// 	pool.getConnection(function(err, connection){
@@ -302,6 +302,23 @@ module.exports = {
 				connection.query('INSERT INTO `project_data_multi` SET ?', params, function(err,insert_res){
 					if(err) return reject(err);
 					resolve(insert_res);
+					connection.release();
+				})
+			})
+		})
+		
+	},
+
+	//新增研究設備及器材(新增material資料表的資料)(promise版本)
+	addMaterial :function(groups_id_groups, material_name, material_amount, member_id_member, member_name){
+		return new Promise(function(resolve, reject){
+			pool.getConnection(function(err, connection){
+				if(err) throw err;
+				var params = {groups_id_groups:groups_id_groups, material_name:material_name, material_amount:material_amount, member_id_member:member_id_member, member_name:member_name};
+				connection.query('INSERT INTO `material` SET ?', params, function(err, insert_res){
+					if(err) throw err;
+					resolve(insert_res);
+					console.log(params);
 					connection.release();
 				})
 			})
@@ -368,13 +385,13 @@ module.exports = {
 		})
 	},
 
-	//修改研究目的的時候同時修改對應欄位中的資料
-	updateProjectDataCorrespond :function(groups_id_groups,origin_data,replace_data){
+	//修改研究目的或實驗項目標題的時候同時修改對應欄位中的資料
+	updateProjectDataCorrespond :function(groups_id_groups,project_data_multi_type2,origin_data,replace_data){
 		return new Promise(function(resolve, reject){
 			pool.getConnection(function(err, connection){
 				if(err) return reject(err);
 				connection.query('UPDATE `project_data_multi` SET `project_data_multi_correspond` = REPLACE(`project_data_multi_correspond`,'+'"'+origin_data+'","'+replace_data+'"'+')'+
-				' WHERE `groups_id_groups`='+groups_id_groups+' AND `project_data_multi_correspond` LIKE "%'+origin_data+'%"', function(err, result){
+				' WHERE `groups_id_groups`='+groups_id_groups+' AND `project_data_multi_type`='+'"'+project_data_multi_type2+'"'+'  AND `project_data_multi_correspond` LIKE "%'+origin_data+'%"', function(err, result){
 					if(err) return reject(err);
 					console.log(result);
 					resolve(result);
@@ -424,7 +441,7 @@ module.exports = {
 		})
 	},
 
-	//刪除研究目的同時修改對應欄位，把刪除的那筆重新儲存
+	//刪除研究目的或實驗項目同時修改對應欄位，把刪除的那筆重新儲存
 	updatePurposesDeleteCorrespond :function(newDataArray){
 		return Promise.all(
 			newDataArray.map(function(data){
@@ -453,6 +470,64 @@ module.exports = {
 				connection.query('SELECT `project_data_multi_title` FROM `project_data_multi` WHERE `project_data_multi_id`=?', project_data_multi_id,function(err, result){
 					if(err) return reject(err);
 					//console.log(result);
+					resolve(result);
+					connection.release();
+				})
+			})
+		})
+	},
+
+	//修改實驗項目(修改project_data_multi資料表中有多筆的project_data_multi_type的資料)
+	updateProjectDataMultiContentForMany :function(groups_id_groups, project_data_multi_id, project_data_multi_type, project_data_multi_correspond, project_data_multi_title, project_data_multi_content, member_id_member, member_name){
+		return new Promise(function(resolve, reject){
+			pool.getConnection(function(err, connection){
+				if(err) return reject(err);
+				var update_params = {project_data_multi_correspond:project_data_multi_correspond, project_data_multi_title:project_data_multi_title, project_data_multi_content:project_data_multi_content, member_id_member:member_id_member, member_name:member_name};
+				connection.query('UPDATE `project_data_multi` SET ? WHERE `groups_id_groups`='+groups_id_groups+' AND `project_data_multi_type`='+'"'+project_data_multi_type+'"'+'AND `project_data_multi_id`='+project_data_multi_id, update_params, function(err, update_res){
+					if(err) return reject(err);
+					resolve(update_res);
+					connection.release();
+				})
+			})
+		})
+	},
+
+	//刪除實驗項目(刪除project_data_multi資料表中有多筆的project_data_multi_type的其中一筆資料)(promise版本)
+	deleteProjectDataMultiContentForMany :function(project_data_multi_id){
+		return new Promise(function(resolve, reject){
+			pool.getConnection(function(err, connection){
+				if(err) return reject(err);
+				connection.query('DELETE FROM `project_data_multi` WHERE `project_data_multi_id`=?',project_data_multi_id,function(result){
+					if(err) return reject(err);
+					resolve(result);
+					connection.release();
+				})
+			})
+		})
+	},
+
+	//修改研究設備及器材(修改material資料表中有多筆gid的資料)
+	updateMaterialForMany :function(groups_id_groups, material_id, material_name, material_amount, member_id_member, member_name){
+		return new Promise(function(resolve, reject){
+			pool.getConnection(function(err, connection){
+				if(err) return reject(err);
+				var update_params = {material_name:material_name, material_amount:material_amount, member_id_member:member_id_member, member_name:member_name};
+				connection.query('UPDATE `material` SET ? WHERE `groups_id_groups`='+groups_id_groups+' AND `material_id`='+material_id, update_params, function(err, update_res){
+					if(err) return reject(err);
+					resolve(update_res);
+					connection.release();
+				})
+			})
+		})
+	},
+
+	//刪除研究設備及器材(刪除material資料表中有多筆gid的資料的其中一筆資料)(promise版本)
+	deleteMaterialForMany :function(material_id){
+		return new Promise(function(resolve, reject){
+			pool.getConnection(function(err, connection){
+				if(err) return reject(err);
+				connection.query('DELETE FROM `material` WHERE `material_id`=?',material_id,function(result){
+					if(err) return reject(err);
 					resolve(result);
 					connection.release();
 				})

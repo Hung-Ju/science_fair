@@ -419,7 +419,6 @@
                             </p>
                             <p><b>對應的研究目的：</b>
                               <div class="correspond_purposes"></div>
-
                             </p>
                             <p><b>實驗項目設計：</b>
                               <textarea rows="4" class="col-sm-8 form-control create-experiment-summernote"></textarea>
@@ -455,11 +454,11 @@
                               <input class="form-control" type="text" name="research_experiment" id="research_experiment_title_edit" required="required">
                             </p>
                             <p><b>對應的研究目的：</b>
-                              <div class="correspond_purposes"></div>
+                              <div class="correspond_purposes2"></div>
 
                             </p>
                             <p><b>實驗項目設計：</b>
-                              <textarea rows="4" class="col-sm-8 form-control create-experiment-summernote"></textarea>
+                              <textarea rows="4" class="col-sm-8 form-control create-experiment-summernote" id="research_experiment_content_edit"></textarea>
                             </p>
                           </div>
                         </div>
@@ -566,31 +565,77 @@
             <!-- 中間內容編輯區塊 -->
             <div class="col-7" style="background-color: #EEEBE5;" id="research_material">
               <div class="content-margin">
-                <center>
-                  <div class="margin-bottom10 form-group row">
-                    <!-- <label class="col-sm-3">新增研究設備及器材</label> -->
-                    <button class="btn btn-sm btn-primary margin-left10">新增研究設備及器材</button>
-                  </div>
-                  <!-- 研究設備及器材的表格 -->
-                  <input type='hidden' id="researchMaterial" value="<%= JSON.stringify(researchMaterial) %>">
-                  <table id="researchMaterialTable" class="table"></table>
-                  <!-- 研究設備及器材的表格 -->
-                  <div class="margin-bottom10 form-group row">
-
-                    <!-- <div class="card-group">
-                      <div class="card" style="width: 12rem;">
-                        <img src="https://fs1.shop123.com.tw/300063/upload/product/3000633213pic_big_943291.jpg" class="card-img-top">
-                        <div class="card-body">
-                          <h5 class="card-title">燒杯</h5>
-                          <p class="card-text">數量：3</p>
-                          <button class="btn btn-sm btn-primary margin-left10">編輯</button><button class="btn btn-sm btn-danger margin-left10">刪除</button>
+                
+                <div class="margin-bottom10 form-group row">
+                  <!-- <label class="col-sm-3">新增研究設備及器材</label> -->
+                  <button id="add_material_btn" class="btn btn-sm btn-primary margin-left10 height30"  data-toggle="modal" data-target="#addMaterialModal">新增研究設備及器材</button>
+                  <!-- 新增研究設備及器材的彈出視窗 -->
+                  <div class="modal fade" id="addMaterialModal" tabindex="-1" role="dialog" aria-labelledby="addPurposesModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="addMaterialLongTitle">新增研究設備及器材</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <div id="addMaterialModalRoot">
+                            <p><b>實驗材料名稱</b><input class="form-control" type="text" name="research_material_name" id="research_material_name" required="required"></p>
+                            <p><b>實驗材料數量(單位)</b><input class="form-control" type="text" name="research_material_amount" id="research_material_amount" required="required"></p>
+                          </div>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                          <button type="button" class="btn btn-primary" id="addMaterialModalButton">新增</button>
                         </div>
                       </div>
-                    </div> -->
-
+                    </div>
                   </div>
-                    
-                </center>
+                  <!-- 新增研究設備及器材的彈出視窗 -->
+                </div>
+                <!-- 研究設備及器材的表格 -->
+                <input type='hidden' id="researchMaterial" value="<%= JSON.stringify(researchMaterial) %>">
+                <table id="researchMaterialTable" class="table"></table>
+                <!-- 研究設備及器材的表格 -->
+                <!-- 編輯研究設備及器材的彈出視窗 -->
+                <div class="modal fade" id="editMaterialModal" tabindex="-1" role="dialog" aria-labelledby="editMaterialModalCenterTitle" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="editMaterialLongTitle">新增研究設備及器材</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <div id="editMaterialModalRoot">
+                          <p><b>實驗材料名稱</b><input class="form-control" type="text" name="research_material_name" id="research_material_name_edit" required="required"></p>
+                          <p><b>實驗材料數量(單位)</b><input class="form-control" type="text" name="research_material_amount" id="research_material_amount_edit" required="required"></p>
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-primary" id="editMaterialModalButton">儲存</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- 編輯研究設備及器材的彈出視窗 -->
+                <div class="margin-bottom10 form-group row">
+
+                  <!-- <div class="card-group">
+                    <div class="card" style="width: 12rem;">
+                      <img src="https://fs1.shop123.com.tw/300063/upload/product/3000633213pic_big_943291.jpg" class="card-img-top">
+                      <div class="card-body">
+                        <h5 class="card-title">燒杯</h5>
+                        <p class="card-text">數量：3</p>
+                        <button class="btn btn-sm btn-primary margin-left10">編輯</button><button class="btn btn-sm btn-danger margin-left10">刪除</button>
+                      </div>
+                    </div>
+                  </div> -->
+
+                </div>
                 
               </div>
             </div>
@@ -640,13 +685,69 @@
             <div class="col-7" style="background-color: #EEEBE5;" id="research_record">
               <div id="research_record_content" class="content-margin">
                   <div class="margin-bottom10 form-group row">
-                    <button id="add_record_btn" class="btn btn-sm btn-primary margin-left10">新增實驗記錄</button>
+                    <button id="add_record_btn" class="btn btn-sm btn-primary margin-left10 height30"  data-toggle="modal" data-target="#addRecordModal">新增實驗記錄</button>
                   </div>
+                  <!-- 新增實驗記錄的彈出視窗 -->
+                  <div class="modal fade" id="addRecordModal" tabindex="-1" role="dialog" aria-labelledby="addRecordCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="addRecordLongTitle">新增實驗記錄</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <div id="addRecordRoot">
+                            <p><b>對應的實驗項目：</b>
+                              <div class="correspond_experiment"></div>
+                            </p>
+                            <p><b>實驗記錄內容：</b>
+                              <textarea rows="4" class="col-sm-8 form-control create-record-summernote"></textarea>
+                            </p>
+                          </div>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                          <button type="button" class="btn btn-primary" id="addRecordModalButton">新增</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- 新增實驗項目的彈出視窗 -->
 
                   <!-- 實驗記錄的表格 -->
                   <input type='hidden' id="researchRecord" value="<%= JSON.stringify(researchRecord) %>">
                   <table id="researchRecordTable" class="table"></table>
                   <!-- 實驗記錄的表格 -->
+                  <!-- 編輯實驗記錄的彈出視窗 -->
+                  <div class="modal fade" id="editRecordModal" tabindex="-1" role="dialog" aria-labelledby="editRecordCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="editRecordLongTitle">編輯實驗記錄</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <div id="editRecordRoot">
+                            <p><b>對應的實驗項目：</b>
+                              <div class="correspond_experiment2"></div>
+                            </p>
+                            <p><b>實驗記錄內容：</b>
+                              <textarea rows="4" class="col-sm-8 form-control create-record-summernote" id="research_record_content_edit"></textarea>
+                            </p>
+                          </div>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                          <button type="button" class="btn btn-primary" id="editRecordModalButton">新增</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- 編輯實驗項目的彈出視窗 -->
 
                   <!-- <div class="record-item margin-bottom10 form-group row">
                     <label class="col-sm-2 text-center">實驗紀錄：</label>
