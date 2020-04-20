@@ -695,4 +695,158 @@ router.post('/addRecord',function(req, res, next) {
     }
 });
 
+//修改實驗記錄
+router.post('/editRecord',function(req, res, next) {
+    var gid = req.body.gid;
+    var project_data_multi_id = req.body.project_data_multi_id; //該筆實驗記錄在資料表中的資料id
+    var project_data_multi_type = "實驗記錄";
+    var project_data_multi_correspond = req.body.project_data_multi_correspond;
+    var project_data_multi_title = "";
+    var project_data_multi_content = req.body.project_data_multi_content;
+    var member_id_member = req.session.member_id;
+    var member_name = req.session.member_name;
+    if(!member_id_member){
+        res.send({message:"false"});
+    }else{
+        project.updateProjectDataMultiContentForMany(gid, project_data_multi_id, project_data_multi_type, project_data_multi_correspond, project_data_multi_title, project_data_multi_content, member_id_member, member_name)
+        .then(function(result){
+            if (result){
+                // console.log(result3);
+                res.send({message:"true"});
+            }
+        })
+    }
+});
+
+//刪除實驗記錄
+router.post('/deleteRecord',function(req, res, next) {
+    var project_data_multi_id = req.body.project_data_multi_id; //該筆實驗記錄在資料表中的資料id
+    var member_id_member = req.session.member_id;
+    if(!member_id_member){
+        res.send({message:"false"});
+    }else{
+        project.deleteProjectDataMultiContentForMany(project_data_multi_id)
+        .then(function(result){
+            res.send({message:"true"});
+        })
+    }
+});
+
+//新增分析項目(研究結果)
+router.post('/addAnalysis',function(req, res, next) {
+    var gid = req.body.gid;
+    var project_data_multi_type = "研究結果";
+    var project_data_multi_correspond = req.body.project_data_multi_correspond;
+    var project_data_multi_title = "";
+    var project_data_multi_content = req.body.project_data_multi_content;
+    var member_id_member = req.session.member_id;
+    var member_name = req.session.member_name;
+    if(!member_id_member){
+        res.send({message:"false"});
+    }else{
+        project.addProjectDataMultiContent(gid, project_data_multi_type, project_data_multi_correspond, project_data_multi_title, project_data_multi_content, member_id_member, member_name)
+        .then(function(result){
+            if(result){
+                // console.log(result.insertId);
+                res.send({message:"true"});
+            }
+        })
+    }
+});
+
+//修改分析項目(研究結果)
+router.post('/editAnalysis',function(req, res, next) {
+    var gid = req.body.gid;
+    var project_data_multi_id = req.body.project_data_multi_id; //該筆分析項目在資料表中的資料id
+    var project_data_multi_type = "研究結果";
+    var project_data_multi_correspond = req.body.project_data_multi_correspond;
+    var project_data_multi_title = "";
+    var project_data_multi_content = req.body.project_data_multi_content;
+    var member_id_member = req.session.member_id;
+    var member_name = req.session.member_name;
+    if(!member_id_member){
+        res.send({message:"false"});
+    }else{
+        project.updateProjectDataMultiContentForMany(gid, project_data_multi_id, project_data_multi_type, project_data_multi_correspond, project_data_multi_title, project_data_multi_content, member_id_member, member_name)
+        .then(function(result){
+            if (result){
+                // console.log(result3);
+                res.send({message:"true"});
+            }
+        })
+    }
+});
+
+//刪除分析項目(研究結果)
+router.post('/deleteAnalysis',function(req, res, next) {
+    var project_data_multi_id = req.body.project_data_multi_id; //該筆實驗記錄在資料表中的資料id
+    var member_id_member = req.session.member_id;
+    if(!member_id_member){
+        res.send({message:"false"});
+    }else{
+        project.deleteProjectDataMultiContentForMany(project_data_multi_id)
+        .then(function(result){
+            res.send({message:"true"});
+        })
+    }
+});
+
+//新增討論
+router.post('/addDiscussion',function(req, res, next) {
+    var gid = req.body.gid;
+    var project_data_type = "討論";
+    var project_data_content = req.body.project_data_content;
+    var member_id_member = req.session.member_id;
+    var member_name = req.session.member_name;
+
+    console.log(gid);
+
+    if(!member_id_member){
+        res.send({message:"false"});
+    }else{
+        project.addProjectDataContent(gid, project_data_type, project_data_content, member_id_member, member_name)
+        .then(function(result){
+            if(result){
+                // console.log(result.insertId);
+                res.send({message:"true"});
+            }
+        })
+    }
+});
+
+//修改討論
+router.post('/editDiscussion',function(req, res, next) {
+    var gid = req.body.gid;
+    var project_data_id = req.body.project_data_id; //該筆討論在資料表中的資料id
+    var project_data_type = "討論";
+    var project_data_content = req.body.project_data_content; //討論的內容
+    var member_id_member = req.session.member_id;
+    var member_name = req.session.member_name;
+    if(!member_id_member){
+        res.send({message:"false"});
+    }else{
+        project.updateProjectDataContentForMany(gid, project_data_id, project_data_type, project_data_content, member_id_member, member_name)
+        .then(function(result){
+            if (result){
+                res.send({message:"true"});
+            }
+        })
+    }
+});
+
+//刪除研究目的
+router.post('/deleteDiscussion',function(req, res, next) {
+    var project_data_id = req.body.project_data_id; //該筆研究目的在資料表中的資料id
+    var member_id_member = req.session.member_id;
+    if(!member_id_member){
+        res.send({message:"false"});
+    }else{
+        project.deleteProjectDataContentForMany(project_data_id)
+        .then(function(result){
+            res.send({message:"true"});
+        })
+    }
+});
+
+
 module.exports = router;

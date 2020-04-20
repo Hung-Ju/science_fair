@@ -353,13 +353,13 @@ function researchRecordTable(){
     $allResearchRecordTable.bootstrapTable('load',allResearchRecord);
 }
 
-//研究設備及器材表格裡的編輯按鈕和刪除按鈕
+//實驗記錄表格裡的編輯按鈕和刪除按鈕
 function researchRecordButton(value, row, index){
     return ['<button class="btn btn-primary btn-sm editRecordBtn" type="submit" data-toggle="modal" data-target="#editRecordModal">編輯</button><br>' + 
-            '<button class="btn btn-danger btn-sm stage-switch-btn deleteMaterialBtn" onclick="deleteMaterial('+row.material_id+')">刪除</button>']
+            '<button class="btn btn-danger btn-sm stage-switch-btn deleteMaterialBtn" onclick="deleteRecord('+row.project_data_multi_id+')">刪除</button>']
 }
 
-//實驗項目新增用modal裡選擇對應的研究目的用的radio
+//實驗記錄新增用modal裡選擇對應的實驗項目用的radio
 function correspond_record_select(){
     var researchExperimentData = document.getElementById("researchExperiment").value;
     var allResearchExperiment = JSON.parse(researchExperimentData);
@@ -376,7 +376,7 @@ function correspond_record_select(){
     }
 }
 
-//實驗項目編輯用modal裡選擇對應的研究目的用的radio
+//實驗記錄編輯用modal裡選擇對應的研究目的用的radio
 function correspond_record_select2(){
     var researchExperimentData = document.getElementById("researchExperiment").value;
     var allResearchExperiment = JSON.parse(researchExperimentData);
@@ -386,23 +386,22 @@ function correspond_record_select2(){
         var experiment = allResearchExperiment[i];
         var experiment_title = experiment.project_data_multi_title;
         var experiment_options = ['<div class="custom-control custom-radio">'+
-                                '<input type="radio" class="custom-control-input" id="'+experiment_title+'2'+'" name="experiment_select2" value="'+experiment_title+'2'+'">'+
-                                '<label class="custom-control-label" for="'+experiment_title+'2'+'">'+experiment_title+'2'+'</label>'+
+                                '<input type="radio" class="custom-control-input" id="'+experiment_title+'2'+'" name="experiment_select2" value="'+experiment_title+'">'+
+                                '<label class="custom-control-label" for="'+experiment_title+'2'+'">'+experiment_title+'</label>'+
                               '</div>'];
         $correspond_experiment.append(experiment_options);
     }
 }
 
 window.operateEventsRecord = {
-    //研究設備及器材表格裡的編輯按鈕
+    //實驗記錄表格裡的編輯按鈕
     'click .editRecordBtn': function (e, value, row, index) {
         //顯示視窗前呼叫
         $("#editRecordModal").on("show.bs.modal",function(event){
-            //用operateEventsMaterial把要編輯的那筆資料傳送到要開啟的編輯用modal
-            // document.getElementById("research_material_name_edit").value = row.material_name;
+            //用operateEventsRecord把要編輯的那筆資料傳送到要開啟的編輯用modal
             $("#research_record_content_edit").summernote('code',row.project_data_multi_content);
 
-            //研究設備及器材的編輯用modal裡的儲存按鈕，update研究設備及器材用的AJAX
+            //實驗記錄的編輯用modal裡的儲存按鈕，update實驗記錄用的AJAX
             $("#editRecordModalButton").click(function(){
                 var gid = document.getElementById("groups_id").value;
                 var cbxExperimentSelect = [];
@@ -416,7 +415,7 @@ window.operateEventsRecord = {
                         gid: gid,
                         project_data_multi_id: row.project_data_multi_id,
                         project_data_multi_correspond: cbxExperimentSelect.toString(),
-                        material_amount: $("#research_material_amount_edit").val(),
+                        project_data_multi_content: $("#research_record_content_edit").val(),
                     },
                     success: function(data){
                         if(data){
@@ -440,6 +439,33 @@ window.operateEventsRecord = {
     }
 }
 
+//刪除實驗記錄的AJAX
+function deleteRecord(project_data_multi_id){
+    var gid = document.getElementById("groups_id").value;
+    $.ajax({  
+        type: "POST",
+        url: "/project/deleteRecord",
+        data: {
+            project_data_multi_id: project_data_multi_id
+        },
+        success: function(data){
+            if(data){
+                if(data.message=="true"){
+                    alert('刪除成功');
+                    window.location.href="/project/?gid="+gid;
+                }
+                else{
+                    alert('帳號已被系統自動登出，請重新登入');
+                    window.location.href="/project/?gid="+gid;
+                }
+            }
+        },
+        error: function(){
+            alert('失敗');
+        }
+    });
+}
+
 //研究結果(分析及圖表)表格的初始化設定
 function researchAnalysisTable(){
     var researchAnalysisTableData = document.getElementById("researchAnalysis").value;
@@ -450,13 +476,126 @@ function researchAnalysisTable(){
         columns: [
             {title: '對應的研究目的', field: 'project_data_multi_correspond'},
             {title: '分析項目內容', field: 'project_data_multi_content'},
-            {title: '', field: 'project_data_multi_id', formatter: 'researchExperimentButton',width:100}
+            {title: '', field: 'project_data_multi_id', events: 'window.operateEventsAnalysis', formatter: 'researchAnalysisButton',width:100}
             ],
         theadClasses: 'thead-light',
         classes: 'table table-bordered bg-light',
         pagination: true
     });
     $allResearchAnalysisTable.bootstrapTable('load',allResearchAnalysis);
+}
+
+//研究結果(分析及圖表)表格裡的編輯按鈕和刪除按鈕
+function researchAnalysisButton(value, row, index){
+    return ['<button class="btn btn-primary btn-sm editAnalysisBtn" type="submit" data-toggle="modal" data-target="#editAnalysisModal">編輯</button><br>' + 
+            '<button class="btn btn-danger btn-sm stage-switch-btn deleteMaterialBtn" onclick="deleteAnalysis('+row.project_data_multi_id+')">刪除</button>']
+}
+
+//研究結果(分析及圖表)新增用modal裡選擇對應的研究目的用的checkbox
+function correspond_purposes_select3(){
+    var researchPurposesData = document.getElementById("researchPurposes").value;
+    var allResearchPurposes = JSON.parse(researchPurposesData);
+    $correspond_purposes = $('.correspond_purposes3');
+    $correspond_purposes.html("");
+    for (var i = 0; i < allResearchPurposes.length; i++){
+        var purposes = allResearchPurposes[i];
+        var purposes_content = purposes.project_data_content;
+        var purposes_options = ['<div class="custom-control custom-checkbox">'+
+                                '<input type="checkbox" class="custom-control-input" id="'+purposes_content+'3'+'" name="purposes_select3" value="'+purposes_content+'">'+
+                                '<label class="custom-control-label" for="'+purposes_content+'3'+'">'+purposes_content+'</label>'+
+                              '</div>'];
+        $correspond_purposes.append(purposes_options);
+    }
+}
+
+//研究結果(分析及圖表)編輯用modal裡選擇對應的研究目的用的checkbox
+function correspond_purposes_select4(){
+    var researchPurposesData = document.getElementById("researchPurposes").value;
+    var allResearchPurposes = JSON.parse(researchPurposesData);
+    $correspond_purposes = $('.correspond_purposes4');
+    $correspond_purposes.html("");
+    for (var i = 0; i < allResearchPurposes.length; i++){
+        var purposes = allResearchPurposes[i];
+        var purposes_content = purposes.project_data_content;
+        var purposes_options = ['<div class="custom-control custom-checkbox">'+
+                                '<input type="checkbox" class="custom-control-input" id="'+purposes_content+'4'+'" name="purposes_select4" value="'+purposes_content+'">'+
+                                '<label class="custom-control-label" for="'+purposes_content+'4'+'">'+purposes_content+'</label>'+
+                              '</div>'];
+        $correspond_purposes.append(purposes_options);
+    }
+}
+
+window.operateEventsAnalysis = {
+    //實驗記錄表格裡的編輯按鈕
+    'click .editAnalysisBtn': function (e, value, row, index) {
+        //顯示視窗前呼叫
+        $("#editAnalysisModal").on("show.bs.modal",function(event){
+            //用operateEventsRecord把要編輯的那筆資料傳送到要開啟的編輯用modal
+            $("#research_analysis_content_edit").summernote('code',row.project_data_multi_content);
+
+            //實驗記錄的編輯用modal裡的儲存按鈕，update實驗記錄用的AJAX
+            $("#editAnalysisModalButton").click(function(){
+                var gid = document.getElementById("groups_id").value;
+                var cbxExperimentSelect = [];
+                $('input[name="purposes_select4"]:checked').each(function() { 
+                    cbxExperimentSelect.push($(this).val());
+                });
+                $.ajax({  
+                    type: "POST",
+                    url: "/project/editAnalysis",
+                    data: {
+                        gid: gid,
+                        project_data_multi_id: row.project_data_multi_id,
+                        project_data_multi_correspond: cbxExperimentSelect.toString(),
+                        project_data_multi_content: $("#research_analysis_content_edit").val(),
+                    },
+                    success: function(data){
+                        if(data){
+                            // alert(123);
+                            if(data.message=="true"){
+                                alert('修改成功');
+                                window.location.href="/project/?gid="+gid;
+                            }
+                            else{
+                                alert('帳號已被系統自動登出，請重新登入');
+                                window.location.href="/project/?gid="+gid;
+                            }
+                        }
+                    },
+                    error: function(){
+                        alert('失敗');
+                    }
+                });
+            })
+        });
+    }
+}
+
+//刪除研究結果(分析及圖表)的AJAX
+function deleteAnalysis(project_data_multi_id){
+    var gid = document.getElementById("groups_id").value;
+    $.ajax({  
+        type: "POST",
+        url: "/project/deleteAnalysis",
+        data: {
+            project_data_multi_id: project_data_multi_id
+        },
+        success: function(data){
+            if(data){
+                if(data.message=="true"){
+                    alert('刪除成功');
+                    window.location.href="/project/?gid="+gid;
+                }
+                else{
+                    alert('帳號已被系統自動登出，請重新登入');
+                    window.location.href="/project/?gid="+gid;
+                }
+            }
+        },
+        error: function(){
+            alert('失敗');
+        }
+    });
 }
 
 //討論表格的初始化設定
@@ -468,7 +607,7 @@ function researchDiscussionTable(){
     $allresearchDiscussionTable.bootstrapTable({
         columns: [
             {title: '討論內容', field: 'project_data_content'},
-            {title: '', field: 'project_data_id',events: 'window.operateEvents' , formatter: 'researchPurposesButton',width:100}
+            {title: '', field: 'project_data_id',events: 'window.operateEventsDiscussion' , formatter: 'researchDiscussionButton',width:100}
             ],
         theadClasses: 'thead-light',
         classes: 'table table-bordered bg-light',
@@ -476,6 +615,83 @@ function researchDiscussionTable(){
     });
     $allresearchDiscussionTable.bootstrapTable('load',allResearchDiscussion);
 }
+
+//討論表格裡的編輯按鈕和刪除按鈕
+function researchDiscussionButton(value, row, index){
+    return ['<button class="btn btn-primary btn-sm editDiscussionBtn" type="submit" data-toggle="modal" data-target="#editDiscussionModal">編輯</button><br>' + 
+            '<button class="btn btn-danger btn-sm stage-switch-btn deleteDiscussionBtn" onclick="deleteDiscussion('+row.project_data_id+')">刪除</button>']
+}
+
+window.operateEventsDiscussion = {
+    //實驗記錄表格裡的編輯按鈕
+    'click .editDiscussionBtn': function (e, value, row, index) {
+        //顯示視窗前呼叫
+        $("#editDiscussionModal").on("show.bs.modal",function(event){
+            //用operateEventsRecord把要編輯的那筆資料傳送到要開啟的編輯用modal
+            $("#research_discussion_content_edit").summernote('code',row.project_data_content);
+
+            //實驗記錄的編輯用modal裡的儲存按鈕，update實驗記錄用的AJAX
+            $("#editDiscussionModalButton").click(function(){
+                var gid = document.getElementById("groups_id").value;
+
+                $.ajax({  
+                    type: "POST",
+                    url: "/project/editDiscussion",
+                    data: {
+                        gid: gid,
+                        project_data_id: row.project_data_id,
+                        project_data_content: $("#research_discussion_content_edit").val(),
+                    },
+                    success: function(data){
+                        if(data){
+                            // alert(123);
+                            if(data.message=="true"){
+                                alert('修改成功');
+                                window.location.href="/project/?gid="+gid;
+                            }
+                            else{
+                                alert('帳號已被系統自動登出，請重新登入');
+                                window.location.href="/project/?gid="+gid;
+                            }
+                        }
+                    },
+                    error: function(){
+                        alert('失敗');
+                    }
+                });
+            })
+        });
+    }
+}
+
+//刪除討論的AJAX
+function deleteDiscussion(project_data_id){
+    var gid = document.getElementById("groups_id").value;
+    $.ajax({  
+        type: "POST",
+        url: "/project/deleteDiscussion",
+        data: {
+            project_data_id: project_data_id
+        },
+        success: function(data){
+            if(data){
+                if(data.message=="true"){
+                    alert('刪除成功');
+                    window.location.href="/project/?gid="+gid;
+                }
+                else{
+                    alert('帳號已被系統自動登出，請重新登入');
+                    window.location.href="/project/?gid="+gid;
+                }
+            }
+        },
+        error: function(){
+            alert('失敗');
+        }
+    });
+}
+
+
 
 //增加研究目的
 // function addPurposes(){
@@ -495,45 +711,45 @@ function researchDiscussionTable(){
 // }
 
 //增加實驗項目
-function addExperiment(){
-    var experiment = ['<div class="experiment-item margin-bottom10 form-group row">' +
-                            '<label class="col-sm-2 text-center">實驗項目：</label>' +
-                            '<div style="width:75%">' +
-                                '<textarea rows="3" class="col-sm-8 form-control  create-experiment-summernote"></textarea>' +
-                            '</div>&nbsp;' +
-                            '<button class="delete-experiment-btn col-auto btn btn-sm btn-danger my-1 height30">刪除</button>' +
-                        '</div>']
-    $('#research_experiment_content').append(experiment);
-    newSummer();
-    deleteExperimentItem();
-}
+// function addExperiment(){
+//     var experiment = ['<div class="experiment-item margin-bottom10 form-group row">' +
+//                             '<label class="col-sm-2 text-center">實驗項目：</label>' +
+//                             '<div style="width:75%">' +
+//                                 '<textarea rows="3" class="col-sm-8 form-control  create-experiment-summernote"></textarea>' +
+//                             '</div>&nbsp;' +
+//                             '<button class="delete-experiment-btn col-auto btn btn-sm btn-danger my-1 height30">刪除</button>' +
+//                         '</div>']
+//     $('#research_experiment_content').append(experiment);
+//     newSummer();
+//     deleteExperimentItem();
+// }
 //刪除新增的實驗步驟(實驗項目)
-function deleteExperimentItem(){
-    $('.delete-experiment-btn').click(function(){
-        $(this).parents('.experiment-item').remove();
-    });
-}
+// function deleteExperimentItem(){
+//     $('.delete-experiment-btn').click(function(){
+//         $(this).parents('.experiment-item').remove();
+//     });
+// }
 
 //增加討論項目
-function addDiscussion(){
-    var discussion = ['<div class="discussion-item margin-bottom10 form-group row">' +
-                            '<label class="col-sm-2 text-center">討論項目：</label>' +
-                            '<div style="width:75%">' +
-                                '<textarea rows="4" class="col-sm-8 form-control  create-experiment-summernote"></textarea>' +
-                            '</div>&nbsp;' +
-                            '<button class="delete-discussion-btn col-auto btn btn-sm btn-danger my-1 height30">刪除</button>' +
-                        '</div>']
-    $('#research_discussion_content').append(discussion);
-    newSummer();
-    deleteDiscussionItem();
-}
+// function addDiscussion(){
+//     var discussion = ['<div class="discussion-item margin-bottom10 form-group row">' +
+//                             '<label class="col-sm-2 text-center">討論項目：</label>' +
+//                             '<div style="width:75%">' +
+//                                 '<textarea rows="4" class="col-sm-8 form-control  create-experiment-summernote"></textarea>' +
+//                             '</div>&nbsp;' +
+//                             '<button class="delete-discussion-btn col-auto btn btn-sm btn-danger my-1 height30">刪除</button>' +
+//                         '</div>']
+//     $('#research_discussion_content').append(discussion);
+//     newSummer();
+//     deleteDiscussionItem();
+// }
 
 //刪除新增的討論項目
-function deleteDiscussionItem(){
-    $('.delete-discussion-btn').click(function(){
-        $(this).parents('.discussion-item').remove();
-    });
-}
+// function deleteDiscussionItem(){
+//     $('.delete-discussion-btn').click(function(){
+//         $(this).parents('.discussion-item').remove();
+//     });
+// }
 
 //點選進入組別按鈕進入該組的專題編輯頁面
 function enterProject(groups_id){
@@ -617,6 +833,8 @@ $(function(){
     correspond_purposes_select2();
     correspond_record_select();
     correspond_record_select2();
+    correspond_purposes_select3();
+    correspond_purposes_select4();
     //切換階段顯示
     $('#selectStage').change(function () {
         //只開啟研究動機和研究目的的編輯區塊
@@ -697,6 +915,72 @@ $(function(){
             $('#L1, #L2, #L3, #L4').removeClass("active") ;
         }    
     }).change();
+
+    //用ajax的方式新增討論
+    $("#addDiscussionModalButton").click(function () {
+        var gid = document.getElementById("groups_id").value;
+              
+        $.ajax({  
+            type: "POST",
+            url: "/project/addDiscussion",
+            data: {
+                gid: gid,
+                project_data_content: $(".create-discussion-summernote").val(),
+            },
+            success: function(data){
+                if(data){
+                    // alert(123);
+                    if(data.message=="true"){
+                        alert('新增成功');
+                        window.location.href="/project/?gid="+gid;
+                    }
+                    else{
+                        alert('帳號已被系統自動登出，請重新登入');
+                        window.location.href="/";
+                    }
+                }
+            },
+            error: function(){
+                alert('失敗');
+            }
+        });
+    });
+
+    //用ajax的方式新增分析項目
+    $("#addAnalysisModalButton").click(function () {
+        var gid = document.getElementById("groups_id").value;
+        // console.log(gid);
+        var cbxExperimentSelect = [];
+        $('input[name="purposes_select3"]:checked').each(function() { 
+            cbxExperimentSelect.push($(this).val());
+        });
+              
+        $.ajax({  
+            type: "POST",
+            url: "/project/addAnalysis",
+            data: {
+                gid: gid,
+                project_data_multi_correspond: cbxExperimentSelect.toString(),
+                project_data_multi_content: $(".create-analysis-summernote").val(),
+            },
+            success: function(data){
+                if(data){
+                    // alert(123);
+                    if(data.message=="true"){
+                        alert('新增成功');
+                        window.location.href="/project/?gid="+gid;
+                    }
+                    else{
+                        alert('帳號已被系統自動登出，請重新登入');
+                        window.location.href="/";
+                    }
+                }
+            },
+            error: function(){
+                alert('失敗');
+            }
+        });
+    });
 
     //用ajax的方式新增實驗記錄
     $("#addRecordModalButton").click(function () {

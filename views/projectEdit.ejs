@@ -699,7 +699,7 @@
                         </div>
                         <div class="modal-body">
                           <div id="addRecordRoot">
-                            <p><b>對應的實驗項目：</b>
+                            <p><b>對應的實驗項目標題：</b>
                               <div class="correspond_experiment"></div>
                             </p>
                             <p><b>實驗記錄內容：</b>
@@ -732,7 +732,7 @@
                         </div>
                         <div class="modal-body">
                           <div id="editRecordRoot">
-                            <p><b>對應的實驗項目：</b>
+                            <p><b>對應的實驗項目標題：</b>
                               <div class="correspond_experiment2"></div>
                             </p>
                             <p><b>實驗記錄內容：</b>
@@ -742,7 +742,7 @@
                         </div>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                          <button type="button" class="btn btn-primary" id="editRecordModalButton">新增</button>
+                          <button type="button" class="btn btn-primary" id="editRecordModalButton">儲存</button>
                         </div>
                       </div>
                     </div>
@@ -806,29 +806,69 @@
               <div class="content-margin">
 
                 <div class="margin-bottom10 form-group row">
-                  <button class="btn btn-sm btn-primary margin-left10">新增分析項目</button>
+                  <button id="add_analysis_btn" class="btn btn-sm btn-primary margin-left10 height30"  data-toggle="modal" data-target="#addAnalysisModal">新增分析項目</button>
                 </div>
+                <!-- 新增研究結果(分析及圖表)的彈出視窗 -->
+                <div class="modal fade" id="addAnalysisModal" tabindex="-1" role="dialog" aria-labelledby="addAnalysisCenterTitle" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="addAnalysisLongTitle">新增分析項目</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <div id="addRecordRoot">
+                          <p><b>對應的研究目的：</b>
+                            <div class="correspond_purposes3"></div>
+                          </p>
+                          <p><b>分析項目內容：</b>
+                            <textarea rows="4" class="col-sm-8 form-control create-analysis-summernote"></textarea>
+                          </p>
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-primary" id="addAnalysisModalButton">新增</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- 新增研究結果(分析及圖表)的彈出視窗 -->
                 <!-- 研究結果(分析及圖表)的表格 -->
                 <input type='hidden' id="researchAnalysis" value="<%= JSON.stringify(researchAnalysis) %>">
                 <table id="researchAnalysisTable" class="table"></table>
                 <!-- 研究結果(分析及圖表)的表格 -->
-
-
-                  <!-- <div class="margin-bottom10 form-group row">
-                    <label class="col-sm-2 text-center">分析項目1：</label>
-                    <div style="width:75%">
-                      <textarea rows="4" class="col-sm-8 form-control create-analysis-summernote"></textarea>
+                <!-- 編輯研究結果(分析及圖表)的彈出視窗 -->
+                <div class="modal fade" id="editAnalysisModal" tabindex="-1" role="dialog" aria-labelledby="editAnalysisCenterTitle" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="editAnalysisLongTitle">新增分析項目</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <div id="editRecordRoot">
+                          <p><b>對應的研究目的：</b>
+                            <div class="correspond_purposes4"></div>
+                          </p>
+                          <p><b>分析項目內容：</b>
+                            <textarea rows="4" class="col-sm-8 form-control create-analysis-summernote" id="research_analysis_content_edit"></textarea>
+                          </p>
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-primary" id="editAnalysisModalButton">儲存</button>
+                      </div>
                     </div>
-                    &nbsp;
-                    <button class="col-auto btn btn-sm btn-save my-1 height30">儲存</button>&nbsp;
-                    <button class="col-auto btn btn-sm btn-danger my-1 height30">刪除</button>
                   </div>
-
-                  <div class="btn-save-box margin-bottom10">
-                    <button class="btn btn-sm btn-save">儲存</button>
-                  </div> -->
-                    
-                
+                </div>
+                <!-- 新增研究結果(分析及圖表)的彈出視窗 -->
+            
               </div>
             </div>
             <!-- 小組想法區塊 -->
@@ -877,13 +917,64 @@
             <div class="col-7" style="background-color: #EEEBE5;" id="research_discussion">
               <div id="research_discussion_content" class="content-margin">
                 <div class="margin-bottom10 form-group row">
-                  <button id="add_discussion_btn" onclick="addDiscussion()" class="btn btn-sm btn-primary margin-left10">新增討論項目</button>
+                  <button id="add_discussion_btn" class="btn btn-sm btn-primary margin-left10" data-toggle="modal" data-target="#addDiscussionModal">新增討論項目</button>
                 </div>
+                <!-- 新增討論的彈出視窗 -->
+                <div class="modal fade" id="addDiscussionModal" tabindex="-1" role="dialog" aria-labelledby="addDiscussionModalCenterTitle" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="changeStageLongTitle">新增討論項目</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <div id="addDiscussionModalRoot">
+                          <p><b>討論內容</b>
+                            <textarea rows="4" class="col-sm-8 form-control create-discussion-summernote"></textarea>
+                          </p>
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-primary" id="addDiscussionModalButton">新增</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- 新增研究目的的彈出視窗 -->
 
                 <!-- 討論的表格 -->
                 <input type='hidden' id="researchDiscussion" value="<%= JSON.stringify(researchDiscussion) %>">
                 <table id="researchDiscussionTable" class="table"></table>
                 <!-- 討論的表格 -->
+                <!-- 編輯討論的彈出視窗 -->
+                <div class="modal fade" id="editDiscussionModal" tabindex="-1" role="dialog" aria-labelledby="editDiscussionModalCenterTitle" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="changeStageLongTitle">編輯討論項目</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <div id="editDiscussionModalRoot">
+                          <p><b>討論內容</b>
+                            <textarea rows="4" class="col-sm-8 form-control create-discussion-summernote" id ="research_discussion_content_edit"></textarea>
+                          </p>
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-primary" id="editDiscussionModalButton">儲存</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- 編輯研究目的的彈出視窗 -->
+
 
                   <!-- <div class="discussion-item margin-bottom10 form-group row">
                     <label class="col-sm-2 text-center">討論項目：</label>
