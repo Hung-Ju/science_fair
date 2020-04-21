@@ -692,7 +692,6 @@ function deleteDiscussion(project_data_id){
 }
 
 
-
 //增加研究目的
 // function addPurposes(){
 //     var purposes = ['<div class="purposes-item margin-bottom10 form-group row">' +
@@ -915,6 +914,39 @@ $(function(){
             $('#L1, #L2, #L3, #L4').removeClass("active") ;
         }    
     }).change();
+
+
+    //用ajax的方式儲存和修改結論
+    $("#saveResearchConclusion").click(function () {
+        var gid = document.getElementById("groups_id").value;
+        var project_data_content = $(".create-conclusion-summernote").val();
+        
+        $.ajax({  
+            type: "POST",
+            url: "/project/updateConclusion",
+            data: {
+                gid: gid,
+                project_data_content: project_data_content
+            },
+            success: function(data){
+                if(data){
+                    //  alert(project_data_content2);
+                    if(data.message=="true"){
+                        alert('儲存成功');
+                        $('.create-conculsion-summernote').removeClass("editing");
+                        // window.location.href="/project/?gid="+gid;
+                    }
+                    else{
+                        alert('帳號已被系統自動登出，請重新登入');
+                        window.location.href="/";
+                    }
+                }
+            },
+            error: function(){
+                alert('失敗');
+            }
+        });
+    });
 
     //用ajax的方式新增討論
     $("#addDiscussionModalButton").click(function () {
@@ -1163,6 +1195,11 @@ $(function(){
     $(".create-motivation-summernote").on("summernote.change", function (e) {   // callback as jquery custom event 
         $(this).addClass("editing");
     });
+
+    $(".create-conculsion-summernote").on("summernote.change", function (e) {   // callback as jquery custom event 
+        $(this).addClass("editing");
+    });
+
 
     $(window).bind('beforeunload', function (e) {
         if ($(".editing").get().length > 0) {

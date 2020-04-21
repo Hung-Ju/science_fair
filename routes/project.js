@@ -402,7 +402,7 @@ router.post('/updateResearchTitle', function(req, res, next){
         //     })
         // })
     }
-})
+});
 
 //新增研究目的
 router.post('/addPurposes',function(req, res, next) {
