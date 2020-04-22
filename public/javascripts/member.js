@@ -11,7 +11,7 @@ function regInput(){
     var inputAdd = document.getElementById('regRoot');  
     regInputData.map(function(data){
         if (data.type=="text"){
-            var html = ['<p>'+ data.title +'<input type="'+data.type+'" name="'+data.name+'"id="'+data.name+'" required="required"></p>'];
+            var html = ['<p>'+ data.title +'<input type="'+data.type+'" name="'+data.name+'"id="'+data.name+'" required="required" maxlength="20"></p>'];
             $(inputAdd).append(html);
         }
         else {
@@ -45,31 +45,36 @@ $(function(){
 
     //將註冊資料透過ajax傳送執行
     $("#register").click(function () {
-        $.ajax({  
-            type: "POST",
-            url: "/member/reg",
-            data: {
-                member_name: $("#member_name").val(),
-                member_city: $("#member_city :selected").val(),
-                member_school: $("#member_school").val(),
-                member_account: $("#member_account").val(),
-                member_password: $("#member_password").val()
-            },
-            success: function(data){
-                if(data){
-                    if(data.message=="false"){
-                        alert('帳號重複，請重新輸入');
+        if($("#member_name").val()=="" || $("#member_account").val()=="" || $("#member_password").val()==""){
+            alert('請填入完整資料');
+        }else{
+            $.ajax({  
+                type: "POST",
+                url: "/member/reg",
+                data: {
+                    member_name: $("#member_name").val(),
+                    member_city: $("#member_city :selected").val(),
+                    member_school: $("#member_school").val(),
+                    member_account: $("#member_account").val(),
+                    member_password: $("#member_password").val()
+                },
+                success: function(data){
+                    if(data){
+                        if(data.message=="false"){
+                            alert('帳號重複，請重新輸入');
+                        }
+                        else{
+                            alert('註冊成功，請登入系統');
+                            window.location.href="/member/login";
+                        }
                     }
-                    else{
-                        alert('註冊成功，請登入系統');
-                        window.location.href="/member/login";
-                    }
+                },
+                error: function(){
+                    alert('註冊失敗');
                 }
-            },
-            error: function(){
-                alert('註冊失敗');
-            }
-        });
+            });
+        }
+        
     });
 
     //將登入資料透過ajax傳送執行

@@ -1,6 +1,56 @@
 var express = require('express');
 var router = express.Router();
 var project = require('../models/project');
+var fs = require("fs");
+var multer = require("multer");
+
+//定義檔案上傳的臨時資料夾
+var upload = multer({
+    dest: './public/temp_uploads'
+});
+
+//summernote圖片上傳用POST
+router.post('/summernoteUploadImage/:gid', upload.array('imageData',5), function(req, res, next) {
+    //var getUrlString = location.href;
+    //console.log(getUrlString);
+    //var url = new URL(getUrlString);
+    //url.searchParams.get('gid');
+    //var gid = url.searchParams.get('gid');
+    var gid = req.params.gid;
+    console.log(gid);
+
+    console.log(req.files.length);
+    for (var i = 0; i < req.files.length; i++) {
+        // 圖片會放在uploads資料夾並且沒有附檔名，需要自己轉存，用到fs模組
+        // 對臨時檔案轉存，fs.rename(oldPath, newPath,callback);
+        var originalname = req.files[i].originalname;
+        fs.rename(req.files[i].path, "./public/upload_file/group"+gid+"/summernote/" + originalname, function(err) {
+            if (err) {
+                throw err;
+            }
+            //console.log(originalname);
+
+            var result = {};
+            result.status = "seccess";
+            result.imageUrl =  "/upload_file/group"+gid+"/summernote/"+ originalname;
+            console.log(result.imageUrl);
+            res.send(result);
+            res.end();
+        })
+    };
+
+    // fs.rename(req.file.path, "./public/upload_file/group"+gid+"/summernote/"+ req.file.originalname, function(err) {
+    //     if (err) {
+    //         throw err;
+    //     }
+    //     var result = {};
+    //     result.status = "seccess";
+    //     result.imageUrl =  "./public/upload_file/group"+gid+"/summernote/"+ req.file.originalname;
+    //     res.send(result);
+    //     res.end();
+    // })
+
+})
 
 //進入組別實作頁面
 router.get('/',function(req, res, next) {

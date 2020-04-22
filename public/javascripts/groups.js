@@ -9,7 +9,7 @@ function addGroupInput(){
     var inputAdd = document.getElementById('groupsRoot');  
     groupsInputData.map(function(data){
         if (data.useFor=="all"){
-            var html = ['<p>'+ data.title + '：' +'<input class="form-control" type="'+data.type+'" name="'+data.name+'"id="'+data.name+'" required></p>'];
+            var html = ['<p>'+ data.title + '：' +'<input class="form-control" type="'+data.type+'" name="'+data.name+'"id="'+data.name+'" required maxlength="20"></p>'];
             $(inputAdd).append(html);
         }
         else {
@@ -143,30 +143,35 @@ $(function(){
     //將註冊資料透過ajax傳送執行
 
     $("#addGroups").click(function () {
-
-        $.ajax({  
-            type: "POST",
-            url: "/groups/add",
-            data: {
-                groups_name: $("#groups_name").val(),
-                groups_key: $("#groups_key").val(),
-            },
-            success: function(data){
-                if(data){
-                    if(data.message=="true"){
-                        alert('小組新增成功');
-                        window.location.href="/groups";
+        if($("#groups_name").val()=="" || $("#groups_key").val()==""){
+            alert('請填入完整資料');
+        }else{
+            $.ajax({  
+                type: "POST",
+                url: "/groups/add",
+                data: {
+                    groups_name: $("#groups_name").val(),
+                    groups_key: $("#groups_key").val(),
+                },
+                success: function(data){
+                    if(data){
+                        if(data.message=="true"){
+                            alert('小組新增成功');
+                            window.location.href="/groups";
+                        }
+                        else{
+                            alert('新增失敗請重新輸入');
+                            window.location.href="/groups/groupsFile";
+                        }
                     }
-                    else{
-                        alert('新增失敗請重新輸入');
-                        window.location.href="/groups/groupsFile";
-                    }
+                },
+                error: function(){
+                    alert('失敗');
                 }
-            },
-            error: function(){
-                alert('失敗');
-            }
-        });
+            });
+        }
+
+        
     });
 
     //將小組加入申請透過ajax傳送執行

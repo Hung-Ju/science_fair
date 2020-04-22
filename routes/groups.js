@@ -80,7 +80,7 @@ router.post('/add',function(req, res, next) {
 
     groups.addGroups(groups_name, groups_key, member_id_student_member, groups_create_student, function(result){
         if(result){
-            console.log(result.insertId);
+            //console.log(result.insertId);
             var groups_id_groups = result.insertId;
             groups.addGroupsMember(groups_id_groups, member_id_student_member, groups_create_student, function(result2){
                 if(result){

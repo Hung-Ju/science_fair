@@ -141,6 +141,10 @@ body { position: relative; }
   border-color: rgb(0, 0, 0);
 }
 
+.nav-item.active.active-navbar {
+  background-color:  rgb(106, 250, 161);
+}
+
 /* checkbox選項item */
 /* .item{
   display: block;

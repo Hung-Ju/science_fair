@@ -784,7 +784,40 @@ function summernoteCreate(){
             ['para', ['ul', 'ol', 'paragraph']],
             ['table', ['table']],
             ['insert', ['link', 'picture', 'video']]
-        ]
+        ],
+
+        callbacks: {
+            onImageUpload: function (files) {
+                var imageData = new FormData();
+                imageData.append("imageData", files[0]);
+                // console.log(imageData);
+                // console.log(files[0]);
+                var gid = document.getElementById("groups_id").value;
+                $.ajax({
+                    data: imageData,
+                    type: "POST",
+                    url: "/project/summernoteUploadImage/"+gid,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (result) {
+                        alert("123");
+                        console.log(result.imageUrl);
+                        //var imageUrl = result.imageUrl;
+                        if (result.status = "success") {
+                            var imgNode = document.createElement("img");
+                            //讀取後台return的圖片url
+                            imgNode.src = result.imageUrl;
+                            $('.create-motivation-summernote, .create-conclusion-summernote').summernote('insertNode', imgNode);
+                        }
+                    },
+                    error: function () {
+                        alert("上傳圖片失敗");
+                    }
+                });
+            }
+        }
+
     });
 
     newSummer();

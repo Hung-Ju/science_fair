@@ -1,7 +1,20 @@
 var pool = require('./db'),
-    crypto = require('crypto');
+	crypto = require('crypto'),
+	fs = require('fs');
 
 module.exports = {
+
+	//用fs新增檔案儲存需要用的資料夾
+	createNewFolder : function(path){
+		return new Promise(function(resolve, reject){
+			if(!fs.existsSync(path)){
+				fs.mkdirSync(path, { recursive: true },function(err, folder){
+					if(err) return reject(err);
+				})
+				resolve(true);
+			}
+		})
+	},
 
 	//抓取所有組別資料
 	selectAllGroupsData : function(member_id, cb){
@@ -55,9 +68,24 @@ module.exports = {
 		    connection.query('INSERT INTO `groups` SET ?', params, function(err, insert_res){
 		        if(err) throw err;
 				cb(insert_res);
+				console.log(insert_res.insertId);
 				connection.release();
+				//資料庫處理完INSERT之後，用fs模組新增檔案儲存需要用的資料夾
+				var groups_path = "./public/upload_file/group"+insert_res.insertId;
+				var summernote_path = "./public/upload_file/group"+insert_res.insertId+"/summernote";
+				var groups_file_path = "./public/upload_file/group"+insert_res.insertId+"/groups_file";
+				module.exports.createNewFolder(groups_path)
+				.then(function(result){
+					return module.exports.createNewFolder(summernote_path)
+				})
+				.then(function(result2){
+					return module.exports.createNewFolder(groups_file_path)
+				})
+
 		    })
 		});
+		//console.log(insert_res.insertId);
+		// var path = "./public/upload_file/group"+;
 	},
 	
 	//將新增組別的成員記錄到組別成員名單內
@@ -69,6 +97,9 @@ module.exports = {
 				if(err) throw err;
 				cb(insert_res);
 				connection.release();
+				//資料庫處理完小組成員名單INSERT之後，用fs模組新增個人檔案儲存需要用的資料夾
+				var groups_member_path = "./public/upload_file/group"+groups_id_groups+"/groups_member_"+member_id_student_member;
+				module.exports.createNewFolder(groups_member_path)
 			})
 
 		});
