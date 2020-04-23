@@ -759,23 +759,55 @@ function enterProject(groups_id){
 //summernote編輯器的初始化新增
 function newSummer(){
     $('.create-experiment-summernote, .create-record-summernote, .create-analysis-summernote, .create-discussion-summernote').summernote({
-    disable:true,
-    height: 120,
-    // width: 570,
-    toolbar: [
-        ['style', ['style']],
-        ['font', ['bold', 'underline', 'clear']],
-        ['color', ['color']],
-        ['para', ['ul', 'ol', 'paragraph']],
-        ['table', ['table']],
-        ['insert', ['link', 'picture', 'video']]
-    ]
-})};
+        disable:true,
+        minHeight: 200,
+        // width: 570,
+        toolbar: [
+            ['style', ['style']],
+            ['font', ['bold', 'underline', 'clear']],
+            ['color', ['color']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['table', ['table']],
+            ['insert', ['link', 'picture', 'video']]
+        ],
+        callbacks: {
+            onImageUpload: function (files) {
+                var imageData = new FormData();
+                for (var i = 0; i < files.length; i++){
+                    imageData.append("imageData", files[i]);
+                }
+                var gid = document.getElementById("groups_id").value;
+                var T = $(this);
+                $.ajax({
+                    data: imageData,
+                    type: "POST",
+                    url: "/project/summernoteUploadImage/"+gid,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (result) {
+                        var imageUrlArray = result.imageUrl;
+                        if (result.status = "success") {
+                            $.each(imageUrlArray, function(i,newUrl){
+                                //console.log(imageUrlArray[i].newUrl);
+                                newImageUrl = imageUrlArray[i].newUrl
+                                T.summernote("insertImage", newImageUrl);
+                            })
+                        }
+                    },
+                    error: function () {
+                        alert("上傳圖片失敗");
+                    }
+                });
+            }
+        }
+    })
+};
 
 //summernote編輯器的初始化新增
 function summernoteCreate(){
     $('.create-motivation-summernote, .create-conclusion-summernote').summernote({
-        height: 120,
+        minHeight: 200,
         // width: 600,
         toolbar: [
             ['style', ['style']],
@@ -789,10 +821,14 @@ function summernoteCreate(){
         callbacks: {
             onImageUpload: function (files) {
                 var imageData = new FormData();
-                imageData.append("imageData", files[0]);
-                // console.log(imageData);
+                for (var i = 0; i < files.length; i++){
+                    imageData.append("imageData", files[i]);
+                }
+                //imageData.append("imageData", files[0]);
+                //console.log(imageData.files);
                 // console.log(files[0]);
                 var gid = document.getElementById("groups_id").value;
+                var T = $(this);
                 $.ajax({
                     data: imageData,
                     type: "POST",
@@ -802,13 +838,14 @@ function summernoteCreate(){
                     processData: false,
                     success: function (result) {
                         alert("123");
-                        console.log(result.imageUrl);
-                        //var imageUrl = result.imageUrl;
+
+                        var imageUrlArray = result.imageUrl;
                         if (result.status = "success") {
-                            var imgNode = document.createElement("img");
-                            //讀取後台return的圖片url
-                            imgNode.src = result.imageUrl;
-                            $('.create-motivation-summernote, .create-conclusion-summernote').summernote('insertNode', imgNode);
+                            $.each(imageUrlArray, function(i,newUrl){
+                                //console.log(imageUrlArray[i].newUrl);
+                                newImageUrl = imageUrlArray[i].newUrl
+                                T.summernote("insertImage", newImageUrl);
+                            })
                         }
                     },
                     error: function () {
@@ -817,7 +854,6 @@ function summernoteCreate(){
                 });
             }
         }
-
     });
 
     newSummer();

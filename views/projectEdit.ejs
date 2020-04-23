@@ -263,7 +263,7 @@
                 <div class="margin-bottom10 form-group row">
                   <button id="add_purposes_btn" class="btn btn-sm btn-primary margin-left10 height30"  data-toggle="modal" data-target="#addPurposesModal">新增研究目的</button>
                   <!-- 新增研究目的的彈出視窗 -->
-                  <div class="modal fade" id="addPurposesModal" tabindex="-1" role="dialog" aria-labelledby="addPurposesModalCenterTitle" aria-hidden="true">
+                  <div class="modal fade" id="addPurposesModal" tabindex="-1" role="dialog" aria-labelledby="addPurposesModalCenterTitle" aria-hidden="true" data-backdrop="static">
                     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                       <div class="modal-content">
                         <div class="modal-header">
@@ -290,7 +290,7 @@
                 <input type='hidden' id="researchPurposes" value="<%= JSON.stringify(researchPurposes) %>">
                 <table id="researchPurposesTable" class="table"></table>
                 <!-- 編輯研究目的的彈出視窗 -->
-                <div class="modal fade" id="editPurposesModal" tabindex="-1" role="dialog" aria-labelledby="addPurposesModalCenterTitle" aria-hidden="true">
+                <div class="modal fade" id="editPurposesModal" tabindex="-1" role="dialog" aria-labelledby="addPurposesModalCenterTitle" aria-hidden="true"  data-backdrop="static">
                   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                     <div class="modal-content">
                       <div class="modal-header">
@@ -403,7 +403,7 @@
                   </div>
 
                   <!-- 新增實驗項目的彈出視窗 -->
-                  <div class="modal fade" id="add_experiment_model" tabindex="-1" role="dialog" aria-labelledby="addExperimentCenterTitle" aria-hidden="true">
+                  <div class="modal fade" id="add_experiment_model" tabindex="-1" role="dialog" aria-labelledby="addExperimentCenterTitle" aria-hidden="true" data-backdrop="static">
                     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                       <div class="modal-content">
                         <div class="modal-header">
@@ -439,7 +439,7 @@
                   <table id="researchExperimentTable" class="table"></table>
                   <!-- 實驗項目的表格 -->
                   <!-- 編輯實驗項目的彈出視窗 -->
-                  <div class="modal fade" id="editExperimentModal" tabindex="-1" role="dialog" aria-labelledby="editExperimentModalCenterTitle" aria-hidden="true">
+                  <div class="modal fade" id="editExperimentModal" tabindex="-1" role="dialog" aria-labelledby="editExperimentModalCenterTitle" aria-hidden="true" data-backdrop="static">
                     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                       <div class="modal-content">
                         <div class="modal-header">
@@ -570,7 +570,7 @@
                   <!-- <label class="col-sm-3">新增研究設備及器材</label> -->
                   <button id="add_material_btn" class="btn btn-sm btn-primary margin-left10 height30"  data-toggle="modal" data-target="#addMaterialModal">新增研究設備及器材</button>
                   <!-- 新增研究設備及器材的彈出視窗 -->
-                  <div class="modal fade" id="addMaterialModal" tabindex="-1" role="dialog" aria-labelledby="addPurposesModalCenterTitle" aria-hidden="true">
+                  <div class="modal fade" id="addMaterialModal" tabindex="-1" role="dialog" aria-labelledby="addPurposesModalCenterTitle" aria-hidden="true" data-backdrop="static">
                     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                       <div class="modal-content">
                         <div class="modal-header">
@@ -599,7 +599,7 @@
                 <table id="researchMaterialTable" class="table"></table>
                 <!-- 研究設備及器材的表格 -->
                 <!-- 編輯研究設備及器材的彈出視窗 -->
-                <div class="modal fade" id="editMaterialModal" tabindex="-1" role="dialog" aria-labelledby="editMaterialModalCenterTitle" aria-hidden="true">
+                <div class="modal fade" id="editMaterialModal" tabindex="-1" role="dialog" aria-labelledby="editMaterialModalCenterTitle" aria-hidden="true" data-backdrop="static">
                   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                     <div class="modal-content">
                       <div class="modal-header">
@@ -688,7 +688,7 @@
                     <button id="add_record_btn" class="btn btn-sm btn-primary margin-left10 height30"  data-toggle="modal" data-target="#addRecordModal">新增實驗記錄</button>
                   </div>
                   <!-- 新增實驗記錄的彈出視窗 -->
-                  <div class="modal fade" id="addRecordModal" tabindex="-1" role="dialog" aria-labelledby="addRecordCenterTitle" aria-hidden="true">
+                  <div class="modal fade" id="addRecordModal" tabindex="-1" role="dialog" aria-labelledby="addRecordCenterTitle" aria-hidden="true" data-backdrop="static">
                     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                       <div class="modal-content">
                         <div class="modal-header">
@@ -721,7 +721,7 @@
                   <table id="researchRecordTable" class="table"></table>
                   <!-- 實驗記錄的表格 -->
                   <!-- 編輯實驗記錄的彈出視窗 -->
-                  <div class="modal fade" id="editRecordModal" tabindex="-1" role="dialog" aria-labelledby="editRecordCenterTitle" aria-hidden="true">
+                  <div class="modal fade" id="editRecordModal" tabindex="-1" role="dialog" aria-labelledby="editRecordCenterTitle" aria-hidden="true" data-backdrop="static">
                     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                       <div class="modal-content">
                         <div class="modal-header">
@@ -809,7 +809,7 @@
                   <button id="add_analysis_btn" class="btn btn-sm btn-primary margin-left10 height30"  data-toggle="modal" data-target="#addAnalysisModal">新增分析項目</button>
                 </div>
                 <!-- 新增研究結果(分析及圖表)的彈出視窗 -->
-                <div class="modal fade" id="addAnalysisModal" tabindex="-1" role="dialog" aria-labelledby="addAnalysisCenterTitle" aria-hidden="true">
+                <div class="modal fade" id="addAnalysisModal" tabindex="-1" role="dialog" aria-labelledby="addAnalysisCenterTitle" aria-hidden="true" data-backdrop="static">
                   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                     <div class="modal-content">
                       <div class="modal-header">
@@ -841,7 +841,7 @@
                 <table id="researchAnalysisTable" class="table"></table>
                 <!-- 研究結果(分析及圖表)的表格 -->
                 <!-- 編輯研究結果(分析及圖表)的彈出視窗 -->
-                <div class="modal fade" id="editAnalysisModal" tabindex="-1" role="dialog" aria-labelledby="editAnalysisCenterTitle" aria-hidden="true">
+                <div class="modal fade" id="editAnalysisModal" tabindex="-1" role="dialog" aria-labelledby="editAnalysisCenterTitle" aria-hidden="true" data-backdrop="static">
                   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                     <div class="modal-content">
                       <div class="modal-header">
@@ -920,7 +920,7 @@
                   <button id="add_discussion_btn" class="btn btn-sm btn-primary margin-left10" data-toggle="modal" data-target="#addDiscussionModal">新增討論項目</button>
                 </div>
                 <!-- 新增討論的彈出視窗 -->
-                <div class="modal fade" id="addDiscussionModal" tabindex="-1" role="dialog" aria-labelledby="addDiscussionModalCenterTitle" aria-hidden="true">
+                <div class="modal fade" id="addDiscussionModal" tabindex="-1" role="dialog" aria-labelledby="addDiscussionModalCenterTitle" aria-hidden="true" data-backdrop="static">
                   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                     <div class="modal-content">
                       <div class="modal-header">
@@ -950,7 +950,7 @@
                 <table id="researchDiscussionTable" class="table"></table>
                 <!-- 討論的表格 -->
                 <!-- 編輯討論的彈出視窗 -->
-                <div class="modal fade" id="editDiscussionModal" tabindex="-1" role="dialog" aria-labelledby="editDiscussionModalCenterTitle" aria-hidden="true">
+                <div class="modal fade" id="editDiscussionModal" tabindex="-1" role="dialog" aria-labelledby="editDiscussionModalCenterTitle" aria-hidden="true" data-backdrop="static">
                   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                     <div class="modal-content">
                       <div class="modal-header">

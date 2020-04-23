@@ -11,45 +11,33 @@ var upload = multer({
 
 //summernote圖片上傳用POST
 router.post('/summernoteUploadImage/:gid', upload.array('imageData',5), function(req, res, next) {
-    //var getUrlString = location.href;
-    //console.log(getUrlString);
-    //var url = new URL(getUrlString);
-    //url.searchParams.get('gid');
-    //var gid = url.searchParams.get('gid');
     var gid = req.params.gid;
-    console.log(gid);
+    var imageUrlArray = [];
+    //console.log(gid);
 
-    console.log(req.files.length);
+    //console.log(req.files.length);
     for (var i = 0; i < req.files.length; i++) {
         // 圖片會放在uploads資料夾並且沒有附檔名，需要自己轉存，用到fs模組
         // 對臨時檔案轉存，fs.rename(oldPath, newPath,callback);
         var originalname = req.files[i].originalname;
-        fs.rename(req.files[i].path, "./public/upload_file/group"+gid+"/summernote/" + originalname, function(err) {
+        var today = new Date();
+        fs.rename(req.files[i].path, "./public/upload_file/group"+gid+"/summernote/" + today.getDate()+today.getHours()+today.getMinutes()+today.getSeconds() +originalname , function(err) {
             if (err) {
                 throw err;
             }
-            //console.log(originalname);
-
-            var result = {};
-            result.status = "seccess";
-            result.imageUrl =  "/upload_file/group"+gid+"/summernote/"+ originalname;
-            console.log(result.imageUrl);
-            res.send(result);
-            res.end();
+            
+            
         })
+        var imageUrl =  "/upload_file/group"+gid+"/summernote/"+ today.getDate()+today.getHours()+today.getMinutes()+today.getSeconds()+ originalname;
+        imageUrlArray.push({newUrl:imageUrl});
     };
-
-    // fs.rename(req.file.path, "./public/upload_file/group"+gid+"/summernote/"+ req.file.originalname, function(err) {
-    //     if (err) {
-    //         throw err;
-    //     }
-    //     var result = {};
-    //     result.status = "seccess";
-    //     result.imageUrl =  "./public/upload_file/group"+gid+"/summernote/"+ req.file.originalname;
-    //     res.send(result);
-    //     res.end();
-    // })
-
+    var result = {};
+    result.status = "seccess";
+    result.imageUrl =  imageUrlArray;
+    console.log(result.imageUrl);
+    //console.log(result.length);
+    res.send(result);
+    res.end();
 })
 
 //進入組別實作頁面
