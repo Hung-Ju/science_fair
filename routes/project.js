@@ -41,16 +41,18 @@ router.post('/summernoteUploadImage/:gid', upload.array('imageData',5), function
 })
 
 //進入組別實作頁面
-router.get('/',function(req, res, next) {
-    var gid = req.query.gid;
+router.get('/:gid/:mode',function(req, res, next) {
+    var gid = req.params.gid;
     //var gname = req.query.gname;
     var member_id = req.session.member_id;
+    var mode = req.params.mode;
     //要記得寫登入的人是否有進入該gid的權限判斷!!!
 
     if(!member_id){
         res.redirect('/');
     }
     else {
+        var groups_stage = [];
         var researchTitleArray = [];
         var researchMotivationArray = [];
         var researchPurposesArray = [];
@@ -61,8 +63,14 @@ router.get('/',function(req, res, next) {
         var researchDiscussionArray = [];
         var researchConclusionArray = [];
 
+        //抓取小組現在編輯階段
+        project.selectGroupsStage(gid)
+        .then(function(groupsData){
+            var groupsStageData = groupsData[0].groups_stage;
+            groups_stage.push(groupsStageData);
+            return project.selectResearchConclusion(gid)
+        })
         //抓取專題實作內容資料
-        project.selectResearchConclusion(gid)
         .then(function(researchConclusion){
             if(researchConclusion){
                 for (var c = 0; c < researchConclusion.length; c++){
@@ -186,7 +194,7 @@ router.get('/',function(req, res, next) {
                     researchTitleArray.push(researchTitleData);
                 }
             }
-            res.render('projectEdit',  {title: 'Science Fair科學探究專題系統', gid:gid, member_id:req.session.member_id, member_name:req.session.member_name, researchTitle:researchTitleArray, researchMotivation:researchMotivationArray, researchPurposes:researchPurposesArray, researchExperiment:researchExperimentArray, researchMaterial:researchMaterialArray, researchRecord:researchRecordArray, researchAnalysis:researchAnalysisArray, researchDiscussion:researchDiscussionArray, researchConclusion:researchConclusionArray});
+            res.render('projectEdit',  {title: 'Science Fair科學探究專題系統', gid:gid, mode:mode, member_id:req.session.member_id, member_name:req.session.member_name, researchTitle:researchTitleArray, researchMotivation:researchMotivationArray, researchPurposes:researchPurposesArray, researchExperiment:researchExperimentArray, researchMaterial:researchMaterialArray, researchRecord:researchRecordArray, researchAnalysis:researchAnalysisArray, researchDiscussion:researchDiscussionArray, researchConclusion:researchConclusionArray, groups_stage:groups_stage});
         })
 
         // 抓取討論的資料
@@ -918,6 +926,28 @@ router.post('/updateConclusion', function(req, res, next){
                     }
                 })
             }
+        })
+    }
+});
+
+//修改組別編輯階段，並新增階段切換紀錄
+router.post('/stageSwitch',function(req, res, next){
+    var member_id_member = req.session.member_id;
+    var gid = req.body.gid;
+    var stage_switch_now = req.body.stage_switch_now;
+    var stage_after = req.body.stage_after;
+    var stage_switch_reason = req.body.stage_switch_reason;
+    var stage_switch_status = "通過"
+
+    if(!member_id_member){
+        res.send({message:"false"});
+    }else{
+        project.updateStage(gid, stage_after)
+        .then(function(result){
+            return project.addStageSwitchRecord(gid, stage_switch_now, stage_after, stage_switch_reason, stage_switch_status)
+        })
+        .then(function(result2){
+            res.send({message:"true"});
         })
     }
 });

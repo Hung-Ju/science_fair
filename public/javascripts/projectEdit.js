@@ -27,6 +27,7 @@ window.operateEvents = {
             //研究目的的編輯用modal裡的儲存按鈕，update研究目的用的AJAX
             $("#savePurposesModalButton").click(function(){
                 var gid = document.getElementById("groups_id").value;
+                var mode = "內容撰寫";
                 console.log(row.project_data_id);
                 $.ajax({  
                     type: "POST",
@@ -41,11 +42,12 @@ window.operateEvents = {
                             // alert(123);
                             if(data.message=="true"){
                                 alert('修改成功');
-                                window.location.href="/project/?gid="+gid;
+                                // window.location.href="/project/?gid="+gid;
+                                window.location.href = "/project/"+gid+"/"+mode;
                             }
                             else{
                                 alert('修改失敗請重新輸入');
-                                window.location.href="/project/?gid="+gid;
+                                window.location.href="/";
                             }
                         }
                     },
@@ -61,6 +63,7 @@ window.operateEvents = {
 //刪除研究目的的AJAX
 function deletePurposes(project_data_id){
     var gid = document.getElementById("groups_id").value;
+    var mode = "內容撰寫";
     $.ajax({  
         type: "POST",
         url: "/project/deletePurposes",
@@ -73,11 +76,12 @@ function deletePurposes(project_data_id){
                 // alert(123);
                 if(data.message=="true"){
                     alert('刪除成功');
-                    window.location.href="/project/?gid="+gid;
+                    // window.location.href="/project/?gid="+gid;
+                    window.location.href = "/project/"+gid+"/"+mode;
                 }
                 else{
                     alert('帳號已被系統自動登出，請重新登入');
-                    window.location.href="/project/?gid="+gid;
+                    window.location.href="/";
                 }
             }
         },
@@ -170,6 +174,7 @@ window.operateEvents2 = {
             //研究目的的編輯用modal裡的儲存按鈕，update研究目的用的AJAX
             $("#saveExperimentModalButton").click(function(){
                 var gid = document.getElementById("groups_id").value;
+                var mode = "內容撰寫";
                 var cbxPurposesSelect = [];
                 $('input[name="purposes_select2"]:checked').each(function() { 
                     cbxPurposesSelect.push($(this).val());
@@ -190,11 +195,12 @@ window.operateEvents2 = {
                             // alert(123);
                             if(data.message=="true"){
                                 alert('修改成功');
-                                window.location.href="/project/?gid="+gid;
+                                // window.location.href="/project/?gid="+gid;
+                                window.location.href = "/project/"+gid+"/"+mode;
                             }
                             else{
                                 alert('帳號已被系統自動登出，請重新登入');
-                                window.location.href="/project/?gid="+gid;
+                                window.location.href="/";
                             }
                         }
                     },
@@ -210,6 +216,7 @@ window.operateEvents2 = {
 //刪除實驗項目的AJAX
 function deleteExperiment(project_data_multi_id){
     var gid = document.getElementById("groups_id").value;
+    var mode = "內容撰寫";
     $.ajax({  
         type: "POST",
         url: "/project/deleteExperiment",
@@ -222,11 +229,12 @@ function deleteExperiment(project_data_multi_id){
                 // alert(123);
                 if(data.message=="true"){
                     alert('刪除成功');
-                    window.location.href="/project/?gid="+gid;
+                    // window.location.href="/project/?gid="+gid;
+                    window.location.href = "/project/"+gid+"/"+mode;
                 }
                 else{
                     alert('帳號已被系統自動登出，請重新登入');
-                    window.location.href="/project/?gid="+gid;
+                    window.location.href="/";
                 }
             }
         },
@@ -274,6 +282,7 @@ window.operateEventsMaterial = {
             //研究設備及器材的編輯用modal裡的儲存按鈕，update研究設備及器材用的AJAX
             $("#editMaterialModalButton").click(function(){
                 var gid = document.getElementById("groups_id").value;
+                var mode = "內容撰寫";
                 // console.log(row.project_data_id);
                 $.ajax({  
                     type: "POST",
@@ -289,11 +298,12 @@ window.operateEventsMaterial = {
                             // alert(123);
                             if(data.message=="true"){
                                 alert('修改成功');
-                                window.location.href="/project/?gid="+gid;
+                                // window.location.href="/project/?gid="+gid;
+                                window.location.href = "/project/"+gid+"/"+mode;
                             }
                             else{
                                 alert('帳號已被系統自動登出，請重新登入');
-                                window.location.href="/project/?gid="+gid;
+                                window.location.href="/";
                             }
                         }
                     },
@@ -309,6 +319,7 @@ window.operateEventsMaterial = {
 //刪除研究設備及器材的AJAX
 function deleteMaterial(material_id){
     var gid = document.getElementById("groups_id").value;
+    var mode = "內容撰寫";
     $.ajax({  
         type: "POST",
         url: "/project/deleteMaterial",
@@ -320,11 +331,12 @@ function deleteMaterial(material_id){
                 // alert(123);
                 if(data.message=="true"){
                     alert('刪除成功');
-                    window.location.href="/project/?gid="+gid;
+                    // window.location.href="/project/?gid="+gid;
+                    window.location.href = "/project/"+gid+"/"+mode;
                 }
                 else{
                     alert('帳號已被系統自動登出，請重新登入');
-                    window.location.href="/project/?gid="+gid;
+                    window.location.href="/";
                 }
             }
         },
@@ -404,6 +416,7 @@ window.operateEventsRecord = {
             //實驗記錄的編輯用modal裡的儲存按鈕，update實驗記錄用的AJAX
             $("#editRecordModalButton").click(function(){
                 var gid = document.getElementById("groups_id").value;
+                var mode = "內容撰寫";
                 var cbxExperimentSelect = [];
                 $('input[name="experiment_select2"]:checked').each(function() { 
                     cbxExperimentSelect.push($(this).val());
@@ -422,11 +435,12 @@ window.operateEventsRecord = {
                             // alert(123);
                             if(data.message=="true"){
                                 alert('修改成功');
-                                window.location.href="/project/?gid="+gid;
+                                // window.location.href="/project/?gid="+gid;
+                                window.location.href = "/project/"+gid+"/"+mode;
                             }
                             else{
                                 alert('帳號已被系統自動登出，請重新登入');
-                                window.location.href="/project/?gid="+gid;
+                                window.location.href="/";
                             }
                         }
                     },
@@ -442,6 +456,7 @@ window.operateEventsRecord = {
 //刪除實驗記錄的AJAX
 function deleteRecord(project_data_multi_id){
     var gid = document.getElementById("groups_id").value;
+    var mode = "內容撰寫";
     $.ajax({  
         type: "POST",
         url: "/project/deleteRecord",
@@ -452,11 +467,12 @@ function deleteRecord(project_data_multi_id){
             if(data){
                 if(data.message=="true"){
                     alert('刪除成功');
-                    window.location.href="/project/?gid="+gid;
+                    // window.location.href="/project/?gid="+gid;
+                    window.location.href = "/project/"+gid+"/"+mode;
                 }
                 else{
                     alert('帳號已被系統自動登出，請重新登入');
-                    window.location.href="/project/?gid="+gid;
+                    window.location.href="/";
                 }
             }
         },
@@ -536,6 +552,7 @@ window.operateEventsAnalysis = {
             //實驗記錄的編輯用modal裡的儲存按鈕，update實驗記錄用的AJAX
             $("#editAnalysisModalButton").click(function(){
                 var gid = document.getElementById("groups_id").value;
+                var mode = "內容撰寫";
                 var cbxExperimentSelect = [];
                 $('input[name="purposes_select4"]:checked').each(function() { 
                     cbxExperimentSelect.push($(this).val());
@@ -554,11 +571,12 @@ window.operateEventsAnalysis = {
                             // alert(123);
                             if(data.message=="true"){
                                 alert('修改成功');
-                                window.location.href="/project/?gid="+gid;
+                                // window.location.href="/project/?gid="+gid;
+                                window.location.href = "/project/"+gid+"/"+mode;
                             }
                             else{
                                 alert('帳號已被系統自動登出，請重新登入');
-                                window.location.href="/project/?gid="+gid;
+                                window.location.href="/";
                             }
                         }
                     },
@@ -574,6 +592,7 @@ window.operateEventsAnalysis = {
 //刪除研究結果(分析及圖表)的AJAX
 function deleteAnalysis(project_data_multi_id){
     var gid = document.getElementById("groups_id").value;
+    var mode = "內容撰寫";
     $.ajax({  
         type: "POST",
         url: "/project/deleteAnalysis",
@@ -584,11 +603,12 @@ function deleteAnalysis(project_data_multi_id){
             if(data){
                 if(data.message=="true"){
                     alert('刪除成功');
-                    window.location.href="/project/?gid="+gid;
+                    // window.location.href="/project/?gid="+gid;
+                    window.location.href = "/project/"+gid+"/"+mode;
                 }
                 else{
                     alert('帳號已被系統自動登出，請重新登入');
-                    window.location.href="/project/?gid="+gid;
+                    window.location.href="/";
                 }
             }
         },
@@ -633,6 +653,7 @@ window.operateEventsDiscussion = {
             //實驗記錄的編輯用modal裡的儲存按鈕，update實驗記錄用的AJAX
             $("#editDiscussionModalButton").click(function(){
                 var gid = document.getElementById("groups_id").value;
+                var mode = "內容撰寫";
 
                 $.ajax({  
                     type: "POST",
@@ -647,11 +668,12 @@ window.operateEventsDiscussion = {
                             // alert(123);
                             if(data.message=="true"){
                                 alert('修改成功');
-                                window.location.href="/project/?gid="+gid;
+                                // window.location.href="/project/?gid="+gid;
+                                window.location.href = "/project/"+gid+"/"+mode;
                             }
                             else{
                                 alert('帳號已被系統自動登出，請重新登入');
-                                window.location.href="/project/?gid="+gid;
+                                window.location.href="/";
                             }
                         }
                     },
@@ -667,6 +689,7 @@ window.operateEventsDiscussion = {
 //刪除討論的AJAX
 function deleteDiscussion(project_data_id){
     var gid = document.getElementById("groups_id").value;
+    var mode = "內容撰寫";
     $.ajax({  
         type: "POST",
         url: "/project/deleteDiscussion",
@@ -677,11 +700,12 @@ function deleteDiscussion(project_data_id){
             if(data){
                 if(data.message=="true"){
                     alert('刪除成功');
-                    window.location.href="/project/?gid="+gid;
+                    // window.location.href="/project/?gid="+gid;
+                    window.location.href = "/project/"+gid+"/"+mode;
                 }
                 else{
                     alert('帳號已被系統自動登出，請重新登入');
-                    window.location.href="/project/?gid="+gid;
+                    window.location.href="/";
                 }
             }
         },
@@ -904,85 +928,196 @@ $(function(){
     correspond_purposes_select3();
     correspond_purposes_select4();
     //切換階段顯示
-    $('#selectStage').change(function () {
-        //只開啟研究動機和研究目的的編輯區塊
-        if ($("#selectStage").val() == "形成問題"){
-            $('#writing_content *').attr('disabled', true);   
-            $('#research_motivation *, #research_purposes *').removeAttr('disabled');
+    //只開啟研究動機和研究目的的編輯區塊
+    if ($("#groups_stage").val() == "形成問題"){
+        $('#writing_content *').attr('disabled', true);   
+        $('#research_motivation *, #research_purposes *, .stage-switch-btn *, #vis-network *').removeAttr('disabled');
 
-            summernoteCreate();
-            $(".create-motivation-summernote").summernote("enable"); 
-            $('#L1').addClass("active");
-            $('#L2, #L3, #L4, #L5').removeClass("active") ;
-        //只開啟實驗步驟和研究設備及器材的編輯區塊
-        } else if ($("#selectStage").val() == "研究規劃"){
-            $('#writing_content *').attr('disabled', true);
-            $('#experimental_project *, #research_material *').removeAttr('disabled');
+        summernoteCreate();
+        $(".create-motivation-summernote").summernote("enable"); 
+        $('#L1').addClass("active");
+        $('#L2, #L3, #L4, #L5').removeClass("active") ;
+    //只開啟實驗步驟和研究設備及器材的編輯區塊
+    } else if ($("#groups_stage").val() == "研究規劃"){
+        $('#writing_content *').attr('disabled', true);
+        $('#experimental_project *, #research_material *, .stage-switch-btn *, #vis-network *').removeAttr('disabled');
 
-            summernoteCreate();
-            $( ".create-experiment-summernote" ).each(function() {
-                $(this).summernote('enable');
-            });
-            $('#L2').addClass("active");
-            $('#L1, #L3, #L4, #L5').removeClass("active") ;
-            //table列拖拉和數字排序
-            // $( "table tbody" ).sortable( {
-            //     update: function( event, ui ) {
-            //         $(this).children().each(function(index) {
-            //                 $(this).find('td').first().html(index + 1)
-            //         });
-            //     }   
-            // });
+        summernoteCreate();
+        $( ".create-experiment-summernote" ).each(function() {
+            $(this).summernote('enable');
+        });
+        $('#L2').addClass("active");
+        $('#L1, #L3, #L4, #L5').removeClass("active") ;
+        //table列拖拉和數字排序
+        // $( "table tbody" ).sortable( {
+        //     update: function( event, ui ) {
+        //         $(this).children().each(function(index) {
+        //                 $(this).find('td').first().html(index + 1)
+        //         });
+        //     }   
+        // });
 
-        //只開啟實驗記錄和研究結果(分析及圖表)的編輯區塊
-        } else if ($("#selectStage").val() == "執行"){
-            $('#writing_content *').attr('disabled', true);
-            $('#research_record *, #research_analysis *').removeAttr('disabled');
+    //只開啟實驗記錄和研究結果(分析及圖表)的編輯區塊
+    } else if ($("#groups_stage").val() == "執行"){
+        $('#writing_content *').attr('disabled', true);
+        $('#research_record *, #research_analysis *, .stage-switch-btn *, #vis-network *').removeAttr('disabled');
 
-            summernoteCreate();
-            $( ".create-record-summernote" ).each(function() {
-                $(this).summernote('enable');
-            });
-            $( ".create-analysis-summernote" ).each(function() {
-                $(this).summernote('enable');
-            });
-            $('#L3').addClass("active");
-            $('#L1, #L2, #L4, #L5').removeClass("active") ;
-        //只開啟討論和結論的編輯區塊
-        } else if ($("#selectStage").val() == "分析與詮釋"){
-            $('#writing_content *').attr('disabled', true);
-            $('#research_discussion *, #research_conclusion *').removeAttr('disabled');
+        summernoteCreate();
+        $( ".create-record-summernote" ).each(function() {
+            $(this).summernote('enable');
+        });
+        $( ".create-analysis-summernote" ).each(function() {
+            $(this).summernote('enable');
+        });
+        $('#L3').addClass("active");
+        $('#L1, #L2, #L4, #L5').removeClass("active") ;
+    //只開啟討論和結論的編輯區塊
+    } else if ($("#groups_stage").val() == "分析與詮釋"){
+        $('#writing_content *').attr('disabled', true);
+        $('#research_discussion *, #research_conclusion *, .stage-switch-btn *, #vis-network *').removeAttr('disabled');
 
-            summernoteCreate();
-            $( ".create-discussion-summernote" ).each(function() {
-                $(this).summernote('enable');
-            });
-            $(".create-conclusion-summernote").summernote("enable");
-            $('#L4').addClass("active");
-            $('#L1, #L2, #L3, #L5').removeClass("active") ;
-        //全部編輯區塊開啟
-        }  else if ($("#selectStage").val() == "統整報告"){
-            $('#writing_content *').attr('disabled', false);
+        summernoteCreate();
+        $( ".create-discussion-summernote" ).each(function() {
+            $(this).summernote('enable');
+        });
+        $(".create-conclusion-summernote").summernote("enable");
+        $('#L4').addClass("active");
+        $('#L1, #L2, #L3, #L5').removeClass("active") ;
+    //全部編輯區塊開啟
+    }  else if ($("#groups_stage").val() == "統整報告"){
+        $('#writing_content *').attr('disabled', false);
 
-            summernoteCreate();
-            $(".create-motivation-summernote").summernote("enable");
-            $( ".create-experiment-summernote" ).each(function() {
-                $(this).summernote('enable');
-            });
-            $( ".create-record-summernote" ).each(function() {
-                $(this).summernote('enable');
-            });
-            $( ".create-analysis-summernote" ).each(function() {
-                $(this).summernote('enable');
-            });
-            $( ".create-discussion-summernote" ).each(function() {
-                $(this).summernote('enable');
-            });
-            $(".create-conclusion-summernote").summernote("enable");
-            $('#L5').addClass("active");
-            $('#L1, #L2, #L3, #L4').removeClass("active") ;
-        }    
-    }).change();
+        summernoteCreate();
+        $(".create-motivation-summernote").summernote("enable");
+        $( ".create-experiment-summernote" ).each(function() {
+            $(this).summernote('enable');
+        });
+        $( ".create-record-summernote" ).each(function() {
+            $(this).summernote('enable');
+        });
+        $( ".create-analysis-summernote" ).each(function() {
+            $(this).summernote('enable');
+        });
+        $( ".create-discussion-summernote" ).each(function() {
+            $(this).summernote('enable');
+        });
+        $(".create-conclusion-summernote").summernote("enable");
+        $('#L5').addClass("active");
+        $('#L1, #L2, #L3, #L4').removeClass("active") ;
+    }
+
+    // $('#selectStage').change(function () {
+    //     //只開啟研究動機和研究目的的編輯區塊
+    //     if ($("#selectStage").val() == "形成問題"){
+    //         $('#writing_content *').attr('disabled', true);   
+    //         $('#research_motivation *, #research_purposes *, .stage-switch-btn *, #vis-network *').removeAttr('disabled');
+
+    //         summernoteCreate();
+    //         $(".create-motivation-summernote").summernote("enable"); 
+    //         $('#L1').addClass("active");
+    //         $('#L2, #L3, #L4, #L5').removeClass("active") ;
+    //     //只開啟實驗步驟和研究設備及器材的編輯區塊
+    //     } else if ($("#selectStage").val() == "研究規劃"){
+    //         $('#writing_content *').attr('disabled', true);
+    //         $('#experimental_project *, #research_material *, .stage-switch-btn *, #vis-network *').removeAttr('disabled');
+
+    //         summernoteCreate();
+    //         $( ".create-experiment-summernote" ).each(function() {
+    //             $(this).summernote('enable');
+    //         });
+    //         $('#L2').addClass("active");
+    //         $('#L1, #L3, #L4, #L5').removeClass("active") ;
+    //         //table列拖拉和數字排序
+    //         // $( "table tbody" ).sortable( {
+    //         //     update: function( event, ui ) {
+    //         //         $(this).children().each(function(index) {
+    //         //                 $(this).find('td').first().html(index + 1)
+    //         //         });
+    //         //     }   
+    //         // });
+
+    //     //只開啟實驗記錄和研究結果(分析及圖表)的編輯區塊
+    //     } else if ($("#selectStage").val() == "執行"){
+    //         $('#writing_content *').attr('disabled', true);
+    //         $('#research_record *, #research_analysis *, .stage-switch-btn *, #vis-network *').removeAttr('disabled');
+
+    //         summernoteCreate();
+    //         $( ".create-record-summernote" ).each(function() {
+    //             $(this).summernote('enable');
+    //         });
+    //         $( ".create-analysis-summernote" ).each(function() {
+    //             $(this).summernote('enable');
+    //         });
+    //         $('#L3').addClass("active");
+    //         $('#L1, #L2, #L4, #L5').removeClass("active") ;
+    //     //只開啟討論和結論的編輯區塊
+    //     } else if ($("#selectStage").val() == "分析與詮釋"){
+    //         $('#writing_content *').attr('disabled', true);
+    //         $('#research_discussion *, #research_conclusion *, .stage-switch-btn *, #vis-network *').removeAttr('disabled');
+
+    //         summernoteCreate();
+    //         $( ".create-discussion-summernote" ).each(function() {
+    //             $(this).summernote('enable');
+    //         });
+    //         $(".create-conclusion-summernote").summernote("enable");
+    //         $('#L4').addClass("active");
+    //         $('#L1, #L2, #L3, #L5').removeClass("active") ;
+    //     //全部編輯區塊開啟
+    //     }  else if ($("#selectStage").val() == "統整報告"){
+    //         $('#writing_content *').attr('disabled', false);
+
+    //         summernoteCreate();
+    //         $(".create-motivation-summernote").summernote("enable");
+    //         $( ".create-experiment-summernote" ).each(function() {
+    //             $(this).summernote('enable');
+    //         });
+    //         $( ".create-record-summernote" ).each(function() {
+    //             $(this).summernote('enable');
+    //         });
+    //         $( ".create-analysis-summernote" ).each(function() {
+    //             $(this).summernote('enable');
+    //         });
+    //         $( ".create-discussion-summernote" ).each(function() {
+    //             $(this).summernote('enable');
+    //         });
+    //         $(".create-conclusion-summernote").summernote("enable");
+    //         $('#L5').addClass("active");
+    //         $('#L1, #L2, #L3, #L4').removeClass("active") ;
+    //     }    
+    // }).change();
+
+    
+
+    $('#option1').on('click', function() {
+        $('#option1').addClass("active");
+        $('#option2').removeClass("active");
+        alert("內容撰寫");
+        var gid = document.getElementById("groups_id").value;
+        var mode = "內容撰寫";
+        window.location.href = "/project/"+gid+"/"+mode;
+    });
+
+    $('#option2').on('click', function() {
+        $('#option2').addClass("active");
+        $('#option1').removeClass("active");
+        alert("想法討論");
+        var gid = document.getElementById("groups_id").value;
+        var mode = "想法討論";
+        window.location.href = "/project/"+gid+"/"+mode;
+    });
+
+    // $('input[type=radio][name=statusOptions]').change(function() {
+    //     if ($(this).val() == 1) {
+    //         $('#option11').addClass("active");
+    //         $('#option22').removeClass("active");
+    //         alert("內容撰寫");
+    //     }
+    //     else if ($(this).val() == 2) {
+    //         $('#option22').addClass("active");
+    //         $('#option11').removeClass("active");
+    //         alert("想法討論");
+    //     }
+    // });
 
 
     //用ajax的方式儲存和修改結論
@@ -1020,6 +1155,7 @@ $(function(){
     //用ajax的方式新增討論
     $("#addDiscussionModalButton").click(function () {
         var gid = document.getElementById("groups_id").value;
+        var mode = "內容撰寫";
               
         $.ajax({  
             type: "POST",
@@ -1033,7 +1169,8 @@ $(function(){
                     // alert(123);
                     if(data.message=="true"){
                         alert('新增成功');
-                        window.location.href="/project/?gid="+gid;
+                        // window.location.href="/project/?gid="+gid;
+                        window.location.href = "/project/"+gid+"/"+mode;
                     }
                     else{
                         alert('帳號已被系統自動登出，請重新登入');
@@ -1050,6 +1187,7 @@ $(function(){
     //用ajax的方式新增分析項目
     $("#addAnalysisModalButton").click(function () {
         var gid = document.getElementById("groups_id").value;
+        var mode = "內容撰寫";
         // console.log(gid);
         var cbxExperimentSelect = [];
         $('input[name="purposes_select3"]:checked').each(function() { 
@@ -1069,7 +1207,8 @@ $(function(){
                     // alert(123);
                     if(data.message=="true"){
                         alert('新增成功');
-                        window.location.href="/project/?gid="+gid;
+                        // window.location.href="/project/?gid="+gid;
+                        window.location.href = "/project/"+gid+"/"+mode;
                     }
                     else{
                         alert('帳號已被系統自動登出，請重新登入');
@@ -1086,6 +1225,7 @@ $(function(){
     //用ajax的方式新增實驗記錄
     $("#addRecordModalButton").click(function () {
         var gid = document.getElementById("groups_id").value;
+        var mode = "內容撰寫";
         // console.log(gid);
         var cbxExperimentSelect = [];
         $('input[name="experiment_select"]:checked').each(function() { 
@@ -1105,7 +1245,8 @@ $(function(){
                     // alert(123);
                     if(data.message=="true"){
                         alert('新增成功');
-                        window.location.href="/project/?gid="+gid;
+                        // window.location.href="/project/?gid="+gid;
+                        window.location.href = "/project/"+gid+"/"+mode;
                     }
                     else{
                         alert('帳號已被系統自動登出，請重新登入');
@@ -1122,6 +1263,7 @@ $(function(){
     //用ajax的方式新增研究設備及器材
     $("#addMaterialModalButton").click(function () {
         var gid = document.getElementById("groups_id").value;
+        var mode = "內容撰寫";
 
         $.ajax({  
             type: "POST",
@@ -1136,7 +1278,8 @@ $(function(){
                     // alert(123);
                     if(data.message=="true"){
                         alert('新增成功');
-                        window.location.href="/project/?gid="+gid;
+                        // window.location.href="/project/?gid="+gid;
+                        window.location.href = "/project/"+gid+"/"+mode;
                     }
                     else{
                         alert('帳號已被系統自動登出，請重新登入');
@@ -1153,6 +1296,7 @@ $(function(){
     //用ajax的方式新增實驗項目
     $("#addExperimentModalButton").click(function () {
         var gid = document.getElementById("groups_id").value;
+        var mode = "內容撰寫";
         // console.log(gid);
         var cbxPurposesSelect = [];
         $('input[name="purposes_select"]:checked').each(function() { 
@@ -1173,7 +1317,8 @@ $(function(){
                     // alert(123);
                     if(data.message=="true"){
                         alert('新增成功');
-                        window.location.href="/project/?gid="+gid;
+                        // window.location.href="/project/?gid="+gid;
+                        window.location.href = "/project/"+gid+"/"+mode;
                     }
                     else{
                         alert('帳號已被系統自動登出，請重新登入');
@@ -1190,6 +1335,7 @@ $(function(){
     //用ajax的方式新增研究目的
     $("#addPurposesModalButton").click(function () {
         var gid = document.getElementById("groups_id").value;
+        var mode = "內容撰寫";
 
         $.ajax({  
             type: "POST",
@@ -1203,7 +1349,8 @@ $(function(){
                     // alert(123);
                     if(data.message=="true"){
                         alert('新增成功');
-                        window.location.href="/project/?gid="+gid;
+                        // window.location.href="/project/?gid="+gid;
+                        window.location.href = "/project/"+gid+"/"+mode;
                     }
                     else{
                         alert('帳號已被系統自動登出，請重新登入');
@@ -1236,6 +1383,44 @@ $(function(){
                     if(data.message=="true"){
                         alert('儲存成功');
                         $('.create-motivation-summernote').removeClass("editing");
+                        // window.location.href="/project/?gid="+gid;
+                    }
+                    else{
+                        alert('帳號已被系統自動登出，請重新登入');
+                        window.location.href="/";
+                    }
+                }
+            },
+            error: function(){
+                alert('失敗');
+            }
+        });
+    });
+
+    //用ajax的方式修改組別編輯階段，並新增階段切換紀錄
+    $("#stageSwitchBtn").click(function () {
+        var gid = document.getElementById("groups_id").value;
+        var mode = "內容撰寫";
+        var stage_switch_now = document.getElementById("groups_stage").value;
+        var stage_after = $("#selectStage").val();
+        var stage_switch_reason = $("#changeStageReason").val();
+        
+        $.ajax({  
+            type: "POST",
+            url: "/project/stageSwitch",
+            data: {
+                gid: gid,
+                stage_switch_now: stage_switch_now,
+                stage_after: stage_after,
+                stage_switch_reason: stage_switch_reason
+            },
+            success: function(data){
+                if(data){
+                    //  alert(project_data_content2);
+                    if(data.message=="true"){
+                        alert('切換成功');
+                        // $('.create-conculsion-summernote').removeClass("editing");
+                        window.location.href = "/project/"+gid+"/"+mode;
                         // window.location.href="/project/?gid="+gid;
                     }
                     else{

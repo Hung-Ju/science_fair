@@ -53,7 +53,8 @@ function joinGroups(groups_id){
 //點選進入組別按鈕進入該組的專題編輯頁面
 function enterProject(groups_id){
     //依據 id 值加在網址後面，讓編輯頁面能以 get 方式取得 key
-    window.location.href = "/project/?gid="+groups_id;
+    var mode = "內容撰寫"
+    window.location.href = "/project/"+groups_id+"/"+mode;
 }
 
 //用bootstrap-table創已加入組別table

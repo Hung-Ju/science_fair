@@ -275,7 +275,6 @@ module.exports = {
 				})
 			})
 		})
-		
 	},
 
 	//新增project_data_multi資料表的資料(新增實驗項目、實驗記錄)
@@ -534,4 +533,49 @@ module.exports = {
 		})
 	},
 
+	//抓取小組現在編輯階段
+	selectGroupsStage : function(groups_id_groups){
+		var groups_id_groups = groups_id_groups;
+		return new Promise(function(resolve, reject){
+			pool.getConnection(function(err, connection){
+				if(err) return reject(err);
+				connection.query('SELECT * FROM `groups` WHERE `groups_id`=?', groups_id_groups,function(err, result){
+					if(err) return reject(err);
+					resolve(result);
+					connection.release();
+				})
+			});
+		})
+	},
+
+	//修改小組正在編輯階段
+	updateStage :function(groups_id, stage_after){
+		return new Promise(function(resolve, reject){
+			pool.getConnection(function(err, connection){
+				if(err) return reject(err);
+				var update_params = {groups_stage:stage_after};
+				connection.query('UPDATE `groups` SET ? WHERE `groups_id`='+groups_id, update_params, function(err, update_res){
+					if(err) return reject(err);
+					resolve(update_res);
+					connection.release();
+				})
+			})
+		})
+	},
+
+	//新增階段切換紀錄
+	addStageSwitchRecord :function(groups_id_groups, stage_switch_now, stage_switch_next, stage_switch_reason, stage_switch_status){
+		return new Promise(function(resolve, reject){
+			pool.getConnection(function(err, connection){
+				if(err) return reject(err);
+				var params = {groups_id_groups:groups_id_groups, stage_switch_now:stage_switch_now, stage_switch_next:stage_switch_next, stage_switch_reason:stage_switch_reason, stage_switch_status:stage_switch_status};
+				connection.query('INSERT INTO `stage_switch` SET ?', params, function(err, insert_res){
+					if(err) return reject(err);
+					resolve(insert_res);
+					console.log(params);
+					connection.release();
+				})
+			})
+		})
+	},
 }

@@ -145,6 +145,12 @@ body { position: relative; }
   background-color:  rgb(106, 250, 161);
 }
 
+#mynetwork {
+  width: 100%;
+  height: 77vh;
+  border: 1px solid lightgray;
+  /* padding-left: 10px; */
+}
 /* checkbox選項item */
 /* .item{
   display: block;
