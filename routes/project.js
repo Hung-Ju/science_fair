@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var project = require('../models/project');
+var projectDiscussion = require('../models/projectDiscussion');
 var fs = require("fs");
 var multer = require("multer");
 
@@ -351,6 +352,11 @@ router.post('/updateResearchTitle', function(req, res, next){
     var project_data_content2 = req.body.project_data_content2; //研究動機的內容
     var member_id_member = req.session.member_id;
     var member_name = req.session.member_name;
+
+    var node_title = "研究動機";
+    var node_tag = "研究動機";
+    var node_type = "motivation";
+
     // console.log(req.body);
 
     if(!member_id_member){
@@ -403,7 +409,18 @@ router.post('/updateResearchTitle', function(req, res, next){
                 })
                 .then(function(result2){
                     if(result2){
+                        return projectDiscussion.selectProjectDataNode(gid, node_type)
+                    }
+                })
+                .then(function(selectNode){
+                    console.log(selectNode.length);
+                    if(selectNode.length != 0){
                         res.send({message:"true"});
+                    }else{
+                        return projectDiscussion.addProjectDataNode(gid, member_id_member, member_name, node_title, node_tag , node_type)
+                        .then(function(addNode){
+                            res.send({message:"true"});
+                        })
                     }
                 })
             }

@@ -108,7 +108,6 @@ function joinProjectButton(index, row){
     return ['<button id="expandRowId'+row.groups_id+'" class="btn btn-primary btn-sm" onclick="joinProject('+row.groups_index+','+row.groups_id+')">申請加入</button>']
 }
 
-
 //在這裡加進onclick的jquery去改變function
 function joinProject(index, groups_id){
      console.log(index);
@@ -174,34 +173,4 @@ $(function(){
 
         
     });
-
-    //將小組加入申請透過ajax傳送執行
-    // $("#joinGroups").click(function () {
-
-    //     $.ajax({  
-    //         type: "POST",
-    //         url: "/groups/joinGroups",
-    //         data: {
-    //             groups_id: $("#groups_name").val(),
-    //             groups_key: $("#groups_key").val(),
-    //         },
-    //         success: function(data){
-    //             if(data){
-    //                 if(data.message=="true"){
-    //                     alert('小組新增成功');
-    //                     window.location.href="/groups";
-    //                 }
-    //                 else{
-    //                     alert('新增失敗請重新輸入');
-    //                     window.location.href="/groups/groupsFile";
-    //                 }
-    //             }
-    //         },
-    //         error: function(){
-    //             alert('失敗');
-    //         }
-    //     });
-    // });
-
-
 });

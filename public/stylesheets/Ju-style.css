@@ -149,8 +149,35 @@ body { position: relative; }
   width: 100%;
   height: 77vh;
   border: 1px solid lightgray;
+  /* position:relative; */
   /* padding-left: 10px; */
 }
+
+.tools {
+  padding: 8px;
+  width: auto;
+  height: auto;
+  position: fixed;
+  /* position:relative; */
+  /* top: 15vh; */
+  /* left: 20vh; */
+  z-index: 1;
+  box-shadow: 2px 2px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  background-color: rgba(214, 211, 211, 0.85);
+  /* margin-left: 200px; */
+}
+
+a.tool {
+  text-decoration: none;
+  color: #333;
+}
+
+.tools >h5 {
+  color: #31623C;
+  font-weight: bold;
+}
+
 /* checkbox選項item */
 /* .item{
   display: block;
