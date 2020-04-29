@@ -1,0 +1,9 @@
+[ { "value": "研究動機", "text": "研究動機", "continent": "Europe"},
+  { "value": "研究目的", "text": "研究目的", "continent": "Europe"},
+  { "value": "實驗項目", "text": "實驗項目", "continent": "Europe"},
+  { "value": "研究設備及器材", "text": "研究設備及器材", "continent": "America"},
+  { "value": "實驗記錄", "text": "實驗記錄", "continent": "America"},
+  { "value": "研究結果(分析及圖表)", "text": "研究結果(分析及圖表)", "continent": "America"},
+  { "value": "討論", "text": "討論", "continent": "Australia"},
+  { "value": "結論", "text": "結論", "continent": "Australia"}
+]

@@ -149,35 +149,71 @@ body { position: relative; }
   width: 100%;
   height: 77vh;
   border: 1px solid lightgray;
-  /* position:relative; */
-  /* padding-left: 10px; */
 }
 
 .tools {
-  padding: 8px;
+  /* padding: 5px; */
   width: auto;
-  height: auto;
+  height: 77vh;
   position: fixed;
-  /* position:relative; */
-  /* top: 15vh; */
-  /* left: 20vh; */
   z-index: 1;
   box-shadow: 2px 2px rgba(0, 0, 0, 0.2);
-  border-radius: 5px;
-  background-color: rgba(214, 211, 211, 0.85);
-  /* margin-left: 200px; */
+  /* border-radius: 5px; */
+  background-color: rgb(240, 225, 211);
+  cursor: pointer;
+}
+
+.tool{
+  padding: 10px;
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  /* height: 4vw; */
+  height: auto;
+  background-color: rgba(255, 255, 255, 0);
+  border: none;
+  box-shadow: none;
+  cursor: pointer;
 }
 
 a.tool {
   text-decoration: none;
   color: #333;
+  /* margin-bottom: 10px; */
+
+}
+
+a.tool:hover {
+
+  background-color: antiquewhite;
 }
 
 .tools >h5 {
-  color: #31623C;
+  color: #333;
   font-weight: bold;
 }
 
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+  color: #fff;
+  background-color: #31625C;
+}
+
+a.changet{
+  color: #31625C;
+}
+
+.border-color-green{
+  border-color: #31625C;
+}
+
+.border-color-green:hover{
+  background-color: #31625C;
+  color: #fff;
+}
+
+.nodeEditor{
+  margin-right: 10px;
+}
 /* checkbox選項item */
 /* .item{
   display: block;

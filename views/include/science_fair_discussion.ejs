@@ -4,24 +4,71 @@
 
 <script type="text/javascript" src="https://unpkg.com/vis-network@latest/dist/vis-network.min.js"></script>
 <link href="https://unpkg.com/vis-network@latest/dist/vis-network.min.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="/stylesheets/tagsinput/tagsinput.js"></script>
+<script type="text/javascript" src="/stylesheets/tagsinput/bloodhound.js"></script>
+<link rel='stylesheet' href='/stylesheets/tagsinput/tagsinput.css' />
 
 
 <div class="row" id="vis-network" style="margin-top: 53px; padding-left: 20px;">
     <div id="mynetwork"></div>
     <!-- 左側工具欄 -->
     <div class="tools text-center">
-        <h5>新增</h5>   
+        <h5 style="margin-top: 5px;">新增</h5>   
         <a href="#addIdea" class="tool" id="ideaTool" data-toggle="modal">
-            <img src="/stylesheets/images/icons/idea(line).svg" alt="想法">
+            <img src="/stylesheets/images/icons/idea(line).svg" alt="新增想法">
             <div class="tool-text">想法</div>
         </a>
         <a href="#addVote" class="tool" id="voteTool" data-toggle="modal">
-            <img src="/stylesheets/images/icons/archive.svg" alt="投票">
+            <img src="/stylesheets/images/icons/archive.svg" alt="新增投票" >
             <div class="tool-text">投票</div>
         </a>
     </div>
-
 </div>
+
+<!-- 新增想法的彈出視窗 -->
+<div class="modal fade" id="addIdea" tabindex="-1" role="dialog" aria-labelledby="addIdeaCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addIdeaLongTitle">新增想法</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div id="addIdeaRoot">
+            <p><b>標題</b><input class="form-control" type="text" name="idea_title" id="idea_title" required="required"></p>
+            <p><b>tags</b><input class="form-control" type="text" name="idea_title" id="idea_tag" required="required" data-role="tagsinput"></p>
+            <div class="row">
+                <div class="btn-group-vertical col-3">
+                    <button type="button" class="btn border-color-green scaffold">我想知道</button>
+                    <button type="button" class="btn border-color-green scaffold">我的想法</button>
+                    <button type="button" class="btn border-color-green scaffold">我的理論</button>
+                    <button type="button" class="btn border-color-green scaffold">新資訊或參考來源</button>
+                    <button type="button" class="btn border-color-green scaffold">另一個觀點是</button>
+                    <button type="button" class="btn border-color-green scaffold">我覺得更好的想法</button>
+                    <button type="button" class="btn border-color-green scaffold">有發展性的想法</button>
+                </div>
+                <div class="col-9">
+                    <textarea class="nodeEditor" id="addIdeaSummernote"></textarea>
+                    <div class="input-group">
+                        <div class="custom-file">
+                          <input type="file" class="custom-file-input" id="inputGroupFile" aria-describedby="inputGroupFileAddon">
+                          <label class="custom-file-label mt-2" for="inputGroupFile04">選擇檔案</label>
+                        </div>
+                      </div>
+                </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+          <button type="button" class="btn btn-primary" id="stageSwitchBtn">新增</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 新增想法的彈出視窗 -->
 
 
 <script type="text/javascript" src="/javascripts/projectDiscussion.js"></script>

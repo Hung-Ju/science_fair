@@ -1,25 +1,57 @@
+//modal裡的summernote生成
+function nodeSummer(){
+  $('.nodeEditor').summernote({
+      disable:true,
+      minHeight: 200,
+      maxHeight: 200,
+      // width: 570,
+      toolbar: [
+          ['style', ['style']],
+          ['font', ['bold', 'underline', 'clear']],
+          ['color', ['color']],
+          ['para', ['ul', 'ol', 'paragraph']],
+          ['table', ['table']],
+          ['insert', ['link', 'picture', 'video']]
+      ],
+      callbacks: {
+          onImageUpload: function (files) {
+              var imageData = new FormData();
+              for (var i = 0; i < files.length; i++){
+                  imageData.append("imageData", files[i]);
+              }
+              var gid = document.getElementById("groups_id").value;
+              var T = $(this);
+              $.ajax({
+                  data: imageData,
+                  type: "POST",
+                  url: "/project/summernoteUploadImage/"+gid,
+                  cache: false,
+                  contentType: false,
+                  processData: false,
+                  success: function (result) {
+                      var imageUrlArray = result.imageUrl;
+                      if (result.status = "success") {
+                          $.each(imageUrlArray, function(i,newUrl){
+                              //console.log(imageUrlArray[i].newUrl);
+                              newImageUrl = imageUrlArray[i].newUrl
+                              T.summernote("insertImage", newImageUrl);
+                          })
+                      }
+                  },
+                  error: function () {
+                      alert("上傳圖片失敗");
+                  }
+              });
+          }
+      }
+  })
+};
 //建立新的vis畫布
 var container = document.getElementById("mynetwork");
 
-//network = new vis.Network(container, data, options);
-// var nodes = new vis.DataSet();
-// var edges = new vis.DataSet();
-
-// var nodes = new vis.DataSet([
-//     {id: 1, label: 'Node 1', group:"idea",x:165,y:25},
-//     {id: 2, label: 'Node 2', group:"idea",x:235,y:250},
-//     {id: 3, label: 'Node 3', group:"idea",x:500,y:235},
-//     {id: 4, label: 'Node 4', group:"idea",x:434,y:25},
-//     {id: 5, label: 'Node 5', group:"idea",x:128,y:-356}
-//   ]);
-
-var node = [
-    { id: "1", group: 'idea', x:165, y:25, node_content: "Node 1", node_text: '111'},
-    { id: "2", group: 'rise_above', x:235, y:250, node_content: "Node 2", node_text: '111'},
-    { id: "3", group: 'idea', x:500, y:235, node_content: "Node 3", node_text: '111'},
-    { id: "4", group: 'vote', x:434, y:25, node_content: "Node 4", node_text: '111'},
-    { id: "5", group: 'write', x:128, y:-356, node_content: "Node 5", node_text: '111'}
-  ];
+var allNodeData = document.getElementById("allGroupsNodeData").value;
+var node = JSON.parse(allNodeData);
+//console.log(node);
   
 var edge = [
     {from: 1, to: 3},
@@ -27,14 +59,6 @@ var edge = [
     {from: 2, to: 4},
     {from: 2, to: 5}
 ];
-
-// var content = [
-//     { id: "1", node_content: "Node 1", node_text: '111'},
-//     { id: "2", node_content: "Node 2", node_text: '111'},
-//     { id: "3", node_content: "Node 3", node_text: '111'},
-//     { id: "4", node_content: "Node 4", node_text: '111'},
-//     { id: "5", node_content: "Node 5", node_text: '111'}
-//   ]
 
 // var edges = new vis.DataSet([
 //     {from: 1, to: 3},
@@ -45,17 +69,13 @@ var edge = [
 var nodeId = [];
 
 var container = document.getElementById('mynetwork');
-// var nodeData = {
-//     nodes: nodes,
-//     edges: edges
-// };
+
 var nodeOptions = {
     nodes: {
         size : 16
     },
     groups: {
         idea: {
-            // color: {},
             shape: 'image',
             image: '/stylesheets/images/idea(line).svg',
         },
@@ -67,7 +87,7 @@ var nodeOptions = {
             shape: 'image',
             image: '/stylesheets/images/archive.svg',
         },
-        write: {
+        motivation: {
             shape: 'image',
             image: '/stylesheets/images/organize.svg',
         },
@@ -108,10 +128,14 @@ function addNodecontent(){
       var nodePosition = network.getPositions(nodeId);
       
       for(i=0;i<node.length;i++){
-        ctx.font = "20px Arial";
-        ctx.fillText(node[i].node_content, nodePosition[nodeId[i]].x + 30, nodePosition[nodeId[i]].y+10);
-        ctx.font = "18px Arial";
-        ctx.fillText(node[i].node_text, nodePosition[nodeId[i]].x + 30, nodePosition[nodeId[i]].y+30);
+        ctx.font = "bold 16px 微軟正黑體";
+        ctx.fillText(node[i].node_title, nodePosition[nodeId[i]].x + 30, nodePosition[nodeId[i]].y-10);
+        ctx.font = "12px 微軟正黑體";
+        ctx.fillStyle = "gray";
+        ctx.fillText(node[i].member_name, nodePosition[nodeId[i]].x + 30, nodePosition[nodeId[i]].y+10);
+        ctx.font = "12px 微軟正黑體";
+        ctx.fillStyle = "gray";
+        ctx.fillText(node[i].node_createtime, nodePosition[nodeId[i]].x + 30, nodePosition[nodeId[i]].y+30);
       }
     });
   }
@@ -121,7 +145,7 @@ function draw() {
     // create an array with nodes
     nodes = new vis.DataSet();
     nodes.update(node);
-  
+    //console.log(nodes);
     // create an array with edges
     edges = new vis.DataSet();
     edges.update(edge);
@@ -183,13 +207,19 @@ function drawbackground(nodeId){
             ctx.stroke();
         })
     });
-}
-  
+} 
 
 $(function(){
-    // var network = new vis.Network(container, data, options);
-    //var network = new vis.Network(container, nodeData, nodeOptions);
-    draw();
-    clickevent();
+  draw();
+  clickevent();
+  nodeSummer();
+
+  $('.scaffold').on('click', function() {
+    var scaffoldText = $(this).text();
+    var summernote = $(this).parents(".row").find(".nodeEditor");
+    var insertTextHTML = '<span style="background-color: rgb(255, 255, 0);">'+scaffoldText+'</span> ';
+    $(summernote).summernote('pasteHTML',insertTextHTML);
+    // console.log(summernote);
+  });
 });
 

@@ -63,9 +63,33 @@ router.get('/:gid/:mode',function(req, res, next) {
         var researchAnalysisArray = [];
         var researchDiscussionArray = [];
         var researchConclusionArray = [];
+        var groupsAllNodeDataArray = [];
 
-        //抓取小組現在編輯階段
-        project.selectGroupsStage(gid)
+        projectDiscussion.selectAllGroupsNode(gid)
+        .then(function(allGroupsNode){
+            if(allGroupsNode){
+                for (var d = 0; d < allGroupsNode.length; d++){
+                    // var day = new Date(allGroupsNode[d].node_createtime);
+                    var id = allGroupsNode[d].node_id;
+                    var group = allGroupsNode[d].node_type;
+                    var x = allGroupsNode[d].node_x;
+                    var y = allGroupsNode[d].node_y;
+                    var member_id = allGroupsNode[d].member_id_member;
+                    var member_name = allGroupsNode[d].member_name;
+                    var node_title = allGroupsNode[d].node_title;
+                    var node_tag = allGroupsNode[d].node_tag;
+                    // var node_createtime_month = day.getMonth()+1;
+                    // var node_createtime = day.getFullYear()+'/'+node_createtime_month+'/'+day.getDate();
+                    var node_createtime = allGroupsNode[d].node_createtime2;
+                    var node_revised_count = allGroupsNode[d].node_revised_count;
+                    var node_read_count = allGroupsNode[d].node_read_count;
+                    allGroupsNodeData = {id:id, group:group, x:x, y:y, member_id:member_id, member_name:member_name, node_title:node_title, node_tag:node_tag, node_createtime:node_createtime, node_revised_count:node_revised_count, node_read_count:node_read_count};
+                    groupsAllNodeDataArray.push(allGroupsNodeData);
+                }
+            }
+            return project.selectGroupsStage(gid)
+            //抓取小組現在編輯階段
+        })
         .then(function(groupsData){
             var groupsStageData = groupsData[0].groups_stage;
             groups_stage.push(groupsStageData);
@@ -195,7 +219,7 @@ router.get('/:gid/:mode',function(req, res, next) {
                     researchTitleArray.push(researchTitleData);
                 }
             }
-            res.render('projectEdit',  {title: 'Science Fair科學探究專題系統', gid:gid, mode:mode, member_id:req.session.member_id, member_name:req.session.member_name, researchTitle:researchTitleArray, researchMotivation:researchMotivationArray, researchPurposes:researchPurposesArray, researchExperiment:researchExperimentArray, researchMaterial:researchMaterialArray, researchRecord:researchRecordArray, researchAnalysis:researchAnalysisArray, researchDiscussion:researchDiscussionArray, researchConclusion:researchConclusionArray, groups_stage:groups_stage});
+            res.render('projectEdit',  {title: 'Science Fair科學探究專題系統', gid:gid, mode:mode, member_id:req.session.member_id, member_name:req.session.member_name, researchTitle:researchTitleArray, researchMotivation:researchMotivationArray, researchPurposes:researchPurposesArray, researchExperiment:researchExperimentArray, researchMaterial:researchMaterialArray, researchRecord:researchRecordArray, researchAnalysis:researchAnalysisArray, researchDiscussion:researchDiscussionArray, researchConclusion:researchConclusionArray, groups_stage:groups_stage, AllNodeData:groupsAllNodeDataArray});
         })
 
         // 抓取討論的資料
