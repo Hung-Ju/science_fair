@@ -91,6 +91,10 @@ var nodeOptions = {
             shape: 'image',
             image: '/stylesheets/images/organize.svg',
         },
+        purposes: {
+            shape: 'image',
+            image: '/stylesheets/images/organize.svg',
+        },
     },
     edges: {
         color:{
@@ -138,7 +142,7 @@ function addNodecontent(){
         ctx.fillText(node[i].node_createtime, nodePosition[nodeId[i]].x + 30, nodePosition[nodeId[i]].y+30);
       }
     });
-  }
+}
 
 function draw() {
   
@@ -157,7 +161,7 @@ function draw() {
     
     network = new vis.Network(container, data, nodeOptions);
     addNodecontent();
-  }
+}
 
 //點擊事件
 function clickevent(){
@@ -209,10 +213,25 @@ function drawbackground(nodeId){
     });
 } 
 
+function tagsInput(){
+    $('.idea_tag').inputTags({
+        autocomplete: {
+          values: ['研究動機', '研究目的', '實驗項目', '研究設備及器材', '實驗記錄', '研究結果(分析及圖表)', '討論', '結論'], // autocomplete list
+          only: true,
+        },
+        editable: false,
+        destroy: true,
+        create: function() {
+            console.log('新物件新增');
+          },
+      });
+}
+
 $(function(){
   draw();
   clickevent();
   nodeSummer();
+  tagsInput();
 
   $('.scaffold').on('click', function() {
     var scaffoldText = $(this).text();
@@ -221,5 +240,18 @@ $(function(){
     $(summernote).summernote('pasteHTML',insertTextHTML);
     // console.log(summernote);
   });
+
+  $('.custom-file-input').change(function (e) {
+    var files = [];
+    for (var i = 0; i < $(this)[0].files.length; i++) {
+        files.push($(this)[0].files[i].name);
+    }
+    $(this).next('.custom-file-label').html(files.join(', '));
+});
+
+  $('#addIdeaBtn').on('click', function() {
+      var tagValue = $('.idea_tag').val();
+      console.log(tagValue);
+  })
 });
 

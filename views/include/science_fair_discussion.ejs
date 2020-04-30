@@ -1,12 +1,13 @@
 <!-- <script src="https://visjs.github.io/vis-network/dist/vis-network.min.js"></script> -->
 <!-- <link href="https://unpkg.com/vis-network@latest/dist/vis-network.min.css" rel="stylesheet" type="text/css" /> -->
 <!-- <link href="https://visjs.github.io/vis-network/dist/vis-network.min.css" rel="stylesheet" type="text/css" /> -->
-
+<!-- <script type="text/javascript" src="/stylesheets/tagsinput/tagsinput.js"></script>
+<script type="text/javascript" src="/stylesheets/tagsinput/bloodhound.js"></script>
+<link rel='stylesheet' href='/stylesheets/tagsinput/tagsinput.css' /> -->
 <script type="text/javascript" src="https://unpkg.com/vis-network@latest/dist/vis-network.min.js"></script>
 <link href="https://unpkg.com/vis-network@latest/dist/vis-network.min.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="/stylesheets/tagsinput/tagsinput.js"></script>
-<script type="text/javascript" src="/stylesheets/tagsinput/bloodhound.js"></script>
-<link rel='stylesheet' href='/stylesheets/tagsinput/tagsinput.css' />
+
+
 
 
 <div class="row" id="vis-network" style="margin-top: 53px; padding-left: 20px;">
@@ -38,7 +39,7 @@
         <div class="modal-body">
           <div id="addIdeaRoot">
             <p><b>標題</b><input class="form-control" type="text" name="idea_title" id="idea_title" required="required"></p>
-            <p><b>tags</b><input class="form-control" type="text" name="idea_title" id="idea_tag" required="required" data-role="tagsinput"></p>
+            <p><b>標籤</b><input class="form-control idea_tag" type="text" name="idea_title" required="required"></p>
             <div class="row">
                 <div class="btn-group-vertical col-3">
                     <button type="button" class="btn border-color-green scaffold">我想知道</button>
@@ -53,7 +54,7 @@
                     <textarea class="nodeEditor" id="addIdeaSummernote"></textarea>
                     <div class="input-group">
                         <div class="custom-file">
-                          <input type="file" class="custom-file-input" id="inputGroupFile" aria-describedby="inputGroupFileAddon">
+                          <input type="file" class="custom-file-input" id="inputGroupFile" aria-describedby="inputGroupFileAddon" multiple="">
                           <label class="custom-file-label mt-2" for="inputGroupFile04">選擇檔案</label>
                         </div>
                       </div>
@@ -63,7 +64,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-          <button type="button" class="btn btn-primary" id="stageSwitchBtn">新增</button>
+          <button type="button" class="btn btn-primary" id="addIdeaBtn">新增</button>
         </div>
       </div>
     </div>
