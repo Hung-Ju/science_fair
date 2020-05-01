@@ -228,30 +228,76 @@ function tagsInput(){
 }
 
 $(function(){
-  draw();
-  clickevent();
-  nodeSummer();
-  tagsInput();
+    draw();
+    clickevent();
+    nodeSummer();
+    tagsInput();
 
-  $('.scaffold').on('click', function() {
-    var scaffoldText = $(this).text();
-    var summernote = $(this).parents(".row").find(".nodeEditor");
-    var insertTextHTML = '<span style="background-color: rgb(255, 255, 0);">'+scaffoldText+'</span> ';
-    $(summernote).summernote('pasteHTML',insertTextHTML);
-    // console.log(summernote);
-  });
+    //從工具列新增想法節點(fromdata傳值還沒完成)
+    $("#addIdeaBtn").click(function () {
+        var gid = document.getElementById("groups_id").value;
+        var node_title = $('#idea_title').val();
+        var node_tag = $('.idea_tag').val();
+        var idea_content = $('.nodeEditor').val();
+        var mode = "想法討論";
+        var files = document.getElementById('inputGroupFile').files.length;
+        var ideaData = new FormData();
+        for (var x = 0; x < files; x++) {
+            ideaData.append("files[]", document.getElementById('inputGroupFile').files[x]);
+        }
+        ideaData.append("gid",gid);
+        ideaData.append("node_title",node_title);
+        ideaData.append("node_tag",node_tag);
+        ideaData.append("idea_content",idea_content);
+        //console.log(ideaData);
+            
+        $.ajax({  
+            type: "POST",
+            url: "/project/discussion/addIdea",
+            data: ideaData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function(data){
+                if(data){
+                    // alert(123);
+                    if(data.message=="true"){
+                        alert('新增成功');
+                        // window.location.href="/project/?gid="+gid;
+                        window.location.href = "/project/"+gid+"/"+mode;
+                    }
+                    else{
+                        alert('帳號已被系統自動登出，請重新登入');
+                        window.location.href="/";
+                    }
+                }
+            },
+            error: function(){
+                alert('失敗');
+            }
+        });
+    });
 
-  $('.custom-file-input').change(function (e) {
-    var files = [];
-    for (var i = 0; i < $(this)[0].files.length; i++) {
-        files.push($(this)[0].files[i].name);
-    }
-    $(this).next('.custom-file-label').html(files.join(', '));
-});
 
-  $('#addIdeaBtn').on('click', function() {
-      var tagValue = $('.idea_tag').val();
-      console.log(tagValue);
-  })
+    $('.scaffold').on('click', function() {
+        var scaffoldText = $(this).text();
+        var summernote = $(this).parents(".row").find(".nodeEditor");
+        var insertTextHTML = '<span style="background-color: rgb(255, 255, 0);">'+scaffoldText+'</span> ';
+        $(summernote).summernote('pasteHTML',insertTextHTML);
+        // console.log(summernote);
+    });
+
+    $('.custom-file-input').change(function (e) {
+        var files = [];
+        for (var i = 0; i < $(this)[0].files.length; i++) {
+            files.push($(this)[0].files[i].name);
+        }
+        $(this).next('.custom-file-label').html(files.join(', '));
+    });
+
+    // $('#addIdeaBtn').on('click', function() {
+    //     var tagValue = $('.idea_tag').val();
+    //     console.log(tagValue);
+    // })
 });
 

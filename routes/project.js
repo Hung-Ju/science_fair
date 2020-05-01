@@ -994,4 +994,51 @@ router.post('/stageSwitch',function(req, res, next){
 });
 
 
+//想法討論區router
+
+//新增想法節點
+router.post('/discussion/addIdea',upload.array('files',5), function(req, res, next){
+    var groups_id_groups = req.body.gid;
+    var node_title = req.body.node_title;
+    var node_tag = req.body.node_tag;
+    var node_type = "idea";
+    var idea_content = req.body.idea_content;
+    var member_id_member = req.session.member_id;
+    var member_name = req.session.member_name;
+
+    if(!member_id_member){
+        res.send({message:"false"});
+    }else{
+
+        projectDiscussion.addNode(groups_id_groups, member_id_member, member_name, node_title, node_tag, node_type)
+        .then(function(result){
+            console.log(result.insertId);
+            var node_id_node = result.insertId;
+            return projectDiscussion.addIdea(node_id_node, idea_content)
+        })
+        .then(function(result2){
+            res.send({message:"true"});
+        })
+
+    }
+
+    // var fileArray = [];
+    // for (var i = 0; i < req.files.length; i++) {
+    //     // 檔案會放在uploads資料夾並且沒有附檔名，需要自己轉存，用到fs模組
+    //     // 對臨時檔案轉存，fs.rename(oldPath, newPath,callback);
+    //     var originalname = req.files[i].originalname;
+    //     var today = new Date();
+    //     fs.rename(req.files[i].path, "./public/upload_file/group"+gid+"/summernote/" + today.getDate()+today.getHours()+today.getMinutes()+today.getSeconds() +originalname , function(err) {
+    //         if (err) {
+    //             throw err;
+    //         } 
+    //     })
+    //     var imageUrl =  "/upload_file/group"+gid+"/summernote/"+ today.getDate()+today.getHours()+today.getMinutes()+today.getSeconds()+ originalname;
+    //     imageUrlArray.push({newUrl:imageUrl});
+    // };
+
+})
+
+
+
 module.exports = router;

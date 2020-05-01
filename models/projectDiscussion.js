@@ -47,4 +47,52 @@ module.exports = {
 			})
 		})
 	},
+
+	//新增節點
+	addNode :function(groups_id_groups, member_id_member, member_name, node_title, node_tag, node_type){
+		return new Promise(function(resolve, reject){
+			pool.getConnection(function(err, connection){
+				if(err) return reject(err);
+				var params = {groups_id_groups:groups_id_groups, member_id_member:member_id_member, member_name:member_name, node_title:node_title, node_tag:node_tag, node_type:node_type};
+				connection.query('INSERT INTO `node` SET ?', params, function(err, insert_res){
+					if(err) return reject(err);
+					resolve(insert_res);
+					//console.log(params);
+					connection.release();
+				})
+			})
+		})
+	},
+
+	//新增想法節點資料
+	addIdea :function(node_id_node, idea_content){
+		return new Promise(function(resolve, reject){
+			pool.getConnection(function(err, connection){
+				if(err) return reject(err);
+				var params = {node_id_node:node_id_node, idea_content:idea_content};
+				connection.query('INSERT INTO `idea` SET ?', params, function(err, insert_res){
+					if(err) return reject(err);
+					resolve(insert_res);
+					//console.log(params);
+					connection.release();
+				})
+			})
+		})
+	},
+
+	//新增想法節點中附加的檔案資料
+	addFile :function(groups_id_groups, node_id_node, file_name, file_type, file_share){
+		return new Promise(function(resolve, reject){
+			pool.getConnection(function(err, connection){
+				if(err) return reject(err);
+				var params = {groups_id_groups:groups_id_groups, node_id_node:node_id_node, file_name:file_name, file_type:file_type, file_share:file_share};
+				connection.query('INSERT INTO `file` SET ?', params, function(err, insert_res){
+					if(err) return reject(err);
+					resolve(insert_res);
+					//console.log(params);
+					connection.release();
+				})
+			})
+		})
+	}
 }
