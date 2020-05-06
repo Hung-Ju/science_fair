@@ -133,6 +133,7 @@ function addNodecontent(){
       
       for(i=0;i<node.length;i++){
         ctx.font = "bold 16px 微軟正黑體";
+        ctx.fillStyle = "black";
         ctx.fillText(node[i].node_title, nodePosition[nodeId[i]].x + 30, nodePosition[nodeId[i]].y-10);
         ctx.font = "12px 微軟正黑體";
         ctx.fillStyle = "gray";
@@ -144,12 +145,10 @@ function addNodecontent(){
     });
 }
 
-function draw() {
-  
+function draw() { 
     // create an array with nodes
     nodes = new vis.DataSet();
     nodes.update(node);
-    //console.log(nodes);
     // create an array with edges
     edges = new vis.DataSet();
     edges.update(edge);
@@ -243,13 +242,13 @@ $(function(){
         var files = document.getElementById('inputGroupFile').files.length;
         var ideaData = new FormData();
         for (var x = 0; x < files; x++) {
-            ideaData.append("files[]", document.getElementById('inputGroupFile').files[x]);
+            ideaData.append("files", document.getElementById('inputGroupFile').files[x]);
         }
+
         ideaData.append("gid",gid);
         ideaData.append("node_title",node_title);
         ideaData.append("node_tag",node_tag);
         ideaData.append("idea_content",idea_content);
-        //console.log(ideaData);
             
         $.ajax({  
             type: "POST",
@@ -265,6 +264,9 @@ $(function(){
                         alert('新增成功');
                         // window.location.href="/project/?gid="+gid;
                         window.location.href = "/project/"+gid+"/"+mode;
+                    }
+                    else if(data.message=="same"){
+                        alert('小組中有相同的檔案，請重新選擇');
                     }
                     else{
                         alert('帳號已被系統自動登出，請重新登入');

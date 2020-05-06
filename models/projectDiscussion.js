@@ -81,18 +81,80 @@ module.exports = {
 	},
 
 	//新增想法節點中附加的檔案資料
-	addFile :function(groups_id_groups, node_id_node, file_name, file_type, file_share){
-		return new Promise(function(resolve, reject){
-			pool.getConnection(function(err, connection){
-				if(err) return reject(err);
-				var params = {groups_id_groups:groups_id_groups, node_id_node:node_id_node, file_name:file_name, file_type:file_type, file_share:file_share};
-				connection.query('INSERT INTO `file` SET ?', params, function(err, insert_res){
-					if(err) return reject(err);
-					resolve(insert_res);
-					//console.log(params);
-					connection.release();
+	// addFile :function(groups_id_groups, node_id_node, file_name, file_type, file_share){
+	// 	return new Promise(function(resolve, reject){
+	// 		pool.getConnection(function(err, connection){
+	// 			if(err) return reject(err);
+	// 			var params = {groups_id_groups:groups_id_groups, node_id_node:node_id_node, file_name:file_name, file_type:file_type, file_share:file_share};
+	// 			connection.query('INSERT INTO `file` SET ?', params, function(err, insert_res){
+	// 				if(err) return reject(err);
+	// 				resolve(insert_res);
+	// 				//console.log(params);
+	// 				connection.release();
+	// 			})
+	// 		})
+	// 	})
+	// }
+	addFile :function(filesDataArray){
+		return Promise.all(
+			filesDataArray.map(function(data){
+				return new Promise(function(resolve, reject){
+					pool.getConnection(function(err, connection){
+						if(err) return reject(err);
+						var groups_id_groups = data.groups_id_groups;
+						var node_id_node = data.node_id_node;
+						var file_name = data.file_name;
+						var file_type = data.file_type;
+						var file_share = 0;
+						var params = {groups_id_groups:groups_id_groups, node_id_node:node_id_node, file_name:file_name, file_type:file_type, file_share:file_share};
+						connection.query('INSERT INTO `file` SET ?', params, function(err, insert_res){
+							if(err) return reject(err);
+							resolve(insert_res);
+							//console.log(params);
+							connection.release();
+						})
+					})
 				})
 			})
-		})
+		)
+		
+	},
+
+	//篩選是否存在相同檔名的檔案(還沒完成)
+	existsFileCheck :function(groups_id_groups,filesDataArray){
+
+		var existsFile = [];
+		return Promise.all(
+			filesDataArray.map(function(data){
+				return new Promise(function(resolve, reject){
+					if(data.length == 0){
+						var sendMessage = 0;
+						resolve(sendMessage);
+					}else{
+						var originalname = data.originalname;
+						var files_path = "./public/upload_file/group"+groups_id_groups+"/groups_file/"+originalname;
+						if(fs.existsSync(files_path)){
+							existsFile.push(originalname)
+						}
+						resolve(filesDataArray);
+					}
+					// pool.getConnection(function(err, connection){
+					// 	if(err) return reject(err);
+					// 	var groups_id_groups = data.groups_id_groups;
+					// 	var node_id_node = data.node_id_node;
+					// 	var file_name = data.file_name;
+					// 	var file_type = data.file_type;
+					// 	var file_share = 0;
+					// 	var params = {groups_id_groups:groups_id_groups, node_id_node:node_id_node, file_name:file_name, file_type:file_type, file_share:file_share};
+					// 	connection.query('INSERT INTO `file` SET ?', params, function(err, insert_res){
+					// 		if(err) return reject(err);
+					// 		resolve(insert_res);
+					// 		//console.log(params);
+					// 		connection.release();
+					// 	})
+					// })
+				})
+			})
+		)
 	}
 }

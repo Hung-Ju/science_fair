@@ -27,10 +27,10 @@ body { position: relative; }
 }
 
 #cneter-content {
-  /* padding-top: 50px; */
+  padding-top: 86px;
   margin-left: 40px;
   margin-right: 40px;
-  margin-top: 86px;
+  /* margin-top: 86px; */
   margin-bottom: 10px;
 }
 
@@ -213,6 +213,10 @@ a.changet{
 
 .nodeEditor{
   margin-right: 10px;
+}
+
+#vis-network{
+  overflow: hidden;
 }
 /* checkbox選項item */
 /* .item{

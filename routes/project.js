@@ -996,7 +996,7 @@ router.post('/stageSwitch',function(req, res, next){
 
 //想法討論區router
 
-//新增想法節點
+//新增想法節點(還沒完成)
 router.post('/discussion/addIdea',upload.array('files',5), function(req, res, next){
     var groups_id_groups = req.body.gid;
     var node_title = req.body.node_title;
@@ -1005,38 +1005,113 @@ router.post('/discussion/addIdea',upload.array('files',5), function(req, res, ne
     var idea_content = req.body.idea_content;
     var member_id_member = req.session.member_id;
     var member_name = req.session.member_name;
+    var fileslength = req.files.length;
+    var node_id_node;
 
     if(!member_id_member){
         res.send({message:"false"});
     }else{
+        console.log(req.body)
+        console.log(req.files)
+        var allFile = fs.readdirSync("./public/upload_file/group"+groups_id_groups+"/groups_file/");
+        //console.log(allFile[2]);
+        //res.send({message:"true"});
 
-        projectDiscussion.addNode(groups_id_groups, member_id_member, member_name, node_title, node_tag, node_type)
-        .then(function(result){
-            console.log(result.insertId);
-            var node_id_node = result.insertId;
-            return projectDiscussion.addIdea(node_id_node, idea_content)
-        })
-        .then(function(result2){
-            res.send({message:"true"});
-        })
+        // var fileDataArray = [];
+        // if(fileslength != 0){
+        //     for (var i = 0; i < fileslength; i++) {
+        //         // 檔案會放在uploads資料夾並且沒有附檔名，需要自己轉存，用到fs模組
+        //         // 對臨時檔案轉存，fs.rename(oldPath, newPath,callback);
+        //         var originalname = req.files[i].originalname;
+        //         var file_type_origin = req.files[i].type;
+        //         var file_type;
+        //         if(file_type_origin == "image/jpeg" || file_type_origin == "image/png" || file_type_origin == "image/gif"){
+        //             file_type = "圖片";
+        //         }else{
+        //             file_type = "文件";
+        //         }
+        //         var files_path = "./public/upload_file/group"+groups_id_groups+"/groups_file/"+originalname;
+        //         var existsFile = [];
+        //         if(fs.existsSync(files_path)){
 
+        //         }
+        //         // allFile.map(function(item, index, array){
+        //         //     if (item == originalname){
+        //         //         res.send({message:"same"});
+        //         //     }
+        //         //     else {
+                        
+        //         //     }
+        //         // })
+        //         fs.rename(req.files[i].path, "./public/upload_file/group"+groups_id_groups+"/groups_file/"+originalname , function(err) {
+        //             if (err) {
+        //                 throw err;
+        //             } 
+        //         })
+        //         fileDataArray.push({groups_id_groups:groups_id_groups, node_id_node:node_id_node, file_name:originalname, file_type:file_type});
+        //     };
+
+        //     projectDiscussion.addNode(groups_id_groups, member_id_member, member_name, node_title, node_tag, node_type)
+        //     .then(function(result){
+        //         node_id_node = result.insertId;
+        //         return projectDiscussion.addIdea(node_id_node, idea_content)
+        //     })
+        //     .then(function(result2){
+        //         return projectDiscussion.addFile(fileDataArray)
+        //     })
+        //     .then(function(result3){
+        //         res.send({message:"true"});
+        //     })
+        // }else if(fileslength == 0){
+        //     projectDiscussion.addNode(groups_id_groups, member_id_member, member_name, node_title, node_tag, node_type)
+        //     .then(function(result){
+        //         node_id_node = result.insertId;
+        //         return projectDiscussion.addIdea(node_id_node, idea_content)
+        //     })
+        //     .then(function(result2){
+        //         res.send({message:"true"});
+        //     })
+        // }
+        
+
+
+        // projectDiscussion.addNode(groups_id_groups, member_id_member, member_name, node_title, node_tag, node_type)
+        // .then(function(result){
+        //     console.log(result.insertId);
+        //     node_id_node = result.insertId;
+        //     return projectDiscussion.addIdea(node_id_node, idea_content)
+        // })
+        // .then(function(result2){
+        //     var fileDataArray = [];
+        //     if(fileslength != 0){
+        //         for (var i = 0; i < fileslength; i++) {
+        //             // 檔案會放在uploads資料夾並且沒有附檔名，需要自己轉存，用到fs模組
+        //             // 對臨時檔案轉存，fs.rename(oldPath, newPath,callback);
+        //             var originalname = req.files[i].originalname;
+        //             var file_type_origin = req.files[i].type;
+        //             var file_type;
+        //             if(file_type_origin == "image/jpeg" || file_type_origin == "image/png" || file_type_origin == "image/gif"){
+        //                 file_type = "圖片";
+        //             }else{
+        //                 file_type = "文件";
+        //             }
+                    
+        //             fs.rename(req.files[i].path, "./public/upload_file/group"+groups_id_groups+"/groups_file/"+originalname , function(err) {
+        //                 if (err) {
+        //                     throw err;
+        //                 } 
+        //             })
+        //             fileDataArray.push({groups_id_groups:groups_id_groups, node_id_node:node_id_node, file_name:originalname, file_type:file_type});
+        //         };
+        //         return projectDiscussion.addFile(fileDataArray)
+        //         .then(function(result3){
+        //             res.send({message:"true"});
+        //         })
+        //     }else{
+        //         res.send({message:"true"});
+        //     }
+        // })
     }
-
-    // var fileArray = [];
-    // for (var i = 0; i < req.files.length; i++) {
-    //     // 檔案會放在uploads資料夾並且沒有附檔名，需要自己轉存，用到fs模組
-    //     // 對臨時檔案轉存，fs.rename(oldPath, newPath,callback);
-    //     var originalname = req.files[i].originalname;
-    //     var today = new Date();
-    //     fs.rename(req.files[i].path, "./public/upload_file/group"+gid+"/summernote/" + today.getDate()+today.getHours()+today.getMinutes()+today.getSeconds() +originalname , function(err) {
-    //         if (err) {
-    //             throw err;
-    //         } 
-    //     })
-    //     var imageUrl =  "/upload_file/group"+gid+"/summernote/"+ today.getDate()+today.getHours()+today.getMinutes()+today.getSeconds()+ originalname;
-    //     imageUrlArray.push({newUrl:imageUrl});
-    // };
-
 })
 
 
