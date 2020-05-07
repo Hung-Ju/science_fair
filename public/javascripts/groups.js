@@ -1,19 +1,21 @@
 //資料填寫欄位Data
 var groupsInputData = [{title: "組別名稱", type:"text", name:"groups_name", useFor: "all"},
                     {title: "組別密碼", type:"text", name:"groups_key", useFor: "all"},
-                    {title: "指導老師", type:"text", name:"groups_teacher", useFor: "leader"},
+                    //{title: "指導老師", type:"text", name:"groups_teacher", useFor: "all"},
+                    {title: "組別簡介", type:"textarea", name:"groups_introduction", useFor: "all"},
                     ];
 
 //增加新增小組資料填寫欄位
 function addGroupInput(){
     var inputAdd = document.getElementById('groupsRoot');  
     groupsInputData.map(function(data){
-        if (data.useFor=="all"){
+        if (data.useFor=="all" && data.type=="text"){
             var html = ['<p>'+ data.title + '：' +'<input class="form-control" type="'+data.type+'" name="'+data.name+'"id="'+data.name+'" required maxlength="20"></p>'];
             $(inputAdd).append(html);
         }
-        else {
-
+        else if(data.useFor=="all" && data.type=="textarea"){
+            var html = ['<p>'+ data.title + '：' +'<br><textarea  class="form-control" name="'+data.name+'"id="'+data.name+'" maxlength="50" style="width=100%"></textarea>'];
+            $(inputAdd).append(html);
         }
     })  
 };
@@ -66,8 +68,9 @@ function joinGroupsTable(){
     $groupsTable.bootstrapTable({
         columns: [
             {title: '已經加入組別名稱', field: 'groups_name'},
-            {title: '創立時間', field: 'groups_createtime', width: 300},
-            {title: '進入組別', field: 'groups_id', formatter: 'enterProjectButton', width: 200}
+            {title: '組別簡介', field: 'groups_introduction'},
+            {title: '創立時間', field: 'groups_createtime', width: 200},
+            {title: '', field: 'groups_id', formatter: 'enterProjectButton', width: 150}
             ],
         theadClasses: 'thead-light table-sm',
         classes: 'table table-bordered table-light',
@@ -90,8 +93,9 @@ function allGroupsTable(){
     $allGroupsTable.bootstrapTable({
         columns: [
             {title: '未加入組別名稱', field: 'groups_name'},
-            {title: '創立時間', field: 'groups_createtime', width: 300},
-            {title: '申請加入', field: 'groups_id', formatter: 'joinProjectButton', width: 200}
+            {title: '組別簡介', field: 'groups_introduction'},
+            {title: '創立時間', field: 'groups_createtime', width:200},
+            {title: '', field: 'groups_id', formatter: 'joinProjectButton', width:150}
             ],
         theadClasses: 'thead-light table-sm',
         classes: 'table table-bordered table-light',
@@ -152,14 +156,19 @@ $(function(){
                 data: {
                     groups_name: $("#groups_name").val(),
                     groups_key: $("#groups_key").val(),
+                    groups_introduction: $("#groups_introduction").val()
                 },
                 success: function(data){
                     if(data){
                         if(data.message=="true"){
                             alert('小組新增成功');
                             window.location.href="/groups";
-                        }
-                        else{
+                        }else if(data.message=="nullContent"){
+                            alert('請確實填入組別資料')
+                        }else if(data.message=="false"){
+                            alert('帳號已被系統自動登出，請重新登入');
+                            window.location.href="/";
+                        }else{
                             alert('新增失敗請重新輸入');
                             window.location.href="/groups/groupsFile";
                         }

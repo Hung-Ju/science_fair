@@ -165,9 +165,9 @@ function draw() {
 //點擊事件
 function clickevent(){
     network.on("click", function(params) {
-      params.event = "[original event]";
+      params.event = "[click]";
       //var clickid = this.getNodeAt(params.pointer.DOM);
-
+      console.log(params);
       var clickid = params.nodes;
       //console.log(clickid);
       network.off("beforeDrawing");
@@ -178,9 +178,15 @@ function clickevent(){
     });
     
     network.on("doubleClick", function(params) {
-      params.event = "[original event]";
-      document.getElementById("eventSpan").innerHTML =
-        "<h2>doubleClick event:</h2>" + JSON.stringify(params, null, 4);
+        params.event = "[doubleClick]";
+        console.log(params);
+        var clickid = params.nodes;
+        $("#editAndReadIdea #editAndReadIdeaRoot").text(clickid);
+        var nodeData;
+
+        $("#editAndReadIdea").modal();
+        
+        
     });
     
     network.on("oncontext", function(params) {
@@ -226,11 +232,38 @@ function tagsInput(){
       });
 }
 
+function ajaxGetNodeData(nodeId, groupId){
+    var responseData;
+    $.ajax({
+        url: getNodeData,
+        type: "GET",
+        async: false,//取消同步，等ajax結束後再進行後續動作
+        data: {
+            nodeId: nodeId,
+            groupId: groupId
+        },
+        success: function(results){
+            responseData=results;
+        },
+        error: function(){
+            alert(url+"  取得資料失敗");
+        }
+    });
+    return responseData;
+};
+
 $(function(){
     draw();
     clickevent();
     nodeSummer();
     tagsInput();
+
+    $('#readIdea-tab').on('shown.bs.tab', function (e) {
+        $("#editAndReadIdeaLongTitle").text("閱讀想法")
+    })
+    $('#editIdea-tab').on('shown.bs.tab', function (e) {
+        $("#editAndReadIdeaLongTitle").text("修改想法")
+    })
 
     //從工具列新增想法節點(fromdata傳值還沒完成)
     $("#addIdeaBtn").click(function () {
@@ -266,7 +299,10 @@ $(function(){
                         window.location.href = "/project/"+gid+"/"+mode;
                     }
                     else if(data.message=="same"){
-                        alert('小組中有相同的檔案，請重新選擇');
+                        alert('小組中有相同的檔案'+data.sameFile+'，請重新選擇');
+                    }
+                    else if(data.message=="nullContent"){
+                        alert('請確實填入標題')
                     }
                     else{
                         alert('帳號已被系統自動登出，請重新登入');
