@@ -91,6 +91,7 @@ router.get('/:gid/:mode',function(req, res, next) {
             //抓取小組現在編輯階段
         })
         .then(function(groupsData){
+            // console.log(groupsData);
             var groupsStageData = groupsData[0].groups_stage;
             groups_stage.push(groupsStageData);
             return project.selectResearchConclusion(gid)
@@ -996,7 +997,7 @@ router.post('/stageSwitch',function(req, res, next){
 
 //想法討論區router
 
-//新增想法節點(還沒完成)
+//新增想法節點
 router.post('/discussion/addIdea',upload.array('files',5), function(req, res, next){
     var groups_id_groups = req.body.gid;
     var node_title = req.body.node_title;
@@ -1060,8 +1061,55 @@ router.post('/discussion/addIdea',upload.array('files',5), function(req, res, ne
             }
         })
     }
-})
+});
 
+//抓取想法節點資料
+router.get('/:gid/:mode/discussion/readIdea', function(req, res, next){
+    var node_id_node = req.query.nodeId;
+    var member_id_member = req.session.member_id;
+    var nodeData;
+    var nodeFile;
+    console.log(node_id_node);
+
+    if(!member_id_member){
+        res.send({message:"false"});
+    }else{
+        projectDiscussion.getNodeData(node_id_node)
+        .then(function(result){
+            nodeData = result;
+            return projectDiscussion.getNodeFile(node_id_node)
+        })
+        .then(function(result2){
+            nodeFile = result2;
+            var node_read_count = nodeData[0].node_read_count+1;
+            return projectDiscussion.updateNodeReadCount(node_id_node, node_read_count)
+            
+        })
+        .then(function(result2){
+            res.send({message:"true", nodeData:nodeData, nodeFile:nodeFile});
+        })
+    }
+});
+
+router.post('/:gid/:mode/discussion/deleteFile', function(req, res, next){
+    var member_id_member = req.session.member_id;
+    var gid = req.params.gid;
+    var file_id = req.body.file_id;
+    var file_name = req.body.file_name;
+    var filePath = "./public/upload_file/group"+gid+"/groups_file/"+file_name;
+
+    if(!member_id_member){
+        res.send({message:"false"});
+    }else{
+        projectDiscussion.deleteFile(file_id)
+        .then(function(result){
+            if(fs.existsSync(filePath)){
+                fs.unlinkSync(filePath);
+            }
+            res.send({message:"true"});
+        })
+    }
+})
 
 
 module.exports = router;

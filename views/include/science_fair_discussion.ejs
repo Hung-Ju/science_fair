@@ -37,7 +37,7 @@
           <div class="modal-body">
             <div id="addIdeaRoot">
               <p><b>標題</b><input class="form-control" type="text" name="idea_title" id="idea_title" required="required"></p>
-              <p><b>標籤</b><input class="form-control idea_tag" type="text" name="idea_title" required="required"></p>
+              <div class="ideaTag"></div>
               <div class="row">
                   <div class="btn-group-vertical col-3">
                       <button type="button" class="btn border-color-green scaffold">我想知道</button>
@@ -95,7 +95,7 @@
         <div class="tab-content" id="myTabContent">          
           
           <div class="tab-pane fade show active" id="readIdeaTab" role="tabpanel" aria-labelledby="readIdea-tab">
-            <div class="modal-body">
+            <div class="modal-body"  style="min-height: 200px;">
               <div id="ReadIdeaRoot">
               閱讀
               </div>
@@ -110,9 +110,10 @@
             <div class="modal-body">
               <div id="EditIdeaRoot">
                 <p><b>標題</b><input class="form-control" type="text" name="idea_title_edit" id="idea_title_edit" required="required"></p>
-                <p><b>標籤</b><input class="form-control idea_tag_edit" type="text" name="idea_title_edit" required="required"></p>
+                <div class="ideaTag"></div>
                 <div class="row">
-                    <div class="btn-group-vertical col-3">
+                  <div class=" col-3">
+                    <div class="btn-group-vertical" style="width: 100%;">
                         <button type="button" class="btn border-color-green scaffold">我想知道</button>
                         <button type="button" class="btn border-color-green scaffold">我的想法</button>
                         <button type="button" class="btn border-color-green scaffold">我的理論</button>
@@ -121,15 +122,19 @@
                         <button type="button" class="btn border-color-green scaffold">我覺得更好的想法</button>
                         <button type="button" class="btn border-color-green scaffold">有發展性的想法</button>
                     </div>
-                    <div class="col-9">
-                        <textarea class="nodeEditor" id="editIdeaSummernote"></textarea>
-                        <div class="input-group">
-                            <div class="custom-file">
-                              <input type="file" class="custom-file-input" id="inputGroupFileEdit" aria-describedby="inputGroupFileAddon" multiple="">
-                              <label class="custom-file-label mt-2" for="inputGroupFile04">選擇檔案</label>
-                            </div>
-                          </div>
-                    </div>
+                  </div>
+                  <div class="col-9">
+                      <textarea class="nodeEditor" id="editIdeaSummernote"></textarea>
+                      <div class="input-group">
+                        <div class="custom-file">
+                          <input type="file" class="custom-file-input" id="inputGroupFileEdit" aria-describedby="inputGroupFileAddon" multiple="">
+                          <label class="custom-file-label mt-2" for="inputGroupFile04">選擇檔案</label>
+                        </div>
+                      </div>
+                      <div id="nodeFiles" style="margin-top: 8px;">
+
+                      </div>
+                  </div>
                 </div>
               </div>
             </div>

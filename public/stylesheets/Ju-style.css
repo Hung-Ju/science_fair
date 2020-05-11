@@ -218,6 +218,18 @@ a.changet{
 #vis-network{
   overflow: hidden;
 }
+
+.showTag{
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #fff;
+  background-color: #19BC9C;
+  padding: 0.35em 0.5em;
+}
+
+/* #nodeFiles{
+  margin-top: 8px;
+} */
 /* checkbox選項item */
 /* .item{
   display: block;

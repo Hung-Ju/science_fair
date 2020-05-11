@@ -146,17 +146,62 @@ module.exports = {
 		// )
 	},
 
-	//抓取點擊單一想法節點的內容(還沒完成)
-	getNodeData :function(node_id_node,groups_id_groups){
+	//抓取點擊單一想法節點的內容
+	getNodeData :function(node_id_node){
 		return new Promise(function(resolve, reject){
 			pool.getConnection(function(err, connection){
 				if(err) return reject(err);
-				connection.query('SELECT * FROM `node` WHERE `node_type`="'+node_type+'" AND `groups_id_groups`="'+groups_id_groups+'"',function(err, result){
+				connection.query('SELECT `node`.*, `idea`.* FROM `node` INNER JOIN `idea` ON `node`.`node_id` WHERE `idea`.`node_id_node`="'+node_id_node+'" AND `node`.`node_id`="'+node_id_node+'"',function(err, result){
 					if(err) return reject(err);
 					resolve(result);
 					connection.release();
 				})
 			});
 		})
+	},
+
+	//抓取點擊單一想法節點的檔案資料
+	getNodeFile :function(node_id_node){
+		return new Promise(function(resolve, reject){
+			pool.getConnection(function(err, connection){
+				if(err) return reject(err);
+				connection.query('SELECT * FROM `file` WHERE `node_id_node`="'+node_id_node+'"', function(err, result){
+					if(err) return reject(err);
+					resolve(result);
+					connection.release();
+				})
+			})
+		})
+	},
+
+	//新增節點閱讀次數
+	updateNodeReadCount :function(node_id_node, node_read_count){
+		return new Promise(function(resolve, reject){
+			pool.getConnection(function(err, connection){
+				if(err) return reject(err);
+				connection.query('UPDATE `node` SET `node_read_count`="'+node_read_count+'"  WHERE `node_id`="'+node_id_node+'"', function(err, result){
+					if(err) return reject(err);
+					resolve(result);
+					connection.release();
+				})
+			})
+		})
+	},
+
+	//刪除節點中的檔案
+	deleteFile :function(file_id){
+		return new Promise(function(resolve, reject){
+			pool.getConnection(function(err, connection){
+				if(err) return reject(err);
+				connection.query('DELETE FROM `file` WHERE `file_id`=?',file_id, function(err, result){
+					if(err) return reject(err);
+					resolve(result);
+					connection.release();
+				})
+			})
+		})
 	}
+
+
+
 }

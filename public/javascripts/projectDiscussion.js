@@ -1,6 +1,7 @@
 //modal裡的summernote生成
 function nodeSummer(){
   $('.nodeEditor').summernote({
+      disableDragAndDrop: true,
       disable:true,
       minHeight: 200,
       maxHeight: 200,
@@ -167,9 +168,8 @@ function clickevent(){
     network.on("click", function(params) {
       params.event = "[click]";
       //var clickid = this.getNodeAt(params.pointer.DOM);
-      console.log(params);
+      //console.log(params);
       var clickid = params.nodes;
-      //console.log(clickid);
       network.off("beforeDrawing");
       addNodecontent();
       if(clickid.length !== 0){
@@ -179,12 +179,74 @@ function clickevent(){
     
     network.on("doubleClick", function(params) {
         params.event = "[doubleClick]";
-        console.log(params);
-        var clickid = params.nodes;
-        $("#editAndReadIdea #editAndReadIdeaRoot").text(clickid);
-        var nodeData;
+        var clickid = params.nodes[0];
+        var member_id = $("#member_id").val();
+        var gid = $("#groups_id").val();
+        //$("#editAndReadIdea #editAndReadIdeaRoot").text(clickid);
+        if(clickid !== undefined){
+            //想法節點
+            var ajaxData = ajaxGetNodeData(clickid);
+            var ajaxNodeData = ajaxData.nodeData;
+            var ajaxNodeFile = ajaxData.nodeFile;
 
-        $("#editAndReadIdea").modal();
+            console.log(ajaxNodeData);
+            console.log(ajaxNodeFile);
+            $('#readIdea-tab').tab('show')
+            //是不是想法節點作者的判斷
+            if(member_id != ajaxNodeData[0].member_id_member){
+                $('#editIdea-tab').hide();
+            }else{
+                $('#editIdea-tab').show();
+            }
+
+            //閱讀想法的tab內容
+            var node_tag_data = ajaxNodeData[0].node_tag;
+            var node_read_count_plus = ajaxNodeData[0].node_read_count;
+            
+            $('#readIdea-tab').on('shown.bs.tab', function (e) {
+                $("#editAndReadIdeaLongTitle").text(ajaxNodeData[0].node_title)
+            })
+            var allNodeTagData = node_tag_data.split(',');
+            $ReadIdeaRoot = $('#ReadIdeaRoot');
+            $ReadIdeaRoot.html("");
+            $ReadIdeaRoot.append('<div class="text-right"><i class="far fa-eye" aria-hidden="true"></i>'+node_read_count_plus+'</div>')
+            for (var i = 0; i < allNodeTagData.length; i++){
+                var tagContent = allNodeTagData[i];
+                var tags = ['<span class="badge showTag">'+tagContent+'</span>&nbsp;'];
+                $ReadIdeaRoot.append(tags);
+            }
+            $ReadIdeaRoot.append('<p>'+ajaxNodeData[0].idea_content+'</p>');
+            for (var j = 0; j < ajaxNodeFile.length; j++){
+                var fileName = ajaxNodeFile[j].file_name;
+                var files = ['<a href="/upload_file/group'+gid+'/groups_file/'+fileName+'" download="'+fileName+'"><i class="fas fa-download" aria-hidden="true">&nbsp;</i>'+fileName+'</a><br>'];
+                $ReadIdeaRoot.append(files);
+            }
+
+            //編輯想法的tab內容
+            $('#editIdea-tab').on('shown.bs.tab', function (e) {
+                $("#editAndReadIdeaLongTitle").text("修改想法")
+            })
+            $('#EditIdeaRoot #idea_title_edit').val(ajaxNodeData[0].node_title);
+            //var node_tag_data = ajaxNodeData[0].node_tag;
+            var node_tag;
+            node_tag = node_tag_data.split(',');
+            $('.ideaTag').append('<p><b>標籤</b><input class="form-control idea_tag" type="text" name="idea_tag_edit" id="idea_tag_edit" required="required"></p>')
+            tagsInput(node_tag);
+            $("#editIdeaSummernote").summernote('code',ajaxNodeData[0].idea_content);
+            $("#nodeFiles").empty();
+            for (var j = 0; j < ajaxNodeFile.length; j++){
+                var fileName = ajaxNodeFile[j].file_name;
+                //var fileName2 = '"'+fileName+'"';
+                var fileId = ajaxNodeFile[j].file_id;
+                var files = ['<div class="files"><a>'+fileName+'</a>&nbsp;<i class="fas fa-times" id="deleteFile'+fileId+'" aria-hidden="true" style="color:red" data-filename="'+fileName+'" data-fileid="'+fileId+'" onclick="deleteFile('+fileId+')"></div>'];
+                $("#nodeFiles").append(files);
+            }
+            
+            $("#editAndReadIdea").modal();
+            $('#editAndReadIdea').on('shown.bs.modal', function (e) {
+                $("#editAndReadIdeaLongTitle").text(ajaxNodeData[0].node_title);
+            })
+        }
         
         
     });
@@ -216,56 +278,116 @@ function drawbackground(nodeId){
             ctx.stroke();
         })
     });
-} 
+}; 
 
-function tagsInput(){
+function tagsInput(node_tag){
     $('.idea_tag').inputTags({
         autocomplete: {
           values: ['研究動機', '研究目的', '實驗項目', '研究設備及器材', '實驗記錄', '研究結果(分析及圖表)', '討論', '結論'], // autocomplete list
           only: true,
         },
+        tags: node_tag,
         editable: false,
         destroy: true,
         create: function() {
             console.log('新物件新增');
           },
       });
-}
+};
 
-function ajaxGetNodeData(nodeId, groupId){
-    var responseData;
+function ajaxGetNodeData(nodeId){
+    var nodeData;
+    var nodeFile;
+    var gid = document.getElementById("groups_id").value;
+    var mode = "想法討論";
     $.ajax({
-        url: getNodeData,
+        url: "/project/"+gid+"/"+mode+"/discussion/readIdea",
         type: "GET",
-        async: false,//取消同步，等ajax結束後再進行後續動作
+        async: false,
+        //取消同步，等ajax結束後再進行後面的動作
         data: {
-            nodeId: nodeId,
-            groupId: groupId
+            nodeId: nodeId
         },
         success: function(results){
-            responseData=results;
+            nodeData=results.nodeData;
+            nodeFile=results.nodeFile;
+            //console.log(nodeData);
         },
-        error: function(){
-            alert(url+"  取得資料失敗");
+        false: function(){
+            alert('帳號已被系統自動登出，請重新登入');
         }
     });
-    return responseData;
+    return {nodeData,nodeFile};
 };
+
+function deleteFile(file_id){
+    var gid = document.getElementById("groups_id").value;
+    var mode = "想法討論";
+    $fileNeedDelete = $("#deleteFile"+file_id);
+    var fileId = $fileNeedDelete.data("fileid");
+    var fileName = $fileNeedDelete.data("filename");
+    console.log(fileId);
+    $fileNeedDelete.parent('.files').remove();
+
+    $.ajax({
+        url: "/project/"+gid+"/"+mode+"/discussion/deleteFile",
+        type: "POST",
+        data: {
+            file_id: fileId,
+            file_name: fileName
+        },
+        success: function(data){
+            if(data){
+                // alert(123);
+                if(data.message=="true"){
+                    alert('刪除成功');
+                    // window.location.href="/project/?gid="+gid;
+                    // window.location.href = "/project/"+gid+"/"+mode;
+                }
+                else{
+                    alert('帳號已被系統自動登出，請重新登入');
+                    window.location.href="/";
+                }
+            }
+        },
+        error: function(){
+            alert('失敗');
+        }
+    })
+};
+
+function modalHidden() {
+    $('#editAndReadIdea').on('hidden.bs.modal', function (e) {
+        $('.ideaTag').empty();
+    })
+
+    $('#addIdea').on('hidden.bs.modal', function (e) {
+        $("#idea_title").val("");
+        $('.ideaTag').empty();
+
+    })
+}
+
+function modalShown() {
+    $('#addIdea').on('show.bs.modal', function(e){
+        
+        $('.ideaTag').append('<p><b>標籤</b><input class="form-control idea_tag" type="text" name="idea_tag" id="idea_tag" required="required"></p>');
+        tagsInput();
+    })
+}
+
+
 
 $(function(){
     draw();
     clickevent();
     nodeSummer();
-    tagsInput();
+    modalShown();
+    modalHidden();
+    
 
-    $('#readIdea-tab').on('shown.bs.tab', function (e) {
-        $("#editAndReadIdeaLongTitle").text("閱讀想法")
-    })
-    $('#editIdea-tab').on('shown.bs.tab', function (e) {
-        $("#editAndReadIdeaLongTitle").text("修改想法")
-    })
 
-    //從工具列新增想法節點(fromdata傳值還沒完成)
+    //從工具列新增想法節點
     $("#addIdeaBtn").click(function () {
         var gid = document.getElementById("groups_id").value;
         var node_title = $('#idea_title').val();
@@ -316,13 +438,47 @@ $(function(){
         });
     });
 
-
     $('.scaffold').on('click', function() {
         var scaffoldText = $(this).text();
         var summernote = $(this).parents(".row").find(".nodeEditor");
         var insertTextHTML = '<span style="background-color: rgb(255, 255, 0);">'+scaffoldText+'</span> ';
         $(summernote).summernote('pasteHTML',insertTextHTML);
         // console.log(summernote);
+    });
+
+    $('.deleteFile').click(function() {
+        var gid = document.getElementById("groups_id").value;
+        var mode = "想法討論";
+        var fileId = $(this).data("fileid");
+        var fileName = $(this).data("filename");
+        console.log($(this));
+        $(this).parent('.files').remove();
+
+        $.ajax({
+            url: "/project/"+gid+"/"+mode+"/discussion/deleteFile",
+            type: "POST",
+            data: {
+                file_id: fileId,
+                file_name: fileName
+            },
+            success: function(data){
+                if(data){
+                    // alert(123);
+                    if(data.message=="true"){
+                        alert('刪除成功');
+                        // window.location.href="/project/?gid="+gid;
+                        // window.location.href = "/project/"+gid+"/"+mode;
+                    }
+                    else{
+                        alert('帳號已被系統自動登出，請重新登入');
+                        window.location.href="/";
+                    }
+                }
+            },
+            error: function(){
+                alert('失敗');
+            }
+        })
     });
 
     $('.custom-file-input').change(function (e) {
@@ -333,9 +489,5 @@ $(function(){
         $(this).next('.custom-file-label').html(files.join(', '));
     });
 
-    // $('#addIdeaBtn').on('click', function() {
-    //     var tagValue = $('.idea_tag').val();
-    //     console.log(tagValue);
-    // })
 });
 
