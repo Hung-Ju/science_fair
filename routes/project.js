@@ -378,7 +378,7 @@ router.post('/updateResearchTitle', function(req, res, next){
     var member_id_member = req.session.member_id;
     var member_name = req.session.member_name;
 
-    var node_title = "研究動機";
+    var node_title = "研究題目與動機";
     var node_tag = "研究動機";
     var node_type = "motivation";
 
@@ -500,6 +500,10 @@ router.post('/addPurposes',function(req, res, next) {
     var member_id_member = req.session.member_id;
     var member_name = req.session.member_name;
 
+    var node_title = "研究目的";
+    var node_tag = "研究目的";
+    var node_type = "purposes";
+
     console.log(gid);
 
     if(!member_id_member){
@@ -509,17 +513,21 @@ router.post('/addPurposes',function(req, res, next) {
         .then(function(result){
             if(result){
                 // console.log(result.insertId);
+                return projectDiscussion.selectProjectDataNode(gid, node_type)
+                //res.send({message:"true"});
+            }
+        })
+        .then(function(selectNode){
+            if(selectNode.length != 0){
                 res.send({message:"true"});
+            }else{
+                return projectDiscussion.addProjectDataNode(gid, member_id_member, member_name, node_title, node_tag, node_type)
+                .then(function(addNode){
+                    res.send({message:"true"});
+                })
             }
         })
     }
-    //callback function版本
-    // project.addProjectDataContent(gid, project_data_type, project_data_content, member_id_member, member_name, function(result){
-    //     if(result){
-    //         // console.log(result.insertId);
-    //         res.send({message:"true"});
-    //     }
-    // });
 });
 
 //修改研究目的
@@ -609,6 +617,11 @@ router.post('/addExperiment',function(req, res, next) {
     var project_data_multi_content = req.body.project_data_multi_content;
     var member_id_member = req.session.member_id;
     var member_name = req.session.member_name;
+
+    var node_title = "實驗項目";
+    var node_tag = "實驗項目";
+    var node_type = "experiment";
+
     if(!member_id_member){
         res.send({message:"false"});
     }else{
@@ -616,7 +629,18 @@ router.post('/addExperiment',function(req, res, next) {
         .then(function(result){
             if(result){
                 // console.log(result.insertId);
+                //res.send({message:"true"});
+                return projectDiscussion.selectProjectDataNode(gid, node_type)
+            }
+        })
+        .then(function(selectNode){
+            if(selectNode.length != 0){
                 res.send({message:"true"});
+            }else{
+                return projectDiscussion.addProjectDataNode(gid, member_id_member, member_name, node_title, node_tag, node_type)
+                .then(function(addNode){
+                    res.send({message:"true"});
+                })
             }
         })
     }
@@ -712,6 +736,11 @@ router.post('/addMaterial',function(req, res, next) {
     var member_id_member = req.session.member_id;
     var member_name = req.session.member_name;
 
+    var node_title = "研究設備及器材";
+    var node_tag = "研究設備及器材";
+    var node_type = "material";
+
+
     if(!member_id_member){
         res.send({message:"false"});
     }else{
@@ -719,7 +748,18 @@ router.post('/addMaterial',function(req, res, next) {
         .then(function(result){
             if(result){
                 // console.log(result.insertId);
+                //res.send({message:"true"});
+                return projectDiscussion.selectProjectDataNode(gid, node_type)
+            }
+        })
+        .then(function(selectNode){
+            if(selectNode.length != 0){
                 res.send({message:"true"});
+            }else{
+                return projectDiscussion.addProjectDataNode(gid, member_id_member, member_name, node_title, node_tag, node_type)
+                .then(function(addNode){
+                    res.send({message:"true"});
+                })
             }
         })
     }
@@ -770,6 +810,11 @@ router.post('/addRecord',function(req, res, next) {
     var project_data_multi_content = req.body.project_data_multi_content;
     var member_id_member = req.session.member_id;
     var member_name = req.session.member_name;
+
+    var node_title = "實驗記錄";
+    var node_tag = "實驗記錄";
+    var node_type = "record";
+
     if(!member_id_member){
         res.send({message:"false"});
     }else{
@@ -777,7 +822,18 @@ router.post('/addRecord',function(req, res, next) {
         .then(function(result){
             if(result){
                 // console.log(result.insertId);
+                //res.send({message:"true"});
+                return projectDiscussion.selectProjectDataNode(gid, node_type)
+            }
+        })
+        .then(function(selectNode){
+            if(selectNode.length != 0){
                 res.send({message:"true"});
+            }else{
+                return projectDiscussion.addProjectDataNode(gid, member_id_member, member_name, node_title, node_tag, node_type)
+                .then(function(addNode){
+                    res.send({message:"true"});
+                })
             }
         })
     }
@@ -829,6 +885,11 @@ router.post('/addAnalysis',function(req, res, next) {
     var project_data_multi_content = req.body.project_data_multi_content;
     var member_id_member = req.session.member_id;
     var member_name = req.session.member_name;
+
+    var node_title = "研究結果(分析及圖表)";
+    var node_tag = "研究結果(分析及圖表)";
+    var node_type = "analysis";
+
     if(!member_id_member){
         res.send({message:"false"});
     }else{
@@ -836,7 +897,18 @@ router.post('/addAnalysis',function(req, res, next) {
         .then(function(result){
             if(result){
                 // console.log(result.insertId);
+                //res.send({message:"true"});
+                return projectDiscussion.selectProjectDataNode(gid, node_type)
+            }
+        })
+        .then(function(selectNode){
+            if(selectNode.length != 0){
                 res.send({message:"true"});
+            }else{
+                return projectDiscussion.addProjectDataNode(gid, member_id_member, member_name, node_title, node_tag, node_type)
+                .then(function(addNode){
+                    res.send({message:"true"});
+                })
             }
         })
     }
@@ -887,6 +959,10 @@ router.post('/addDiscussion',function(req, res, next) {
     var member_id_member = req.session.member_id;
     var member_name = req.session.member_name;
 
+    var node_title = "討論";
+    var node_tag = "討論";
+    var node_type = "discussion";
+
     console.log(gid);
 
     if(!member_id_member){
@@ -896,7 +972,18 @@ router.post('/addDiscussion',function(req, res, next) {
         .then(function(result){
             if(result){
                 // console.log(result.insertId);
+                return projectDiscussion.selectProjectDataNode(gid, node_type)
+                //res.send({message:"true"});
+            }
+        })
+        .then(function(selectNode){
+            if(selectNode.length != 0){
                 res.send({message:"true"});
+            }else{
+                return projectDiscussion.addProjectDataNode(gid, member_id_member, member_name, node_title, node_tag, node_type)
+                .then(function(addNode){
+                    res.send({message:"true"});
+                })
             }
         })
     }
@@ -944,6 +1031,10 @@ router.post('/updateConclusion', function(req, res, next){
     var member_id_member = req.session.member_id;
     var member_name = req.session.member_name;
 
+    var node_title = "結論";
+    var node_tag = "結論";
+    var node_type = "conclusion";
+
     if(!member_id_member){
         res.send({message:"false"});
 
@@ -964,7 +1055,19 @@ router.post('/updateConclusion', function(req, res, next){
                 return project.addProjectDataContent(gid, project_data_type, project_data_content, member_id_member, member_name)
                 .then(function(result2){
                     if(result2){
+                        // console.log(result.insertId);
+                        return projectDiscussion.selectProjectDataNode(gid, node_type)
+                        //res.send({message:"true"});
+                    }
+                })
+                .then(function(selectNode){
+                    if(selectNode.length != 0){
                         res.send({message:"true"});
+                    }else{
+                        return projectDiscussion.addProjectDataNode(gid, member_id_member, member_name, node_title, node_tag, node_type)
+                        .then(function(addNode){
+                            res.send({message:"true"});
+                        })
                     }
                 })
             }
@@ -998,7 +1101,7 @@ router.post('/stageSwitch',function(req, res, next){
 //想法討論區router
 
 //新增想法節點
-router.post('/discussion/addIdea',upload.array('files',5), function(req, res, next){
+router.post('/discussion/addIdea', upload.array('files',5), function(req, res, next){
     var groups_id_groups = req.body.gid;
     var node_title = req.body.node_title;
     var node_tag = req.body.node_tag;
@@ -1077,6 +1180,7 @@ router.get('/:gid/:mode/discussion/readIdea', function(req, res, next){
         projectDiscussion.getNodeData(node_id_node)
         .then(function(result){
             nodeData = result;
+            console.log(nodeData);
             return projectDiscussion.getNodeFile(node_id_node)
         })
         .then(function(result2){
@@ -1091,6 +1195,7 @@ router.get('/:gid/:mode/discussion/readIdea', function(req, res, next){
     }
 });
 
+//刪除想法節點中的檔案
 router.post('/:gid/:mode/discussion/deleteFile', function(req, res, next){
     var member_id_member = req.session.member_id;
     var gid = req.params.gid;
@@ -1107,6 +1212,66 @@ router.post('/:gid/:mode/discussion/deleteFile', function(req, res, next){
                 fs.unlinkSync(filePath);
             }
             res.send({message:"true"});
+        })
+    }
+})
+
+//編輯想法節點
+router.post('/:gid/:mode/discussion/editIdeaNode', upload.array('files',5), function(req, res, next){
+    var groups_id_groups = req.params.gid;
+    var node_title = req.body.node_title;
+    var node_tag = req.body.node_tag;
+    var idea_content = req.body.idea_content;
+    var member_id_member = req.session.member_id;
+    var fileslength = req.files.length;
+    var fileData = req.files;
+    var node_id = req.body.node_id;
+
+    if(!member_id_member){
+        res.send({message:"false"});
+    }else if(node_title==""){
+        res.send({message:"nullContent"});
+    }else{
+        projectDiscussion.existsFileCheck(groups_id_groups, fileData)
+        .then(function(result){
+            if (result == 0 || result.length == 0){
+                return projectDiscussion.updateNode(node_id, node_title, node_tag)
+                .then(function(result2){
+                    return projectDiscussion.updateIdea(node_id, idea_content)
+                })
+                .then(function(result3){
+                    var fileDataArray = [];
+                    if(fileslength != 0){
+                        for (var i = 0; i < fileslength; i++) {
+                            // 檔案會放在uploads資料夾並且沒有附檔名，需要自己轉存，用到fs模組
+                            // 對臨時檔案轉存，fs.rename(oldPath, newPath,callback);
+                            var originalname = req.files[i].originalname;
+                            var file_type_origin = req.files[i].type;
+                            var file_type;
+                            if(file_type_origin == "image/jpeg" || file_type_origin == "image/png" || file_type_origin == "image/gif"){
+                                file_type = "圖片";
+                            }else{
+                                file_type = "文件";
+                            }
+                            fs.rename(req.files[i].path, "./public/upload_file/group"+groups_id_groups+"/groups_file/"+originalname , function(err) {
+                                if (err) {
+                                    throw err;
+                                } 
+                            })
+                            fileDataArray.push({groups_id_groups:groups_id_groups, node_id_node:node_id, file_name:originalname, file_type:file_type});
+                        };
+                        return projectDiscussion.addFile(fileDataArray)
+                        .then(function(result4){
+                            res.send({message:"true"});
+                        })
+                    }else{
+                        res.send({message:"true"});
+                    }
+                })
+            }
+            else if(result.length != 0){
+                res.send({message:"same", sameFile:result})
+            }
         })
     }
 })

@@ -200,8 +200,37 @@ module.exports = {
 				})
 			})
 		})
-	}
+	},
 
+	//修改節點內容
+	updateNode :function(node_id, node_title, node_tag){
+		return new Promise(function(resolve, reject){
+			pool.getConnection(function(err, connection){
+				if(err) return reject(err);
+				var update_params = {node_title:node_title, node_tag:node_tag};
+				connection.query('UPDATE `node` SET ? WHERE `node_id`="'+node_id+'"', update_params, function(err, update_res){
+					if(err) return reject(err);
+					resolve(update_res);
+					connection.release();
+				})
+			})
+		})
+	},
+
+	//修改想法內容
+	updateIdea :function(node_id_node, idea_content){
+		return new Promise(function(resolve, reject){
+			pool.getConnection(function(err, connection){
+				if(err) return reject(err);
+				var update_params = {idea_content:idea_content};
+				connection.query('UPDATE `idea` SET ? WHERE `node_id_node`="'+node_id_node+'"', update_params, function(err, update_res){
+					if(err) return reject(err);
+					resolve(update_res);
+					connection.release();
+				})
+			})
+		})
+	},
 
 
 }
