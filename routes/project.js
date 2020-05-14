@@ -54,6 +54,7 @@ router.get('/:gid/:mode',function(req, res, next) {
     }
     else {
         var groups_stage = [];
+        var referenceArray = [];
         var researchTitleArray = [];
         var researchMotivationArray = [];
         var researchPurposesArray = [];
@@ -220,7 +221,19 @@ router.get('/:gid/:mode',function(req, res, next) {
                     researchTitleArray.push(researchTitleData);
                 }
             }
-            res.render('projectEdit',  {title: 'Science Fair科學探究專題系統', gid:gid, mode:mode, member_id:req.session.member_id, member_name:req.session.member_name, researchTitle:researchTitleArray, researchMotivation:researchMotivationArray, researchPurposes:researchPurposesArray, researchExperiment:researchExperimentArray, researchMaterial:researchMaterialArray, researchRecord:researchRecordArray, researchAnalysis:researchAnalysisArray, researchDiscussion:researchDiscussionArray, researchConclusion:researchConclusionArray, groups_stage:groups_stage, AllNodeData:groupsAllNodeDataArray});
+            return project.selectReferenceData(gid)
+        })
+        .then(function(reference){
+            if(reference){
+                for (var e = 0; e < reference.length; e++){
+                    var reference_id = reference[e].reference_id;
+                    var reference_type = reference[e].reference_type;
+                    var reference_content = reference[e].reference_content;
+                    var referenceData = {reference_id:reference_id, reference_type:reference_type, reference_content:reference_content};
+                    referenceArray.push(referenceData);
+                }
+            }
+            res.render('projectEdit',  {title: 'Science Fair科學探究專題系統', gid:gid, mode:mode, member_id:req.session.member_id, member_name:req.session.member_name, researchTitle:researchTitleArray, researchMotivation:researchMotivationArray, researchPurposes:researchPurposesArray, researchExperiment:researchExperimentArray, researchMaterial:researchMaterialArray, researchRecord:researchRecordArray, researchAnalysis:researchAnalysisArray, researchDiscussion:researchDiscussionArray, researchConclusion:researchConclusionArray, groups_stage:groups_stage, AllNodeData:groupsAllNodeDataArray, reference: referenceArray});
         })
 
         // 抓取討論的資料
@@ -1096,6 +1109,41 @@ router.post('/stageSwitch',function(req, res, next){
         })
     }
 });
+
+//新增參考資料
+router.post('/addReference',function(req, res, next) {
+    var groups_id_groups = req.body.groups_id_groups;
+    var reference_type = req.body.reference_type;
+    var reference_content = req.body.reference_content;
+    var member_id_member = req.session.member_id;
+
+    if(!member_id_member){
+        res.send({message:"false"});
+    }else if(reference_content == ""){
+        res.send({message:"null"});
+    }else{
+        project.addReference(groups_id_groups, reference_type, reference_content)
+        .then(function(result){
+            if(result){
+                res.send({message:"true"});
+            }
+        })
+    }
+});
+
+//刪除參考資料
+router.post('/deleteReference', function(req, res, next){
+    var reference_id = req.body.reference_id;
+    var member_id_member = req.session.member_id;
+    if(!member_id_member){
+        res.send({message:"false"});
+    }else{
+        project.deleteReference(reference_id)
+        .then(function(result){
+            res.send({message:"true"});
+        })
+    }
+})
 
 
 //想法討論區router

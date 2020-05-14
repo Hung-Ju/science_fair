@@ -780,6 +780,60 @@ function enterProject(groups_id){
     window.location.href = "/project/?gid="+groups_id;
 }
 
+//參考文獻表格的初始化設定
+function referenceTable(){
+    var referenceTableData = document.getElementById("reference").value;
+    var allreferencce = JSON.parse(referenceTableData);
+    var $referenceTable = $('#referenceTable');
+    console.log(allreferencce);
+    
+    $referenceTable.bootstrapTable({
+        columns: [
+            {title: '參考文獻', field: 'reference_content'},
+            {title: '參考文獻類型', field: 'reference_type',width:100},
+            {title: '', field: 'reference_id', formatter: 'refereceTableButton',width:80}
+            ],
+        theadClasses: 'thead-light',
+        classes: 'table table-bordered bg-light',
+        pagination: true
+    });
+    $referenceTable.bootstrapTable('load',allreferencce);
+}
+
+//參考文獻表格裡的刪除按鈕
+function refereceTableButton(index, row){
+    return ['<button class="btn btn-danger btn-sm stage-switch-btn deleteReferenceBtn" onclick="deleteReference('+row.reference_id+')">刪除</button>']
+}
+
+//刪除參考文獻的AJAX
+function deleteReference(reference_id){
+    var gid = document.getElementById("groups_id").value;
+    var mode = "內容撰寫";
+    $.ajax({  
+        type: "POST",
+        url: "/project/deleteReference",
+        data: {
+            reference_id: reference_id
+        },
+        success: function(data){
+            if(data){
+                if(data.message=="true"){
+                    alert('刪除成功');
+                    // window.location.href="/project/?gid="+gid;
+                    window.location.href = "/project/"+gid+"/"+mode;
+                }
+                else{
+                    alert('帳號已被系統自動登出，請重新登入');
+                    window.location.href="/";
+                }
+            }
+        },
+        error: function(){
+            alert('失敗');
+        }
+    });
+}
+
 //summernote編輯器的初始化新增
 function newSummer(){
     $('.create-experiment-summernote, .create-record-summernote, .create-analysis-summernote, .create-discussion-summernote').summernote({
@@ -898,6 +952,18 @@ function summernoteCreate(){
 
 }
 
+function referenceSummernote(){
+    $('#reference_content').summernote({
+        minHeight: 50,
+        // width: 575,
+        toolbar: [
+            ['font', ['bold', 'underline', 'italic', 'clear']],
+        ],
+    }); 
+
+    // $('#referenceModalRoot .')
+}
+
 
 //階段切換彈出modal欄位內容
 // function changeStageInput(){
@@ -927,6 +993,8 @@ $(function(){
     correspond_record_select2();
     correspond_purposes_select3();
     correspond_purposes_select4();
+    referenceTable();
+    referenceSummernote();
     //切換階段顯示
     //只開啟研究動機和研究目的的編輯區塊
     if ($("#groups_stage").val() == "形成問題"){
@@ -1087,11 +1155,11 @@ $(function(){
     // }).change();
 
     
-
+    //專題實作中內容撰寫和想法討論兩種模式的切換
     $('#option1').on('click', function() {
         $('#option1').addClass("active");
         $('#option2').removeClass("active");
-        alert("內容撰寫");
+        //alert("內容撰寫");
         var gid = document.getElementById("groups_id").value;
         var mode = "內容撰寫";
         window.location.href = "/project/"+gid+"/"+mode;
@@ -1100,24 +1168,11 @@ $(function(){
     $('#option2').on('click', function() {
         $('#option2').addClass("active");
         $('#option1').removeClass("active");
-        alert("想法討論");
+        //alert("想法討論");
         var gid = document.getElementById("groups_id").value;
         var mode = "想法討論";
         window.location.href = "/project/"+gid+"/"+mode;
     });
-
-    // $('input[type=radio][name=statusOptions]').change(function() {
-    //     if ($(this).val() == 1) {
-    //         $('#option11').addClass("active");
-    //         $('#option22').removeClass("active");
-    //         alert("內容撰寫");
-    //     }
-    //     else if ($(this).val() == 2) {
-    //         $('#option22').addClass("active");
-    //         $('#option11').removeClass("active");
-    //         alert("想法討論");
-    //     }
-    // });
 
 
     //用ajax的方式儲存和修改結論
@@ -1434,6 +1489,41 @@ $(function(){
             }
         });
     });
+
+    //新增參考資料
+    $("#addReference").click(function (){
+        var gid = document.getElementById("groups_id").value;
+        var mode = "內容撰寫";
+
+        $.ajax({  
+            type: "POST",
+            url: "/project/addReference",
+            data: {
+                groups_id_groups: gid,
+                reference_type: $("#selectReferenceType").val(),
+                reference_content: $("#reference_content").val()
+            },
+            success: function(data){
+                if(data){
+                    // alert(123);
+                    if(data.message=="true"){
+                        alert('新增成功');
+                        // window.location.href="/project/?gid="+gid;
+                        window.location.href = "/project/"+gid+"/"+mode;
+                    }else if(data.message=="null"){
+                        alert("請確實填入參考資料來源");
+                    }
+                    else{
+                        alert('帳號已被系統自動登出，請重新登入');
+                        window.location.href="/";
+                    }
+                }
+            },
+            error: function(){
+                alert('失敗');
+            }
+        });
+    })
 
 
     //利用錨點滑動頁面

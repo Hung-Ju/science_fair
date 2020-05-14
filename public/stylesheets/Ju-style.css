@@ -227,6 +227,10 @@ a.changet{
   padding: 0.35em 0.5em;
 }
 
+.tableFontSize {
+  font-size: 16px;
+}
+
 /* #nodeFiles{
   margin-top: 8px;
 } */

@@ -452,7 +452,7 @@ function modalShown() {
 function nodeResearchTitleAndMotivation(){
     var researchTitleData = $("#researchTitle").val();
     var researchMotivation = $("#researchMotivation").val();
-    
+
 }
 
 //實作節點中研究目的表格的初始化設定

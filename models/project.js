@@ -578,4 +578,49 @@ module.exports = {
 			})
 		})
 	},
+
+	//抓取參考資料
+	selectReferenceData : function(groups_id_groups){
+		return new Promise(function(resolve, reject){
+			pool.getConnection(function(err, connection){
+				if(err) return reject(err);
+				connection.query('SELECT * FROM `reference` WHERE `groups_id_groups`=?', groups_id_groups,function(err, result){
+					if(err) return reject(err);
+					resolve(result);
+					connection.release();
+				})
+			});
+		})
+	},
+
+	//新增參考資料
+	addReference :function(groups_id_groups, reference_type, reference_content){
+		return new Promise(function(resolve, reject){
+			pool.getConnection(function(err, connection){
+				if(err) return reject(err);
+				var params = {groups_id_groups:groups_id_groups, reference_type:reference_type, reference_content:reference_content};
+				connection.query('INSERT INTO `reference` SET ?', params, function(err, insert_res){
+					if(err) return reject(err);
+					resolve(insert_res);
+					console.log(params);
+					connection.release();
+				})
+
+			})
+		})
+	},
+
+	//刪除參考資料
+	deleteReference :function(reference_id){
+		return new Promise(function(resolve, reject){
+			pool.getConnection(function(err, connection){
+				if(err) return reject(err);
+				connection.query('DELETE FROM `reference` WHERE `reference_id`=?',reference_id,function(result){
+					if(err) return reject(err);
+					resolve(result);
+					connection.release();
+				})
+			})
+		})
+	}
 }
