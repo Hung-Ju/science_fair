@@ -6,7 +6,7 @@ function researchPurposesTable(){
     
     $allResearchPurposesTable.bootstrapTable({
         columns: [
-            {title: '研究目的', field: 'project_data_content'},
+            {title: '研究問題', field: 'project_data_content'},
             {title: '', field: 'project_data_id',events: 'window.operateEvents' , formatter: 'researchPurposesButton',width:100}
             ],
         theadClasses: 'thead-light',
@@ -106,7 +106,7 @@ function researchExperimentTable(){
     $allResearchExperimentTable.bootstrapTable({
         columns: [
             {title: '實驗項目標題', field: 'project_data_multi_title'},
-            {title: '對應的研究目的', field: 'project_data_multi_correspond'},
+            {title: '對應的研究問題', field: 'project_data_multi_correspond'},
             {title: '實驗項目內容(說明與步驟)', field: 'project_data_multi_content'},
             {title: '', field: 'project_data_multi_id', events: 'window.operateEvents2', formatter: 'researchExperimentButton',width:100}
             ],
@@ -490,7 +490,7 @@ function researchAnalysisTable(){
     
     $allResearchAnalysisTable.bootstrapTable({
         columns: [
-            {title: '對應的研究目的', field: 'project_data_multi_correspond'},
+            {title: '對應的研究問題', field: 'project_data_multi_correspond'},
             {title: '分析項目內容', field: 'project_data_multi_content'},
             {title: '', field: 'project_data_multi_id', events: 'window.operateEventsAnalysis', formatter: 'researchAnalysisButton',width:100}
             ],
@@ -963,6 +963,8 @@ function referenceSummernote(){
 
     // $('#referenceModalRoot .')
 }
+
+
 
 
 //階段切換彈出modal欄位內容

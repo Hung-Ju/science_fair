@@ -47,6 +47,19 @@ function nodeSummer(){
       }
   })
 };
+
+//
+function referenceNodeSummernote(){
+    $('#reference_node_content').summernote({
+        minHeight: 50,
+        // width: 575,
+        toolbar: [
+            ['font', ['bold', 'underline', 'italic', 'clear']],
+        ],
+    }); 
+
+    // $('#referenceModalRoot .')
+}
 //建立新的vis畫布
 var container = document.getElementById("mynetwork");
 
@@ -83,6 +96,10 @@ var nodeOptions = {
         rise_above: {
             shape: 'image',
             image: '/stylesheets/images/idea(color).svg',
+        },
+        reference: {
+            shape: 'image',
+            image: '/stylesheets/images/icons/reference.svg',
         },
         vote: {
             shape: 'image',
@@ -285,6 +302,8 @@ function clickevent(){
                 $('#editAndReadIdea').on('shown.bs.modal', function (e) {
                     $("#editAndReadIdeaLongTitle").text(ajaxNodeData[0].node_title);
                 })
+            }else if(node_group == "reference"){
+
             }else{
                 $readProjectModalRoot = $("#readProjectModalRoot");
                 if(node_group == "motivation"){
@@ -424,6 +443,8 @@ function deleteFile(file_id){
     })
 };
 
+
+//modal關閉後必須執行清空內容
 function modalHidden() {
     //閱讀和編輯想法節點的modal
     $('#editAndReadIdea').on('hide.bs.modal', function (e) {
@@ -438,13 +459,26 @@ function modalHidden() {
     $('#readProjectModal').on('hide.bs.modal', function (e) {
         $('#readProjectModalRoot').empty();
     })
+    //新增參考文獻節點的Modal
+    $('#addReferenceNode').on('hide.bs.modal', function (e) {
+        $("#reference_title").val("");
+        $('.ideaTag').empty();
+    })
+
 };
 
 function modalShown() {
+    //新增想法的Modal
     $('#addIdea').on('show.bs.modal', function(e){ 
         $('.ideaTag').append('<p><b>標籤</b><input class="form-control idea_tag" type="text" name="idea_tag" id="idea_tag" required="required"></p>');
         tagsInput();
     })
+    //新增參考文獻節點的Modal
+    $('#addReferenceNode').on('show.bs.modal', function(e){ 
+        $('.ideaTag').append('<p><b>標籤</b><input class="form-control idea_tag" type="text" name="idea_tag" id="reference_tag" required="required"></p>');
+        tagsInput();
+    })
+
     
 };
 
@@ -464,7 +498,7 @@ function nodeResearchPurposesTable(){
     
     $nodeResearchPurposesTable.bootstrapTable({
         columns: [
-            {title: '研究目的', field: 'project_data_content'},
+            {title: '研究問題', field: 'project_data_content'},
             ],
         theadClasses: 'thead-light',
         classes: 'table table-bordered',
@@ -479,6 +513,7 @@ $(function(){
     nodeSummer();
     modalShown();
     modalHidden();
+    referenceNodeSummernote();
     
 
     //編輯想法節點
@@ -558,6 +593,59 @@ $(function(){
             type: "POST",
             url: "/project/discussion/addIdea",
             data: ideaData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function(data){
+                if(data){
+                    // alert(123);
+                    if(data.message=="true"){
+                        alert('新增成功');
+                        // window.location.href="/project/?gid="+gid;
+                        window.location.href = "/project/"+gid+"/"+mode;
+                    }
+                    else if(data.message=="same"){
+                        alert('小組中有相同的檔案'+data.sameFile+'，請重新選擇');
+                    }
+                    else if(data.message=="nullContent"){
+                        alert('請確實填入標題')
+                    }
+                    else{
+                        alert('帳號已被系統自動登出，請重新登入');
+                        window.location.href="/";
+                    }
+                }
+            },
+            error: function(){
+                alert('失敗');
+            }
+        });
+    });
+
+    //從工具列新增參考文獻的節點
+    $("#addReferenceNodeBtn").click(function(){
+        var gid = document.getElementById("groups_id").value;
+        var node_title = $('#reference_title').val();
+        var node_tag = $('.idea_tag').val();
+        var reference_node_content = $('#reference_node_content').val();
+        var reference_node_idea = $('#referenceNodeIdea').val();
+        var mode = "想法討論";
+        var files = document.getElementById('inputGroupReferenceFile').files.length;
+        var referenceData = new FormData();
+        for (var x = 0; x < files; x++) {
+            referenceData.append("files", document.getElementById('inputGroupReferenceFile').files[x]);
+        }
+
+        referenceData.append("gid",gid);
+        referenceData.append("node_title",node_title);
+        referenceData.append("node_tag",node_tag);
+        referenceData.append("reference_node_content",reference_node_content);
+        referenceData.append("reference_node_idea",reference_node_idea);
+            
+        $.ajax({  
+            type: "POST",
+            url: "/project/discussion/addReferenceNode",
+            data: referenceData,
             cache: false,
             contentType: false,
             processData: false,

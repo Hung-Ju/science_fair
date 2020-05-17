@@ -232,5 +232,21 @@ module.exports = {
 		})
 	},
 
+	//新增參考文獻節點資料
+	addReferenceNode :function(node_id_node, groups_id_groups, reference_node_content, reference_node_idea){
+		return new Promise(function(resolve, reject){
+			pool.getConnection(function(err, connection){
+				if(err) return reject(err);
+				var params = {node_id_node:node_id_node, groups_id_groups:groups_id_groups, reference_node_content:reference_node_content, reference_node_idea:reference_node_idea};
+				connection.query('INSERT INTO `reference_node` SET ?', params, function(err, insert_res){
+					if(err) return reject(err);
+					resolve(insert_res);
+					//console.log(params);
+					connection.release();
+				})
+			})
+		})
+	},
+
 
 }

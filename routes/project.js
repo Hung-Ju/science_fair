@@ -1324,5 +1324,72 @@ router.post('/:gid/:mode/discussion/editIdeaNode', upload.array('files',5), func
     }
 })
 
+//新增參考文獻節點
+router.post('/discussion/addReferenceNode', upload.array('files',5), function(req, res, next){
+    var groups_id_groups = req.body.gid;
+    var node_title = req.body.node_title;
+    var node_tag = req.body.node_tag;
+    var node_type = "reference";
+    var reference_node_content = req.body.reference_node_content;
+    var reference_node_idea = req.body.reference_node_idea;
+    var member_id_member = req.session.member_id;
+    var member_name = req.session.member_name;
+    var fileslength = req.files.length;
+    var fileData = req.files;
+    var node_id_node;
+
+    if(!member_id_member){
+        res.send({message:"false"});
+    }else if(node_title==""){
+        res.send({message:"nullContent"});
+    }else{
+        console.log(req.body)
+        console.log(req.files)
+        projectDiscussion.existsFileCheck(groups_id_groups, fileData)
+        .then(function(result){
+            if (result == 0 || result.length == 0){
+                return projectDiscussion.addNode(groups_id_groups, member_id_member, member_name, node_title, node_tag, node_type)
+                .then(function(result2){
+                    console.log(result2.insertId);
+                    node_id_node = result2.insertId;
+                    return projectDiscussion.addReferenceNode(node_id_node, groups_id_groups, reference_node_content, reference_node_idea)
+                })
+                .then(function(result3){
+                    var fileDataArray = [];
+                    if(fileslength != 0){
+                        for (var i = 0; i < fileslength; i++) {
+                            // 檔案會放在uploads資料夾並且沒有附檔名，需要自己轉存，用到fs模組
+                            // 對臨時檔案轉存，fs.rename(oldPath, newPath,callback);
+                            var originalname = req.files[i].originalname;
+                            var file_type_origin = req.files[i].type;
+                            var file_type;
+                            if(file_type_origin == "image/jpeg" || file_type_origin == "image/png" || file_type_origin == "image/gif"){
+                                file_type = "圖片";
+                            }else{
+                                file_type = "文件";
+                            }
+                            fs.rename(req.files[i].path, "./public/upload_file/group"+groups_id_groups+"/groups_file/"+originalname , function(err) {
+                                if (err) {
+                                    throw err;
+                                } 
+                            })
+                            fileDataArray.push({groups_id_groups:groups_id_groups, node_id_node:node_id_node, file_name:originalname, file_type:file_type});
+                        };
+                        return projectDiscussion.addFile(fileDataArray)
+                        .then(function(result4){
+                            res.send({message:"true"});
+                        })
+                    }else{
+                        res.send({message:"true"});
+                    }
+                })
+            }
+            else if(result.length != 0){
+                res.send({message:"same", sameFile:result})
+            }
+        })
+    }
+});
+
 
 module.exports = router;
