@@ -224,18 +224,18 @@ function clickevent(){
         var member_id = $("#member_id").val();
         var gid = $("#groups_id").val();
         //$("#editAndReadIdea #editAndReadIdeaRoot").text(clickid);
+
+        //處理節點資料，要用到groups的資料
+        var clickedNode = nodes.get({
+            filter: function(item){
+                return (item.id==clickid);
+            }
+        })
+        //console.log(clickedNode);
+        var node_group = clickedNode[0].group;
+        var node_title = clickedNode[0].node_title;
+
         if(clickid !== undefined){
-
-            //處理節點資料，要用到groups的資料
-            var clickedNode = nodes.get({
-                filter: function(item){
-                    return (item.id==clickid);
-                }
-            })
-            //console.log(clickedNode);
-            var node_group = clickedNode[0].group;
-            var node_title = clickedNode[0].node_title;
-
             if(node_group == "idea"){
                 //想法節點
                 var ajaxData = ajaxGetNodeData(clickid);
@@ -627,6 +627,7 @@ $(function(){
         var gid = document.getElementById("groups_id").value;
         var node_title = $('#reference_title').val();
         var node_tag = $('.idea_tag').val();
+        var reference_node_type = $("#selectReferenceNodeType").val();
         var reference_node_content = $('#reference_node_content').val();
         var reference_node_idea = $('#referenceNodeIdea').val();
         var mode = "想法討論";
@@ -639,9 +640,10 @@ $(function(){
         referenceData.append("gid",gid);
         referenceData.append("node_title",node_title);
         referenceData.append("node_tag",node_tag);
+        referenceData.append("reference_node_type", reference_node_type);
         referenceData.append("reference_node_content",reference_node_content);
         referenceData.append("reference_node_idea",reference_node_idea);
-            
+
         $.ajax({  
             type: "POST",
             url: "/project/discussion/addReferenceNode",

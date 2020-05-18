@@ -1330,6 +1330,7 @@ router.post('/discussion/addReferenceNode', upload.array('files',5), function(re
     var node_title = req.body.node_title;
     var node_tag = req.body.node_tag;
     var node_type = "reference";
+    var reference_node_type = req.body.reference_node_type;
     var reference_node_content = req.body.reference_node_content;
     var reference_node_idea = req.body.reference_node_idea;
     var member_id_member = req.session.member_id;
@@ -1352,7 +1353,7 @@ router.post('/discussion/addReferenceNode', upload.array('files',5), function(re
                 .then(function(result2){
                     console.log(result2.insertId);
                     node_id_node = result2.insertId;
-                    return projectDiscussion.addReferenceNode(node_id_node, groups_id_groups, reference_node_content, reference_node_idea)
+                    return projectDiscussion.addReferenceNode(node_id_node, groups_id_groups, reference_node_type, reference_node_content, reference_node_idea)
                 })
                 .then(function(result3){
                     var fileDataArray = [];

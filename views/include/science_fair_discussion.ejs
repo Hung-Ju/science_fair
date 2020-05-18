@@ -214,7 +214,7 @@
                 <b>參考文獻類型：</b>
               </div>
               <div class="col-10">
-                <select class="custom-select" name="sampleSelect" id="selectReferenceType">
+                <select class="custom-select" name="sampleSelect" id="selectReferenceNodeType">
                   <option value="網址">網址</option>
                   <option value="書籍">書籍</option>
                   <option value="報章文章">報章文章</option>
@@ -248,6 +248,62 @@
     </div>
   </div>
   <!-- 新增參考文獻節點的彈出視窗 -->
+
+  <!-- 閱讀參考文獻節點或修改參考文獻節點的彈出視窗 -->
+  <div class="modal fade" id="editAndReadReference" tabindex="-1" role="dialog" aria-labelledby="editAndReadReferenceCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editAndReadReferenceLongTitle">參考文獻</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="mt-2 ml-3 mr-3">
+
+          <ul class="nav nav-tabs" id="referenceTab" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" id="readReference-tab" data-toggle="tab" href="#readReferenceTab" role="tab" aria-controls="readReferenceTab" aria-selected="true">閱讀</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="editReference-tab" data-toggle="tab" href="#ediReferenceTab" role="tab" aria-controls="editReferenceTab" aria-selected="false">修改</a>
+            </li>
+          </ul>
+
+        </div>
+
+        <div class="tab-content" id="myReferenceTabContent">          
+          
+          <div class="tab-pane fade show active" id="readReferenceTab" role="tabpanel" aria-labelledby="readReference-tab">
+            <div class="modal-body"  style="min-height: 200px;">
+              <div id="ReadReferenceRoot">
+              閱讀
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary">收藏</button>
+              <button type="button" class="btn btn-primary">回覆</button>
+            </div>
+          </div>
+
+          <div class="tab-pane fade" id="editReferenceTab" role="tabpanel" aria-labelledby="editReference-tab">
+            <div class="modal-body">
+              <div id="EditReferenceRoot">
+                <p><b>標題</b><input class="form-control" type="text" name="idea_title_edit" id="reference_title_edit" required="required"></p>
+                <div class="ideaTagEdit"></div>
+
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" id="editReferenceBtn">儲存</button>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  <!-- 閱讀參考文獻節點或修改參考文獻節點的彈出視窗 -->
 
 </div>
 
