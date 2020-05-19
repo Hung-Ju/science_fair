@@ -1,7 +1,51 @@
 var pool = require('./db'),
 	crypto = require('crypto'),
-    fs = require('fs');
-    
+	fs = require('fs');
+	
+function addNode(groups_id_groups, member_id_member, member_name, node_title, node_tag, node_type){
+	return new Promise(function(resolve, reject){
+		pool.getConnection(function(err, connection){
+			if(err) return reject(err);
+			var params = {groups_id_groups:groups_id_groups, member_id_member:member_id_member, member_name:member_name, node_title:node_title, node_tag:node_tag, node_type:node_type};
+			connection.query('INSERT INTO `node` SET ?', params, function(err, insert_res){
+				if(err) return reject(err);
+				resolve(insert_res);
+				//console.log(params);
+				connection.release();
+			})
+		})
+	})
+}
+function addIdea(node_id_node, idea_content){
+	return new Promise(function(resolve, reject){
+		pool.getConnection(function(err, connection){
+			if(err) return reject(err);
+			var params = {node_id_node:node_id_node, idea_content:idea_content};
+			connection.query('INSERT INTO `idea` SET ?', params, function(err, insert_res){
+				if(err) return reject(err);
+				resolve(insert_res);
+				//console.log(params);
+				connection.release();
+			})
+		})
+	})
+}
+function newEdge(fromId, toId, groupId){
+    return new Promise(function(resolve, reject){
+        var sql="INSERT INTO `edge` SET?";
+        var sqlValue={
+            edge_from: fromId,
+            edge_to: toId,
+            group_id: groupId
+        }
+        pool.query(sql, sqlValue, function(err, results){
+            if(err) throw err;
+            var newEdgeId = results.insertId;
+            console.log('findish edge id='+newEdgeId);
+            resolve(newEdgeId);
+        });
+    });
+}
 module.exports = {
 
     //抓取節點資料中是否已存在該節點
@@ -48,6 +92,20 @@ module.exports = {
 		})
 	},
 
+	//抓取全部edge資料
+	selectAllGroupsEdge :function(groups_id_groups){
+		return new Promise(function(resolve, reject){
+			pool.getConnection(function(err, connection){
+				if(err) return reject(err);
+				connection.query('SELECT * FROM `edge` WHERE `groups_id_groups`="'+groups_id_groups+'"', function(err, allGroupsEdgeData){
+					if(err) return reject(err);
+					resolve(allGroupsEdgeData);
+					connection.release();
+				})
+			})
+		})
+	},
+
 	//新增節點
 	addNode :function(groups_id_groups, member_id_member, member_name, node_title, node_tag, node_type){
 		return new Promise(function(resolve, reject){
@@ -79,6 +137,68 @@ module.exports = {
 			})
 		})
 	},
+
+	//新增edge
+	// addEdge :function(edge_from, edge_to, groups_id_groups){
+	// 	return new Promise(function(resolve, reject){
+	// 		pool.getConnection(function(err, connection){
+	// 			if(err) return reject(err);
+	// 			var params = {edge_from:edge_from, edge_to:edge_to, groups_id_groups:groups_id_groups};
+	// 			connection.query('INSERT INTO `edge` SET ?', params, function(err, insert_res){
+	// 				if(err) return reject(err);
+	// 				resolve(insert_res);
+	// 				//console.log(params);
+	// 				connection.release();
+	// 			})
+	// 		})
+	// 	})
+	// },
+	addEdge :function(edgeDataArray){
+		return Promise.all(
+			edgeDataArray.map(function(data){
+				return new Promise(function(resolve, reject){
+					pool.getConnection(function(err, connection){
+						if(err) return reject(err);
+						var edge_from = data.edge_from;
+						var edge_to = data.edge_to;
+						var groups_id_groups = data.groups_id_groups;
+						var params = {edge_from:edge_from, edge_to:edge_to, groups_id_groups:groups_id_groups};
+						connection.query('INSERT INTO `edge` SET ?', params, function(err, insert_res){
+							if(err) return reject(err);
+							resolve(insert_res);
+							//console.log(params);
+							connection.release();
+						})
+					})
+				})
+			})
+		)
+		
+	},
+
+
+	//新增想法節點
+	// addIdeaNode :function(groups_id_groups, member_id_member, member_name, node_title, node_tag, node_type, idea_content, fromNodeId, cb){
+	// 	var nodeId;
+	// 	addNode(groups_id_groups, member_id_member, member_name, node_title, node_tag, node_type)
+	// 	.then(function(result){
+	// 		node_id_node = result.insertId;
+	// 		return addIdea(node_id_node, idea_content)
+	// 	})
+	// 	.then(function(result2){
+			// if(fromNodeId.length > 0){
+			// 	console.log('has fromId');
+			// 	var fromNode = fromNodeId.split(',');
+			// 	let promises = fromNode.map(function(nodeFrom){
+			// 		return newEdge(nodeFrom, node_id_node, groups_id_groups);
+			// 	})
+			// 	Promise.all(promises)
+			// 	.then(function(data){
+
+			// 	})
+			// }
+	// 	})
+	// },
 
 	//新增想法節點中附加的檔案資料
 	// addFile :function(groups_id_groups, node_id_node, file_name, file_type, file_share){
@@ -248,5 +368,33 @@ module.exports = {
 		})
 	},
 
+	//抓取點擊單一參考文獻節點的內容
+	getReferenceNodeData :function(node_id_node){
+		return new Promise(function(resolve, reject){
+			pool.getConnection(function(err, connection){
+				if(err) return reject(err);
+				connection.query('SELECT `node`.*, `reference_node`.* FROM `node` INNER JOIN `reference_node` ON `node`.`node_id` WHERE `reference_node`.`node_id_node`="'+node_id_node+'" AND `node`.`node_id`="'+node_id_node+'"',function(err, result){
+					if(err) return reject(err);
+					resolve(result);
+					connection.release();
+				})
+			});
+		})
+	},
+
+	//修改參考文獻節點內容
+	updateReferenceNode :function(node_id_node, groups_id_groups, reference_node_type, reference_node_content, reference_node_idea){
+		return new Promise(function(resolve, reject){
+			pool.getConnection(function(err, connection){
+				if(err) return reject(err);
+				var update_params = {node_id_node:node_id_node, groups_id_groups:groups_id_groups, reference_node_type:reference_node_type, reference_node_content:reference_node_content, reference_node_idea:reference_node_idea};
+				connection.query('UPDATE `reference_node` SET ? WHERE `node_id_node`="'+node_id_node+'"', update_params, function(err, update_res){
+					if(err) return reject(err);
+					resolve(update_res);
+					connection.release();
+				})
+			})
+		})
+	},
 
 }

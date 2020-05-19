@@ -224,7 +224,7 @@
             </div>
             <div class="mt-2">
               <b>參考文獻：</b><a href="#" onclick="window.open('/stylesheets/參考文獻格式參考.pdf','參考文獻格式', config='toolbar=no'); ">參考文獻格式說明</a>
-              <textarea id="reference_node_content"></textarea>
+              <textarea class="referenceEditor" id="reference_node_content"></textarea>
             </div>
             <br>
             <div>
@@ -286,18 +286,48 @@
             </div>
           </div>
 
-          <div class="tab-pane fade" id="editReferenceTab" role="tabpanel" aria-labelledby="editReference-tab">
+          <div class="tab-pane fade" id="ediReferenceTab" role="tabpanel" aria-labelledby="editReference-tab">
             <div class="modal-body">
               <div id="EditReferenceRoot">
-                <p><b>標題</b><input class="form-control" type="text" name="idea_title_edit" id="reference_title_edit" required="required"></p>
-                <div class="ideaTagEdit"></div>
-
+                <p><b>標題</b><input class="form-control" type="text" name="reference_title_edit" id="reference_title_edit" required="required"></p>
+                <div class="referenceTagEdit"></div>
+                <div class="form-row">
+                  <div class="col-2">
+                    <b>參考文獻類型：</b>
+                  </div>
+                  <div class="col-10">
+                    <select class="custom-select" name="sampleSelect" id="editSelectReferenceNodeType">
+                      <option value="網址">網址</option>
+                      <option value="書籍">書籍</option>
+                      <option value="報章文章">報章文章</option>
+                      <option value="其他">其他</option>
+                    </select>
+                  </div>  
+                </div>
+                <div class="mt-2">
+                  <b>參考文獻：</b><a href="#" onclick="window.open('/stylesheets/參考文獻格式參考.pdf','參考文獻格式', config='toolbar=no'); ">參考文獻格式說明</a>
+                  <textarea class="referenceEditor" id="edit_reference_node_content"></textarea>
+                </div>
+                <br>
+                <div>
+                  <b>參考內容：</b>
+                  <textarea class="nodeEditor" id="editReferenceNodeIdea"></textarea>
+                </div>
+                <div class="input-group">
+                  <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="editInputGroupReferenceFile" aria-describedby="inputGroupFileAddon" multiple="">
+                    <label class="custom-file-label mt-2" for="inputGroupFile04">選擇檔案</label>
+                  </div>
+                </div>
+                <div id="referenceNodeFiles" style="margin-top: 8px;"></div>
               </div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-primary" id="editReferenceBtn">儲存</button>
+              <button type="button" class="btn btn-primary" id="editReferenceNodeBtn">儲存</button>
             </div>
           </div>
+
+
         </div>
         
       </div>

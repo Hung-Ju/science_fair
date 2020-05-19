@@ -65,8 +65,20 @@ router.get('/:gid/:mode',function(req, res, next) {
         var researchDiscussionArray = [];
         var researchConclusionArray = [];
         var groupsAllNodeDataArray = [];
+        var groupsAllEdgeDataArray = [];
 
-        projectDiscussion.selectAllGroupsNode(gid)
+        projectDiscussion.selectAllGroupsEdge(gid)
+        .then(function(allGroupsEdge){
+            if(allGroupsEdge){
+                for(var e = 0; e < allGroupsEdge.length; e++){
+                    var from = allGroupsEdge[e].edge_from;
+                    var to = allGroupsEdge[e].edge_to;
+                    allGroupsEdgeData = {from:from, to:to};
+                    groupsAllEdgeDataArray.push(allGroupsEdgeData);
+                }
+            }
+            return projectDiscussion.selectAllGroupsNode(gid)
+        })
         .then(function(allGroupsNode){
             if(allGroupsNode){
                 for (var d = 0; d < allGroupsNode.length; d++){
@@ -233,7 +245,7 @@ router.get('/:gid/:mode',function(req, res, next) {
                     referenceArray.push(referenceData);
                 }
             }
-            res.render('projectEdit',  {title: 'Science Fair科學探究專題系統', gid:gid, mode:mode, member_id:req.session.member_id, member_name:req.session.member_name, researchTitle:researchTitleArray, researchMotivation:researchMotivationArray, researchPurposes:researchPurposesArray, researchExperiment:researchExperimentArray, researchMaterial:researchMaterialArray, researchRecord:researchRecordArray, researchAnalysis:researchAnalysisArray, researchDiscussion:researchDiscussionArray, researchConclusion:researchConclusionArray, groups_stage:groups_stage, AllNodeData:groupsAllNodeDataArray, reference: referenceArray});
+            res.render('projectEdit',  {title: 'Science Fair科學探究專題系統', gid:gid, mode:mode, member_id:req.session.member_id, member_name:req.session.member_name, researchTitle:researchTitleArray, researchMotivation:researchMotivationArray, researchPurposes:researchPurposesArray, researchExperiment:researchExperimentArray, researchMaterial:researchMaterialArray, researchRecord:researchRecordArray, researchAnalysis:researchAnalysisArray, researchDiscussion:researchDiscussionArray, researchConclusion:researchConclusionArray, groups_stage:groups_stage, AllNodeData:groupsAllNodeDataArray, reference: referenceArray, edge:groupsAllEdgeDataArray});
         })
 
         // 抓取討論的資料
@@ -1160,6 +1172,8 @@ router.post('/discussion/addIdea', upload.array('files',5), function(req, res, n
     var fileslength = req.files.length;
     var fileData = req.files;
     var node_id_node;
+    var fromNodeIdString = req.body.fromNodeId;
+    var fromNodeId = fromNodeIdString.split(',');
 
     if(!member_id_member){
         res.send({message:"false"});
@@ -1178,6 +1192,17 @@ router.post('/discussion/addIdea', upload.array('files',5), function(req, res, n
                     return projectDiscussion.addIdea(node_id_node, idea_content)
                 })
                 .then(function(result3){
+                    var edgeDataArray = [];
+                    if(fromNodeId.length > 0){
+                        for(var j = 0;j < fromNodeId.length; j++){
+                            var edge_from = fromNodeId[j];
+                            edgeDataArray.push({edge_from:edge_from, edge_to:node_id_node, groups_id_groups:groups_id_groups});
+                        }
+                        console.log(edgeDataArray);
+                        return projectDiscussion.addEdge(edgeDataArray)
+                    }
+                })
+                .then(function(result4){
                     var fileDataArray = [];
                     if(fileslength != 0){
                         for (var i = 0; i < fileslength; i++) {
@@ -1391,6 +1416,103 @@ router.post('/discussion/addReferenceNode', upload.array('files',5), function(re
         })
     }
 });
+
+//抓取參考文獻節點資料
+router.get('/:gid/:mode/discussion/readReference', function(req, res, next){
+    var node_id_node = req.query.nodeId;
+    var member_id_member = req.session.member_id;
+    var nodeData;
+    var nodeFile;
+    console.log(node_id_node);
+
+    if(!member_id_member){
+        res.send({message:"false"});
+    }else{
+        projectDiscussion.getReferenceNodeData(node_id_node)
+        .then(function(result){
+            nodeData = result;
+            console.log(nodeData);
+            return projectDiscussion.getNodeFile(node_id_node)
+        })
+        .then(function(result2){
+            nodeFile = result2;
+            var node_read_count = nodeData[0].node_read_count+1;
+            return projectDiscussion.updateNodeReadCount(node_id_node, node_read_count)
+            
+        })
+        .then(function(result2){
+            res.send({message:"true", nodeData:nodeData, nodeFile:nodeFile});
+        })
+    }
+});
+
+//修改參考文獻節點
+router.post('/:gid/:mode/discussion/editReferenceNode', upload.array('files',5), function(req, res, next){
+    var groups_id_groups = req.body.gid;
+    var node_title = req.body.node_title;
+    var node_tag = req.body.node_tag;
+    var node_type = "reference";
+    var reference_node_type = req.body.reference_node_type;
+    var reference_node_content = req.body.reference_node_content;
+    var reference_node_idea = req.body.reference_node_idea;
+    var member_id_member = req.session.member_id;
+    var member_name = req.session.member_name;
+    var fileslength = req.files.length;
+    var fileData = req.files;
+    var node_id = req.body.node_id;
+
+    if(!member_id_member){
+        res.send({message:"false"});
+    }else if(node_title==""){
+        res.send({message:"nullContent"});
+    }else{
+        console.log(req.body)
+        console.log(req.files)
+        projectDiscussion.existsFileCheck(groups_id_groups, fileData)
+        .then(function(result){
+            if (result == 0 || result.length == 0){
+                return projectDiscussion.updateNode(node_id, node_title, node_tag)
+                .then(function(result2){
+                    return projectDiscussion.updateReferenceNode(node_id, groups_id_groups, reference_node_type, reference_node_content, reference_node_idea)
+                })
+                .then(function(result3){
+                    var fileDataArray = [];
+                    if(fileslength != 0){
+                        for (var i = 0; i < fileslength; i++) {
+                            // 檔案會放在uploads資料夾並且沒有附檔名，需要自己轉存，用到fs模組
+                            // 對臨時檔案轉存，fs.rename(oldPath, newPath,callback);
+                            var originalname = req.files[i].originalname;
+                            var file_type_origin = req.files[i].type;
+                            var file_type;
+                            if(file_type_origin == "image/jpeg" || file_type_origin == "image/png" || file_type_origin == "image/gif"){
+                                file_type = "圖片";
+                            }else{
+                                file_type = "文件";
+                            }
+                            fs.rename(req.files[i].path, "./public/upload_file/group"+groups_id_groups+"/groups_file/"+originalname , function(err) {
+                                if (err) {
+                                    throw err;
+                                } 
+                            })
+                            fileDataArray.push({groups_id_groups:groups_id_groups, node_id_node:node_id_node, file_name:originalname, file_type:file_type});
+                        };
+                        return projectDiscussion.addFile(fileDataArray)
+                        .then(function(result4){
+                            res.send({message:"true"});
+                        })
+                    }else{
+                        res.send({message:"true"});
+                    }
+                })
+            }
+            else if(result.length != 0){
+                res.send({message:"same", sameFile:result})
+            }
+        })
+    }
+});
+
+
 
 
 module.exports = router;
