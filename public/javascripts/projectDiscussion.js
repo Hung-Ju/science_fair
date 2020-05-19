@@ -226,6 +226,7 @@ function clickevent(){
         var clickid = params.nodes[0];
         var member_id = $("#member_id").val();
         var gid = $("#groups_id").val();
+        currentNodeId.length=0;
         //$("#editAndReadIdea #editAndReadIdeaRoot").text(clickid);
 
         //處理節點資料，要用到groups的資料
@@ -234,6 +235,8 @@ function clickevent(){
                 return (item.id==clickid);
             }
         })
+        currentNodeId.push(clickedNode[0].id);
+        console.log(currentNodeId);
         //console.log(clickedNode);
         var node_group = clickedNode[0].group;
         var node_title = clickedNode[0].node_title;
