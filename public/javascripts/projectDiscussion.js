@@ -199,8 +199,9 @@ function clickevent(){
     network.on("click", function(params) {
       params.event = "[click]";
       //var clickid = this.getNodeAt(params.pointer.DOM);
-      //console.log(params);
+      
       var clickid = params.nodes;
+      console.log(clickid);
       network.off("beforeDrawing");
       addNodecontent();
       if(clickid.length !== 0){
@@ -407,19 +408,28 @@ function clickevent(){
     
     network.on("oncontext", function(params) {
       params.event = "[rightClick]";
-      console.log(currentNodeId.length);
+      
+      console.log(currentNodeId);
         //若是右鍵在node上，就將那個node加入被選的清單
         if(this.getNodeAt(params.pointer.DOM) && !currentNodeId.includes(this.getNodeAt(params.pointer.DOM))){
             currentNodeId.push(this.getNodeAt(params.pointer.DOM));
             //console.log(currentNodeId);
         }
-        console.log(currentNodeId);
+        //點擊事件時畫灰色圓背景
+        network.off("beforeDrawing");
+        addNodecontent();
+        //console.log(currentNodeId);
+        var currentNodeIdString = currentNodeId.toString();
+        var clickid = currentNodeIdString.split(",");
+        //console.log(clickid);
         //若被選清單是空的，就不能使用右鍵的清單
         var $trigger = $('#mynetwork');
         if(currentNodeId.length == 0){
             console.log("沒有選節點")
             $trigger.contextMenu(false);
         }else{
+            //點擊事件時畫灰色圓背景
+            drawbackground(clickid);
             $trigger.contextMenu(true);
             this.redraw();
         }

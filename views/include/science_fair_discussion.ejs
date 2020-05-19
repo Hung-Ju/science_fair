@@ -126,7 +126,13 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary">收藏</button>
-              <button type="button" class="btn btn-primary" data-dismiss="modal" data-toggle="modal" data-target="#addIdea">回覆</button>
+              <button type="button" class="btn btn-primary dropdown-toggle" id="dropdownMenuReplyIdea" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">回覆</button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuReplyIdea">
+                <button class="dropdown-item" type="button" data-dismiss="modal" data-toggle="modal" data-target="#addIdea">回覆一般想法</button>
+                <button class="dropdown-item" type="button">提出昇華的想法</button>
+                <button class="dropdown-item" type="button">提出參考文獻</button>
+              </div>
+              <!-- <button type="button" class="btn btn-primary" data-dismiss="modal" data-toggle="modal" data-target="#addIdea">回覆</button> -->
             </div>
           </div>
 
