@@ -8,59 +8,352 @@
 <!-- vis.js -->
 <script type="text/javascript" src="https://unpkg.com/vis-network@latest/dist/vis-network.min.js"></script>
 <link href="https://unpkg.com/vis-network@latest/dist/vis-network.min.css" rel="stylesheet" type="text/css" />
+<div class="col">
+    <div class="row" id="vis-network" style="margin-top: 53px; padding-left: 20px;">
+    <div id="mynetwork"></div>
+    <!-- 左側工具欄 -->
+    <div class="tools text-center">
+        <h6 style="background-color:rgb(230, 191, 178);">新增</h6>   
+        <a href="#addIdea" class="tool" id="ideaTool" data-toggle="modal">
+          <img src="/stylesheets/images/icons/idea(line).svg" alt="新增想法">
+          <div class="tool-text">一般想法</div>
+        </a>
+        <a href="#addReferenceNode" class="tool" id="referenceTool" data-toggle="modal">
+          <img src="/stylesheets/images/icons/reference.svg" alt="參考文獻">
+          <div class="tool-text">參考文獻</div>
+        </a>
 
-<div class="row" id="vis-network" style="margin-top: 53px; padding-left: 20px;">
-  <div id="mynetwork"></div>
-  <!-- 左側工具欄 -->
-  <div class="tools text-center">
-      <h6 style="background-color:rgb(230, 191, 178);">新增</h6>   
-      <a href="#addIdea" class="tool" id="ideaTool" data-toggle="modal">
-        <img src="/stylesheets/images/icons/idea(line).svg" alt="新增想法">
-        <div class="tool-text">一般想法</div>
-      </a>
-      <a href="#addReferenceNode" class="tool" id="referenceTool" data-toggle="modal">
-        <img src="/stylesheets/images/icons/reference.svg" alt="參考文獻">
-        <div class="tool-text">參考文獻</div>
-      </a>
+        <a href="#addVote" class="tool" id="voteTool" data-toggle="modal">
+          <img src="/stylesheets/images/icons/archive.svg" alt="新增投票" >
+          <div class="tool-text">決策工具</div>
+        </a>
+        
 
-      <a href="#addVote" class="tool" id="voteTool" data-toggle="modal">
-        <img src="/stylesheets/images/icons/archive.svg" alt="新增投票" >
-        <div class="tool-text">決策工具</div>
-      </a>
-      
+        <!-- <h6 style="margin-top: 15px; background-color:rgb(230, 191, 178);">實作想法</h6>
+        <a class="tool" id="voteTool" data-toggle="modal">
+          <img src="/stylesheets/images/icons/question.svg" alt="形成問題" >
+          <div class="tool-text">形成問題</div>
+        </a>
+        <a class="tool" id="voteTool" data-toggle="modal">
+          <img src="/stylesheets/images/icons/plan.svg" alt="研究規劃" >
+          <div class="tool-text">研究規劃</div>
+        </a>
+        <a class="tool" id="voteTool" data-toggle="modal">
+          <img src="/stylesheets/images/icons/laboratory.svg" alt="執行" >
+          <div class="tool-text">執行</div>
+        </a>
+        <a class="tool" id="voteTool" data-toggle="modal">
+          <img src="/stylesheets/images/icons/analysis.svg" alt="分析與詮釋" >
+          <div class="tool-text">分析與詮釋</div>
+        </a> -->
+    </div>
 
-      <!-- <h6 style="margin-top: 15px; background-color:rgb(230, 191, 178);">實作想法</h6>
-      <a class="tool" id="voteTool" data-toggle="modal">
-        <img src="/stylesheets/images/icons/question.svg" alt="形成問題" >
-        <div class="tool-text">形成問題</div>
-      </a>
-      <a class="tool" id="voteTool" data-toggle="modal">
-        <img src="/stylesheets/images/icons/plan.svg" alt="研究規劃" >
-        <div class="tool-text">研究規劃</div>
-      </a>
-      <a class="tool" id="voteTool" data-toggle="modal">
-        <img src="/stylesheets/images/icons/laboratory.svg" alt="執行" >
-        <div class="tool-text">執行</div>
-      </a>
-      <a class="tool" id="voteTool" data-toggle="modal">
-        <img src="/stylesheets/images/icons/analysis.svg" alt="分析與詮釋" >
-        <div class="tool-text">分析與詮釋</div>
-      </a> -->
-  </div>
+    <!-- 新增想法的彈出視窗 -->
+    <div class="modal fade" id="addIdea" tabindex="-1" role="dialog" aria-labelledby="addIdeaCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="addIdeaLongTitle" data-nodetype="idea">新增想法</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div id="addIdeaRoot">
+                <p><b>標題</b><input class="form-control" type="text" name="idea_title" id="idea_title" required="required"></p>
+                <div class="ideaTag"></div>
+                <div class="row">
+                    <div class="btn-group-vertical col-3">
+                        <button type="button" class="btn border-color-green scaffold">我想知道</button>
+                        <button type="button" class="btn border-color-green scaffold">我的想法</button>
+                        <button type="button" class="btn border-color-green scaffold">我的理論</button>
+                        <button type="button" class="btn border-color-green scaffold">新資訊或參考來源</button>
+                        <button type="button" class="btn border-color-green scaffold">另一個觀點是</button>
+                        <button type="button" class="btn border-color-green scaffold">我覺得更好的想法</button>
+                        <button type="button" class="btn border-color-green scaffold">有發展性的想法</button>
+                    </div>
+                    <div class="col-9">
+                        <textarea class="nodeEditor" id="addIdeaSummernote"></textarea>
+                        <div class="input-group">
+                          <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="inputGroupFile" aria-describedby="inputGroupFileAddon" multiple="">
+                            <label class="custom-file-label mt-2" for="inputGroupFile04">選擇檔案</label>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+              <button type="button" class="btn btn-primary" id="addIdeaBtn">新增</button>
+            </div>
+          </div>
+        </div>
+    </div>
+    <!-- 新增想法的彈出視窗 -->
 
-  <!-- 新增想法的彈出視窗 -->
-  <div class="modal fade" id="addIdea" tabindex="-1" role="dialog" aria-labelledby="addIdeaCenterTitle" aria-hidden="true">
+    <!-- 閱讀想法或修改想法的彈出視窗 -->
+    <div class="modal fade" id="editAndReadIdea" tabindex="-1" role="dialog" aria-labelledby="editAndReadIdeaCenterTitle" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="addIdeaLongTitle" data-nodetype="idea">新增想法</h5>
+            <h5 class="modal-title" id="editAndReadIdeaLongTitle">閱讀想法</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="mt-2 ml-3 mr-3">
+
+            <ul class="nav nav-tabs" id="ideaTab" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active" id="readIdea-tab" data-toggle="tab" href="#readIdeaTab" role="tab" aria-controls="readIdeaTab" aria-selected="true">閱讀</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="editIdea-tab" data-toggle="tab" href="#editIdeaTab" role="tab" aria-controls="editIdeaTab" aria-selected="false">修改</a>
+              </li>
+            </ul>
+
+          </div>
+
+          <div class="tab-content" id="myTabContent">          
+            
+            <div class="tab-pane fade show active" id="readIdeaTab" role="tabpanel" aria-labelledby="readIdea-tab">
+              <div class="modal-body"  style="min-height: 200px;">
+                <div id="ReadIdeaRoot">
+                閱讀
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary">收藏</button>
+                <button type="button" class="btn btn-primary dropdown-toggle" id="dropdownMenuReplyIdea" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">回覆</button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuReplyIdea">
+                  <button class="dropdown-item addIdea" type="button" data-dismiss="modal" data-toggle="modal" data-target="#addIdea">回覆一般想法</button>
+                  <button class="dropdown-item addRiseAbove" type="button" data-dismiss="modal" data-toggle="modal" data-target="#addIdea">提出昇華的想法</button>
+                  <button class="dropdown-item" type="button">提出參考文獻</button>
+                </div>
+                <!-- <button type="button" class="btn btn-primary" data-dismiss="modal" data-toggle="modal" data-target="#addIdea">回覆</button> -->
+              </div>
+            </div>
+
+            <div class="tab-pane fade" id="editIdeaTab" role="tabpanel" aria-labelledby="editIdea-tab">
+              <div class="modal-body">
+                <div id="EditIdeaRoot">
+                  <p><b>標題</b><input class="form-control" type="text" name="idea_title_edit" id="idea_title_edit" required="required"></p>
+                  <div class="ideaTagEdit"></div>
+                  <div class="row">
+                    <div class=" col-3">
+                      <div class="btn-group-vertical" style="width: 100%;">
+                          <button type="button" class="btn border-color-green scaffold">我想知道</button>
+                          <button type="button" class="btn border-color-green scaffold">我的想法</button>
+                          <button type="button" class="btn border-color-green scaffold">我的理論</button>
+                          <button type="button" class="btn border-color-green scaffold">新資訊或參考來源</button>
+                          <button type="button" class="btn border-color-green scaffold">另一個觀點是</button>
+                          <button type="button" class="btn border-color-green scaffold">我覺得更好的想法</button>
+                          <button type="button" class="btn border-color-green scaffold">有發展性的想法</button>
+                      </div>
+                    </div>
+                    <div class="col-9">
+                        <textarea class="nodeEditor" id="editIdeaSummernote"></textarea>
+                        <div class="input-group">
+                          <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="inputGroupFileEdit" aria-describedby="inputGroupFileAddon" multiple="">
+                            <label class="custom-file-label mt-2" for="inputGroupFile04">選擇檔案</label>
+                          </div>
+                        </div>
+                        <div id="nodeFiles" style="margin-top: 8px;">
+
+                        </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="editIdeaBtn">儲存</button>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+    <!-- 閱讀想法或修改想法的彈出視窗 -->
+
+    <!-- 實作節點的彈出視窗 -->
+    <div class="modal fade" id="readProjectModal" tabindex="-1" role="dialog" aria-labelledby="readProjectModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="readProjectModalLongTitle">實作節點</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div id="readProjectModalRoot">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" id="replyBtn">回覆想法</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 實作節點的彈出視窗 -->
+
+    <!-- 新增參考文獻節點的彈出視窗 -->
+    <div class="modal fade" id="addReferenceNode" tabindex="-1" role="dialog" aria-labelledby="readProjectModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addReferenceNodeLongTitle">新增參考文獻</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div id="addReferenceNodeRoot">
+              <div><b>標題</b><input class="form-control" type="text" name="reference_title" id="reference_title" required="required"></div>
+              <div class="ideaTag"></div>
+              <div class="form-row">
+                <div class="col-2">
+                  <b>參考文獻類型：</b>
+                </div>
+                <div class="col-10">
+                  <select class="custom-select" name="sampleSelect" id="selectReferenceNodeType">
+                    <option value="網址">網址</option>
+                    <option value="書籍">書籍</option>
+                    <option value="報章文章">報章文章</option>
+                    <option value="其他">其他</option>
+                  </select>
+                </div>  
+              </div>
+              <div class="mt-2">
+                <b>參考文獻：</b><a href="#" onclick="window.open('/stylesheets/參考文獻格式參考.pdf','參考文獻格式', config='toolbar=no'); ">參考文獻格式說明</a>
+                <textarea class="referenceEditor" id="reference_node_content"></textarea>
+              </div>
+              <br>
+              <div>
+                <b>參考內容：</b>
+                <textarea class="nodeEditor" id="referenceNodeIdea"></textarea>
+              </div>
+              <div class="input-group">
+                <div class="custom-file">
+                  <input type="file" class="custom-file-input" id="inputGroupReferenceFile" aria-describedby="inputGroupFileAddon" multiple="">
+                  <label class="custom-file-label mt-2" for="inputGroupFile04">選擇檔案</label>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+            <button type="button" class="btn btn-primary" id="addReferenceNodeBtn">新增</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 新增參考文獻節點的彈出視窗 -->
+
+    <!-- 閱讀參考文獻節點或修改參考文獻節點的彈出視窗 -->
+    <div class="modal fade" id="editAndReadReference" tabindex="-1" role="dialog" aria-labelledby="editAndReadReferenceCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editAndReadReferenceLongTitle">參考文獻</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="mt-2 ml-3 mr-3">
+
+            <ul class="nav nav-tabs" id="referenceTab" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active" id="readReference-tab" data-toggle="tab" href="#readReferenceTab" role="tab" aria-controls="readReferenceTab" aria-selected="true">閱讀</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="editReference-tab" data-toggle="tab" href="#ediReferenceTab" role="tab" aria-controls="editReferenceTab" aria-selected="false">修改</a>
+              </li>
+            </ul>
+
+          </div>
+
+          <div class="tab-content" id="myReferenceTabContent">          
+            
+            <div class="tab-pane fade show active" id="readReferenceTab" role="tabpanel" aria-labelledby="readReference-tab">
+              <div class="modal-body"  style="min-height: 200px;">
+                <div id="ReadReferenceRoot">
+                閱讀
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary">收藏</button>
+                <button type="button" class="btn btn-primary">回覆</button>
+              </div>
+            </div>
+
+            <div class="tab-pane fade" id="ediReferenceTab" role="tabpanel" aria-labelledby="editReference-tab">
+              <div class="modal-body">
+                <div id="EditReferenceRoot">
+                  <p><b>標題</b><input class="form-control" type="text" name="reference_title_edit" id="reference_title_edit" required="required"></p>
+                  <div class="referenceTagEdit"></div>
+                  <div class="form-row">
+                    <div class="col-2">
+                      <b>參考文獻類型：</b>
+                    </div>
+                    <div class="col-10">
+                      <select class="custom-select" name="sampleSelect" id="editSelectReferenceNodeType">
+                        <option value="網址">網址</option>
+                        <option value="書籍">書籍</option>
+                        <option value="報章文章">報章文章</option>
+                        <option value="其他">其他</option>
+                      </select>
+                    </div>  
+                  </div>
+                  <div class="mt-2">
+                    <b>參考文獻：</b><a href="#" onclick="window.open('/stylesheets/參考文獻格式參考.pdf','參考文獻格式', config='toolbar=no'); ">參考文獻格式說明</a>
+                    <textarea class="referenceEditor" id="edit_reference_node_content"></textarea>
+                  </div>
+                  <br>
+                  <div>
+                    <b>參考內容：</b>
+                    <textarea class="nodeEditor" id="editReferenceNodeIdea"></textarea>
+                  </div>
+                  <div class="input-group">
+                    <div class="custom-file">
+                      <input type="file" class="custom-file-input" id="editInputGroupReferenceFile" aria-describedby="inputGroupFileAddon" multiple="">
+                      <label class="custom-file-label mt-2" for="inputGroupFile04">選擇檔案</label>
+                    </div>
+                  </div>
+                  <div id="referenceNodeFiles" style="margin-top: 8px;"></div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="editReferenceNodeBtn">儲存</button>
+              </div>
+            </div>
+
+
+          </div>
+          
+        </div>
+      </div>
+    </div>
+    <!-- 閱讀參考文獻節點或修改參考文獻節點的彈出視窗 -->
+
+    <!-- 新增昇華的想法的彈出視窗 -->
+    <!-- <div class="modal fade" id="addRiseAboveIdea" tabindex="-1" role="dialog" aria-labelledby="addRiseAboveIdeaCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addRiseAboveIdeaLongTitle">提出昇華的想法</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <div class="modal-body">
             <div id="addIdeaRoot">
-              <p><b>標題</b><input class="form-control" type="text" name="idea_title" id="idea_title" required="required"></p>
+              <p><b>標題</b><input class="form-control" type="text" name="rise_above_idea_title" id="rise_above_idea_title" required="required"></p>
               <div class="ideaTag"></div>
               <div class="row">
                   <div class="btn-group-vertical col-3">
@@ -73,10 +366,10 @@
                       <button type="button" class="btn border-color-green scaffold">有發展性的想法</button>
                   </div>
                   <div class="col-9">
-                      <textarea class="nodeEditor" id="addIdeaSummernote"></textarea>
+                      <textarea class="nodeEditor" id="addRiseAboveIdeaSummernote"></textarea>
                       <div class="input-group">
                         <div class="custom-file">
-                          <input type="file" class="custom-file-input" id="inputGroupFile" aria-describedby="inputGroupFileAddon" multiple="">
+                          <input type="file" class="custom-file-input" id="inputRiseAboveIdeaGroupFile" aria-describedby="inputGroupFileAddon" multiple="">
                           <label class="custom-file-label mt-2" for="inputGroupFile04">選擇檔案</label>
                         </div>
                       </div>
@@ -86,307 +379,16 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-            <button type="button" class="btn btn-primary" id="addIdeaBtn">新增</button>
+            <button type="button" class="btn btn-primary" id="addRiseAboveIdeaBtn">新增</button>
           </div>
         </div>
       </div>
+    </div> -->
+    <!-- 新增昇華的想法的彈出視窗 -->
+
   </div>
-  <!-- 新增想法的彈出視窗 -->
-
-  <!-- 閱讀想法或修改想法的彈出視窗 -->
-  <div class="modal fade" id="editAndReadIdea" tabindex="-1" role="dialog" aria-labelledby="editAndReadIdeaCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="editAndReadIdeaLongTitle">閱讀想法</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="mt-2 ml-3 mr-3">
-
-          <ul class="nav nav-tabs" id="ideaTab" role="tablist">
-            <li class="nav-item">
-              <a class="nav-link active" id="readIdea-tab" data-toggle="tab" href="#readIdeaTab" role="tab" aria-controls="readIdeaTab" aria-selected="true">閱讀</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" id="editIdea-tab" data-toggle="tab" href="#editIdeaTab" role="tab" aria-controls="editIdeaTab" aria-selected="false">修改</a>
-            </li>
-          </ul>
-
-        </div>
-
-        <div class="tab-content" id="myTabContent">          
-          
-          <div class="tab-pane fade show active" id="readIdeaTab" role="tabpanel" aria-labelledby="readIdea-tab">
-            <div class="modal-body"  style="min-height: 200px;">
-              <div id="ReadIdeaRoot">
-              閱讀
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary">收藏</button>
-              <button type="button" class="btn btn-primary dropdown-toggle" id="dropdownMenuReplyIdea" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">回覆</button>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuReplyIdea">
-                <button class="dropdown-item addIdea" type="button" data-dismiss="modal" data-toggle="modal" data-target="#addIdea">回覆一般想法</button>
-                <button class="dropdown-item addRiseAbove" type="button" data-dismiss="modal" data-toggle="modal" data-target="#addIdea">提出昇華的想法</button>
-                <button class="dropdown-item" type="button">提出參考文獻</button>
-              </div>
-              <!-- <button type="button" class="btn btn-primary" data-dismiss="modal" data-toggle="modal" data-target="#addIdea">回覆</button> -->
-            </div>
-          </div>
-
-          <div class="tab-pane fade" id="editIdeaTab" role="tabpanel" aria-labelledby="editIdea-tab">
-            <div class="modal-body">
-              <div id="EditIdeaRoot">
-                <p><b>標題</b><input class="form-control" type="text" name="idea_title_edit" id="idea_title_edit" required="required"></p>
-                <div class="ideaTagEdit"></div>
-                <div class="row">
-                  <div class=" col-3">
-                    <div class="btn-group-vertical" style="width: 100%;">
-                        <button type="button" class="btn border-color-green scaffold">我想知道</button>
-                        <button type="button" class="btn border-color-green scaffold">我的想法</button>
-                        <button type="button" class="btn border-color-green scaffold">我的理論</button>
-                        <button type="button" class="btn border-color-green scaffold">新資訊或參考來源</button>
-                        <button type="button" class="btn border-color-green scaffold">另一個觀點是</button>
-                        <button type="button" class="btn border-color-green scaffold">我覺得更好的想法</button>
-                        <button type="button" class="btn border-color-green scaffold">有發展性的想法</button>
-                    </div>
-                  </div>
-                  <div class="col-9">
-                      <textarea class="nodeEditor" id="editIdeaSummernote"></textarea>
-                      <div class="input-group">
-                        <div class="custom-file">
-                          <input type="file" class="custom-file-input" id="inputGroupFileEdit" aria-describedby="inputGroupFileAddon" multiple="">
-                          <label class="custom-file-label mt-2" for="inputGroupFile04">選擇檔案</label>
-                        </div>
-                      </div>
-                      <div id="nodeFiles" style="margin-top: 8px;">
-
-                      </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-primary" id="editIdeaBtn">儲存</button>
-            </div>
-          </div>
-        </div>
-        
-      </div>
-    </div>
-  </div>
-  <!-- 閱讀想法或修改想法的彈出視窗 -->
-
-  <!-- 實作節點的彈出視窗 -->
-  <div class="modal fade" id="readProjectModal" tabindex="-1" role="dialog" aria-labelledby="readProjectModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="readProjectModalLongTitle">實作節點</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div id="readProjectModalRoot">
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary" id="replyBtn">回覆想法</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- 實作節點的彈出視窗 -->
-
-  <!-- 新增參考文獻節點的彈出視窗 -->
-  <div class="modal fade" id="addReferenceNode" tabindex="-1" role="dialog" aria-labelledby="readProjectModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="addReferenceNodeLongTitle">新增參考文獻</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div id="addReferenceNodeRoot">
-            <div><b>標題</b><input class="form-control" type="text" name="reference_title" id="reference_title" required="required"></div>
-            <div class="ideaTag"></div>
-            <div class="form-row">
-              <div class="col-2">
-                <b>參考文獻類型：</b>
-              </div>
-              <div class="col-10">
-                <select class="custom-select" name="sampleSelect" id="selectReferenceNodeType">
-                  <option value="網址">網址</option>
-                  <option value="書籍">書籍</option>
-                  <option value="報章文章">報章文章</option>
-                  <option value="其他">其他</option>
-                </select>
-              </div>  
-            </div>
-            <div class="mt-2">
-              <b>參考文獻：</b><a href="#" onclick="window.open('/stylesheets/參考文獻格式參考.pdf','參考文獻格式', config='toolbar=no'); ">參考文獻格式說明</a>
-              <textarea class="referenceEditor" id="reference_node_content"></textarea>
-            </div>
-            <br>
-            <div>
-              <b>參考內容：</b>
-              <textarea class="nodeEditor" id="referenceNodeIdea"></textarea>
-            </div>
-            <div class="input-group">
-              <div class="custom-file">
-                <input type="file" class="custom-file-input" id="inputGroupReferenceFile" aria-describedby="inputGroupFileAddon" multiple="">
-                <label class="custom-file-label mt-2" for="inputGroupFile04">選擇檔案</label>
-              </div>
-            </div>
-
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-          <button type="button" class="btn btn-primary" id="addReferenceNodeBtn">新增</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- 新增參考文獻節點的彈出視窗 -->
-
-  <!-- 閱讀參考文獻節點或修改參考文獻節點的彈出視窗 -->
-  <div class="modal fade" id="editAndReadReference" tabindex="-1" role="dialog" aria-labelledby="editAndReadReferenceCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="editAndReadReferenceLongTitle">參考文獻</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="mt-2 ml-3 mr-3">
-
-          <ul class="nav nav-tabs" id="referenceTab" role="tablist">
-            <li class="nav-item">
-              <a class="nav-link active" id="readReference-tab" data-toggle="tab" href="#readReferenceTab" role="tab" aria-controls="readReferenceTab" aria-selected="true">閱讀</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" id="editReference-tab" data-toggle="tab" href="#ediReferenceTab" role="tab" aria-controls="editReferenceTab" aria-selected="false">修改</a>
-            </li>
-          </ul>
-
-        </div>
-
-        <div class="tab-content" id="myReferenceTabContent">          
-          
-          <div class="tab-pane fade show active" id="readReferenceTab" role="tabpanel" aria-labelledby="readReference-tab">
-            <div class="modal-body"  style="min-height: 200px;">
-              <div id="ReadReferenceRoot">
-              閱讀
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary">收藏</button>
-              <button type="button" class="btn btn-primary">回覆</button>
-            </div>
-          </div>
-
-          <div class="tab-pane fade" id="ediReferenceTab" role="tabpanel" aria-labelledby="editReference-tab">
-            <div class="modal-body">
-              <div id="EditReferenceRoot">
-                <p><b>標題</b><input class="form-control" type="text" name="reference_title_edit" id="reference_title_edit" required="required"></p>
-                <div class="referenceTagEdit"></div>
-                <div class="form-row">
-                  <div class="col-2">
-                    <b>參考文獻類型：</b>
-                  </div>
-                  <div class="col-10">
-                    <select class="custom-select" name="sampleSelect" id="editSelectReferenceNodeType">
-                      <option value="網址">網址</option>
-                      <option value="書籍">書籍</option>
-                      <option value="報章文章">報章文章</option>
-                      <option value="其他">其他</option>
-                    </select>
-                  </div>  
-                </div>
-                <div class="mt-2">
-                  <b>參考文獻：</b><a href="#" onclick="window.open('/stylesheets/參考文獻格式參考.pdf','參考文獻格式', config='toolbar=no'); ">參考文獻格式說明</a>
-                  <textarea class="referenceEditor" id="edit_reference_node_content"></textarea>
-                </div>
-                <br>
-                <div>
-                  <b>參考內容：</b>
-                  <textarea class="nodeEditor" id="editReferenceNodeIdea"></textarea>
-                </div>
-                <div class="input-group">
-                  <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="editInputGroupReferenceFile" aria-describedby="inputGroupFileAddon" multiple="">
-                    <label class="custom-file-label mt-2" for="inputGroupFile04">選擇檔案</label>
-                  </div>
-                </div>
-                <div id="referenceNodeFiles" style="margin-top: 8px;"></div>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-primary" id="editReferenceNodeBtn">儲存</button>
-            </div>
-          </div>
-
-
-        </div>
-        
-      </div>
-    </div>
-  </div>
-  <!-- 閱讀參考文獻節點或修改參考文獻節點的彈出視窗 -->
-
-  <!-- 新增昇華的想法的彈出視窗 -->
-  <!-- <div class="modal fade" id="addRiseAboveIdea" tabindex="-1" role="dialog" aria-labelledby="addRiseAboveIdeaCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="addRiseAboveIdeaLongTitle">提出昇華的想法</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div id="addIdeaRoot">
-            <p><b>標題</b><input class="form-control" type="text" name="rise_above_idea_title" id="rise_above_idea_title" required="required"></p>
-            <div class="ideaTag"></div>
-            <div class="row">
-                <div class="btn-group-vertical col-3">
-                    <button type="button" class="btn border-color-green scaffold">我想知道</button>
-                    <button type="button" class="btn border-color-green scaffold">我的想法</button>
-                    <button type="button" class="btn border-color-green scaffold">我的理論</button>
-                    <button type="button" class="btn border-color-green scaffold">新資訊或參考來源</button>
-                    <button type="button" class="btn border-color-green scaffold">另一個觀點是</button>
-                    <button type="button" class="btn border-color-green scaffold">我覺得更好的想法</button>
-                    <button type="button" class="btn border-color-green scaffold">有發展性的想法</button>
-                </div>
-                <div class="col-9">
-                    <textarea class="nodeEditor" id="addRiseAboveIdeaSummernote"></textarea>
-                    <div class="input-group">
-                      <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="inputRiseAboveIdeaGroupFile" aria-describedby="inputGroupFileAddon" multiple="">
-                        <label class="custom-file-label mt-2" for="inputGroupFile04">選擇檔案</label>
-                      </div>
-                    </div>
-                </div>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-          <button type="button" class="btn btn-primary" id="addRiseAboveIdeaBtn">新增</button>
-        </div>
-      </div>
-    </div>
-  </div> -->
-  <!-- 新增昇華的想法的彈出視窗 -->
-
 </div>
+
 
 
 
