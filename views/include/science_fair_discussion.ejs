@@ -29,7 +29,7 @@
       </a>
       
 
-      <h6 style="margin-top: 15px; background-color:rgb(230, 191, 178);">實作想法</h6>
+      <!-- <h6 style="margin-top: 15px; background-color:rgb(230, 191, 178);">實作想法</h6>
       <a class="tool" id="voteTool" data-toggle="modal">
         <img src="/stylesheets/images/icons/question.svg" alt="形成問題" >
         <div class="tool-text">形成問題</div>
@@ -45,7 +45,7 @@
       <a class="tool" id="voteTool" data-toggle="modal">
         <img src="/stylesheets/images/icons/analysis.svg" alt="分析與詮釋" >
         <div class="tool-text">分析與詮釋</div>
-      </a>
+      </a> -->
   </div>
 
   <!-- 新增想法的彈出視窗 -->
@@ -53,7 +53,7 @@
       <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="addIdeaLongTitle">新增想法</h5>
+            <h5 class="modal-title" id="addIdeaLongTitle" data-nodetype="idea">新增想法</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -128,8 +128,8 @@
               <button type="button" class="btn btn-secondary">收藏</button>
               <button type="button" class="btn btn-primary dropdown-toggle" id="dropdownMenuReplyIdea" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">回覆</button>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuReplyIdea">
-                <button class="dropdown-item" type="button" data-dismiss="modal" data-toggle="modal" data-target="#addIdea">回覆一般想法</button>
-                <button class="dropdown-item" type="button">提出昇華的想法</button>
+                <button class="dropdown-item addIdea" type="button" data-dismiss="modal" data-toggle="modal" data-target="#addIdea">回覆一般想法</button>
+                <button class="dropdown-item addRiseAbove" type="button" data-dismiss="modal" data-toggle="modal" data-target="#addIdea">提出昇華的想法</button>
                 <button class="dropdown-item" type="button">提出參考文獻</button>
               </div>
               <!-- <button type="button" class="btn btn-primary" data-dismiss="modal" data-toggle="modal" data-target="#addIdea">回覆</button> -->
@@ -340,6 +340,51 @@
     </div>
   </div>
   <!-- 閱讀參考文獻節點或修改參考文獻節點的彈出視窗 -->
+
+  <!-- 新增昇華的想法的彈出視窗 -->
+  <!-- <div class="modal fade" id="addRiseAboveIdea" tabindex="-1" role="dialog" aria-labelledby="addRiseAboveIdeaCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addRiseAboveIdeaLongTitle">提出昇華的想法</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div id="addIdeaRoot">
+            <p><b>標題</b><input class="form-control" type="text" name="rise_above_idea_title" id="rise_above_idea_title" required="required"></p>
+            <div class="ideaTag"></div>
+            <div class="row">
+                <div class="btn-group-vertical col-3">
+                    <button type="button" class="btn border-color-green scaffold">我想知道</button>
+                    <button type="button" class="btn border-color-green scaffold">我的想法</button>
+                    <button type="button" class="btn border-color-green scaffold">我的理論</button>
+                    <button type="button" class="btn border-color-green scaffold">新資訊或參考來源</button>
+                    <button type="button" class="btn border-color-green scaffold">另一個觀點是</button>
+                    <button type="button" class="btn border-color-green scaffold">我覺得更好的想法</button>
+                    <button type="button" class="btn border-color-green scaffold">有發展性的想法</button>
+                </div>
+                <div class="col-9">
+                    <textarea class="nodeEditor" id="addRiseAboveIdeaSummernote"></textarea>
+                    <div class="input-group">
+                      <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputRiseAboveIdeaGroupFile" aria-describedby="inputGroupFileAddon" multiple="">
+                        <label class="custom-file-label mt-2" for="inputGroupFile04">選擇檔案</label>
+                      </div>
+                    </div>
+                </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+          <button type="button" class="btn btn-primary" id="addRiseAboveIdeaBtn">新增</button>
+        </div>
+      </div>
+    </div>
+  </div> -->
+  <!-- 新增昇華的想法的彈出視窗 -->
 
 </div>
 

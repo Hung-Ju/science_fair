@@ -1165,7 +1165,7 @@ router.post('/discussion/addIdea', upload.array('files',5), function(req, res, n
     var groups_id_groups = req.body.gid;
     var node_title = req.body.node_title;
     var node_tag = req.body.node_tag;
-    var node_type = "idea";
+    var node_type = req.body.node_type;
     var idea_content = req.body.idea_content;
     var member_id_member = req.session.member_id;
     var member_name = req.session.member_name;

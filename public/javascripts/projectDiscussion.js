@@ -161,17 +161,43 @@ function addNodecontent(){
     network.on("beforeDrawing", function (ctx) {
         
       var nodePosition = network.getPositions(nodeId);
-      
+
       for(i=0;i<node.length;i++){
+        //tag的顯示內容
+        var tagsContent="";
+        if(node[i].node_tag != ""){
+            var tagsContent = '['+node[i].node_tag+']';
+
+            
+        }
+        
         ctx.font = "bold 16px 微軟正黑體";
+        ctx.fillStyle = "pink";
+        var width = ctx.measureText(tagsContent).width;
+        ctx.fillRect(nodePosition[nodeId[i]].x + 30, nodePosition[nodeId[i]].y-26, width, 20);
         ctx.fillStyle = "black";
-        ctx.fillText(node[i].node_title, nodePosition[nodeId[i]].x + 30, nodePosition[nodeId[i]].y-10);
+        ctx.fillText(tagsContent + node[i].node_title, nodePosition[nodeId[i]].x + 30, nodePosition[nodeId[i]].y-10);
+        
+
         ctx.font = "12px 微軟正黑體";
         ctx.fillStyle = "gray";
         ctx.fillText(node[i].member_name, nodePosition[nodeId[i]].x + 30, nodePosition[nodeId[i]].y+10);
         ctx.font = "12px 微軟正黑體";
         ctx.fillStyle = "gray";
         ctx.fillText(node[i].node_createtime, nodePosition[nodeId[i]].x + 30, nodePosition[nodeId[i]].y+30);
+
+        // ctx.font = "12px 微軟正黑體";
+        // ctx.fillStyle = "gray";
+        // ctx.fillText(node[i].node_tag, nodePosition[nodeId[i]].x + 30, nodePosition[nodeId[i]].y+50);
+
+        // ctx.font = "12px 微軟正黑體";
+        // ctx.fillStyle = "gray";
+        
+        // ctx.fillRect(nodePosition[nodeId[i]].x + 30, nodePosition[nodeId[i]].y+50, width, 14);
+        // ctx.fillStyle = "white";
+        // ctx.fillText(node[i].node_createtime, nodePosition[nodeId[i]].x + 30, nodePosition[nodeId[i]].y+50);
+        //ctx.strokeText(node[i].node_tag, nodePosition[nodeId[i]].x + 30, nodePosition[nodeId[i]].y+50);
+        // ctx.fillText(node[i].node_tag, nodePosition[nodeId[i]].x + 30, nodePosition[nodeId[i]].y+50);
       }
     });
 }
@@ -243,7 +269,7 @@ function clickevent(){
         var node_title = clickedNode[0].node_title;
 
         if(clickid !== undefined){
-            if(node_group == "idea"){
+            if(node_group == "idea" || "rise_above"){
                 //想法節點
                 var ajaxData = ajaxGetNodeData(clickid);
                 var ajaxNodeData = ajaxData.nodeData;
@@ -447,12 +473,16 @@ function clickevent(){
                 name: "回覆想法",
                 callback: function(itemKey, opt, e){
                     $('#addIdea').modal('show');
+                    $("#addIdeaLongTitle").attr("data-nodetype","idea");
+                    $("#addIdeaLongTitle").html("新增想法");
                 }
             },
             "addRiseAbove": {
                 name: "提出昇華的想法",
                 callback: function(itemKey, opt, e){
-                    $('#addRiseAbove').modal('show');
+                    $('#addIdea').modal('show');
+                    $("#addIdeaLongTitle").attr("data-nodetype","rise_above");
+                    $("#addIdeaLongTitle").html("提出昇華的想法");
                 }
             },
             "addReferenceNode": {
@@ -495,6 +525,7 @@ function tagsInput(node_tag){
           only: true,
         },
         tags: node_tag,
+        max:1,
         // editable: false,
         // destroy: true,
         create: function() {
@@ -617,6 +648,11 @@ function modalHidden() {
     $('#editAndReadReference').on('hide.bs.modal', function (e) {
         $('.ideaTagEdit').empty();
     })
+    //新增昇華的想法想法的Modal
+    $('#addRiseAboveIdea').on('hide.bs.modal', function (e) {
+        $("#rise_above_idea_title").val("");
+        $('.ideaTag').empty();
+    })
 
 };
 
@@ -631,6 +667,11 @@ function modalShown() {
         $('.ideaTag').append('<p><b>標籤</b><input class="form-control idea_tag" type="text" name="idea_tag" id="reference_tag" required="required"></p>');
         tagsInput();
     })
+    // //新增昇華的想法的Modal
+    // $('#addRiseAboveIdea').on('show.bs.modal', function(e){ 
+    //     $('.ideaTag').append('<p><b>標籤</b><input class="form-control idea_tag" type="text" name="idea_tag" id="rise_above_tag" required="required"></p>');
+    //     tagsInput();
+    // })
 
     
 };
@@ -730,6 +771,7 @@ $(function(){
         var idea_content = $('.nodeEditor').val();
         var mode = "想法討論";
         var files = document.getElementById('inputGroupFile').files.length;
+        var node_type = $("#addIdeaLongTitle").attr("data-nodetype");
         var ideaData = new FormData();
         for (var x = 0; x < files; x++) {
             ideaData.append("files", document.getElementById('inputGroupFile').files[x]);
@@ -740,6 +782,7 @@ $(function(){
         ideaData.append("node_tag",node_tag);
         ideaData.append("idea_content",idea_content);
         ideaData.append('fromNodeId', currentNodeId.toString());
+        ideaData.append('node_type', node_type);
             
         $.ajax({  
             type: "POST",
@@ -886,6 +929,61 @@ $(function(){
         });
     });
 
+    //提出昇華的想法節點
+    $("#addRiseAboveIdea").click(function () {
+        var gid = document.getElementById("groups_id").value;
+        var node_title = $('#idea_title').val();
+        var node_tag = $('.idea_tag').val();
+        var idea_content = $('.nodeEditor').val();
+        var mode = "想法討論";
+        var files = document.getElementById('inputGroupFile').files.length;
+        var node_type = "rise_above";
+        var ideaData = new FormData();
+        for (var x = 0; x < files; x++) {
+            ideaData.append("files", document.getElementById('inputGroupFile').files[x]);
+        }
+
+        ideaData.append("gid",gid);
+        ideaData.append("node_title",node_title);
+        ideaData.append("node_tag",node_tag);
+        ideaData.append("idea_content",idea_content);
+        ideaData.append('fromNodeId', currentNodeId.toString());
+        ideaData.append('node_type', node_type);
+            
+        $.ajax({  
+            type: "POST",
+            url: "/project/discussion/addIdea",
+            data: ideaData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function(data){
+                if(data){
+                    // alert(123);
+                    if(data.message=="true"){
+                        alert('新增成功');
+                        // window.location.href="/project/?gid="+gid;
+                        window.location.href = "/project/"+gid+"/"+mode;
+                    }
+                    else if(data.message=="same"){
+                        alert('小組中有相同的檔案'+data.sameFile+'，請重新選擇');
+                    }
+                    else if(data.message=="nullContent"){
+                        alert('請確實填入標題')
+                    }
+                    else{
+                        alert('帳號已被系統自動登出，請重新登入');
+                        window.location.href="/";
+                    }
+                }
+            },
+            error: function(){
+                alert('失敗');
+            }
+        });
+    });
+
+
     //KB鷹架工具
     $('.scaffold').on('click', function() {
         var scaffoldText = $(this).text();
@@ -943,6 +1041,16 @@ $(function(){
         }
         $(this).next('.custom-file-label').html(files.join(', '));
     });
+
+    $('.addIdea').click(function(){
+        $("#addIdeaLongTitle").attr("data-nodetype","idea");
+        $("#addIdeaLongTitle").html("新增想法");
+    })
+
+    $('.addRiseAbove').click(function(){
+        $("#addIdeaLongTitle").attr("data-nodetype","rise_above");
+        $("#addIdeaLongTitle").html("提出昇華的想法");
+    })
 
 });
 

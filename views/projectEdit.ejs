@@ -116,7 +116,7 @@
         <div class="col-1 choose-stage">
           <div class="row justify-content-center">
             <!-- 左邊的階段切換選單 -->
-            <nav id="left_nav" class="nav flex-column nav-pills text-center position-fixed2">
+            <!-- <nav id="left_nav" class="nav flex-column nav-pills text-center position-fixed2">
               <a id="L1" class="changet nav-link" href="#research_motivation_box" data-toggle="pill">形成問題</a>
               <a id="L2" class="changet nav-link" href="#research_steps_box" data-toggle="pill">研究規劃</a>
               <a id="L3" class="changet nav-link" href="#research_record_box" data-toggle="pill">執行</a>
@@ -124,20 +124,19 @@
               <a id="L5" class="changet nav-link" href="#research_conculsion_box" data-toggle="pill">統整報告</a>
               <button class="stage-btn btn btn-sm" type='submit' data-toggle="modal" data-target="#changeStage">切換階段</button>
               <button class="stage-btn btn btn-sm" type='submit' data-toggle="modal" data-target="#referenceModal">參考文獻</button>
+            </nav> -->
 
-              
+            <div id="left_nav" class="list-group  text-center position-fixed2">
+    
+              <a id="L1" class="changet topList" href="#research_motivation_box" data-toggle="pill">形成問題</a>
+              <a id="L2" class="changet" href="#research_steps_box" data-toggle="pill">研究規劃</a>
+              <a id="L3" class="changet" href="#research_record_box" data-toggle="pill">執行</a>
+              <a id="L4" class="changet" href="#research_analysis_box" data-toggle="pill">分析與詮釋</a>
+              <a id="L5" class="changet bottomList" href="#research_conculsion_box" data-toggle="pill">統整報告</a>
+              <button class="stage-btn btn btn-sm" type='submit' data-toggle="modal" data-target="#changeStage">切換階段</button>
+              <button class="stage-btn btn btn-sm" type='submit' data-toggle="modal" data-target="#referenceModal">參考文獻</button>
+            </div>
 
-              <!-- 測試 -->
-              <!-- <select name="sampleSelect" id="selectStage">
-                <option value="形成問題">形成問題</option>
-                <option value="研究規劃">研究規劃</option>
-                <option value="執行">執行</option>
-                <option value="分析與詮釋">分析與詮釋</option>
-                <option value="統整報告">統整報告</option>
-              </select> -->
-              <!-- 測試 -->
-
-            </nav>
 
             <!-- 階段切換的彈出視窗 -->
             <div class="modal fade" id="changeStage" tabindex="-1" role="dialog" aria-labelledby="changeStageCenterTitle" aria-hidden="true">

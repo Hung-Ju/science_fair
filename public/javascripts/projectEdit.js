@@ -1005,8 +1005,8 @@ $(function(){
 
         summernoteCreate();
         $(".create-motivation-summernote").summernote("enable"); 
-        $('#L1').addClass("active");
-        $('#L2, #L3, #L4, #L5').removeClass("active") ;
+        $('#L1').addClass("nowStage");
+        $('#L2, #L3, #L4, #L5').removeClass("nowStage") ;
     //只開啟實驗步驟和研究設備及器材的編輯區塊
     } else if ($("#groups_stage").val() == "研究規劃"){
         $('#writing_content *').attr('disabled', true);
@@ -1016,8 +1016,8 @@ $(function(){
         $( ".create-experiment-summernote" ).each(function() {
             $(this).summernote('enable');
         });
-        $('#L2').addClass("active");
-        $('#L1, #L3, #L4, #L5').removeClass("active") ;
+        $('#L2').addClass("nowStage");
+        $('#L1, #L3, #L4, #L5').removeClass("nowStage") ;
         //table列拖拉和數字排序
         // $( "table tbody" ).sortable( {
         //     update: function( event, ui ) {
@@ -1039,8 +1039,8 @@ $(function(){
         $( ".create-analysis-summernote" ).each(function() {
             $(this).summernote('enable');
         });
-        $('#L3').addClass("active");
-        $('#L1, #L2, #L4, #L5').removeClass("active") ;
+        $('#L3').addClass("nowStage");
+        $('#L1, #L2, #L4, #L5').removeClass("nowStage") ;
     //只開啟討論和結論的編輯區塊
     } else if ($("#groups_stage").val() == "分析與詮釋"){
         $('#writing_content *').attr('disabled', true);
@@ -1051,8 +1051,8 @@ $(function(){
             $(this).summernote('enable');
         });
         $(".create-conclusion-summernote").summernote("enable");
-        $('#L4').addClass("active");
-        $('#L1, #L2, #L3, #L5').removeClass("active") ;
+        $('#L4').addClass("nowStage");
+        $('#L1, #L2, #L3, #L5').removeClass("nowStage") ;
     //全部編輯區塊開啟
     }  else if ($("#groups_stage").val() == "統整報告"){
         $('#writing_content *').attr('disabled', false);
@@ -1072,8 +1072,8 @@ $(function(){
             $(this).summernote('enable');
         });
         $(".create-conclusion-summernote").summernote("enable");
-        $('#L5').addClass("active");
-        $('#L1, #L2, #L3, #L4').removeClass("active") ;
+        $('#L5').addClass("nowStage");
+        $('#L1, #L2, #L3, #L4').removeClass("nowStage") ;
     }
 
     // $('#selectStage').change(function () {
@@ -1531,6 +1531,7 @@ $(function(){
     //利用錨點滑動頁面
     $('.changet').click(function() {
         var target = $(this.hash);
+        console.log(target);
         event.preventDefault(); //防止連結打開URL
         $('html, body').animate({
                 scrollTop: target.offset().top + -140

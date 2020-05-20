@@ -164,7 +164,7 @@ body { position: relative; }
 }
 
 .tool{
-  padding: 5px 1px;
+  padding: 5px 2px;
   display: block;
   text-align: center;
   text-decoration: none;
@@ -198,8 +198,43 @@ a.tool:hover {
   background-color: #31625C;
 }
 
-a.changet{
+/* a.changet{
   color: #31625C;
+  border-color: #31625C;
+  border-width: 2px;
+
+} */
+.changet{
+  padding: 5px 15px;
+  /* color: #fff;
+  background-color:#31625C; */
+  color: black;
+  border-color: #31625C;
+  border-radius: 8px;
+}
+
+.changet:hover{
+  padding: 5px 15px;
+  color: black;
+  border-color: #31625C;
+  border-radius: 8px;
+  /* background-color:#31625C; */
+  text-decoration: none;
+}
+
+/* .topList{
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.bottomList{
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+} */
+
+.nowStage{
+  color: #fff;
+  background-color: #31625C;
 }
 
 .border-color-green{
