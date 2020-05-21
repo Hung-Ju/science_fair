@@ -1034,6 +1034,8 @@ router.post('/discussion/addIdea', upload.array('files',5), function(req, res, n
     var node_id_node;
     var fromNodeIdString = req.body.fromNodeId;
     var fromNodeId = fromNodeIdString.split(',');
+    var nodeDataSelect = [];
+    var edgeDataSelect = [];
 
     if(!member_id_member){
         res.send({message:"false"});
@@ -1058,11 +1060,45 @@ router.post('/discussion/addIdea', upload.array('files',5), function(req, res, n
                             var edge_from = fromNodeId[j];
                             edgeDataArray.push({edge_from:edge_from, edge_to:node_id_node, groups_id_groups:groups_id_groups});
                         }
-                        console.log(edgeDataArray);
+                        //console.log(edgeDataArray);
                         return projectDiscussion.addEdge(edgeDataArray)
                     }
                 })
                 .then(function(result4){
+                    return projectDiscussion.selectNewNodeData(node_id_node)
+                })
+                .then(function(nodeData){
+                    if(nodeData){
+                        for (var k = 0; k < nodeData.length; k++){
+                            // var day = new Date(allGroupsNode[d].node_createtime);
+                            var id = nodeData[k].node_id;
+                            var group = nodeData[k].node_type;
+                            var x = nodeData[k].node_x;
+                            var y = nodeData[k].node_y;
+                            var member_id = nodeData[k].member_id_member;
+                            var member_name = nodeData[k].member_name;
+                            var node_title = nodeData[k].node_title;
+                            var node_tag = nodeData[k].node_tag;
+                            var node_createtime = nodeData[k].node_createtime2;
+                            var node_revised_count = nodeData[k].node_revised_count;
+                            var node_read_count = nodeData[k].node_read_count;
+                            allNodeData = {id:id, group:group, x:x, y:y, member_id:member_id, member_name:member_name, node_title:node_title, node_tag:node_tag, node_createtime:node_createtime, node_revised_count:node_revised_count, node_read_count:node_read_count};
+                            nodeDataSelect.push(allNodeData);
+                        }
+                    }
+                    //nodeDataSelect = nodeData;
+                    return projectDiscussion.selectNewEdgeData(node_id_node)
+                })
+                .then(function(edgeData){
+                    if(edgeData){
+                        for(var e = 0; e < edgeData.length; e++){
+                            var from = edgeData[e].edge_from;
+                            var to = edgeData[e].edge_to;
+                            allEdgeData = {from:from, to:to};
+                            edgeDataSelect.push(allEdgeData);
+                        }
+                    }
+                    //edgeDataSelect = edgeData;
                     var fileDataArray = [];
                     if(fileslength != 0){
                         for (var i = 0; i < fileslength; i++) {
@@ -1085,10 +1121,10 @@ router.post('/discussion/addIdea', upload.array('files',5), function(req, res, n
                         };
                         return projectDiscussion.addFile(fileDataArray)
                         .then(function(result4){
-                            res.send({message:"true"});
+                            res.send({message:"true", nodeData:nodeDataSelect, edgeData:edgeDataSelect});
                         })
                     }else{
-                        res.send({message:"true"});
+                        res.send({message:"true", nodeData:nodeDataSelect, edgeData:edgeDataSelect});
                     }
                 })
             }

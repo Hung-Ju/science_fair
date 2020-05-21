@@ -1,3 +1,5 @@
+var socket = io();
+
 //modal裡的summernote生成
 function nodeSummer(){
   $('.nodeEditor').summernote({
@@ -167,8 +169,6 @@ function addNodecontent(){
         var tagsContent="";
         if(node[i].node_tag != ""){
             var tagsContent = '['+node[i].node_tag+']';
-
-            
         }
         
         ctx.font = "bold 16px 微軟正黑體";
@@ -186,18 +186,6 @@ function addNodecontent(){
         ctx.fillStyle = "gray";
         ctx.fillText(node[i].node_createtime, nodePosition[nodeId[i]].x + 30, nodePosition[nodeId[i]].y+30);
 
-        // ctx.font = "12px 微軟正黑體";
-        // ctx.fillStyle = "gray";
-        // ctx.fillText(node[i].node_tag, nodePosition[nodeId[i]].x + 30, nodePosition[nodeId[i]].y+50);
-
-        // ctx.font = "12px 微軟正黑體";
-        // ctx.fillStyle = "gray";
-        
-        // ctx.fillRect(nodePosition[nodeId[i]].x + 30, nodePosition[nodeId[i]].y+50, width, 14);
-        // ctx.fillStyle = "white";
-        // ctx.fillText(node[i].node_createtime, nodePosition[nodeId[i]].x + 30, nodePosition[nodeId[i]].y+50);
-        //ctx.strokeText(node[i].node_tag, nodePosition[nodeId[i]].x + 30, nodePosition[nodeId[i]].y+50);
-        // ctx.fillText(node[i].node_tag, nodePosition[nodeId[i]].x + 30, nodePosition[nodeId[i]].y+50);
       }
     });
 }
@@ -216,7 +204,7 @@ function draw() {
     };
     
     network = new vis.Network(container, data, nodeOptions);
-    addNodecontent();
+    //addNodecontent();
 }
 
 //點擊事件
@@ -228,10 +216,10 @@ function clickevent(){
       
       var clickid = params.nodes;
       console.log(clickid);
-      network.off("beforeDrawing");
-      addNodecontent();
+      //network.off("beforeDrawing");
+      //addNodecontent();
       if(clickid.length !== 0){
-        drawbackground(clickid)
+        //drawbackground(clickid)
         //處理節點資料，要用到groups的資料
         var clickedNode = nodes.get({
             filter: function(item){
@@ -442,8 +430,8 @@ function clickevent(){
             //console.log(currentNodeId);
         }
         //點擊事件時畫灰色圓背景
-        network.off("beforeDrawing");
-        addNodecontent();
+        //network.off("beforeDrawing");
+        //addNodecontent();
         //console.log(currentNodeId);
         var currentNodeIdString = currentNodeId.toString();
         var clickid = currentNodeIdString.split(",");
@@ -455,7 +443,7 @@ function clickevent(){
             $trigger.contextMenu(false);
         }else{
             //點擊事件時畫灰色圓背景
-            drawbackground(clickid);
+            //drawbackground(clickid);
             $trigger.contextMenu(true);
             this.redraw();
         }
@@ -707,6 +695,77 @@ $(function(){
     modalShown();
     modalHidden();
     referenceNodeSummernote();
+    //addNodecontent();
+    socket.on('news',function(data) {
+        console.log(data);
+        socket.emit('my other event', { my: 'data' });
+    });
+
+    //傳送要進入房間的資料
+    socket.emit('join groups', $('#groups_id').val());
+
+    //接收加入的房間資料
+    socket.on('join room：',function(data){
+        console.log(data);
+    })
+
+    //接收新增的節點資料
+    socket.on('update node data',function(data){
+        nodes.update(data);
+        console.log("新增的節點資料"+data);
+    })
+
+    socket.on('update edge data',function(data){
+        edges.update(data);
+        console.log("新增的edge資料"+data)
+    })
+
+    //將文字寫入對應的node節點
+    network.on("beforeDrawing", function (ctx) {
+        nodes.forEach(function(data){
+            //console.log(data);
+            var nodePosition = network.getPositions(data.id);
+            //tag的顯示內容
+            var tagsContent="";
+            if(data.node_tag != ""){
+                var tagsContent = '['+data.node_tag+']';
+            }
+            
+            ctx.font = "bold 16px 微軟正黑體";
+            ctx.fillStyle = "pink";
+            var width = ctx.measureText(tagsContent).width;
+            ctx.fillRect(nodePosition[data.id].x + 30, nodePosition[data.id].y-26, width, 20);
+            ctx.fillStyle = "black";
+            ctx.fillText(tagsContent + data.node_title, nodePosition[data.id].x + 30, nodePosition[data.id].y-10);
+            
+            ctx.font = "12px 微軟正黑體";
+            ctx.fillStyle = "gray";
+            ctx.fillText(data.member_name, nodePosition[data.id].x + 30, nodePosition[data.id].y+10);
+            ctx.font = "12px 微軟正黑體";
+            ctx.fillStyle = "gray";
+            ctx.fillText(data.node_createtime, nodePosition[data.id].x + 30, nodePosition[data.id].y+30);
+
+        })
+        
+        $.each(currentNodeId, function(i, val){
+            //console.log(val);
+            var id = val;
+            var nodePosition = network.getPositions([id]);
+            ctx.strokeStyle = "rgba(220, 217, 204, 0.5)";
+            ctx.fillStyle = "rgba(220, 217, 204, 0.5)";
+
+            ctx.beginPath();
+            //context.arc(x,y,r(半徑),sAngle(起始角),eAngle(結束角),counterclockwise);
+            ctx.arc(nodePosition[id].x,nodePosition[id].y,25,0,2 * Math.PI,false);
+            ctx.closePath();
+
+            ctx.fill();
+            ctx.stroke();
+        })
+        
+
+    });
+
     
     //編輯想法節點
     $("#editIdeaBtn").click(function () {
@@ -796,8 +855,11 @@ $(function(){
                     // alert(123);
                     if(data.message=="true"){
                         alert('新增成功');
-                        // window.location.href="/project/?gid="+gid;
-                        window.location.href = "/project/"+gid+"/"+mode;
+                        //console.log(data.edgeData);
+                        //console.log(data.nodeData);
+                        
+                        socket.emit('add node', {gid:gid, nodeData:data.nodeData});
+                        socket.emit('add edge', {gid:gid, edgeData:data.edgeData});
                     }
                     else if(data.message=="same"){
                         alert('小組中有相同的檔案'+data.sameFile+'，請重新選擇');

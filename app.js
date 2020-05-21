@@ -11,6 +11,55 @@ var projectRouter = require('./routes/project');
 
 
 var app = express();
+var server = require('http').Server(app);
+server.listen(8000, function(){
+    console.log("server listening on port 8000");
+})
+var io = require('socket.io')(server);
+
+io.on('connection', function(socket) {
+    //發送訊息經過 news通道 傳送object
+    //emit是傳送
+    socket.emit('news', { hello: 'world' });
+    //on是接收
+    socket.on('my other event', (data) => {
+        console.log(data);
+    });
+    socket.on('disconnect',function () {
+      console.log("<disconnect>");
+    });
+
+    //加入房間
+    socket.on("join groups", function(data){
+        console.log("進入小組"+data);
+        var roomName = 'groups_'+ data;
+        socket.join(roomName);
+        socket.nsp.to(roomName).emit('join room：',roomName);
+    })
+
+    socket.on("add node", function(data){
+        //console.log(data);
+        var roomName = 'groups_'+ data.gid;
+        if (data.nodeData.length > 0){
+            console.log("新增的NodeData"+data.nodeData);
+            var nodeData = data.nodeData
+            socket.nsp.to(roomName).emit('update node data', nodeData);
+        }
+    })
+
+    socket.on("add edge", function(data){
+        console.log(data.edgeData);
+        var roomName = 'groups_'+ data.gid;
+        if (data.edgeData.length > 0){
+            console.log("新增的edgeData"+data.edgeData);
+            var edgeData = data.edgeData
+            socket.nsp.to(roomName).emit('update edge data', edgeData);
+        }
+    })
+
+
+});
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

@@ -397,4 +397,32 @@ module.exports = {
 		})
 	},
 
+	//抓取剛新增的節點資料
+	selectNewNodeData :function(node_id){
+		return new Promise(function(resolve, reject){
+			pool.getConnection(function(err, connection){
+				if(err) return reject(err);
+				connection.query('SELECT * FROM `node` WHERE `node_id`="'+node_id+'"', function(err, nodeData){
+					if(err) return reject(err);
+					resolve(nodeData);
+					connection.release();
+				})
+			})
+		})
+	},
+
+	//抓取剛新增的edge資料
+	selectNewEdgeData :function(node_id){
+		return new Promise(function(resolve, reject){
+			pool.getConnection(function(err, connection){
+				if(err) return reject(err);
+				connection.query('SELECT * FROM `edge` WHERE `edge_to`="'+node_id+'"', function(err, nodeData){
+					if(err) return reject(err);
+					resolve(nodeData);
+					connection.release();
+				})
+			})
+		})
+	},
+
 }
