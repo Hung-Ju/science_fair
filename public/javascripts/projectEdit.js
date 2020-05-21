@@ -1018,14 +1018,6 @@ $(function(){
         });
         $('#L2').addClass("nowStage");
         $('#L1, #L3, #L4, #L5').removeClass("nowStage") ;
-        //table列拖拉和數字排序
-        // $( "table tbody" ).sortable( {
-        //     update: function( event, ui ) {
-        //         $(this).children().each(function(index) {
-        //                 $(this).find('td').first().html(index + 1)
-        //         });
-        //     }   
-        // });
 
     //只開啟實驗記錄和研究結果(分析及圖表)的編輯區塊
     } else if ($("#groups_stage").val() == "執行"){

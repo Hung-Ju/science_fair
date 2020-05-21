@@ -18,10 +18,37 @@
         <a id="L3" class="changet" href="#research_record_box" data-toggle="pill">執行</a>
         <a id="L4" class="changet" href="#research_analysis_box" data-toggle="pill">分析與詮釋</a>
         <a id="L5" class="changet bottomList" href="#research_conculsion_box" data-toggle="pill">統整報告</a>
-        <button class="stage-btn btn btn-sm" type='submit' data-toggle="modal" data-target="#changeStage">切換階段</button>
-        <button class="stage-btn btn btn-sm" type='submit' data-toggle="modal" data-target="#referenceModal">參考文獻</button>
+         <% if(member_id == groups_create_student_id){ %>
+            <button class="stage-btn btn btn-sm" type='submit' data-toggle="modal" data-target="#changeStageCheck">階段審核表</button>
+            <button class="stage-btn btn btn-sm" type='submit' data-toggle="modal" data-target="#changeStage">切換階段</button>
+        <% }%>
+
+        <button class="stage-btn btn btn-sm" type='submit' data-toggle="modal" data-target="#referenceModal">參考文獻紀錄</button>
       </div>
 
+      <!-- 階段審核表的彈出視窗 -->
+      <div class="modal fade" id="changeStageCheck" tabindex="-1" role="dialog" aria-labelledby="changeStageCheckCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="changeStageCheckLongTitle">階段審核表</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div id="changeStageCheckRoot">
+                  <p>小組正在[<%= groups_stage %>]階段，請先確認階段審核表是否都已經通過！</p>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+              <button type="button" class="btn btn-primary" id="stageCheckBtn">送出</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 階段審核表的彈出視窗 -->
 
       <!-- 階段切換的彈出視窗 -->
       <div class="modal fade" id="changeStage" tabindex="-1" role="dialog" aria-labelledby="changeStageCenterTitle" aria-hidden="true">
@@ -124,14 +151,11 @@
   
 
   <div class="col-11" id="writing_content" data-spy="scroll" data-target="#left_nav" data-offset="0">
-
-
-
             
     <!-- 研究動機章節區塊  -->
     <div class="row" id="research_motivation_box" style="margin-top: 53px;">
     <div class="col chapter-title-box" style="background-color: #31625C;">
-        <h5 class="text-white chapter-title-text"><b>研究題目與動機</b></h5>
+        <h5 class="text-white chapter-title-text"><b>形成問題 - 研究題目與動機</b></h5>
     </div>
     </div>
     <!-- 章節區塊中的內容 -->
@@ -200,7 +224,7 @@
     <!-- 研究目的章節區塊 -->
     <div class="row">
     <div class="col chapter-title-box" style="background-color: #31625C;">
-        <h5 class="text-white chapter-title-text"><b>研究問題</b></h5>
+        <h5 class="text-white chapter-title-text"><b>形成問題 - 研究問題</b></h5>
     </div>
     </div>
     <!-- 章節區塊中的內容 -->
@@ -333,7 +357,7 @@
     <!-- 實驗步驟章節區塊 -->
     <div class="row" id="research_steps_box">
     <div class="col chapter-title-box" style="background-color: #31625C;">
-        <h5 class="text-white chapter-title-text"><b>實驗項目</b></h5>
+        <h5 class="text-white chapter-title-text"><b>研究規劃 - 實驗項目</b></h5>
     </div>
     </div>
     <!-- 章節區塊中的內容 -->
@@ -452,7 +476,7 @@
     <!-- 研究設備及器材章節區塊 -->
     <div class="row">
     <div class="col chapter-title-box" style="background-color: #31625C;">
-        <h5 class="text-white chapter-title-text"><b>研究設備及器材</b></h5>
+        <h5 class="text-white chapter-title-text"><b>研究規劃 - 研究設備及器材</b></h5>
     </div>
     </div>
     <!-- 章節區塊中的內容 -->
@@ -572,7 +596,7 @@
     <!-- 實驗記錄章節區塊 -->
     <div class="row" id="research_record_box">
     <div class="col chapter-title-box" style="background-color: #31625C;">
-        <h5 class="text-white chapter-title-text"><b>實驗記錄</b></h5>
+        <h5 class="text-white chapter-title-text"><b>執行 - 實驗記錄</b></h5>
     </div>
     </div>
     <!-- 章節區塊中的內容 -->
@@ -692,7 +716,7 @@
     <!-- 研究結果(分析及圖表)章節區塊 -->
     <div class="row" id="research_analysis_box">
     <div class="col chapter-title-box" style="background-color: #31625C;">
-        <h5 class="text-white chapter-title-text"><b>研究結果(分析及圖表)</b></h5>
+        <h5 class="text-white chapter-title-text"><b>執行 - 研究結果(分析及圖表)</b></h5>
     </div>
     </div>
     <!-- 章節區塊中的內容 -->
@@ -804,7 +828,7 @@
     <!-- 討論章節區塊 -->
     <div class="row">
     <div class="col chapter-title-box" style="background-color: #31625C;">
-        <h5 class="text-white chapter-title-text"><b>討論</b></h5>
+        <h5 class="text-white chapter-title-text"><b>分析與詮釋 - 討論</b></h5>
     </div>
     </div>
     <!-- 章節區塊中的內容 -->
@@ -921,7 +945,7 @@
     <!-- 結論章節區塊 -->
     <div class="row" id="research_conculsion_box">
     <div class="col chapter-title-box" style="background-color: #31625C;">
-        <h5 class="text-white chapter-title-text"><b>結論</b></h5>
+        <h5 class="text-white chapter-title-text"><b>分析與詮釋 - 結論</b></h5>
     </div>
     </div>
     <!-- 章節區塊中的內容 -->

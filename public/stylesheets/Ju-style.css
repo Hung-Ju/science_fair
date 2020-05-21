@@ -3,6 +3,10 @@ body,button, input,select, textarea,h1 ,h2, h3, h4, h5, h6 { font-family:微軟�
 body { position: relative; }
 /* table {width: 100%;} */
 
+canvas:focus {
+  outline: none;
+}
+
 #main-banner {
   height: 30vh;  
   /* vh是view height，指螢幕可視範圍高度的百分比 */
@@ -28,8 +32,8 @@ body { position: relative; }
 
 #cneter-content {
   padding-top: 86px;
-  margin-left: 40px;
-  margin-right: 40px;
+  margin-left: 20px;
+  margin-right: 20px;
   /* margin-top: 86px; */
   margin-bottom: 10px;
 }
@@ -55,6 +59,7 @@ body { position: relative; }
 .stage-switch-btn {
   margin-bottom: 5px;
   margin-top: 5px;
+  /* margin-right: 50px; */
 }
 
 .stage-btn {
@@ -115,9 +120,10 @@ body { position: relative; }
 
 .stage-switch-box {
   height: 50px;
-  width: 90%;
+  width: 100%;
   background-color: rgb(255, 255, 255);
-  text-align:center;
+  /* text-align:center; */
+  padding-left:80vh;
 }
 
 #writing_content {
@@ -147,14 +153,14 @@ body { position: relative; }
 
 #mynetwork {
   width: 100%;
-  height: 77vh;
-  border: 1px solid lightgray;
+  height: 84vh;
+  border: 0px solid lightgray;
 }
 
 .tools {
   /* padding: 5px; */
   width: auto;
-  height: 77vh;
+  /* height: 77vh; */
   position: fixed;
   z-index: 1;
   box-shadow: 2px 2px rgba(0, 0, 0, 0.2);
@@ -210,14 +216,14 @@ a.tool:hover {
   background-color:#31625C; */
   color: black;
   border-color: #31625C;
-  border-radius: 8px;
+  border-radius: 5px;
 }
 
 .changet:hover{
   padding: 5px 15px;
   color: black;
   border-color: #31625C;
-  border-radius: 8px;
+  border-radius: 5px;
   /* background-color:#31625C; */
   text-decoration: none;
 }
@@ -252,6 +258,11 @@ a.tool:hover {
 
 #vis-network{
   overflow: hidden;
+  margin: 53px 0 0 0;
+}
+
+.discussionCol{
+  padding: 0;
 }
 
 .showTag{
