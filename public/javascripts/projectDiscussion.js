@@ -207,6 +207,41 @@ function draw() {
     //addNodecontent();
 }
 
+function updateNodeData(data){
+    console.log(data);
+    $.each(data, function(index, value){                    
+        nodes.update({
+            id: value.node_id,
+            x: value.x,
+            y: value.y
+        });
+        if(value.node_createtime){
+            nodes.update({
+                id: value.node_id,
+                node_createtime: value.node_createtime
+            });
+        }
+        if(value.node_author){
+            nodes.update({
+                id: value.node_id,
+                author: value.node_author
+            });
+        }
+        if(value.node_title){
+            nodes.update({
+                id: value.node_id,
+                node_title: value.node_title
+            });
+        }
+        if(value.node_type){
+            nodes.update({
+                id: value.node_id,
+                group: value.node_type
+            });
+        }                  
+    }); 
+}
+
 //點擊事件
 var currentNodeId=[];
 function clickevent(){
@@ -482,6 +517,29 @@ function clickevent(){
         }
     });
 
+    network.on('dragEnd', function(params){
+        params.event.preventDefault();
+        params.event = "[dragEnd]";
+        var gid = document.getElementById("groups_id").value;
+        let eventData = JSON.parse(JSON.stringify(params, null, 4));
+        let clickedNodeId=eventData.nodes;
+        if(clickedNodeId.length > 0){
+            let position= network.getPositions(clickedNodeId);
+            let updateNodeData=[];
+            for(node in position){
+                let singleNodeData={
+                    node_id: parseInt(node),
+                    x: parseInt(position[node].x),
+                    y: parseInt(position[node].y),
+                };
+                updateNodeData.push(singleNodeData);          
+            }
+            console.log(updateNodeData);
+            socket.emit('update node position', {gid:gid, updateNodeData:updateNodeData});
+        }        
+    });
+
+
   }
 
 function drawbackground(nodeId){
@@ -715,10 +773,19 @@ $(function(){
         console.log("新增的節點資料"+data);
     })
 
+    //接收新增的edge資料
     socket.on('update edge data',function(data){
         edges.update(data);
         console.log("新增的edge資料"+data)
     })
+
+    //接收改變的節點位置資料
+    socket.on('update node position',function(data){
+        updateNodeData(data);
+        console.log('<update node position>');
+    })
+
+
 
     //將文字寫入對應的node節點
     network.on("beforeDrawing", function (ctx) {

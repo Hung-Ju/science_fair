@@ -425,4 +425,33 @@ module.exports = {
 		})
 	},
 
+	//更新節點位置資料
+	updateNodePosition: function(data){
+
+		var dataString=JSON.stringify(data);
+        dataString=dataString.replace(/{/g, "(");
+        dataString=dataString.replace(/}/g, ")");  
+        dataString=dataString.replace(/"node_id":/g,'');
+        dataString=dataString.replace(/"x":/g,'');
+        dataString=dataString.replace(/"y":/g,'');
+        dataString=dataString.substring(1, dataString.length-1);
+		console.log(dataString);
+		
+		var sql="INSERT into `node` (node_id, node_x, node_y) VALUES "
+        		+dataString
+        		+" ON DUPLICATE KEY UPDATE node_x=VALUES(node_x),node_y=VALUES(node_y)";
+
+		return new Promise(function(resolve, reject){
+			pool.getConnection(function(err, connection){
+				if(err) return reject(err);
+				//var update_params = {node_x:node_x, node_y:node_y};
+				connection.query(sql, function(err, update_res){
+					if(err) return reject(err);
+					resolve(update_res);
+					connection.release();
+				})
+			})
+		})
+    },
+
 }

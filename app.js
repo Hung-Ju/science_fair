@@ -8,6 +8,7 @@ var indexRouter = require('./routes/index');
 var memberRouter = require('./routes/member');
 var groupsRouter = require('./routes/groups');
 var projectRouter = require('./routes/project');
+var projectDiscussion = require('./models/projectDiscussion');
 
 
 var app = express();
@@ -56,6 +57,22 @@ io.on('connection', function(socket) {
             socket.nsp.to(roomName).emit('update edge data', edgeData);
         }
     })
+
+    socket.on('update node position', function(data){
+        var roomName = 'groups_'+ data.gid;
+        var updateNodeDataString = data.updateNodeData;
+        // var updateNodeData = JSON.stringify(updateNodeDataString);
+        // var node_id = data.updateNodeData.node_id;
+        // var node_x = data.updateNodeData.x;
+        // var node_y = data.updateNodeData.y;
+        // console.log(updateNodeData);
+        projectDiscussion.updateNodePosition(updateNodeDataString)
+        .then(function(results){
+            console.log('update by '+ data.gid);
+            console.log(results);
+        })
+        socket.nsp.to(roomName).emit('update node position',data.updateNodeData);
+    });
 
 
 });
