@@ -38,6 +38,7 @@ io.on('connection', function(socket) {
         socket.nsp.to(roomName).emit('join room：',roomName);
     })
 
+    //接收到新增的節點資料後，把資料送回指定的房間
     socket.on("add node", function(data){
         //console.log(data);
         var roomName = 'groups_'+ data.gid;
@@ -48,6 +49,7 @@ io.on('connection', function(socket) {
         }
     })
 
+    //接收到新增的edge資料後，把資料送回指定的房間
     socket.on("add edge", function(data){
         console.log(data.edgeData);
         var roomName = 'groups_'+ data.gid;
@@ -58,14 +60,10 @@ io.on('connection', function(socket) {
         }
     })
 
+    //接收到結點位置移動後的資料，把資料庫中的資料更新
     socket.on('update node position', function(data){
         var roomName = 'groups_'+ data.gid;
         var updateNodeDataString = data.updateNodeData;
-        // var updateNodeData = JSON.stringify(updateNodeDataString);
-        // var node_id = data.updateNodeData.node_id;
-        // var node_x = data.updateNodeData.x;
-        // var node_y = data.updateNodeData.y;
-        // console.log(updateNodeData);
         projectDiscussion.updateNodePosition(updateNodeDataString)
         .then(function(results){
             console.log('update by '+ data.gid);
@@ -73,6 +71,49 @@ io.on('connection', function(socket) {
         })
         socket.nsp.to(roomName).emit('update node position',data.updateNodeData);
     });
+
+    //接收到新增的參考文獻節點資料後，把資料送回指定的房間
+    socket.on("add reference node", function(data){
+        //console.log(data);
+        var roomName = 'groups_'+ data.gid;
+        if (data.nodeData.length > 0){
+            console.log("新增的ReferenceNodeData"+data.nodeData);
+            var nodeData = data.nodeData
+            socket.nsp.to(roomName).emit('update reference node data', nodeData);
+        }
+    })
+
+    //接收到新增的參考文獻edge資料後，把資料送回指定的房間
+    socket.on("add reference edge", function(data){
+        //console.log(data.edgeData);
+        var roomName = 'groups_'+ data.gid;
+        if (data.edgeData.length > 0){
+            console.log("新增的edgeData"+data.edgeData);
+            var edgeData = data.edgeData
+            socket.nsp.to(roomName).emit('update reference edge data', edgeData);
+        }
+    })
+
+    //接收到修改的節點資料後，把資料送回指定的房間
+    socket.on("edit idea", function(data){
+        //console.log(data);
+        var roomName = 'groups_'+ data.gid;
+        if (data.nodeData.length > 0){
+            console.log("更新的NodeData"+data.nodeData);
+            var nodeData = data.nodeData
+            socket.nsp.to(roomName).emit('update node data', nodeData);
+        }
+    })
+
+    //接收到修改的參考文獻資料後，把資料送回指定的房間
+    socket.on("edit reference", function(data){
+        var roomName = 'groups_'+ data.gid;
+        if (data.nodeData.length > 0){
+            console.log("更新的NodeData"+data.nodeData);
+            var nodeData = data.nodeData
+            socket.nsp.to(roomName).emit('update node data', nodeData);
+        }
+    })
 
 
 });

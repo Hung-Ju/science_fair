@@ -83,7 +83,7 @@ module.exports = {
 		return new Promise(function(resolve, reject){
 			pool.getConnection(function(err, connection){
 				if(err) return reject(err);
-				connection.query('SELECT *,DATE_FORMAT(`node_createtime`, "%Y-%m-%d %T") AS "node_createtime2" FROM `node` WHERE `groups_id_groups`="'+groups_id_groups+'"', function(err, allGroupsNodeData){
+				connection.query('SELECT *,DATE_FORMAT(`node_createtime`, "%Y-%m-%d %H:%i") AS "node_createtime2" FROM `node` WHERE `groups_id_groups`="'+groups_id_groups+'"', function(err, allGroupsNodeData){
 					if(err) return reject(err);
 					resolve(allGroupsNodeData);
 					connection.release();
@@ -402,7 +402,7 @@ module.exports = {
 		return new Promise(function(resolve, reject){
 			pool.getConnection(function(err, connection){
 				if(err) return reject(err);
-				connection.query('SELECT * FROM `node` WHERE `node_id`="'+node_id+'"', function(err, nodeData){
+				connection.query('SELECT *,DATE_FORMAT(`node_createtime`, "%Y-%m-%d %H:%i") AS "node_createtime2" FROM `node` WHERE `node_id`="'+node_id+'"', function(err, nodeData){
 					if(err) return reject(err);
 					resolve(nodeData);
 					connection.release();
@@ -427,7 +427,6 @@ module.exports = {
 
 	//更新節點位置資料
 	updateNodePosition: function(data){
-
 		var dataString=JSON.stringify(data);
         dataString=dataString.replace(/{/g, "(");
         dataString=dataString.replace(/}/g, ")");  

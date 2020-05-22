@@ -67,6 +67,7 @@ var container = document.getElementById("mynetwork");
 
 var allNodeData = document.getElementById("allGroupsNodeData").value;
 var node = JSON.parse(allNodeData);
+console.log(node);
 var allEdgeData = document.getElementById("allGroupsEdgeData").value;
 var edge = JSON.parse(allEdgeData);
 //console.log(node);
@@ -215,30 +216,18 @@ function updateNodeData(data){
             x: value.x,
             y: value.y
         });
-        if(value.node_createtime){
-            nodes.update({
-                id: value.node_id,
-                node_createtime: value.node_createtime
-            });
-        }
-        if(value.node_author){
-            nodes.update({
-                id: value.node_id,
-                author: value.node_author
-            });
-        }
         if(value.node_title){
             nodes.update({
                 id: value.node_id,
                 node_title: value.node_title
             });
         }
-        if(value.node_type){
+        if(value.node_tag){
             nodes.update({
                 id: value.node_id,
-                group: value.node_type
+                node_tag: value.node_tag
             });
-        }                  
+        }                 
     }); 
 }
 
@@ -286,20 +275,23 @@ function clickevent(){
             }
         })
         currentNodeId.push(clickedNode[0].id);
-        console.log(currentNodeId);
+        //console.log(currentNodeId);
         //console.log(clickedNode);
         var node_group = clickedNode[0].group;
         var node_title = clickedNode[0].node_title;
 
+        
+
         if(clickid !== undefined){
-            if(node_group == "idea" || "rise_above"){
+            //console.log(node_group);
+            if(node_group == "idea" || node_group =="rise_above"){
                 //想法節點
                 var ajaxData = ajaxGetNodeData(clickid);
                 var ajaxNodeData = ajaxData.nodeData;
                 var ajaxNodeFile = ajaxData.nodeFile;
 
-                console.log(ajaxNodeData);
-                console.log(ajaxNodeFile);
+                //console.log(ajaxNodeData);
+                //console.log(ajaxNodeFile);
                 $('#readIdea-tab').tab('show')
                 //是不是想法節點作者的判斷
                 if(member_id != ajaxNodeData[0].member_id_member){
@@ -338,10 +330,14 @@ function clickevent(){
                 $('#EditIdeaRoot #idea_title_edit').val(ajaxNodeData[0].node_title);
                 //var node_tag_data = ajaxNodeData[0].node_tag;
                 var node_tag;
-                node_tag = node_tag_data.split(',');
 
                 $('.ideaTagEdit').append('<p><b>標籤</b><input class="form-control idea_tag" type="text" name="idea_tag_edit" required="required"></p>')
-                tagsInput(node_tag);
+                if (node_tag_data == ""){
+                    tagsInput();
+                }else{
+                    node_tag = node_tag_data.split(',');
+                    tagsInput(node_tag);
+                }
 
                 $("#editIdeaSummernote").summernote('code',ajaxNodeData[0].idea_content);
                 $("#nodeFiles").empty();
@@ -358,8 +354,8 @@ function clickevent(){
                 $('#editAndReadIdea').on('shown.bs.modal', function (e) {
                     $("#editAndReadIdeaLongTitle").text(ajaxNodeData[0].node_title);
                 })
-            }else if(node_group == "reference"){
                 //參考文獻節點
+            }else if(node_group == "reference"){
                 var ajaxReferenceData = ajaxGetReferenceNodeData(clickid);
                 var ajaxNodeData = ajaxReferenceData.nodeData;
                 var ajaxNodeFile = ajaxReferenceData.nodeFile;
@@ -403,9 +399,15 @@ function clickevent(){
                 })
                 $('#EditReferenceRoot #reference_title_edit').val(ajaxNodeData[0].node_title);
                 var node_tag;
-                node_tag = node_tag_data.split(',');
-                $('.referenceTagEdit').append('<p><b>標籤</b><input class="form-control idea_tag" type="text" name="idea_tag_edit" required="required"></p>')
-                tagsInput(node_tag);
+                
+                $('.referenceTagEdit').append('<p><b>標籤</b><input class="form-control idea_tag" type="text" name="reference_tag_edit" id="reference_tag_edit" required="required"></p>')
+                if (node_tag_data == ""){
+                    tagsInput();
+                }else{
+                    node_tag = node_tag_data.split(',');
+                    tagsInput(node_tag);
+                }
+                
                 $('.editSelectReferenceNodeType').val(ajaxNodeData[0].reference_node_type);
                 $("#edit_reference_node_content").summernote('code',ajaxNodeData[0].reference_node_content);
                 $("#editReferenceNodeIdea").summernote('code',ajaxNodeData[0].reference_node_idea);
@@ -449,9 +451,7 @@ function clickevent(){
 
                 alert(node_group);
             }
-            
-        }
-        
+        } 
         
     });
     
@@ -692,7 +692,7 @@ function modalHidden() {
     })
     //閱讀和編輯參考文獻節點的modal
     $('#editAndReadReference').on('hide.bs.modal', function (e) {
-        $('.ideaTagEdit').empty();
+        $('.referenceTagEdit').empty();
     })
     //新增昇華的想法想法的Modal
     $('#addRiseAboveIdea').on('hide.bs.modal', function (e) {
@@ -710,7 +710,7 @@ function modalShown() {
     })
     //新增參考文獻節點的Modal
     $('#addReferenceNode').on('show.bs.modal', function(e){ 
-        $('.ideaTag').append('<p><b>標籤</b><input class="form-control idea_tag" type="text" name="idea_tag" id="reference_tag" required="required"></p>');
+        $('.ideaTag').append('<p><b>標籤</b><input class="form-control idea_tag" type="text" name="reference_tag" id="reference_tag" required="required"></p>');
         tagsInput();
     })
     // //新增昇華的想法的Modal
@@ -770,7 +770,8 @@ $(function(){
     //接收新增的節點資料
     socket.on('update node data',function(data){
         nodes.update(data);
-        console.log("新增的節點資料"+data);
+        //updateNodeData(data);
+        console.log("新增或更新的節點資料"+data);
     })
 
     //接收新增的edge資料
@@ -781,11 +782,22 @@ $(function(){
 
     //接收改變的節點位置資料
     socket.on('update node position',function(data){
+        console.log(data);
         updateNodeData(data);
         console.log('<update node position>');
     })
 
+    //接收新增的節點資料
+    socket.on('update reference node data',function(data){
+        nodes.update(data);
+        console.log("新增的參考文獻節點資料"+data);
+    })
 
+    //接收新增的edge資料
+    socket.on('update reference edge data',function(data){
+        edges.update(data);
+        console.log("新增的參考文獻edge資料"+data)
+    })
 
     //將文字寫入對應的node節點
     network.on("beforeDrawing", function (ctx) {
@@ -840,7 +852,7 @@ $(function(){
         var node_title = $('#idea_title_edit').val();
         var node_tag = $('.idea_tag').val();
 
-        console.log(node_tag);
+        //console.log(node_tag);
         var idea_content = $('#editIdeaSummernote').val();
         var node_id = $('#node_id').val();
         var mode = "想法討論";
@@ -855,7 +867,7 @@ $(function(){
         ideaData.append("node_tag",node_tag);
         ideaData.append("idea_content",idea_content);
         ideaData.append("node_id",node_id);
-            
+
         $.ajax({  
             type: "POST",
             url: "/project/"+gid+"/"+mode+"/discussion/editIdeaNode",
@@ -865,11 +877,11 @@ $(function(){
             processData: false,
             success: function(data){
                 if(data){
-                    // alert(123);
                     if(data.message=="true"){
-                        alert('修改成功');
-                        // window.location.href="/project/?gid="+gid;
-                        //window.location.href = "/project/"+gid+"/"+mode;
+                        //alert('修改成功');
+                        $('#editAndReadIdea').modal('hide');
+                        socket.emit('edit idea', {gid:gid, nodeData:data.nodeData});
+                        //socket.emit('edit idea', {gid: gid, UpdateIdeaData: UpdateIdeaData});
                     }
                     else if(data.message=="same"){
                         alert('小組中有相同的檔案'+data.sameFile+'，請重新選擇');
@@ -922,6 +934,7 @@ $(function(){
                     // alert(123);
                     if(data.message=="true"){
                         alert('新增成功');
+                        $('#addIdea').modal('hide');
                         //console.log(data.edgeData);
                         //console.log(data.nodeData);
                         
@@ -981,9 +994,11 @@ $(function(){
                 if(data){
                     // alert(123);
                     if(data.message=="true"){
-                        alert('修改成功');
+                        //alert('修改成功');
+                        $('#editAndReadReference').modal('hide');
+                        socket.emit('edit reference', {gid:gid, nodeData:data.nodeData});
                         // window.location.href="/project/?gid="+gid;
-                        window.location.href = "/project/"+gid+"/"+mode;
+                        //window.location.href = "/project/"+gid+"/"+mode;
                     }
                     else if(data.message=="same"){
                         alert('小組中有相同的檔案'+data.sameFile+'，請重新選擇');
@@ -1007,7 +1022,8 @@ $(function(){
     $("#addReferenceNodeBtn").click(function(){
         var gid = document.getElementById("groups_id").value;
         var node_title = $('#reference_title').val();
-        var node_tag = $('.idea_tag').val();
+        var $nodeTag = $('.idea_tag').children('.inputTags-item');
+        var node_tag = $('.inputTags-item').attr("data-tag");
         var reference_node_type = $("#selectReferenceNodeType").val();
         var reference_node_content = $('#reference_node_content').val();
         var reference_node_idea = $('#referenceNodeIdea').val();
@@ -1017,13 +1033,14 @@ $(function(){
         for (var x = 0; x < files; x++) {
             referenceData.append("files", document.getElementById('inputGroupReferenceFile').files[x]);
         }
-
+        console.log("新增的tag"+node_tag);
         referenceData.append("gid",gid);
         referenceData.append("node_title",node_title);
         referenceData.append("node_tag",node_tag);
         referenceData.append("reference_node_type", reference_node_type);
         referenceData.append("reference_node_content",reference_node_content);
         referenceData.append("reference_node_idea",reference_node_idea);
+        referenceData.append('fromNodeId', currentNodeId.toString());
 
         $.ajax({  
             type: "POST",
@@ -1037,8 +1054,11 @@ $(function(){
                     // alert(123);
                     if(data.message=="true"){
                         alert('新增成功');
+                        $('#addReferenceNode').modal('hide');
+                        socket.emit('add reference node', {gid:gid, nodeData:data.nodeData});
+                        socket.emit('add reference edge', {gid:gid, edgeData:data.edgeData});
                         // window.location.href="/project/?gid="+gid;
-                        window.location.href = "/project/"+gid+"/"+mode;
+                        //window.location.href = "/project/"+gid+"/"+mode;
                     }
                     else if(data.message=="same"){
                         alert('小組中有相同的檔案'+data.sameFile+'，請重新選擇');
