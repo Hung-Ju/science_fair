@@ -67,8 +67,12 @@ router.get('/:gid/:mode',function(req, res, next) {
         var groupsAllNodeDataArray = [];
         var groupsAllEdgeDataArray = [];
         var groupsCreateStudentId= [];
-
-        projectDiscussion.selectAllGroupsEdge(gid)
+        var groupsStageCheck;
+        project.selectAllStageCheck(gid)
+        .then(function(allStageCheck){
+            groupsStageCheck = allStageCheck.length;
+            return projectDiscussion.selectAllGroupsEdge(gid)
+        })
         .then(function(allGroupsEdge){
             if(allGroupsEdge){
                 for(var e = 0; e < allGroupsEdge.length; e++){
@@ -248,7 +252,7 @@ router.get('/:gid/:mode',function(req, res, next) {
                     referenceArray.push(referenceData);
                 }
             }
-            res.render('projectEdit',  {title: 'Science Fair科學探究專題系統', gid:gid, mode:mode, member_id:req.session.member_id, member_name:req.session.member_name, researchTitle:researchTitleArray, researchMotivation:researchMotivationArray, researchPurposes:researchPurposesArray, researchExperiment:researchExperimentArray, researchMaterial:researchMaterialArray, researchRecord:researchRecordArray, researchAnalysis:researchAnalysisArray, researchDiscussion:researchDiscussionArray, researchConclusion:researchConclusionArray, groups_stage:groups_stage, AllNodeData:groupsAllNodeDataArray, reference: referenceArray, edge:groupsAllEdgeDataArray, groups_create_student_id:groupsCreateStudentId});
+            res.render('projectEdit',  {title: 'Science Fair科學探究專題系統', gid:gid, mode:mode, member_id:req.session.member_id, member_name:req.session.member_name, researchTitle:researchTitleArray, researchMotivation:researchMotivationArray, researchPurposes:researchPurposesArray, researchExperiment:researchExperimentArray, researchMaterial:researchMaterialArray, researchRecord:researchRecordArray, researchAnalysis:researchAnalysisArray, researchDiscussion:researchDiscussionArray, researchConclusion:researchConclusionArray, groups_stage:groups_stage, AllNodeData:groupsAllNodeDataArray, reference: referenceArray, edge:groupsAllEdgeDataArray, groups_create_student_id:groupsCreateStudentId, groupsStageCheck:groupsStageCheck});
         })
     }
 });
@@ -1015,7 +1019,36 @@ router.post('/deleteReference', function(req, res, next){
             res.send({message:"true"});
         })
     }
-})
+});
+
+//新增階段檢核資料
+router.post('/updateStageCheck', function(req, res, next){
+    var gid = req.body.gid;
+    var stage_check_stage = req.body.stage_check_stage;
+    var stage_check_status = req.body.stage_check_status;
+    var member_id_member = req.session.member_id;
+    var stageCheck;
+
+    if(!member_id_member){
+        res.send({message:"false"});
+    }else{
+        project.selectStageCheck(gid, stage_check_stage)
+        .then(function(stageCheckData){
+            stageCheck = stageCheckData;
+            if(stageCheck.length == 0){
+                return project.addStageCheck(gid, stage_check_stage, stage_check_status)
+                .then(function(result){
+                    res.send({message:"true"});
+                })
+            }else{
+                return project.updateStageCheck(gid, stage_check_stage, stage_check_status)
+                .then(function(result){
+                    res.send({message:"true"});
+                })
+            }
+        })
+    }
+});
 
 
 //想法討論區router

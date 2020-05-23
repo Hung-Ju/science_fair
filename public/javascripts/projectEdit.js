@@ -1007,6 +1007,7 @@ $(function(){
         $(".create-motivation-summernote").summernote("enable"); 
         $('#L1').addClass("nowStage");
         $('#L2, #L3, #L4, #L5').removeClass("nowStage") ;
+
     //只開啟實驗步驟和研究設備及器材的編輯區塊
     } else if ($("#groups_stage").val() == "研究規劃"){
         $('#writing_content *').attr('disabled', true);
@@ -1068,85 +1069,84 @@ $(function(){
         $('#L1, #L2, #L3, #L4').removeClass("nowStage") ;
     }
 
-    // $('#selectStage').change(function () {
-    //     //只開啟研究動機和研究目的的編輯區塊
-    //     if ($("#selectStage").val() == "形成問題"){
-    //         $('#writing_content *').attr('disabled', true);   
-    //         $('#research_motivation *, #research_purposes *, .stage-switch-btn *, #vis-network *').removeAttr('disabled');
+    //階段切換select的選項有哪些的判斷
+    if($('#groupsStageCheck').val() == 0){
+        $('#selectStage').html('<option value="研究規劃">研究規劃</option>');
+    }else if($('#groupsStageCheck').val() == 1){
+        $('#selectStage').html('<option value="形成問題">形成問題</option>'+
+                                 '<option value="執行">執行</option>');
+    }else if($('#groupsStageCheck').val() == 2){
+        $('#selectStage').html('<option value="形成問題">形成問題</option>'+
+                                 '<option value="研究規劃">研究規劃</option>'+
+                                 '<option value="分析與詮釋">分析與詮釋</option>');
+    }else if($('#groupsStageCheck').val() == 3){
+        $('#selectStage').html('<option value="形成問題">形成問題</option>'+
+                                 '<option value="研究規劃">研究規劃</option>'+
+                                 '<option value="執行">執行</option>'+
+                                 '<option value="統整報告">統整報告</option>');
+    }else if($('#groupsStageCheck').val() == 4){
+        $('#selectStage').html('<option value="形成問題">形成問題</option>'+
+                                 '<option value="研究規劃">研究規劃</option>'+
+                                 '<option value="執行">執行</option>'+
+                                 '<option value="分析與詮釋">分析與詮釋</option>'+
+                                 '<option value="統整報告">統整報告</option>');
+    }
 
-    //         summernoteCreate();
-    //         $(".create-motivation-summernote").summernote("enable"); 
-    //         $('#L1').addClass("active");
-    //         $('#L2, #L3, #L4, #L5').removeClass("active") ;
-    //     //只開啟實驗步驟和研究設備及器材的編輯區塊
-    //     } else if ($("#selectStage").val() == "研究規劃"){
-    //         $('#writing_content *').attr('disabled', true);
-    //         $('#experimental_project *, #research_material *, .stage-switch-btn *, #vis-network *').removeAttr('disabled');
+    //判斷點擊階段切換的時候會跳出哪一個階段的檢核表
+    $("#stageCheck").click(function(){
+        if($("#groups_stage").val() == "形成問題"){
+            $('#motivationStageCheck').modal('show');
+        } else if ($("#groups_stage").val() == "研究規劃"){
+            $('#stepsStageCheck').modal('show');
+        } else if ($("#groups_stage").val() == "執行"){
+            $('#recordStageCheck').modal('show');
+        } else if ($("#groups_stage").val() == "分析與詮釋"){
+            $('#analysisStageCheck').modal('show');
+        } else if ($("#groups_stage").val() == "統整報告"){
+            $('#changeStage').modal('show');
+        }
+    })
 
-    //         summernoteCreate();
-    //         $( ".create-experiment-summernote" ).each(function() {
-    //             $(this).summernote('enable');
-    //         });
-    //         $('#L2').addClass("active");
-    //         $('#L1, #L3, #L4, #L5').removeClass("active") ;
-    //         //table列拖拉和數字排序
-    //         // $( "table tbody" ).sortable( {
-    //         //     update: function( event, ui ) {
-    //         //         $(this).children().each(function(index) {
-    //         //                 $(this).find('td').first().html(index + 1)
-    //         //         });
-    //         //     }   
-    //         // });
+    //形成問題階段的檢核表modal
+    $("#stageMotivationCheckBtn").click(function(){
+        if($('input[name=title]:checked').length == 6 && $('input[name=purpose]:checked').length == 5){
+            
+            console.log("通過");
+            var gid = document.getElementById("groups_id").value;
+            
+            $.ajax({  
+                type: "POST",
+                url: "/project/updateStageCheck",
+                data: {
+                    gid: gid,
+                    stage_check_stage: "形成問題",
+                    stage_check_status: "通過"
+                },
+                success: function(data){
+                    if(data){
+                        //  alert(project_data_content2);
+                        if(data.message=="true"){
+                            $('#changeStage').modal('show');
+                            $('#motivationStageCheck').modal('hide');
+                        }
+                        else{
+                            alert('帳號已被系統自動登出，請重新登入');
+                            window.location.href="/";
+                        }
+                    }
+                },
+                error: function(){
+                    alert('失敗');
+                }
+            });
+            
+          }else{
+            console.log("未通過");
+            $('#checkStageWarning').modal('show');
+            $('#motivationStageCheck').modal('hide');
+          }
+    })
 
-    //     //只開啟實驗記錄和研究結果(分析及圖表)的編輯區塊
-    //     } else if ($("#selectStage").val() == "執行"){
-    //         $('#writing_content *').attr('disabled', true);
-    //         $('#research_record *, #research_analysis *, .stage-switch-btn *, #vis-network *').removeAttr('disabled');
-
-    //         summernoteCreate();
-    //         $( ".create-record-summernote" ).each(function() {
-    //             $(this).summernote('enable');
-    //         });
-    //         $( ".create-analysis-summernote" ).each(function() {
-    //             $(this).summernote('enable');
-    //         });
-    //         $('#L3').addClass("active");
-    //         $('#L1, #L2, #L4, #L5').removeClass("active") ;
-    //     //只開啟討論和結論的編輯區塊
-    //     } else if ($("#selectStage").val() == "分析與詮釋"){
-    //         $('#writing_content *').attr('disabled', true);
-    //         $('#research_discussion *, #research_conclusion *, .stage-switch-btn *, #vis-network *').removeAttr('disabled');
-
-    //         summernoteCreate();
-    //         $( ".create-discussion-summernote" ).each(function() {
-    //             $(this).summernote('enable');
-    //         });
-    //         $(".create-conclusion-summernote").summernote("enable");
-    //         $('#L4').addClass("active");
-    //         $('#L1, #L2, #L3, #L5').removeClass("active") ;
-    //     //全部編輯區塊開啟
-    //     }  else if ($("#selectStage").val() == "統整報告"){
-    //         $('#writing_content *').attr('disabled', false);
-
-    //         summernoteCreate();
-    //         $(".create-motivation-summernote").summernote("enable");
-    //         $( ".create-experiment-summernote" ).each(function() {
-    //             $(this).summernote('enable');
-    //         });
-    //         $( ".create-record-summernote" ).each(function() {
-    //             $(this).summernote('enable');
-    //         });
-    //         $( ".create-analysis-summernote" ).each(function() {
-    //             $(this).summernote('enable');
-    //         });
-    //         $( ".create-discussion-summernote" ).each(function() {
-    //             $(this).summernote('enable');
-    //         });
-    //         $(".create-conclusion-summernote").summernote("enable");
-    //         $('#L5').addClass("active");
-    //         $('#L1, #L2, #L3, #L4').removeClass("active") ;
-    //     }    
-    // }).change();
 
     
     //專題實作中內容撰寫和想法討論兩種模式的切換

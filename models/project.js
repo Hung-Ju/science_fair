@@ -622,5 +622,64 @@ module.exports = {
 				})
 			})
 		})
+	},
+
+	//抓取階段檢核資料
+	selectStageCheck :function(groups_id_groups, stage_check_stage){
+		return new Promise(function(resolve, reject){
+			pool.getConnection(function(err, connection){
+				if(err) throw err;
+				connection.query('SELECT * FROM `stage_check` WHERE `stage_check_stage`=? AND `groups_id_groups`=?', [stage_check_stage, groups_id_groups],function(err, result){
+					if(err) throw err;
+					resolve(result);
+					connection.release();
+				})
+			});
+		})
+	},
+
+	//新增階段檢核資料
+	addStageCheck :function(groups_id_groups, stage_check_stage, stage_check_status){
+		return new Promise(function(resolve, reject){
+			pool.getConnection(function(err, connection){
+				if(err) return reject(err);
+				var params = {groups_id_groups:groups_id_groups, stage_check_stage:stage_check_stage, stage_check_status:stage_check_status};
+				connection.query('INSERT INTO `stage_check` SET ?', params, function(err, insert_res){
+					if(err) return reject(err);
+					resolve(insert_res);
+					console.log(params);
+					connection.release();
+				})
+			})
+		})
+	},
+
+	//修改階段檢核資料
+	updateStageCheck :function(groups_id_groups, stage_check_stage, stage_check_status){
+		return new Promise(function(resolve, reject){
+			pool.getConnection(function(err, connection){
+				if(err) return reject(err);
+				var update_params = {stage_check_status:stage_check_status};
+				connection.query('UPDATE `stage_check` SET ? WHERE `groups_id_groups`=? AND `stage_check_stage`=?', [update_params, groups_id_groups, stage_check_stage], function(err, update_res){
+					if(err) return reject(err);
+					resolve(update_res);
+					connection.release();
+				})
+			})
+		})
+	},
+
+	//抓取所有階段檢核資料
+	selectAllStageCheck :function(groups_id_groups){
+		return new Promise(function(resolve, reject){
+			pool.getConnection(function(err, connection){
+				if(err) throw err;
+				connection.query('SELECT * FROM `stage_check` WHERE `groups_id_groups`=?',  groups_id_groups,function(err, result){
+					if(err) throw err;
+					resolve(result);
+					connection.release();
+				})
+			});
+		})
 	}
 }

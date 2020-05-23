@@ -123,7 +123,7 @@ canvas:focus {
   width: 100%;
   background-color: rgb(255, 255, 255);
   /* text-align:center; */
-  padding-left:80vh;
+  padding-left:40%;
 }
 
 #writing_content {
