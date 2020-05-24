@@ -92,7 +92,8 @@ canvas:focus {
 
 .margin10 {
   margin-top: 10px;
-  margin-left: 15px;
+  margin-left: 10px;
+  margin-right: 5px;
 }
 
 .margin-right10 {

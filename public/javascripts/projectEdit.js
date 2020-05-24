@@ -1072,19 +1072,70 @@ $(function(){
     //階段切換select的選項有哪些的判斷
     if($('#groupsStageCheck').val() == 0){
         $('#selectStage').html('<option value="研究規劃">研究規劃</option>');
-    }else if($('#groupsStageCheck').val() == 1){
+    }else if($('#groupsStageCheck').val() == 1 && $("#groups_stage").val() == "研究規劃"){
         $('#selectStage').html('<option value="形成問題">形成問題</option>'+
                                  '<option value="執行">執行</option>');
-    }else if($('#groupsStageCheck').val() == 2){
+    }else if($('#groupsStageCheck').val() == 1 && $("#groups_stage").val() == "形成問題"){
+        $('#selectStage').html('<option value="研究規劃">研究規劃</option>'+
+                                 '<option value="執行">執行</option>');
+    }else if($('#groupsStageCheck').val() == 2 && $("#groups_stage").val() == "形成問題"){
+        $('#selectStage').html('<option value="研究規劃">研究規劃</option>'+
+                                 '<option value="執行">執行</option>'+
+                                 '<option value="分析與詮釋">分析與詮釋</option>');
+    }else if($('#groupsStageCheck').val() == 2 && $("#groups_stage").val() == "研究規劃"){
+        $('#selectStage').html('<option value="形成問題">形成問題</option>'+
+                                 '<option value="執行">執行</option>'+
+                                 '<option value="分析與詮釋">分析與詮釋</option>');
+    }else if($('#groupsStageCheck').val() == 2 && $("#groups_stage").val() == "執行"){
         $('#selectStage').html('<option value="形成問題">形成問題</option>'+
                                  '<option value="研究規劃">研究規劃</option>'+
                                  '<option value="分析與詮釋">分析與詮釋</option>');
-    }else if($('#groupsStageCheck').val() == 3){
+    }else if($('#groupsStageCheck').val() == 3 && $("#groups_stage").val() == "形成問題"){
+        $('#selectStage').html('<option value="研究規劃">研究規劃</option>'+
+                                 '<option value="執行">執行</option>'+
+                                 '<option value="分析與詮釋">分析與詮釋</option>'+
+                                 '<option value="統整報告">統整報告</option>');
+    }else if($('#groupsStageCheck').val() == 3 && $("#groups_stage").val() == "研究規劃"){
+        $('#selectStage').html('<option value="形成問題">形成問題</option>'+
+                                 '<option value="執行">執行</option>'+
+                                 '<option value="分析與詮釋">分析與詮釋</option>'+
+                                 '<option value="統整報告">統整報告</option>');
+    }else if($('#groupsStageCheck').val() == 3 && $("#groups_stage").val() == "執行"){
+        $('#selectStage').html('<option value="形成問題">形成問題</option>'+
+                                 '<option value="研究規劃">研究規劃</option>'+
+                                 '<option value="分析與詮釋">分析與詮釋</option>'+
+                                 '<option value="統整報告">統整報告</option>');
+    }else if($('#groupsStageCheck').val() == 3 && $("#groups_stage").val() == "分析與詮釋"){
         $('#selectStage').html('<option value="形成問題">形成問題</option>'+
                                  '<option value="研究規劃">研究規劃</option>'+
                                  '<option value="執行">執行</option>'+
                                  '<option value="統整報告">統整報告</option>');
-    }else if($('#groupsStageCheck').val() == 4){
+    }else if($('#groupsStageCheck').val() == 4 && $("#groups_stage").val() == "形成問題"){
+        $('#selectStage').html( '<option value="研究規劃">研究規劃</option>'+
+                                 '<option value="執行">執行</option>'+
+                                 '<option value="分析與詮釋">分析與詮釋</option>'+
+                                 '<option value="統整報告">統整報告</option>');
+    }else if($('#groupsStageCheck').val() == 4 && $("#groups_stage").val() == "研究規劃"){
+        $('#selectStage').html('<option value="形成問題">形成問題</option>'+
+                                 '<option value="執行">執行</option>'+
+                                 '<option value="分析與詮釋">分析與詮釋</option>'+
+                                 '<option value="統整報告">統整報告</option>');
+    }else if($('#groupsStageCheck').val() == 4 && $("#groups_stage").val() == "執行"){
+        $('#selectStage').html('<option value="形成問題">形成問題</option>'+
+                                 '<option value="研究規劃">研究規劃</option>'+
+                                 '<option value="分析與詮釋">分析與詮釋</option>'+
+                                 '<option value="統整報告">統整報告</option>');
+    }else if($('#groupsStageCheck').val() == 4 && $("#groups_stage").val() == "分析與詮釋"){
+        $('#selectStage').html('<option value="形成問題">形成問題</option>'+
+                                 '<option value="研究規劃">研究規劃</option>'+
+                                 '<option value="執行">執行</option>'+
+                                 '<option value="統整報告">統整報告</option>');
+    }else if($('#groupsStageCheck').val() == 4 && $("#groups_stage").val() == "統整報告"){
+        $('#selectStage').html('<option value="形成問題">形成問題</option>'+
+                                 '<option value="研究規劃">研究規劃</option>'+
+                                 '<option value="執行">執行</option>'+
+                                 '<option value="分析與詮釋">分析與詮釋</option>');
+    }else{
         $('#selectStage').html('<option value="形成問題">形成問題</option>'+
                                  '<option value="研究規劃">研究規劃</option>'+
                                  '<option value="執行">執行</option>'+
@@ -1145,8 +1196,127 @@ $(function(){
             $('#checkStageWarning').modal('show');
             $('#motivationStageCheck').modal('hide');
           }
-    })
+    });
 
+    //研究規劃階段的檢核表modal
+    $("#stageStepsCheckBtn").click(function(){
+        if($('input[name=experiment]:checked').length == 4 && $('input[name=material]:checked').length == 3){
+            
+            console.log("通過");
+            var gid = document.getElementById("groups_id").value;
+            
+            $.ajax({  
+                type: "POST",
+                url: "/project/updateStageCheck",
+                data: {
+                    gid: gid,
+                    stage_check_stage: "研究規劃",
+                    stage_check_status: "通過"
+                },
+                success: function(data){
+                    if(data){
+                        //  alert(project_data_content2);
+                        if(data.message=="true"){
+                            $('#changeStage').modal('show');
+                            $('#stepsStageCheck').modal('hide');
+                        }
+                        else{
+                            alert('帳號已被系統自動登出，請重新登入');
+                            window.location.href="/";
+                        }
+                    }
+                },
+                error: function(){
+                    alert('失敗');
+                }
+            });
+            
+          }else{
+            console.log("未通過");
+            $('#checkStageWarning').modal('show');
+            $('#stepsStageCheck').modal('hide');
+          }
+    });
+
+    //執行階段的檢核表modal
+    $("#stageRecordCheckBtn").click(function(){
+        if($('input[name=record]:checked').length == 2 && $('input[name=analysis]:checked').length == 7){
+            
+            console.log("通過");
+            var gid = document.getElementById("groups_id").value;
+            
+            $.ajax({  
+                type: "POST",
+                url: "/project/updateStageCheck",
+                data: {
+                    gid: gid,
+                    stage_check_stage: "執行",
+                    stage_check_status: "通過"
+                },
+                success: function(data){
+                    if(data){
+                        //  alert(project_data_content2);
+                        if(data.message=="true"){
+                            $('#changeStage').modal('show');
+                            $('#recordStageCheck').modal('hide');
+                        }
+                        else{
+                            alert('帳號已被系統自動登出，請重新登入');
+                            window.location.href="/";
+                        }
+                    }
+                },
+                error: function(){
+                    alert('失敗');
+                }
+            });
+            
+          }else{
+            console.log("未通過");
+            $('#checkStageWarning').modal('show');
+            $('#recordStageCheck').modal('hide');
+          }
+    });
+
+    //分析與詮釋階段的檢核表modal
+    $("#stageRecordCheckBtn").click(function(){
+        if($('input[name=discussion]:checked').length == 3 && $('input[name=conclusion]:checked').length == 3){
+            
+            console.log("通過");
+            var gid = document.getElementById("groups_id").value;
+            
+            $.ajax({  
+                type: "POST",
+                url: "/project/updateStageCheck",
+                data: {
+                    gid: gid,
+                    stage_check_stage: "分析與詮釋",
+                    stage_check_status: "通過"
+                },
+                success: function(data){
+                    if(data){
+                        //  alert(project_data_content2);
+                        if(data.message=="true"){
+                            $('#changeStage').modal('show');
+                            $('#analysisStageCheck').modal('hide');
+                        }
+                        else{
+                            alert('帳號已被系統自動登出，請重新登入');
+                            window.location.href="/";
+                        }
+                    }
+                },
+                error: function(){
+                    alert('失敗');
+                }
+            });
+            
+          }else{
+            console.log("未通過");
+            $('#checkStageWarning').modal('show');
+            $('#analysisStageCheck').modal('hide');
+          }
+    });
 
     
     //專題實作中內容撰寫和想法討論兩種模式的切換

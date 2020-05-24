@@ -753,6 +753,16 @@ $(function(){
     modalShown();
     modalHidden();
     referenceNodeSummernote();
+
+    if ($("#groups_stage").val() == "形成問題"){
+        $('#title1').toast('show');
+        $('#title2').toast('show');
+        $('#title3').toast('show');
+    }else if($("#groups_stage").val() == "研究規劃"){
+        
+    }
+
+    
     //addNodecontent();
     socket.on('news',function(data) {
         console.log(data);
