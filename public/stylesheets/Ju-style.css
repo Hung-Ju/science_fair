@@ -282,6 +282,18 @@ a.tool:hover {
   font-size: 12px;
 }
 
+#stageIntroduction {
+    /* width: 60px;
+    height: 60px;
+    line-height: 20px;
+    border: 1px dashed red;
+    border-radius: 60px; */
+    background-color: #C1CA57;
+    border-color: #C1CA57;
+    color: black;
+    margin-left: 80%;
+}
+
 /* #nodeFiles{
   margin-top: 8px;
 } */

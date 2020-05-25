@@ -79,11 +79,23 @@ module.exports = {
 	},
 
 	//抓取全部節點資料
+	// selectAllGroupsNode :function(groups_id_groups){
+	// 	return new Promise(function(resolve, reject){
+	// 		pool.getConnection(function(err, connection){
+	// 			if(err) return reject(err);
+	// 			connection.query('SELECT *,DATE_FORMAT(`node_createtime`, "%Y-%m-%d %H:%i") AS "node_createtime2" FROM `node` WHERE `groups_id_groups`="'+groups_id_groups+'"', function(err, allGroupsNodeData){
+	// 				if(err) return reject(err);
+	// 				resolve(allGroupsNodeData);
+	// 				connection.release();
+	// 			})
+	// 		})
+	// 	})
+	// },
 	selectAllGroupsNode :function(groups_id_groups){
 		return new Promise(function(resolve, reject){
 			pool.getConnection(function(err, connection){
 				if(err) return reject(err);
-				connection.query('SELECT *,DATE_FORMAT(`node_createtime`, "%Y-%m-%d %H:%i") AS "node_createtime2" FROM `node` WHERE `groups_id_groups`="'+groups_id_groups+'"', function(err, allGroupsNodeData){
+				connection.query('SELECT n.*, DATE_FORMAT(n.node_createtime, "%Y-%m-%d %H:%i") AS "node_createtime2", COUNT(a.file_id) AS file_count FROM node n LEFT JOIN file a ON n.node_id=a.node_id_node WHERE n.groups_id_groups="'+groups_id_groups+'" GROUP BY n.node_id', function(err, allGroupsNodeData){
 					if(err) return reject(err);
 					resolve(allGroupsNodeData);
 					connection.release();

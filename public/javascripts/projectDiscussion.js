@@ -754,14 +754,76 @@ $(function(){
     modalHidden();
     referenceNodeSummernote();
 
+
     if ($("#groups_stage").val() == "形成問題"){
         $('#title1').toast('show');
         $('#title2').toast('show');
         $('#title3').toast('show');
     }else if($("#groups_stage").val() == "研究規劃"){
-        
+        $('#title1').remove();
+        $('#title2').remove();
+        $('#title3').remove();
+        $('#step1').toast('show');
+        $('#step2').toast('show');
+    }else if($("#groups_stage").val() == "執行"){
+        $('#title1').remove();
+        $('#title2').remove();
+        $('#title3').remove();
+        $('#step1').remove();
+        $('#step2').remove();
+        $('#record1').toast('show');
+        $('#record2').toast('show');
+    }else if($("#groups_stage").val() == "分析與詮釋"){
+        $('#title1').remove();
+        $('#title2').remove();
+        $('#title3').remove();
+        $('#step1').remove();
+        $('#step2').remove();
+        $('#record1').remove();
+        $('#record2').remove();
+        $('#analysis1').toast('show');
+        $('#analysis2').toast('show');
+    }else{
+        $('#stageIntroduction').hide();
     }
 
+    var times = 0;
+    $('#stageIntroduction').click(function(){
+        if((times&1)===0){            
+            if ($("#groups_stage").val() == "形成問題"){
+                $('#title1').toast('hide');
+                $('#title2').toast('hide');
+                $('#title3').toast('hide');
+            }else if($("#groups_stage").val() == "研究規劃"){
+                $('#step1').toast('hide');
+                $('#step2').toast('hide');
+            }else if($("#groups_stage").val() == "執行"){
+                $('#record1').toast('hide');
+                $('#record2').toast('hide');
+            }else if($("#groups_stage").val() == "分析與詮釋"){
+                $('#analysis1').toast('hide');
+                $('#analysis2').toast('hide');
+            }
+        }else{
+            if ($("#groups_stage").val() == "形成問題"){
+                $('#title1').toast('show');
+                $('#title2').toast('show');
+                $('#title3').toast('show');
+            }else if($("#groups_stage").val() == "研究規劃"){
+                $('#step1').toast('show');
+                $('#step2').toast('show');
+            }else if($("#groups_stage").val() == "執行"){
+                $('#record1').toast('show');
+                $('#record2').toast('show');
+            }else if($("#groups_stage").val() == "分析與詮釋"){
+                $('#analysis1').toast('show');
+                $('#analysis2').toast('show');
+            }
+
+        }
+
+        times += 1;      
+    })
     
     //addNodecontent();
     socket.on('news',function(data) {
@@ -827,12 +889,31 @@ $(function(){
             ctx.fillStyle = "black";
             ctx.fillText(tagsContent + data.node_title, nodePosition[data.id].x + 30, nodePosition[data.id].y-10);
             
-            ctx.font = "12px 微軟正黑體";
-            ctx.fillStyle = "gray";
-            ctx.fillText(data.member_name, nodePosition[data.id].x + 30, nodePosition[data.id].y+10);
-            ctx.font = "12px 微軟正黑體";
-            ctx.fillStyle = "gray";
-            ctx.fillText(data.node_createtime, nodePosition[data.id].x + 30, nodePosition[data.id].y+30);
+            // ctx.font = "12px 微軟正黑體";
+            // ctx.fillStyle = "gray";
+            // ctx.fillText(data.member_name, nodePosition[data.id].x + 30, nodePosition[data.id].y+10);
+            // ctx.font = "12px 微軟正黑體";
+            // ctx.fillStyle = "gray";
+            // ctx.fillText(data.node_createtime, nodePosition[data.id].x + 30, nodePosition[data.id].y+30);
+
+            // var nodeAttachment=nodes.get(value);
+            //console.log(data.file_count);
+            if(data.file_count> 0){
+                ctx.fillStyle = '#aaa';
+                ctx.font = '900 12px "Font Awesome 5 free"';
+                ctx.fillText('\uf0c6', nodePosition[data.id].x+30, nodePosition[data.id].y+10);                
+                ctx.fillStyle = '#555';
+                ctx.font = 'normal 12px "Microsoft JhengHei"';
+                ctx.fillText(data.member_name, nodePosition[data.id].x + 45, nodePosition[data.id].y+10);
+                ctx.font = 'normal 12px "Microsoft JhengHei"';
+                ctx.fillText(data.node_createtime, nodePosition[data.id].x + 45, nodePosition[data.id].y+30);
+            }else{
+                ctx.fillStyle = '#555';
+                ctx.font = 'normal 12px "Microsoft JhengHei"';
+                ctx.fillText(data.member_name, nodePosition[data.id].x + 30, nodePosition[data.id].y+10);
+                ctx.font = 'normal 12px "Microsoft JhengHei"';
+                ctx.fillText(data.node_createtime, nodePosition[data.id].x + 30, nodePosition[data.id].y+30);
+            }    
 
         })
         

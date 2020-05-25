@@ -387,8 +387,12 @@
     <!-- 新增昇華的想法的彈出視窗 -->
 
     <div aria-live="polite" aria-atomic="true" style="position: relative; min-height: 200px;">
+      
       <div style="position: absolute; top: 0; right: 0;">
 
+        <button id="stageIntroduction" type="button" class="btn btn-secondary">階段說明</button>
+
+        <!-- 研究主題引導說明 -->
         <div class="toast" id="title1" style="width: 500px;" data-autohide="false" role="alert" aria-live="assertive" aria-atomic="true">
           <div class="toast-header">
             <strong class="mr-auto">形成問題</strong>
@@ -397,13 +401,13 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div class="toast-body">
-            <h5>研究主題</h5>
+          <div class="toast-body" style="overflow-y: scroll;  max-height: 180px;">
+            <h5>決定研究主題</h5>
             <p>要開始進行一個科展專題，首先得想出一個有趣的研究主題，而關於這個主題的想法，有可能來自於課本當中，或是來自於日常生活的觀察當中，你也可以參考別人做過的題目。</p>
             <p>在這個階段當中，請你想出一個可能的研究主題以及寫下你的理由，並向你的組員提案，決定一個屬於你們的科展研究主題</p>
           </div>
         </div>
-
+        <!-- 研究題目引導說明 -->
         <div class="toast" id="title2" style="width: 500px;" data-autohide="false" role="alert" aria-live="assertive" aria-atomic="true">
           <div class="toast-header">
             <strong class="mr-auto">形成問題</strong>
@@ -412,21 +416,15 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div class="toast-body">
-            <!-- <h5>研究主題</h5>
-            <p>要開始進行一個科展專題，首先得想出一個有趣的研究主題，而關於這個主題的想法，有可能來自於課本當中，或是來自於日常生活的觀察當中，你也可以參考別人做過的題目。</p>
-            <p>在這個階段當中，請你想出一個可能的研究主題以及寫下你的理由，並向你的組員提案，決定一個屬於你們的科展研究主題</p> -->
+          <div class="toast-body" style="overflow-y: scroll;  height: 180px;">
 
-            <h5>研究題目</h5>
+            <h5>決定研究題目</h5>
             <p>你需要了解哪些是不好的研究題目並避免這些類似的題目。請<a href="#" onclick="window.open('/stylesheets/不好的科展題目.pdf','不好的科展題目', config='toolbar=no'); ">參考範例</a>盡量避免以下的題目。</p>
             <p>清單中大都是不易界定變因、花費昂貴、太過危險的研究主題，不適合學生研究。</p>
-  <!-- 
-            <h5>研究題目</h5>
-            <p>你需要了解哪些是不好的研究題目並避免這些類似的題目。</p>
-            <p></p> -->
+
           </div>
         </div>
-
+        <!-- 研究問題引導說明 -->
         <div class="toast" id="title3" style="width: 500px;" data-autohide="false" role="alert" aria-live="assertive" aria-atomic="true">
           <div class="toast-header">
             <strong class="mr-auto">形成問題</strong>
@@ -435,8 +433,8 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div class="toast-body">
-            <h5>研究問題</h5>
+          <div class="toast-body" style="overflow-y: scroll;  height: 180px;">
+            <h5>提出研究問題</h5>
             <p>若研究主題已經篩選出來，切下來要進行深入分析主題的步驟。</p>
             <p>請思考5W1H的方式，與誰有關？什麼時候？什麼地點？什麼事物？為什麼？如何？
               以下的5W1H分類可以幫助你快速地找到研究的方向與問題：</p>
@@ -452,6 +450,123 @@
           </div>
         </div>
 
+        <!-- 設計實驗項目引導說明 -->
+        <div class="toast" id="step1" style="width: 500px;" data-autohide="false" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="toast-header">
+            <strong class="mr-auto">研究規劃</strong>
+            <small></small>
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="toast-body" style="overflow-y: scroll;  max-height: 180px;">
+            <h5>設計實驗項目</h5>
+            <p>接下來請為你們的研究問題，設計適合的實驗項目，在這個階段你要思考需要有哪些步驟才能完成研究問題所需的實驗，並思考如何蒐集數據。</p>
+            <p>[提示：要說明實驗如何進行，分步驟一一說明清楚。]</p>
+            <p>實驗步驟必須淺顯易懂，好的實驗步驟不只讓人看得懂，也要像食譜一樣可以一步一步地按著說明操作。
+              以下是實驗步驟的<a href="#" onclick="window.open('/stylesheets/實驗項目設計範例.pdf','實驗項目設計範例', config='toolbar=no'); ">參考範例</a></p>
+          </div>
+        </div>
+        <!-- 列出研究設備及器材引導說明 -->
+        <div class="toast" id="step2" style="width: 500px;" data-autohide="false" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="toast-header">
+            <strong class="mr-auto">研究規劃</strong>
+            <small></small>
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="toast-body" style="overflow-y: scroll;  height: 180px;">
+
+            <h5>列出研究設備及器材</h5>
+            <p>進行實驗時勢必將用到實驗器材，這些器材有可能是學校有的實驗設備，或是需要自行動手製作的器材。
+              必須列出一份器材清單，並清楚描述使用器材的名稱與數量。</p>
+            <p>以下是設備及器材清單的<a href="#" onclick="window.open('/stylesheets/設備及器材清單範例.pdf','設備及器材清單範例', config='toolbar=no'); ">參考範例</a></p>
+
+          </div>
+        </div>
+
+        <!-- 紀錄實驗記錄引導說明 -->
+        <div class="toast" id="record1" style="width: 500px;" data-autohide="false" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="toast-header">
+            <strong class="mr-auto">執行</strong>
+            <small></small>
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="toast-body" style="overflow-y: scroll;  max-height: 180px;">
+            <h5>紀錄實驗記錄</h5>
+            <p>以下幾點是實驗過程需要注意的準則：</p>
+            <p>[提示：要說明實驗如何進行，分步驟一一說明清楚。]</p>
+            <p>
+              <ul>
+                <li>必須小心謹慎地測量，以免產生過多的人工誤差。</li>
+                <li>要控制所有的控制變因，不因實驗進展而變化。</li>
+                <li>在實驗日誌中詳細記載實驗數據、觀察到的現象。</li>
+                <li>事先設計好實驗紀錄簿，在實驗進行的時候紀錄數據。</li>
+                <li>若遇到意料之外的狀況，分析原因並調整實驗計畫。</li>
+              </ul>
+            </p>
+          </div>
+        </div>
+        <!-- 整理研究結果(分析及圖表)引導說明 -->
+        <div class="toast" id="record2" style="width: 500px;" data-autohide="false" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="toast-header">
+            <strong class="mr-auto">執行</strong>
+            <small></small>
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="toast-body" style="overflow-y: scroll;  height: 180px;">
+
+            <h5>整理研究結果(分析及圖表)</h5>
+            <p>在做完實驗後，你需要利用實驗結果，與組員討論出你們的研究結果；研究結果可以用來解釋實驗結果與研究問題的關聯性，或是做為如何改善實驗的參考依據。</p>
+            <p>[提示：描述實驗數據、調查結果(陳述事實)，並將每個實驗結果都撰寫出來。]</p>
+
+          </div>
+        </div>
+
+        <!-- 進行研究討論引導說明 -->
+        <div class="toast" id="analysis1" style="width: 500px;" data-autohide="false" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="toast-header">
+            <strong class="mr-auto">分析與詮釋</strong>
+            <small></small>
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="toast-body" style="overflow-y: scroll;  max-height: 180px;">
+            <h5>進行研究討論</h5>
+            <p>「研究討論」的內容通常包含了幾個部分：</p>
+            <p>
+              <ul>
+                <li>每個實驗組與對照組的比較、分析原因？</li>
+                <li>實驗結果背後所隱含的意義、原理？</li>
+                <li>實驗過程中可能造成的誤差有哪些？是否已經避免或減少誤差？誤差有嚴重影響實驗嗎？</li>
+                <li>所提出的假設經過實驗之後被否定還是證實呢？</li>
+              </ul>
+            </p>
+          </div>
+        </div>
+        <!-- 產生研究結論引導說明 -->
+        <div class="toast" id="analysis2" style="width: 500px;" data-autohide="false" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="toast-header">
+            <strong class="mr-auto">分析與詮釋</strong>
+            <small></small>
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="toast-body" style="overflow-y: scroll;  height: 180px;">
+
+            <h5>產生研究結論</h5>
+            <p>請根據「研究結果」與「研究討論」的內容提出可能的研究結論，並與小組其他成員一同進行討論。</p>
+
+          </div>
+        </div>
+        
       </div>
     </div>
 

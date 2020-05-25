@@ -101,7 +101,8 @@ router.get('/:gid/:mode',function(req, res, next) {
                     var node_createtime = allGroupsNode[d].node_createtime2;
                     var node_revised_count = allGroupsNode[d].node_revised_count;
                     var node_read_count = allGroupsNode[d].node_read_count;
-                    allGroupsNodeData = {id:id, group:group, x:x, y:y, member_id:member_id, member_name:member_name, node_title:node_title, node_tag:node_tag, node_createtime:node_createtime, node_revised_count:node_revised_count, node_read_count:node_read_count};
+                    var file_count = allGroupsNode[d].file_count;
+                    allGroupsNodeData = {id:id, group:group, x:x, y:y, member_id:member_id, member_name:member_name, node_title:node_title, node_tag:node_tag, node_createtime:node_createtime, node_revised_count:node_revised_count, node_read_count:node_read_count, file_count:file_count};
                     groupsAllNodeDataArray.push(allGroupsNodeData);
                 }
             }

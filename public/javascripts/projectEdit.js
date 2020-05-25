@@ -1279,7 +1279,7 @@ $(function(){
     });
 
     //分析與詮釋階段的檢核表modal
-    $("#stageRecordCheckBtn").click(function(){
+    $("#stageAnalysisCheckBtn").click(function(){
         if($('input[name=discussion]:checked').length == 3 && $('input[name=conclusion]:checked').length == 3){
             
             console.log("通過");
