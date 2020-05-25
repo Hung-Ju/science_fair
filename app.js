@@ -8,6 +8,8 @@ var indexRouter = require('./routes/index');
 var memberRouter = require('./routes/member');
 var groupsRouter = require('./routes/groups');
 var projectRouter = require('./routes/project');
+var resourceRouter = require('./routes/resource');
+
 var projectDiscussion = require('./models/projectDiscussion');
 
 
@@ -142,6 +144,7 @@ app.use('/', indexRouter);
 app.use('/member', memberRouter);
 app.use('/groups', groupsRouter);
 app.use('/project', projectRouter);
+app.use('/resource', resourceRouter);
 
 app.use(function(req, res, next){
     // 如果session中存在，則說明已經登入

@@ -100,10 +100,10 @@
               <a class="nav-item nav-link" href="/groups">離開專題</a>
               <a class="nav-item nav-link active" href="#">專題寫作</a>
               <a class="nav-item nav-link" href="#">專題管理</a>
-              <a class="nav-item nav-link" href="#">檔案管理</a>
+              <a class="nav-item nav-link" href="/resource/<%= gid %>">資源管理</a>
               <!-- <a class="nav-item nav-link" href="#">留言提問</a> -->
-              <a class="nav-item nav-link" href="#">個人空間</a>
-              <a class="nav-item nav-link" href="#">分析工具</a>
+              <a class="nav-item nav-link" href="#">收斂工具</a>
+              <a class="nav-item nav-link" href="#">學習歷程</a>
             </div>
           </div>
         </nav>
@@ -155,6 +155,7 @@
 
       <input type='hidden' id="allGroupsNodeData" value="<%= JSON.stringify(AllNodeData) %>">
       <input type='hidden' id="allGroupsEdgeData" value="<%= JSON.stringify(edge) %>">
+      <input type='hidden' id="mode" value="<%= mode %>">
 
       <div class="row">
         <% if(mode == "內容撰寫"){ %>

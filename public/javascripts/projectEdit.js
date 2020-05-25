@@ -1321,8 +1321,6 @@ $(function(){
     
     //專題實作中內容撰寫和想法討論兩種模式的切換
     $('#option1').on('click', function() {
-        $('#option1').addClass("active");
-        $('#option2').removeClass("active");
         //alert("內容撰寫");
         var gid = document.getElementById("groups_id").value;
         var mode = "內容撰寫";
@@ -1330,13 +1328,16 @@ $(function(){
     });
 
     $('#option2').on('click', function() {
-        $('#option2').addClass("active");
-        $('#option1').removeClass("active");
         //alert("想法討論");
         var gid = document.getElementById("groups_id").value;
         var mode = "想法討論";
         window.location.href = "/project/"+gid+"/"+mode;
     });
+
+    if($('#mode').val() == "想法討論"){
+        $('#option2').addClass("active");
+        $('#option1').removeClass("active");
+    }
 
 
     //用ajax的方式儲存和修改結論

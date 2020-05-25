@@ -260,6 +260,13 @@ a.tool:hover {
 #vis-network{
   overflow: hidden;
   margin: 53px 0 0 0;
+  /* outline: none; */
+}
+
+#mynetwork .vis-network{
+  /* overflow: hidden;
+  margin: 53px 0 0 0; */
+  outline: none;
 }
 
 .discussionCol{

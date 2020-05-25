@@ -324,61 +324,23 @@ router.post('/updateResearchTitle', function(req, res, next){
                 })
                 .then(function(result2){
                     if(result2){
-                        return projectDiscussion.selectProjectDataNode(gid, node_type)
-                    }
-                })
-                .then(function(selectNode){
-                    console.log(selectNode.length);
-                    if(selectNode.length != 0){
                         res.send({message:"true"});
-                    }else{
-                        return projectDiscussion.addProjectDataNode(gid, member_id_member, member_name, node_title, node_tag , node_type)
-                        .then(function(addNode){
-                            res.send({message:"true"});
-                        })
+                        // return projectDiscussion.selectProjectDataNode(gid, node_type)
                     }
                 })
+                // .then(function(selectNode){
+                //     console.log(selectNode.length);
+                //     if(selectNode.length != 0){
+                //         res.send({message:"true"});
+                //     }else{
+                //         return projectDiscussion.addProjectDataNode(gid, member_id_member, member_name, node_title, node_tag , node_type)
+                //         .then(function(addNode){
+                //             res.send({message:"true"});
+                //         })
+                //     }
+                // })
             }
         })
-        // project.selectResearchTitleData(gid, function(researchTitle){
-        //     project.selectResearchMotivation([gid,researchTitle],function(researchMotivation){
-        //         if(researchTitle != "" && researchMotivation != ""){
-        //             project.updateProjectDataContentForOne(gid, project_data_type1, project_data_content1, member_id_member, member_name, function(result){
-        //                 if(result){
-        //                     project.updateProjectDataContentForOne(gid, project_data_type2, project_data_content2, member_id_member, member_name, function(result2){
-        //                         if(result2){
-        //                             res.send({message:"true"});
-        //                         }
-        //                     })
-        //                 }
-        //             })
-        //         }else if(researchTitle == "" && researchMotivation != ""){
-        //             project.addProjectDataContent(gid, project_data_type1, project_data_content1, member_id_member, member_name, function(result){
-        //                 project.updateProjectDataContentForOne(gid, project_data_type2, project_data_content2, member_id_member, member_name, function(result2){
-        //                     if(result2){
-        //                         res.send({message:"true"});
-        //                     }
-        //                 })
-        //             })
-        //         }else if(researchTitle != "" && researchMotivation == ""){
-        //             project.addProjectDataContent(gid, project_data_type2, project_data_content2, member_id_member, member_name, function(result){
-        //                 project.updateProjectDataContentForOne(gid, project_data_type1, project_data_content1, member_id_member, member_name, function(result2){
-        //                     if(result2){
-        //                         res.send({message:"true"});
-        //                     }
-        //                 })
-        //             })
-        //         }else{
-        //             project.addProjectDataContent(gid, project_data_type1, project_data_content1, member_id_member, member_name, function(result){
-        //                 project.addProjectDataContent(gid, project_data_type2, project_data_content2, member_id_member, member_name, function(result2){
-        //                     if(result2){
-        //                         res.send({message:"true"});
-        //                     }
-        //                 })
-        //             })
-        //         }
-        //     })
-        // })
     }
 });
 
@@ -403,20 +365,20 @@ router.post('/addPurposes',function(req, res, next) {
         .then(function(result){
             if(result){
                 // console.log(result.insertId);
-                return projectDiscussion.selectProjectDataNode(gid, node_type)
-                //res.send({message:"true"});
-            }
-        })
-        .then(function(selectNode){
-            if(selectNode.length != 0){
+                // return projectDiscussion.selectProjectDataNode(gid, node_type)
                 res.send({message:"true"});
-            }else{
-                return projectDiscussion.addProjectDataNode(gid, member_id_member, member_name, node_title, node_tag, node_type)
-                .then(function(addNode){
-                    res.send({message:"true"});
-                })
             }
         })
+        // .then(function(selectNode){
+        //     if(selectNode.length != 0){
+        //         res.send({message:"true"});
+        //     }else{
+        //         return projectDiscussion.addProjectDataNode(gid, member_id_member, member_name, node_title, node_tag, node_type)
+        //         .then(function(addNode){
+        //             res.send({message:"true"});
+        //         })
+        //     }
+        // })
     }
 });
 
@@ -519,20 +481,20 @@ router.post('/addExperiment',function(req, res, next) {
         .then(function(result){
             if(result){
                 // console.log(result.insertId);
-                //res.send({message:"true"});
-                return projectDiscussion.selectProjectDataNode(gid, node_type)
-            }
-        })
-        .then(function(selectNode){
-            if(selectNode.length != 0){
                 res.send({message:"true"});
-            }else{
-                return projectDiscussion.addProjectDataNode(gid, member_id_member, member_name, node_title, node_tag, node_type)
-                .then(function(addNode){
-                    res.send({message:"true"});
-                })
+                // return projectDiscussion.selectProjectDataNode(gid, node_type)
             }
         })
+        // .then(function(selectNode){
+        //     if(selectNode.length != 0){
+        //         res.send({message:"true"});
+        //     }else{
+        //         return projectDiscussion.addProjectDataNode(gid, member_id_member, member_name, node_title, node_tag, node_type)
+        //         .then(function(addNode){
+        //             res.send({message:"true"});
+        //         })
+        //     }
+        // })
     }
 });
 
@@ -638,20 +600,20 @@ router.post('/addMaterial',function(req, res, next) {
         .then(function(result){
             if(result){
                 // console.log(result.insertId);
-                //res.send({message:"true"});
-                return projectDiscussion.selectProjectDataNode(gid, node_type)
-            }
-        })
-        .then(function(selectNode){
-            if(selectNode.length != 0){
                 res.send({message:"true"});
-            }else{
-                return projectDiscussion.addProjectDataNode(gid, member_id_member, member_name, node_title, node_tag, node_type)
-                .then(function(addNode){
-                    res.send({message:"true"});
-                })
+                // return projectDiscussion.selectProjectDataNode(gid, node_type)
             }
         })
+        // .then(function(selectNode){
+        //     if(selectNode.length != 0){
+        //         res.send({message:"true"});
+        //     }else{
+        //         return projectDiscussion.addProjectDataNode(gid, member_id_member, member_name, node_title, node_tag, node_type)
+        //         .then(function(addNode){
+        //             res.send({message:"true"});
+        //         })
+        //     }
+        // })
     }
 });
 
@@ -712,20 +674,20 @@ router.post('/addRecord',function(req, res, next) {
         .then(function(result){
             if(result){
                 // console.log(result.insertId);
-                //res.send({message:"true"});
-                return projectDiscussion.selectProjectDataNode(gid, node_type)
-            }
-        })
-        .then(function(selectNode){
-            if(selectNode.length != 0){
                 res.send({message:"true"});
-            }else{
-                return projectDiscussion.addProjectDataNode(gid, member_id_member, member_name, node_title, node_tag, node_type)
-                .then(function(addNode){
-                    res.send({message:"true"});
-                })
+                // return projectDiscussion.selectProjectDataNode(gid, node_type)
             }
         })
+        // .then(function(selectNode){
+        //     if(selectNode.length != 0){
+        //         res.send({message:"true"});
+        //     }else{
+        //         return projectDiscussion.addProjectDataNode(gid, member_id_member, member_name, node_title, node_tag, node_type)
+        //         .then(function(addNode){
+        //             res.send({message:"true"});
+        //         })
+        //     }
+        // })
     }
 });
 
@@ -787,20 +749,20 @@ router.post('/addAnalysis',function(req, res, next) {
         .then(function(result){
             if(result){
                 // console.log(result.insertId);
-                //res.send({message:"true"});
-                return projectDiscussion.selectProjectDataNode(gid, node_type)
-            }
-        })
-        .then(function(selectNode){
-            if(selectNode.length != 0){
                 res.send({message:"true"});
-            }else{
-                return projectDiscussion.addProjectDataNode(gid, member_id_member, member_name, node_title, node_tag, node_type)
-                .then(function(addNode){
-                    res.send({message:"true"});
-                })
+                // return projectDiscussion.selectProjectDataNode(gid, node_type)
             }
         })
+        // .then(function(selectNode){
+        //     if(selectNode.length != 0){
+        //         res.send({message:"true"});
+        //     }else{
+        //         return projectDiscussion.addProjectDataNode(gid, member_id_member, member_name, node_title, node_tag, node_type)
+        //         .then(function(addNode){
+        //             res.send({message:"true"});
+        //         })
+        //     }
+        // })
     }
 });
 
@@ -862,20 +824,20 @@ router.post('/addDiscussion',function(req, res, next) {
         .then(function(result){
             if(result){
                 // console.log(result.insertId);
-                return projectDiscussion.selectProjectDataNode(gid, node_type)
-                //res.send({message:"true"});
-            }
-        })
-        .then(function(selectNode){
-            if(selectNode.length != 0){
+                // return projectDiscussion.selectProjectDataNode(gid, node_type)
                 res.send({message:"true"});
-            }else{
-                return projectDiscussion.addProjectDataNode(gid, member_id_member, member_name, node_title, node_tag, node_type)
-                .then(function(addNode){
-                    res.send({message:"true"});
-                })
             }
         })
+        // .then(function(selectNode){
+        //     if(selectNode.length != 0){
+        //         res.send({message:"true"});
+        //     }else{
+        //         return projectDiscussion.addProjectDataNode(gid, member_id_member, member_name, node_title, node_tag, node_type)
+        //         .then(function(addNode){
+        //             res.send({message:"true"});
+        //         })
+        //     }
+        // })
     }
 });
 
@@ -946,20 +908,20 @@ router.post('/updateConclusion', function(req, res, next){
                 .then(function(result2){
                     if(result2){
                         // console.log(result.insertId);
-                        return projectDiscussion.selectProjectDataNode(gid, node_type)
-                        //res.send({message:"true"});
-                    }
-                })
-                .then(function(selectNode){
-                    if(selectNode.length != 0){
+                        // return projectDiscussion.selectProjectDataNode(gid, node_type)
                         res.send({message:"true"});
-                    }else{
-                        return projectDiscussion.addProjectDataNode(gid, member_id_member, member_name, node_title, node_tag, node_type)
-                        .then(function(addNode){
-                            res.send({message:"true"});
-                        })
                     }
                 })
+                // .then(function(selectNode){
+                //     if(selectNode.length != 0){
+                //         res.send({message:"true"});
+                //     }else{
+                //         return projectDiscussion.addProjectDataNode(gid, member_id_member, member_name, node_title, node_tag, node_type)
+                //         .then(function(addNode){
+                //             res.send({message:"true"});
+                //         })
+                //     }
+                // })
             }
         })
     }
@@ -1139,7 +1101,8 @@ router.post('/discussion/addIdea', upload.array('files',5), function(req, res, n
                             // 檔案會放在uploads資料夾並且沒有附檔名，需要自己轉存，用到fs模組
                             // 對臨時檔案轉存，fs.rename(oldPath, newPath,callback);
                             var originalname = req.files[i].originalname;
-                            var file_type_origin = req.files[i].type;
+                            var file_type_origin = req.files[i].mimetype;
+                            console.log(file_type_origin);
                             var file_type;
                             if(file_type_origin == "image/jpeg" || file_type_origin == "image/png" || file_type_origin == "image/gif"){
                                 file_type = "圖片";
@@ -1151,7 +1114,7 @@ router.post('/discussion/addIdea', upload.array('files',5), function(req, res, n
                                     throw err;
                                 } 
                             })
-                            fileDataArray.push({groups_id_groups:groups_id_groups, node_id_node:node_id_node, file_name:originalname, file_type:file_type});
+                            fileDataArray.push({groups_id_groups:groups_id_groups, node_id_node:node_id_node, file_name:originalname, file_type:file_type, member_id_member:member_id_member, member_name:member_name});
                         };
                         return projectDiscussion.addFile(fileDataArray)
                         .then(function(result4){
@@ -1272,7 +1235,7 @@ router.post('/:gid/:mode/discussion/editIdeaNode', upload.array('files',5), func
                             // 檔案會放在uploads資料夾並且沒有附檔名，需要自己轉存，用到fs模組
                             // 對臨時檔案轉存，fs.rename(oldPath, newPath,callback);
                             var originalname = req.files[i].originalname;
-                            var file_type_origin = req.files[i].type;
+                            var file_type_origin = req.files[i].mimetype;
                             var file_type;
                             if(file_type_origin == "image/jpeg" || file_type_origin == "image/png" || file_type_origin == "image/gif"){
                                 file_type = "圖片";
@@ -1284,7 +1247,7 @@ router.post('/:gid/:mode/discussion/editIdeaNode', upload.array('files',5), func
                                     throw err;
                                 } 
                             })
-                            fileDataArray.push({groups_id_groups:groups_id_groups, node_id_node:node_id, file_name:originalname, file_type:file_type});
+                            fileDataArray.push({groups_id_groups:groups_id_groups, node_id_node:node_id, file_name:originalname, file_type:file_type, member_id_member:member_id_member, member_name:member_name});
                         };
                         return projectDiscussion.addFile(fileDataArray)
                         .then(function(result4){
@@ -1389,7 +1352,7 @@ router.post('/discussion/addReferenceNode', upload.array('files',5), function(re
                             // 檔案會放在uploads資料夾並且沒有附檔名，需要自己轉存，用到fs模組
                             // 對臨時檔案轉存，fs.rename(oldPath, newPath,callback);
                             var originalname = req.files[i].originalname;
-                            var file_type_origin = req.files[i].type;
+                            var file_type_origin = req.files[i].mimetype;
                             var file_type;
                             if(file_type_origin == "image/jpeg" || file_type_origin == "image/png" || file_type_origin == "image/gif"){
                                 file_type = "圖片";
@@ -1401,7 +1364,7 @@ router.post('/discussion/addReferenceNode', upload.array('files',5), function(re
                                     throw err;
                                 } 
                             })
-                            fileDataArray.push({groups_id_groups:groups_id_groups, node_id_node:node_id_node, file_name:originalname, file_type:file_type});
+                            fileDataArray.push({groups_id_groups:groups_id_groups, node_id_node:node_id_node, file_name:originalname, file_type:file_type, member_id_member:member_id_member, member_name:member_name});
                         };
                         return projectDiscussion.addFile(fileDataArray)
                         .then(function(result4){
@@ -1507,7 +1470,7 @@ router.post('/:gid/:mode/discussion/editReferenceNode', upload.array('files',5),
                             // 檔案會放在uploads資料夾並且沒有附檔名，需要自己轉存，用到fs模組
                             // 對臨時檔案轉存，fs.rename(oldPath, newPath,callback);
                             var originalname = req.files[i].originalname;
-                            var file_type_origin = req.files[i].type;
+                            var file_type_origin = req.files[i].mimetype;
                             var file_type;
                             if(file_type_origin == "image/jpeg" || file_type_origin == "image/png" || file_type_origin == "image/gif"){
                                 file_type = "圖片";
@@ -1519,7 +1482,7 @@ router.post('/:gid/:mode/discussion/editReferenceNode', upload.array('files',5),
                                     throw err;
                                 } 
                             })
-                            fileDataArray.push({groups_id_groups:groups_id_groups, node_id_node:node_id_node, file_name:originalname, file_type:file_type});
+                            fileDataArray.push({groups_id_groups:groups_id_groups, node_id_node:node_id, file_name:originalname, file_type:file_type, member_id_member:member_id_member, member_name:member_name});
                         };
                         return projectDiscussion.addFile(fileDataArray)
                         .then(function(result4){

@@ -238,7 +238,9 @@ module.exports = {
 						var file_name = data.file_name;
 						var file_type = data.file_type;
 						var file_share = 0;
-						var params = {groups_id_groups:groups_id_groups, node_id_node:node_id_node, file_name:file_name, file_type:file_type, file_share:file_share};
+						var member_id_member = data.member_id_member;
+						var member_name = data.member_name;
+						var params = {groups_id_groups:groups_id_groups, node_id_node:node_id_node, file_name:file_name, file_type:file_type, file_share:file_share, member_id_member:member_id_member, member_name:member_name};
 						connection.query('INSERT INTO `file` SET ?', params, function(err, insert_res){
 							if(err) return reject(err);
 							resolve(insert_res);
