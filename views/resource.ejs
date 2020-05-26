@@ -115,10 +115,12 @@
       <div class="row" style="margin-top: 20px;">
 
         <div class="col">
-
           <div class="card">
-            <h6 class="card-header"><i class="fas fa-user pr-1" aria-hidden="true"></i>個人資源</h6>
+            <h6 class="card-header" style="background-color: #31625C; color: white;"><i class="fas fa-user pr-1" aria-hidden="true"></i>個人資源</h6>
             <div class="card-body">
+              <button type="button" class="btn btn-secondary btn-sm mb-2" data-toggle="modal" data-target="#uploadPersonalFile">上傳個人檔案</button>
+              <button type="button" class="btn btn-light btn-sm mb-2" data-toggle="modal" data-target="#sharePersonalLink">分享個人連結</button>
+              
               <table id="allPersonalFileDataTable" class="table"></table>
               
             </div>
@@ -128,9 +130,11 @@
         <div class="col-7">
 
           <div class="card">
-            <h6 class="card-header"><i class="fas fa-users pr-1" aria-hidden="true"></i>小組資源</h6>
+            <h6 class="card-header" style="background-color: #31625C; color: white;"><i class="fas fa-users pr-1" aria-hidden="true"></i>小組資源</h6>
             <div class="card-body">
               <div>
+                <button type="button" class="btn btn-secondary btn-sm mb-2" data-toggle="modal" data-target="#uploadGroupsFile">上傳小組檔案</button>
+                <button type="button" class="btn btn-light btn-sm mb-2" data-toggle="modal" data-target="#shareGroupsLink">分享小組連結</button>
                 <table id="allGroupsFileDataTable" class="table"></table>
               </div>
               
@@ -140,12 +144,156 @@
         </div>
 
       </div>
-      
 
       
-      
+    
     </div>
 
+    <!-- 檢視檔案的modal -->
+    <div class="modal fade" id="viewFile" tabindex="-1" role="dialog" aria-labelledby="viewFile" aria-hidden="true" data-backdrop="static">
+      <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title"></h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">×</span>
+                  </button>
+              </div>
+              <div class="modal-body"></div>
+          </div>
+      </div>
+    </div>
+    <!-- 檢視檔案的modal -->
+
+    <!-- 新增個人檔案 -->
+    <div class="modal fade" id="uploadPersonalFile" tabindex="-1" role="dialog" aria-labelledby="uploadPersonalFile" aria-hidden="true" data-backdrop="static">
+      <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title">上傳個人檔案</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+              </button>
+          </div>
+          <div class="modal-body">
+            <div class="input-group">
+              <div class="custom-file">
+                <input type="file" class="custom-file-input" aria-describedby="inputGroupFileAddon" multiple="">
+                <label class="custom-file-label mt-2" for="inputGroupFile04">選擇檔案</label>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary uploadFileButton">上傳</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 新增個人檔案 -->
+
+    <!-- 新增個人連結 -->
+    <div class="modal fade" id="sharePersonalLink" tabindex="-1" role="dialog" aria-labelledby="sharePersonalLink" aria-hidden="true" data-backdrop="static">
+      <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title">上傳個人連結</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">×</span>
+                  </button>
+              </div>
+              <div class="modal-body">
+                  <form>
+                      <div class="form-group">
+                          <label>網站名稱</label>
+                          <input type="text" class="form-control linkName">
+                      </div>
+                      <div class="form-group">
+                          <label>網址</label>
+                          <input type="text" class="form-control link">
+                      </div>
+                  </form>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-primary uploadLinkButton" data-dismiss="modal">上傳</button>
+              </div>
+          </div>
+      </div>
+    </div>
+    <!-- 新增個人連結 -->
+
+    <!-- 新增小組檔案 -->
+    <div class="modal fade" id="uploadGroupsFile" tabindex="-1" role="dialog" aria-labelledby="uploadGroupsFile" aria-hidden="true" data-backdrop="static">
+      <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title">上傳小組檔案</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+              </button>
+          </div>
+          <div class="modal-body">
+            <div class="input-group">
+              <div class="custom-file">
+                <input type="file" class="custom-file-input" aria-describedby="inputGroupFileAddon" multiple="">
+                <label class="custom-file-label mt-2" for="inputGroupFile04">選擇檔案</label>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary uploadFileButton">上傳</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 新增小組檔案 -->
+
+    <!-- 新增小組連結 -->
+    <div class="modal fade" id="shareGroupsLink" tabindex="-1" role="dialog" aria-labelledby="shareGroupsLink" aria-hidden="true" data-backdrop="static">
+      <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title">上傳小組連結</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">×</span>
+                  </button>
+              </div>
+              <div class="modal-body">
+                  <form>
+                      <div class="form-group">
+                          <label>網站名稱</label>
+                          <input type="text" class="form-control linkName">
+                      </div>
+                      <div class="form-group">
+                          <label>網址</label>
+                          <input type="text" class="form-control link">
+                      </div>
+                  </form>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-primary uploadLinkButton" data-dismiss="modal">上傳</button>
+              </div>
+          </div>
+      </div>
+    </div>
+    <!-- 新增小組連結 -->
+
+    <!-- 確認是否刪除檔案 -->
+    <div class="modal fade" id="checkRemoveFile" tabindex="-1" role="dialog" aria-labelledby="checkRemoveFileLabel" aria-hidden="true" data-backdrop="static">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-body"><h5></h5></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+            <button type="button" class="btn btn-danger" data-dismiss="modal" id="checkRemoveFile_btn">確定刪除</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 確認是否刪除檔案 -->
+
+    <input type="hidden" id="gid" value="<%= gid %>">
+    <input type="hidden" id="member_id" value="<%= member_id %>">
+    <input type="hidden" id="member_name" value="<%= member_name %>">
     <input type="hidden" id="allGroupsFileData" value="<%= JSON.stringify(allGroupsFileData) %>">
     <input type="hidden" id="allPersonalFileData" value="<%= JSON.stringify(allPersonalFileData) %>">
 
