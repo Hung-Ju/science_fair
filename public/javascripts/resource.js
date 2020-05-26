@@ -70,6 +70,32 @@ window.operateEvents = {
         $('#viewFile').modal();
     },
     'click .share': function (e, value, row) {
+        console.log(row.file_share)
+        $.ajax({
+            type: "POST",
+            url: "/resource/checkFileExist",
+            data: {
+                file_id : row.file_id,
+                file_name : row.file_name,
+                file_share : row.file_share,
+                groups_id_groups : $("#gid").val()
+            },
+            success: function(data){
+                if(data.message=="true"){
+                    alert("沒有重複");
+
+                }else if(data.message=="same"){
+                    alert('已經有相同的檔案'+data.sameFile+'，請修改檔案名稱');
+                }else{
+                    alert('帳號已被系統自動登出，請重新登入');
+                    window.location.href="/";
+                }
+            },
+            error: function(){
+                alert("分享失敗");
+            }
+            
+        })
         alert('You click view action, row: ' + JSON.stringify(row))
       },
     'click .delete': function (e, value, row) {

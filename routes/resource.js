@@ -38,7 +38,8 @@ router.get('/:gid',function(req, res, next) {
                     var member_name = groupsFileData[i].member_name;
                     var groups_id_groups = groupsFileData[i].groups_id_groups;
                     var node_type = groupsFileData[i].node_type;
-                    allGroupsFileData = {file_id:file_id, node_id_node:node_id_node, file_name:file_name, file_type:file_type, file_upload_time:file_upload_time, member_name:member_name, groups_id_groups:groups_id_groups, node_type:node_type}
+                    var file_share = groupsFileData[i].file_share;
+                    allGroupsFileData = {file_id:file_id, node_id_node:node_id_node, file_name:file_name, file_type:file_type, file_upload_time:file_upload_time, member_name:member_name, groups_id_groups:groups_id_groups, node_type:node_type,file_share:file_share}
                     allGroupsFileArray.push(allGroupsFileData);
                 }
             }
@@ -53,7 +54,8 @@ router.get('/:gid',function(req, res, next) {
                     var file_type = personalFileData[j].file_type;
                     var file_upload_time = personalFileData[j].file_upload_time;
                     var member_name = personalFileData[j].member_name;
-                    allPersonalFileData = {file_id:file_id, node_id_node:node_id_node, file_name:file_name, file_type:file_type, file_upload_time:file_upload_time, member_name:member_name}
+                    var file_share = personalFileData[j].file_share;
+                    allPersonalFileData = {file_id:file_id, node_id_node:node_id_node, file_name:file_name, file_type:file_type, file_upload_time:file_upload_time, member_name:member_name, file_share:file_share}
                     allPersonalFileArray.push(allPersonalFileData);
                 }
             }
@@ -209,6 +211,41 @@ router.post('/deleteFile', function(req, res, next){
             }
         })
     }
+})
+
+router.post('/checkFileExist', function(req, res, next){
+    var file_id = req.body.file_id;
+    var member_id_member = req.session.member_id;
+    var file_name = req.body.file_name;
+    var file_share = req.body.file_share;
+    var groups_id_groups = req.body.groups_id_groups;
+    var fileDataArray=[];
+    if(!member_id_member){
+        res.send({message: "false"});
+    }else{
+        fileDataArray.push({originalname:file_name})
+        if(file_share == 0){
+            resource.existsFileCheckPersonal(groups_id_groups, member_id_member, fileDataArray)
+            .then(function(result){
+                if (result == 0 || result.length == 0){
+                    res.send({message:"true"})
+                }else{
+                    res.send({message:"same", sameFile:result})
+                }
+            })
+        }else{
+            resource.existsFileCheck(groups_id_groups, fileDataArray)
+            .then(function(result){
+                console.log(result);
+                if (result == 0 || result.length == 0){
+                    res.send({message:"true"})
+                }else{
+                    res.send({message:"same", sameFile:result})
+                }
+            })
+        }
+    }
+
 })
 
 module.exports = router;
