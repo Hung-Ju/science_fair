@@ -82,10 +82,26 @@ window.operateEvents = {
             },
             success: function(data){
                 if(data.message=="true"){
-                    alert("沒有重複");
+                    //alert("沒有重複");
+                    file_id = row.file_id;
+                    file_share = row.file_share;
+                    file_type = row.file_type;
+                    file_name = row.file_type=="連結"?row.file_name.split(',')[0]:row.file_name;
+                    $('#checkShareFile .modal-body').html('<h5>是否確定分享資源( '+file_name+' )至小組？</h5>');
+                    // $('#checkShareFile .modal-body').append('<p class="text-danger">注意：小組檔案無法回復個人檔案且無法刪除喔！</p>');
+                    $('#checkShareFile').modal();
 
                 }else if(data.message=="same"){
                     alert('已經有相同的檔案'+data.sameFile+'，請修改檔案名稱');
+                    file_id = row.file_id;
+                    file_share = row.file_share;
+                    file_type = row.file_type;
+                    file_name = row.file_type=="連結"?row.file_name.split(',')[0]:row.file_name;
+                    original_file_name = row.file_name.split('.')[0];
+                    original_file_type = row.file_name.split('.')[1];
+                    $('#renameShareFile .modal-body').html('<h5>已經有相同的檔案( '+data.sameFile+' )，請修改檔案名稱</h5>');
+                    $('#renameShareFile .modal-body').append('<p><b>檔案名稱</b><input class="form-control original_file_name" type="text" name="original_file_name" required="required" value="'+file_name.split('.')[0]+'"></p>');
+                    $('#renameShareFile').modal();
                 }else{
                     alert('帳號已被系統自動登出，請重新登入');
                     window.location.href="/";
@@ -96,7 +112,7 @@ window.operateEvents = {
             }
             
         })
-        alert('You click view action, row: ' + JSON.stringify(row))
+        // alert('You click view action, row: ' + JSON.stringify(row))
       },
     'click .delete': function (e, value, row) {
         fileId= row.file_id;
@@ -137,7 +153,7 @@ function groupsResourceTable(){
             {title: '類型', field: 'file_type', sortable: true},
             {title: '上傳者', field: 'member_name', sortable: true},
             {title: '上傳時間', field: 'file_upload_time', sortable: true, width:200},
-            {title: '', field: 'node_id_node', formatter: 'returnShareButton', width:40},
+            {title: '', field: 'node_id_node',events:'window.operateEvents2' , formatter: 'returnShareButton', width:40},
             {title: '', field: 'project_data_id',events: 'window.operateEvents2' , formatter: 'groupsResourceButton', width:40}
             ],
         theadClasses: 'thead-light',
@@ -159,7 +175,7 @@ function groupsResourceButton(value, row, index){
 
 function returnShareButton(value, row, index){
     if(row.node_id_node == -1 && row.member_name == $("#member_name").val())
-        return '<a class="share text-warning mr-2" href="javascript:void(0)" title=""><i class="fas fa-reply"></i></a>';
+        return '<a class="reply text-warning mr-2" href="javascript:void(0)" title=""><i class="fas fa-reply"></i></a>';
     else
         return '';
 }
@@ -189,6 +205,50 @@ window.operateEvents2 = {
         $('#viewFile .modal-body').html(setAttachmentLink(row));
         $('#viewFile').modal();
     },
+    'click .reply': function (e, value, row) {
+        console.log(row.file_share)
+        $.ajax({
+            type: "POST",
+            url: "/resource/checkFileExist",
+            data: {
+                file_id : row.file_id,
+                file_name : row.file_name,
+                file_share : row.file_share,
+                groups_id_groups : $("#gid").val()
+            },
+            success: function(data){
+                if(data.message=="true"){
+                    //alert("沒有重複");
+                    file_id = row.file_id;
+                    file_share = row.file_share;
+                    file_type = row.file_type;
+                    file_name = row.file_type=="連結"?row.file_name.split(',')[0]:row.file_name;
+                    $('#checkShareFile .modal-body').html('<h5>是否確定收回( '+file_name+' )至個人資源？</h5>');
+                    // $('#checkShareFile .modal-body').append('<p class="text-danger">注意：小組檔案無法回復個人檔案且無法刪除喔！</p>');
+                    $('#checkShareFile').modal();
+
+                }else if(data.message=="same"){
+                    alert('已經有相同的檔案'+data.sameFile+'，請修改檔案名稱');
+                    file_id = row.file_id;
+                    file_share = row.file_share;
+                    file_type = row.file_type;
+                    file_name = row.file_type=="連結"?row.file_name.split(',')[0]:row.file_name;
+                    original_file_name = row.file_name.split('.')[0];
+                    original_file_type = row.file_name.split('.')[1];
+                    $('#renameShareFile .modal-body').html('<h5>已經有相同的檔案( '+data.sameFile+' )，請修改檔案名稱</h5>');
+                    $('#renameShareFile .modal-body').append('<p><b>檔案名稱</b><input class="form-control original_file_name" type="text" name="original_file_name" required="required" value="'+file_name.split('.')[0]+'"></p>');
+                    $('#renameShareFile').modal();
+                }else{
+                    alert('帳號已被系統自動登出，請重新登入');
+                    window.location.href="/";
+                }
+            },
+            error: function(){
+                alert("分享失敗");
+            }
+            
+        })
+      },
   }
 
 
@@ -324,6 +384,97 @@ $(function(){
             }
         });
     });
+
+    $('.checkShareFile_btn').on('click', function(){
+        console.log(file_id);
+        var $uploadModal = $(this).closest('.modal');
+        var file_id1 = file_id;
+        var file_share1 = file_share;
+        var file_name1 = file_name;
+        var file_type1 = file_type;
+        $.ajax({
+            url: '/resource/shareFileToGroups',
+            type: 'POST',
+            data: {
+                file_id: file_id1,
+                file_share: file_share1,
+                file_name: file_name1,
+                file_type: file_type1,
+                groups_id_groups: $("#gid").val()
+            },
+            success: function(data){
+                var insertData = data.result;
+                if(file_share1 == 1){
+                    insertData.forEach(function(value, index){
+                        $('#allGroupsFileDataTable').bootstrapTable('append', value);
+                    });
+                    $("#allPersonalFileDataTable").bootstrapTable('remove', {field: 'file_id', values: [file_id1]});
+                }else{
+                    insertData.forEach(function(value, index){
+                        $('#allPersonalFileDataTable').bootstrapTable('append', value);
+                    });
+                    $("#allGroupsFileDataTable").bootstrapTable('remove', {field: 'file_id', values: [file_id1]});
+                }
+                
+                $uploadModal.modal('hide');
+
+            },
+            error: function(){
+                alert('失敗');
+            }
+            
+        })
+    });
+
+    $('.renameShareFile_btn').on('click', function(){
+        var $uploadModal = $(this).closest('.modal');
+        var file_id1 = file_id;
+        var file_share1 = file_share;
+        var original_file_name1 = original_file_name;
+        var original_file_type1 = original_file_type;
+        var file_type1 = file_type;
+        var new_file_name = $('.original_file_name').val();
+
+        var format = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+        if(format.test(new_file_name)){
+            $('#renameShareFile .modal-body').append('<p class="text-danger">檔案名稱請勿包含特殊字元</p>');
+        }else{
+            $.ajax({
+                url: '/resource/renameFileName',
+                type: 'POST',
+                data: {
+                    file_id:file_id1,
+                    file_share:file_share1,
+                    original_file_name:original_file_name1,
+                    original_file_type:original_file_type1,
+                    file_type:file_type1,
+                    new_file_name:new_file_name,
+                    groups_id_groups: $("#gid").val()
+                },
+                success: function(data){
+                    var insertData = data.result;
+                    if(file_share1 == 1){
+                        $("#allPersonalFileDataTable").bootstrapTable('remove', {field: 'file_id', values: [file_id1]});
+                        insertData.forEach(function(value, index){
+                            $('#allPersonalFileDataTable').bootstrapTable('append', value);
+                        });
+                        
+                    }else{
+                        $("#allGroupsFileDataTable").bootstrapTable('remove', {field: 'file_id', values: [file_id1]});
+                        insertData.forEach(function(value, index){
+                            $('#allGroupsFileDataTable').bootstrapTable('append', value);
+                        });
+                        
+                    }
+                    $uploadModal.modal('hide');
+                },
+                error: function(){
+                    alert('失敗');
+                }
+            })
+        }
+        
+    })
 
     $('.custom-file-input').change(function (e) {
         var files = [];

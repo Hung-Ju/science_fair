@@ -140,5 +140,51 @@ module.exports = {
 		})
 	},
 
+	//分享個人資源至小組資源資料庫修改
+	updateFileShare :function(file_id, file_share){
+		return new Promise(function(resolve, reject){
+			pool.getConnection(function(err, connection){
+				if(err) return reject(err);
+				connection.query('UPDATE `file` SET `file_share`="'+file_share+'"  WHERE `file_id`="'+file_id+'"', function(err, result){
+					if(err) return reject(err);
+					// console.log(result);
+					resolve(result);
+					connection.release();
+				})
+			})
+		})
+		.then(function(result){
+			return selectInsertFileData(file_id)
+		})
+		.then(function(fileData){
+			var insertFileArray = [];
+			insertFileArray.push(fileData[0]);
+			return insertFileArray
+		})
+	},
+
+	//修改檔案名稱
+	updateFileName :function(file_id, newFileName){
+		return new Promise(function(resolve, reject){
+			pool.getConnection(function(err, connection){
+				if(err) return reject(err);
+				connection.query('UPDATE `file` SET `file_name`="'+newFileName+'"  WHERE `file_id`="'+file_id+'"', function(err, result){
+					if(err) return reject(err);
+					// console.log(result);
+					resolve(result);
+					connection.release();
+				})
+			})
+		})
+		.then(function(result){
+			return selectInsertFileData(file_id)
+		})
+		.then(function(fileData){
+			var insertFileArray = [];
+			insertFileArray.push(fileData[0]);
+			return insertFileArray
+		})
+	}
+
 
 }

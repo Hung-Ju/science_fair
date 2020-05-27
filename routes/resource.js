@@ -213,6 +213,7 @@ router.post('/deleteFile', function(req, res, next){
     }
 })
 
+//分享或收回資源時確認檔案是否有重複
 router.post('/checkFileExist', function(req, res, next){
     var file_id = req.body.file_id;
     var member_id_member = req.session.member_id;
@@ -242,6 +243,101 @@ router.post('/checkFileExist', function(req, res, next){
                 }else{
                     res.send({message:"same", sameFile:result})
                 }
+            })
+        }
+    }
+
+})
+
+//更新資源共享狀態
+router.post('/shareFileToGroups', function(req, res, next){
+    var file_id = req.body.file_id;
+    var member_id_member = req.session.member_id;
+    var file_name = req.body.file_name;
+    var file_share = req.body.file_share;
+    var file_type = req.body.file_type;
+    var groups_id_groups = req.body.groups_id_groups;
+    var fileDataArray=[];
+    if(!member_id_member){
+        res.send({message: "false"});
+    }else{
+        fileDataArray.push({originalname:file_name})
+        if(file_share == 0){
+            //從共享改到個人
+            var file_share_change = 1;
+            resource.updateFileShare(file_id, file_share_change)
+            .then(function(result){
+                if (file_type != "連結"){
+                    fs.rename("./public/upload_file/group"+groups_id_groups+"/groups_file/"+file_name, "./public/upload_file/group"+groups_id_groups+"/groups_member_"+member_id_member+"/"+file_name , function(err) {
+                        if (err) {
+                            throw err;
+                        } 
+                    })
+                }
+                res.send({result:result})
+            })
+        }else{
+            //從個人改到共享
+            var file_share_change = 0;
+            resource.updateFileShare(file_id, file_share_change)
+            .then(function(result){
+                if (file_type != "連結"){
+                    fs.rename("./public/upload_file/group"+groups_id_groups+"/groups_member_"+member_id_member+"/"+file_name ,"./public/upload_file/group"+groups_id_groups+"/groups_file/"+file_name , function(err) {
+                        if (err) {
+                            throw err;
+                        } 
+                    })
+                }
+                res.send({result:result})
+            })
+        }
+    }
+
+})
+
+//修改檔案名稱
+router.post('/renameFileName', function(req, res, next){
+    var file_id = req.body.file_id;
+    var member_id_member = req.session.member_id;
+    var new_file_name = req.body.new_file_name;
+    var original_file_name = req.body.original_file_name;
+    var original_file_type = req.body.original_file_type;
+    var original_file_name_full = original_file_name+'.'+original_file_type;
+    var new_file_name_full = new_file_name+'.'+original_file_type;
+    var file_share = req.body.file_share;
+    var file_type = req.body.file_type;
+    var groups_id_groups = req.body.groups_id_groups;
+    // var fileDataArray=[];
+    if(!member_id_member){
+        res.send({message: "false"});
+    }else{
+        // fileDataArray.push({originalname:file_name})
+        if(file_share == 0){
+            //從共享修改檔案名稱
+            resource.updateFileName(file_id, new_file_name_full)
+            .then(function(result){
+                if (file_type != "連結"){
+                    fs.rename("./public/upload_file/group"+groups_id_groups+"/groups_file/"+original_file_name_full, "./public/upload_file/group"+groups_id_groups+"/groups_file/"+new_file_name_full , function(err) {
+                        if (err) {
+                            throw err;
+                        } 
+                    })
+                }
+                res.send({result:result})
+            })
+        }else{
+            //從個人修改檔案名稱
+            var file_share_change = 0;
+            resource.updateFileName(file_id, new_file_name_full)
+            .then(function(result){
+                if (file_type != "連結"){
+                    fs.rename("./public/upload_file/group"+groups_id_groups+"/groups_member_"+member_id_member+"/"+original_file_name_full ,"./public/upload_file/group"+groups_id_groups+"/groups_member_"+member_id_member+"/"+new_file_name_full , function(err) {
+                        if (err) {
+                            throw err;
+                        } 
+                    })
+                }
+                res.send({result:result})
             })
         }
     }
