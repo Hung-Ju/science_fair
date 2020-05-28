@@ -60,7 +60,8 @@
             </div>
             <div class="modal-body">
               <div id="addIdeaRoot">
-                <p><b>標題</b><input class="form-control" type="text" name="idea_title" id="idea_title" required="required"></p>
+                <p style="margin-bottom: 0;"><b>標題</b><input class="form-control" type="text" name="idea_title" id="idea_title" required="required" maxlength="15"></p>
+                <p style="color: gray; font-size: 14px; margin-top: 0;">*標題字數限制15字</p>
                 <div class="ideaTag"></div>
                 <div class="row">
                     <div class="btn-group-vertical col-3">
@@ -139,7 +140,8 @@
             <div class="tab-pane fade" id="editIdeaTab" role="tabpanel" aria-labelledby="editIdea-tab">
               <div class="modal-body">
                 <div id="EditIdeaRoot">
-                  <p><b>標題</b><input class="form-control" type="text" name="idea_title_edit" id="idea_title_edit" required="required"></p>
+                  <p style="margin-bottom: 0;"><b>標題</b><input class="form-control" type="text" name="idea_title_edit" id="idea_title_edit" required="required"></p>
+                  <p style="color: gray; font-size: 14px; margin-top: 0;">*標題字數限制15字</p>
                   <div class="ideaTagEdit"></div>
                   <div class="row">
                     <div class=" col-3">
@@ -213,7 +215,8 @@
           </div>
           <div class="modal-body">
             <div id="addReferenceNodeRoot">
-              <div><b>標題</b><input class="form-control" type="text" name="reference_title" id="reference_title" required="required"></div>
+              <div><b>標題</b><input class="form-control" type="text" name="reference_title" id="reference_title" required="required" maxlength="15"></div>
+              <p style="color: gray; font-size: 14px; margin-top: 0;">*標題字數限制15字</p>
               <div class="ideaTag"></div>
               <div class="form-row">
                 <div class="col-2">
@@ -295,7 +298,8 @@
             <div class="tab-pane fade" id="ediReferenceTab" role="tabpanel" aria-labelledby="editReference-tab">
               <div class="modal-body">
                 <div id="EditReferenceRoot">
-                  <p><b>標題</b><input class="form-control" type="text" name="reference_title_edit" id="reference_title_edit" required="required"></p>
+                  <p style="margin-bottom: 0;"><b>標題</b><input class="form-control" type="text" name="reference_title_edit" id="reference_title_edit" required="required"></p>
+                  <p style="color: gray; font-size: 14px; margin-top: 0;">*標題字數限制15字</p>
                   <div class="referenceTagEdit"></div>
                   <div class="form-row">
                     <div class="col-2">
@@ -580,6 +584,5 @@
 
 
 <script src="/socket.io/socket.io.js"></script>
-
 
 <script type="text/javascript" src="/javascripts/projectDiscussion.js"></script>

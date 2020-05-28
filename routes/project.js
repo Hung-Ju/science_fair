@@ -68,6 +68,7 @@ router.get('/:gid/:mode',function(req, res, next) {
         var groupsAllEdgeDataArray = [];
         var groupsCreateStudentId= [];
         var groupsStageCheck;
+        var groups_name;
         project.selectAllStageCheck(gid)
         .then(function(allStageCheck){
             groupsStageCheck = allStageCheck.length;
@@ -113,6 +114,7 @@ router.get('/:gid/:mode',function(req, res, next) {
             // console.log(groupsData);
             var groupsStageData = groupsData[0].groups_stage;
             var groups_create_student_id = groupsData[0].member_id_student_member;
+            groups_name = groupsData[0].groups_name;
             groups_stage.push(groupsStageData);
             groupsCreateStudentId.push(groups_create_student_id);
             return project.selectResearchConclusion(gid)
@@ -253,7 +255,7 @@ router.get('/:gid/:mode',function(req, res, next) {
                     referenceArray.push(referenceData);
                 }
             }
-            res.render('projectEdit',  {title: 'Science Fair科學探究專題系統', gid:gid, mode:mode, member_id:req.session.member_id, member_name:req.session.member_name, researchTitle:researchTitleArray, researchMotivation:researchMotivationArray, researchPurposes:researchPurposesArray, researchExperiment:researchExperimentArray, researchMaterial:researchMaterialArray, researchRecord:researchRecordArray, researchAnalysis:researchAnalysisArray, researchDiscussion:researchDiscussionArray, researchConclusion:researchConclusionArray, groups_stage:groups_stage, AllNodeData:groupsAllNodeDataArray, reference: referenceArray, edge:groupsAllEdgeDataArray, groups_create_student_id:groupsCreateStudentId, groupsStageCheck:groupsStageCheck});
+            res.render('projectEdit',  {title: 'Science Fair科學探究專題系統', gid:gid, groups_name:groups_name, mode:mode, member_id:req.session.member_id, member_name:req.session.member_name, researchTitle:researchTitleArray, researchMotivation:researchMotivationArray, researchPurposes:researchPurposesArray, researchExperiment:researchExperimentArray, researchMaterial:researchMaterialArray, researchRecord:researchRecordArray, researchAnalysis:researchAnalysisArray, researchDiscussion:researchDiscussionArray, researchConclusion:researchConclusionArray, groups_stage:groups_stage, AllNodeData:groupsAllNodeDataArray, reference: referenceArray, edge:groupsAllEdgeDataArray, groups_create_student_id:groupsCreateStudentId, groupsStageCheck:groupsStageCheck});
         })
     }
 });

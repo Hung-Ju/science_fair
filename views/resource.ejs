@@ -98,7 +98,7 @@
           <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
               <a class="nav-item nav-link" href="/groups">離開專題</a>
-              <a class="nav-item nav-link" href="#">專題寫作</a>
+              <a class="nav-item nav-link" href="/project/<%= gid %>/內容撰寫">專題寫作</a>
               <a class="nav-item nav-link" href="#">專題管理</a>
               <a class="nav-item nav-link active" href="#">資源管理</a>
               <!-- <a class="nav-item nav-link" href="#">留言提問</a> -->
@@ -115,11 +115,11 @@
       <div class="row" style="margin-top: 20px;">
 
         <div class="col">
-          <div class="card">
+          <div class="card" style="min-height:83vh;">
             <h6 class="card-header" style="background-color: #31625C; color: white;"><i class="fas fa-user pr-1" aria-hidden="true"></i>個人資源</h6>
             <div class="card-body">
-              <button type="button" class="btn btn-secondary btn-sm mb-2" data-toggle="modal" data-target="#uploadPersonalFile">上傳個人檔案</button>
-              <button type="button" class="btn btn-light btn-sm mb-2" data-toggle="modal" data-target="#sharePersonalLink">分享個人連結</button>
+              <button type="button" class="btn btn-secondary btn-sm mb-2 upload-file" data-toggle="modal" data-target="#uploadPersonalFile">上傳個人檔案</button>
+              <button type="button" class="btn btn-outline-secondary btn-sm mb-2 upload-file" data-toggle="modal" data-target="#sharePersonalLink">分享個人連結</button>
               
               <table id="allPersonalFileDataTable" class="table"></table>
               
@@ -129,12 +129,12 @@
         </div>
         <div class="col-7">
 
-          <div class="card">
+          <div class="card"  style="min-height:83vh;">
             <h6 class="card-header" style="background-color: #31625C; color: white;"><i class="fas fa-users pr-1" aria-hidden="true"></i>小組資源</h6>
             <div class="card-body">
               <div>
-                <button type="button" class="btn btn-secondary btn-sm mb-2" data-toggle="modal" data-target="#uploadGroupsFile">上傳小組檔案</button>
-                <button type="button" class="btn btn-light btn-sm mb-2" data-toggle="modal" data-target="#shareGroupsLink">分享小組連結</button>
+                <button type="button" class="btn btn-secondary btn-sm mb-2 upload-file" data-toggle="modal" data-target="#uploadGroupsFile">上傳小組檔案</button>
+                <button type="button" class="btn btn-outline-secondary btn-sm mb-2 upload-file" data-toggle="modal" data-target="#shareGroupsLink">分享小組連結</button>
                 <table id="allGroupsFileDataTable" class="table"></table>
               </div>
               

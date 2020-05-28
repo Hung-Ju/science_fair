@@ -9,6 +9,7 @@ var memberRouter = require('./routes/member');
 var groupsRouter = require('./routes/groups');
 var projectRouter = require('./routes/project');
 var resourceRouter = require('./routes/resource');
+var convergenceRouter = require('./routes/convergence');
 
 var projectDiscussion = require('./models/projectDiscussion');
 
@@ -117,6 +118,19 @@ io.on('connection', function(socket) {
         }
     })
 
+    //接收到summernote修改後的資料，把資料庫中的資料更新
+    socket.on('update summernote content', function(data){
+        var roomName = 'groups_'+ data.gid;
+        var updateSummernoteData = data.updateSummernoteData;
+        console.log(updateSummernoteData);
+        // projectDiscussion.updateNodePosition(updateNodeDataString)
+        // .then(function(results){
+        //     console.log('update by '+ data.gid);
+        //     console.log(results);
+        // })
+        socket.nsp.to(roomName).emit('update summernote content',updateSummernoteData);
+    });
+
 
 });
 
@@ -145,6 +159,7 @@ app.use('/member', memberRouter);
 app.use('/groups', groupsRouter);
 app.use('/project', projectRouter);
 app.use('/resource', resourceRouter);
+app.use('/convergence', convergenceRouter);
 
 app.use(function(req, res, next){
     // 如果session中存在，則說明已經登入

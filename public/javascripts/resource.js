@@ -18,14 +18,15 @@ function personalResourceTable(){
     $allPersonalFileDataTable.bootstrapTable({
         columns: [
             {title: '資源名稱', field: 'file_name', sortable: true, formatter: 'resourceNameFormatter'},
-            {title: '類型', field: 'file_type', sortable: true},
-            {title: '上傳時間', field: 'file_upload_time', sortable: true, width:200},
+            {title: '類型', field: 'file_type', sortable: true, width:40},
+            {title: '上傳時間', field: 'file_upload_time', sortable: true, width:180},
             
-            {title: '', field: 'file_id',events: 'window.operateEvents' , formatter: 'personalResourceButton'}
+            {title: '', field: 'file_id',events: 'window.operateEvents' , formatter: 'personalResourceButton', width:90}
             ],
         theadClasses: 'thead-light',
         classes: 'table table-bordered',
         pagination: true,
+        pageSize: '6',
         search: true,
         
     });
@@ -150,15 +151,16 @@ function groupsResourceTable(){
         columns: [
             {field: 'node_type', formatter: 'viewNodeFormatter', events: window.operate, width:40},
             {title: '資源名稱', field: 'file_name', sortable: true, formatter: 'resourceNameFormatter'},
-            {title: '類型', field: 'file_type', sortable: true},
-            {title: '上傳者', field: 'member_name', sortable: true},
-            {title: '上傳時間', field: 'file_upload_time', sortable: true, width:200},
+            {title: '類型', field: 'file_type', sortable: true, width:40},
+            {title: '上傳者', field: 'member_name', sortable: true, width:150},
+            {title: '上傳時間', field: 'file_upload_time', sortable: true, width:180},
             {title: '', field: 'node_id_node',events:'window.operateEvents2' , formatter: 'returnShareButton', width:40},
             {title: '', field: 'project_data_id',events: 'window.operateEvents2' , formatter: 'groupsResourceButton', width:40}
             ],
         theadClasses: 'thead-light',
         classes: 'table table-bordered',
         pagination: true,
+        pageSize: '6',
         search: true,
         
     });

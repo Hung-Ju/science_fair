@@ -154,7 +154,7 @@ canvas:focus {
 
 #mynetwork {
   width: 100%;
-  height: 84vh;
+  height: 80vh;
   border: 0px solid lightgray;
 }
 
@@ -299,6 +299,12 @@ a.tool:hover {
     border-color: #C1CA57;
     color: black;
     margin-left: 80%;
+}
+
+.upload-file:hover {
+    color: white;
+    border-color: #6c757d;
+    background-color: #a8aaac;
 }
 
 /* #nodeFiles{
