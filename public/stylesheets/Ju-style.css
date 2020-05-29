@@ -31,7 +31,7 @@ canvas:focus {
 }
 
 #cneter-content {
-  padding-top: 66px;
+  padding-top: 20px;
   margin-left: 20px;
   margin-right: 20px;
   /* margin-top: 86px; */
@@ -44,7 +44,9 @@ canvas:focus {
 }
 
 .choose-stage {
-  padding-top: 50px;
+  padding-top: 46px;
+  flex: 0 0 11%;
+  max-width: 11%;
 }
 
 .chapter-title-box {
@@ -154,14 +156,14 @@ canvas:focus {
 
 #mynetwork {
   width: 100%;
-  height: 80vh;
+  height: 88vh;
   border: 0px solid lightgray;
 }
 
 .tools {
   /* padding: 5px; */
   width: auto;
-  /* height: 77vh; */
+  height: 88vh;
   position: fixed;
   z-index: 1;
   box-shadow: 2px 2px rgba(0, 0, 0, 0.2);
@@ -295,9 +297,9 @@ a.tool:hover {
     line-height: 20px;
     border: 1px dashed red;
     border-radius: 60px; */
-    background-color: #C1CA57;
-    border-color: #C1CA57;
-    color: black;
+    background-color: #31625C;
+    border-color: #31625C;
+    color: white;
     margin-left: 80%;
 }
 

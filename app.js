@@ -149,7 +149,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 var session = require('express-session');
 app.use(session({
   secret: 'wenzi',
-  cookie: { maxAge: 60*60*1000 },
+  cookie: { maxAge: 60*60*2000 }, //2小時
   resave : false,
   saveUninitialized : true
 }));

@@ -8,6 +8,477 @@
 <!-- vis.js -->
 <script type="text/javascript" src="https://unpkg.com/vis-network@latest/dist/vis-network.min.js"></script>
 <!-- <link href="https://unpkg.com/vis-network@latest/dist/vis-network.min.css" rel="stylesheet" type="text/css" /> -->
+
+<div class="col choose-stage">
+  <div class="row justify-content-center">
+    <!-- 左邊的階段切換選單 -->
+
+
+    <div id="left_nav" class="list-group  text-center position-fixed2">
+
+      <!-- <div  class="stage-switch-box position-fixed"> -->
+          <div class="btn-group stage-switch-btn" role="group" aria-label="Basic example">
+            <button type="button" style="font-size: 16px;" class="btn btn-sm btn-outline-success" id="option1">內容撰寫</button>
+            <button type="button" style="font-size: 16px;" class="btn btn-sm btn-success" id="option2">想法討論</button>
+          </div>
+      <!-- </div> -->
+
+      <a id="L1" class="changet nav-link" href="#">想法發散</a>
+      <a id="L2" class="changet nav-link" href="#">想法收斂</a>
+
+    </div>
+
+      <!-- 形成問題階段審核表的彈出視窗 -->
+      <div class="modal fade" id="motivationStageCheck" tabindex="-1" role="dialog" aria-labelledby="motivationStageCheckCenterTitle" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+              <h5 class="modal-title" id="motivationStageCheckLongTitle"><%= groups_stage %>階段審核表</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+              </div>
+              <div class="modal-body">
+                  <div>
+                      <p>小組正在[<%= groups_stage %>]階段，請先確認階段審核表是否都已經通過！</p>
+                      <div>
+                          <h3>決定研究主題與題目</h3>
+                          <table class="table">
+                              <thead>
+                                  <tr class="table-active">
+                                      <th scope="col" width="85%">階段檢核題目</th>
+                                      <th scope="col" style="text-align:center;">符合項目</th>
+                                  </tr>
+                              </thead>
+                              <tbody id="tltleList">
+                                  <tr>
+                                      <td>我們至少可以找到三個跟這個主題有關的資料？</td>
+                                      <td style="text-align:center;"><input type="checkbox" name="title" value="我們至少可以找到三個跟這個主題有關的資料？"></td>
+                                  </tr>
+                                  <tr><td>進行相關的研究不會有安全的問題？</td>
+                                      <td style="text-align:center;"><input type="checkbox" name="title" value="進行相關的研究不會有安全的問題？"></td>
+                                  </tr>
+                                  <tr>
+                                      <td>這個主題的相關研究不會傷害小動物？</td>
+                                      <td style="text-align:center;"><input type="checkbox" name="title" value="這個主題的相關研究不會傷害小動物？"></td>
+                                  </tr>
+                                  <tr>
+                                      <td>可以找到請教的人？</td>
+                                      <td style="text-align:center;"><input type="checkbox" name="title" value="可以找到請教的人？"></td>
+                                  </tr>
+                                  <tr>
+                                      <td>研究主題足夠有趣嗎？能不能在幾個月內都一直覺得有趣？</td>
+                                      <td style="text-align:center;"><input type="checkbox" name="title" value="研究主題足夠有趣嗎？能不能在幾個月內都一直覺得有趣？"></td>
+                                  </tr>
+                                  <tr><td>我們可以在限定的時間內完成這個主題的相關研究？</td>
+                                      <td style="text-align:center;"><input type="checkbox" name="title" value="我們可以在限定的時間內完成這個主題的相關研究？"></td>
+                                  </tr>
+                              </tbody>
+                          </table>
+                      </div>
+                      <div>
+                          <h3>提出研究問題</h3>
+                          <table class="table">
+                              <thead>
+                                  <tr class="table-active">
+                                      <th scope="col" width="85%">階段檢核題目</th>
+                                      <th scope="col" style="text-align:center;">符合項目</th>
+                                  </tr>
+                              </thead>
+                              <tbody id="purposeList">
+                                  <tr>
+                                      <td>研究問題中是否包含操縱變因、應變變因與控制變因？</td>
+                                      <td style="text-align:center;"><input type="checkbox" name="purpose" value="研究問題中是否包含操縱變因、應變變因與控制變因？"></td>
+                                  </tr>
+                                  <tr><td>研究問題中的操縱變因的數值是否可以被改變？</td>
+                                      <td style="text-align:center;"><input type="checkbox" name="purpose" value="研究問題中的操縱變因的數值是否可以被改變？"></td>
+                                  </tr>
+                                  <tr>
+                                      <td>我們是否可以鑑別所有相關的應變變因？他們的變化是因為操控變因所引起的嗎？</td>
+                                      <td style="text-align:center;"><input type="checkbox" name="purpose" value="我們是否可以鑑別所有相關的應變變因？他們的變化是因為操控變因所引起的嗎？"></td>
+                                  </tr>
+                                  <tr>
+                                      <td>我們是否有確定所有的控制變因呢？</td>
+                                      <td style="text-align:center;"><input type="checkbox" name="purpose" value="我們是否有確定所有的控制變因呢？"></td>
+                                  </tr>
+                                  <tr>
+                                      <td>所有的控制變因都可以在實驗過程中保持穩定不變嗎？</td>
+                                      <td style="text-align:center;"><input type="checkbox" name="purpose" value="所有的控制變因都可以在實驗過程中保持穩定不變嗎？"></td>
+                                  </tr>
+                              </tbody>
+                          </table>
+                      </div>
+                  </div>
+              </div>
+              <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+              <button type="button" class="btn btn-primary" id="stageMotivationCheckBtn">送出</button>
+              </div>
+          </div>
+          </div>
+      </div>
+      <!-- 形成問題階段審核表的彈出視窗 -->
+
+      <!-- 研究規劃階段審核表的彈出視窗 -->
+      <div class="modal fade" id="stepsStageCheck" tabindex="-1" role="dialog" aria-labelledby="stepsStageCheckCenterTitle" aria-hidden="true" data-backdrop="static">
+          <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+              <h5 class="modal-title" id="stepsStageCheckLongTitle"><%= groups_stage %>階段審核表</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+              </div>
+              <div class="modal-body">
+                  <div>
+                      <p>小組正在[<%= groups_stage %>]階段，請先確認階段審核表是否都已經通過！</p>
+                      <div>
+                          <h3>設計實驗項目</h3>
+                          <table class="table">
+                              <thead>
+                                  <tr class="table-active">
+                                      <th scope="col" width="85%">階段檢核題目</th>
+                                      <th scope="col" style="text-align:center;">符合項目</th>
+                                  </tr>
+                              </thead>
+                              <tbody id="experimentList">
+                                  <tr>
+                                      <td>我們設計的所有實驗項目中的流程都是可以順利進行的？</td>
+                                      <td style="text-align:center;"><input type="checkbox" name="experiment" value="我們設計的所有實驗項目中的流程都是可以順利進行的？"></td>
+                                  </tr>
+                                  <tr>
+                                      <td>實驗項目的設計是否都有對應到研究目的？</td>
+                                      <td style="text-align:center;"><input type="checkbox" name="experiment" value="實驗項目的設計是否都有對應到研究目的？"></td>
+                                  </tr>
+                                  <tr>
+                                      <td>實驗項目的流程是否難易適中？</td>
+                                      <td style="text-align:center;"><input type="checkbox" name="experiment" value="實驗項目的流程是否難易適中？"></td>
+                                  </tr>
+                                  <tr>
+                                      <td>實驗項目是否都可以重複數次實驗，以便能夠重複驗證實驗結果？</td>
+                                      <td style="text-align:center;"><input type="checkbox" name="experiment" value="實驗項目是否都可以重複數次實驗，以便能夠重複驗證實驗結果？"></td>
+                                  </tr>
+                              </tbody>
+                          </table>
+                      </div>
+                      <div>
+                          <h3>列出研究設備及器材</h3>
+                          <table class="table">
+                              <thead>
+                                  <tr class="table-active">
+                                      <th scope="col" width="85%">階段檢核題目</th>
+                                      <th scope="col" style="text-align:center;">符合項目</th>
+                                  </tr>
+                              </thead>
+                              <tbody id="materialList">
+                                  <tr>
+                                      <td>我們是否可以輕易的獲得研究材料及設備？</td>
+                                      <td style="text-align:center;"><input type="checkbox" name="material" value="我們是否可以輕易的獲得研究材料及設備？"></td>
+                                  </tr>
+                                  <tr>
+                                      <td>實驗器材是否都確認過安全性？</td>
+                                      <td style="text-align:center;"><input type="checkbox" name="material" value="實驗器材是否都確認過安全性？"></td>
+                                  </tr>
+                                  <tr>
+                                      <td>研究設備及器材的數量及單位是否有正確紀錄？</td>
+                                      <td style="text-align:center;"><input type="checkbox" name="material" value="研究設備及器材的數量及單位是否有正確紀錄？"></td>
+                                  </tr>
+                              </tbody>
+                          </table>
+                      </div>
+                  </div>
+              </div>
+              <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+              <button type="button" class="btn btn-primary" id="stageStepsCheckBtn">送出</button>
+              </div>
+          </div>
+          </div>
+      </div>
+      <!-- 研究規劃階段審核表的彈出視窗 -->
+
+      <!-- 執行階段審核表的彈出視窗 -->
+      <div class="modal fade" id="recordStageCheck" tabindex="-1" role="dialog" aria-labelledby="recordStageCheckCenterTitle" aria-hidden="true" data-backdrop="static">
+          <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h5 class="modal-title" id="recordStageCheckLongTitle"><%= groups_stage %>階段審核表</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+                  </div>
+                  <div class="modal-body">
+                      <div>
+                          <p>小組正在[<%= groups_stage %>]階段，請先確認階段審核表是否都已經通過！</p>
+                          <div>
+                              <h3>紀錄實驗記錄</h3>
+                              <table class="table">
+                                  <thead>
+                                      <tr class="table-active">
+                                          <th scope="col" width="85%">階段檢核題目</th>
+                                          <th scope="col" style="text-align:center;">符合項目</th>
+                                      </tr>
+                                  </thead>
+                                  <tbody id="recordList">
+                                      <tr>
+                                          <td>我們是否有小心、謹慎進行實驗測量？</td>
+                                          <td style="text-align:center;"><input type="checkbox" name="record" value="我們是否有小心、謹慎進行實驗測量？"></td>
+                                      </tr>
+                                      <tr>
+                                          <td>我們是否在實驗記錄中詳細的描述觀察到的現象及記錄數據？</td>
+                                          <td style="text-align:center;"><input type="checkbox" name="record" value="我們是否在實驗記錄中詳細的描述觀察到的現象及記錄數據？"></td>
+                                      </tr>
+                                  </tbody>
+                              </table>
+                          </div>
+                          <div>
+                              <h3>整理研究結果(分析及圖表)</h3>
+                              <table class="table">
+                                  <thead>
+                                      <tr class="table-active">
+                                          <th scope="col" width="85%">階段檢核題目</th>
+                                          <th scope="col" style="text-align:center;">符合項目</th>
+                                      </tr>
+                                  </thead>
+                                  <tbody id="analysisList">
+                                      <tr>
+                                          <td>是否有足夠的數據可以解決我們的研究目的問題？</td>
+                                          <td style="text-align:center;"><input type="checkbox" name="analysis" value="是否有足夠的數據可以解決我們的研究目的問題？"></td>
+                                      </tr>
+                                      <tr>
+                                          <td>我們的數據是否準確？</td>
+                                          <td style="text-align:center;"><input type="checkbox" name="analysis" value="我們的數據是否準確？"></td>
+                                      </tr>
+                                      <tr>
+                                          <td>我們是否有將數據經過平均或是其他方式呈現呢？</td>
+                                          <td style="text-align:center;"><input type="checkbox" name="analysis" value="我們是否有將數據經過平均或是其他方式呈現呢？"></td>
+                                      </tr>
+                                      <tr>
+                                          <td>我們的數據是否有標示正確的單位？</td>
+                                          <td style="text-align:center;"><input type="checkbox" name="analysis" value="我們的數據是否有標示正確的單位？"></td>
+                                      </tr>
+                                      <tr>
+                                          <td>我們是否有驗證所有的計算都是正確的？</td>
+                                          <td style="text-align:center;"><input type="checkbox" name="analysis" value="我們是否有驗證所有的計算都是正確的？"></td>
+                                      </tr>
+                                      <tr>
+                                          <td>我們選擇的圖表類型是否適當？</td>
+                                          <td style="text-align:center;"><input type="checkbox" name="analysis" value="我們選擇的圖表類型是否適當？"></td>
+                                      </tr>
+                                      <tr>
+                                          <td>我們的圖表是否有標題？</td>
+                                          <td style="text-align:center;"><input type="checkbox" name="analysis" value="我們的圖表是否有標題？"></td>
+                                      </tr>
+                                  </tbody>
+                              </table>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                      <button type="button" class="btn btn-primary" id="stageRecordCheckBtn">送出</button>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <!-- 執行階段審核表的彈出視窗 -->
+
+      <!-- 分析與詮釋階段審核表的彈出視窗 -->
+      <div class="modal fade" id="analysisStageCheck" tabindex="-1" role="dialog" aria-labelledby="analysisStageCheckCenterTitle" aria-hidden="true" data-backdrop="static">
+          <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h5 class="modal-title" id="analysisStageCheckLongTitle"><%= groups_stage %>階段審核表</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+                  </div>
+                  <div class="modal-body">
+                      <div>
+                          <p>小組正在[<%= groups_stage %>]階段，請先確認階段審核表是否都已經通過！</p>
+                          <div>
+                              <h3>進行研究討論</h3>
+                              <table class="table">
+                                  <thead>
+                                      <tr class="table-active">
+                                          <th scope="col" width="85%">階段檢核題目</th>
+                                          <th scope="col" style="text-align:center;">符合項目</th>
+                                      </tr>
+                                  </thead>
+                                  <tbody id="discussionList">
+                                      <tr>
+                                          <td>我們是否有說明每一組數據、圖表的涵義？</td>
+                                          <td style="text-align:center;"><input type="checkbox" name="discussion" value="我們是否有說明每一組數據、圖表的涵義？"></td>
+                                      </tr>
+                                      <tr>
+                                          <td>我們是否有提出誤差的來源有哪些？這些誤差如何影響實驗的結果？</td>
+                                          <td style="text-align:center;"><input type="checkbox" name="discussion" value="我們是否有提出誤差的來源有哪些？這些誤差如何影響實驗的結果？"></td>
+                                      </tr>
+                                      <tr>
+                                          <td>我們是否有簡略的說明實驗結果的意義？</td>
+                                          <td style="text-align:center;"><input type="checkbox" name="discussion" value="我們是否有簡略的說明實驗結果的意義？"></td>
+                                      </tr>
+                                  </tbody>
+                              </table>
+                          </div>
+                          <div>
+                              <h3>產生研究結論</h3>
+                              <table class="table">
+                                  <thead>
+                                      <tr class="table-active">
+                                          <th scope="col" width="85%">階段檢核題目</th>
+                                          <th scope="col" style="text-align:center;">符合項目</th>
+                                      </tr>
+                                  </thead>
+                                  <tbody id="conclusionList">
+                                      <tr>
+                                          <td>我們的結論和實驗結果是否沒有矛盾？</td>
+                                          <td style="text-align:center;"><input type="checkbox" name="conclusion" value="我們的結論和實驗結果是否沒有矛盾？"></td>
+                                      </tr>
+                                      <tr>
+                                          <td>我們的結論是否解決我們提出的研究目的與假設？</td>
+                                          <td style="text-align:center;"><input type="checkbox" name="conclusion" value="我們的結論是否解決我們提出的研究目的與假設？"></td>
+                                      </tr>
+                                      <tr>
+                                          <td>我們是否有提出改進實驗的方法，或是未來做進一步研究的可能性？</td>
+                                          <td style="text-align:center;"><input type="checkbox" name="conclusion" value="我們是否有提出改進實驗的方法，或是未來做進一步研究的可能性？"></td>
+                                      </tr>
+                                  </tbody>
+                              </table>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                      <button type="button" class="btn btn-primary" id="stageAnalysisCheckBtn">送出</button>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <!-- 分析與詮釋階段審核表的彈出視窗 -->
+
+    <!-- 階段切換的彈出視窗 -->
+    <div class="modal fade" id="changeStage" tabindex="-1" role="dialog" aria-labelledby="changeStageCenterTitle" aria-hidden="true" data-backdrop="static">
+      <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="changeStageLongTitle">切換編輯階段</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div id="changeStageRoot">
+              <p>
+                <b>小組要切換到</b>
+                <select name="sampleSelect" id="selectStage">
+                  <!-- <option value="形成問題">形成問題</option>
+                  <option value="研究規劃">研究規劃</option>
+                  <option value="執行">執行</option>
+                  <option value="分析與詮釋">分析與詮釋</option>
+                  <option value="統整報告">統整報告</option> -->
+                </select>
+                <b>階段</b>
+              </p>
+              <p style="float: left;"><b>切換原因：</b></p>
+                <textarea rows="4" class="col-sm-10 form-control"  id="changeStageReason"></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+            <button type="button" class="btn btn-primary" id="stageSwitchBtn">切換</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 階段切換的彈出視窗 -->
+
+    <!-- 參考資料的彈出視窗 -->
+    <div class="modal fade" id="referenceModal" tabindex="-1" role="dialog" aria-labelledby="referenceModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="referenceModalLongTitle">參考文獻</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div id="referenceModalRoot">
+              <p>
+                <a href="#" onclick="window.open('/stylesheets/參考文獻格式參考.pdf','參考文獻格式', config='toolbar=no'); ">參考文獻格式說明</a>
+              </p>
+
+              <div class="form-row">
+                <div class="col-2">
+                  <b>參考文獻類型：</b>
+                </div>
+                <div class="col-9">
+                  <select class="custom-select" name="sampleSelect" id="selectReferenceType">
+                    <option value="網址">網址</option>
+                    <option value="書籍">書籍</option>
+                    <option value="報章文章">報章文章</option>
+                    <option value="其他">其他</option>
+                  </select>
+                </div>
+                
+              </div>
+
+              <div class="form-row mt-2">
+                <div class="col-2">
+                  <b>參考文獻：</b>
+                </div>
+                <div class="col-9">
+                  <textarea id="reference_content"></textarea>
+                </div>
+                <div class="col" style="padding-left: 0;">
+                  <!-- <br><br><br> -->
+                  <button class="btn btn-primary" id="addReference"  style="float: right; margin-top: 77px;">新增</button>
+                </div>
+                
+              </div>
+
+
+            </div>
+            <br>
+            <table id="referenceTable" class="table tableFontSize"></table>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 參考資料的彈出視窗 -->
+
+    <!-- 檢核表未通過警告的彈出視窗 -->
+    <div class="modal fade" id="checkStageWarning" tabindex="-1" role="dialog" aria-labelledby="checkStageWarningCenterTitle" aria-hidden="true" data-backdrop="static">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header bg-warning">
+            <h5 class="modal-title" id="checkStageWarningLongTitle"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>  階段檢核未通過</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div id="warningRoot">
+              <p>未通過階段檢核表，請重新確認撰寫的專題內容足夠完整</p>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-warning" data-dismiss="modal">確定</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 檢核表未通過警告的彈出視窗 -->
+
+  </div>
+  
+</div>
+
+
 <div class="col discussionCol">
     <div class="row" id="vis-network" style="margin-top: 53px; outline: none;">
     <div id="mynetwork"></div>

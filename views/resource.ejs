@@ -53,8 +53,18 @@
           <!-- .navbar-brand 左上LOGO位置 -->
           <a class="navbar-brand" href="/">
             <img src="/stylesheets/images/atoms-science-svgrepo-com.svg" width="30" height="30" class="d-inline-block align-top" alt="">
-            Science Fair科學探究專題系統 > <%= groups_name %>
+            Science Fair科學探究專題系統
+             <!-- > <%= groups_name %> -->
           </a>
+          <div class="navbar-nav">
+            <a class="nav-item nav-link" href="/groups">離開專題</a>
+            <a class="nav-item nav-link" href="/project/<%= gid %>/內容撰寫">專題寫作</a>
+            <a class="nav-item nav-link" href="#">專題管理</a>
+            <a class="nav-item nav-link active" href="#">資源管理</a>
+            <!-- <a class="nav-item nav-link" href="#">留言提問</a> -->
+            <!-- <a class="nav-item nav-link" href="#">收斂工具</a> -->
+            <a class="nav-item nav-link" href="#">學習歷程</a>
+          </div>
           <!-- <a class="">
             
           </a> -->
@@ -70,7 +80,7 @@
               <% if(member_id){ %>
                 <% if (locals.member_name) { %>
                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    您好,  <%= member_name %>
+                    <%= groups_name %> &nbsp; &nbsp;   <%= member_name %> , 您好
                   </a>
                 <% } %>
                 <!-- .dropdown-menu 下拉選單內容 -->
@@ -91,28 +101,28 @@
             </ul>
           </div>
         </nav>
-        <nav id="nav" class="navbar navbar-expand-lg navbar-light" style="background-color: #64AD88; height:30px;">
+        <!-- <nav id="nav" class="navbar navbar-expand-lg navbar-light" style="background-color: #64AD88; height:30px;"> -->
           <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"> -->
-            <a class="navbar-toggler" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" style="font-size: 1rem; line-height:0; border-color: rgba(0,0,0,0);">工具列</a>
+            <!-- <a class="navbar-toggler" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" style="font-size: 1rem; line-height:0; border-color: rgba(0,0,0,0);">工具列</a> -->
           <!-- </button> -->
-          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <!-- <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
               <a class="nav-item nav-link" href="/groups">離開專題</a>
               <a class="nav-item nav-link" href="/project/<%= gid %>/內容撰寫">專題寫作</a>
               <a class="nav-item nav-link" href="#">專題管理</a>
               <a class="nav-item nav-link active" href="#">資源管理</a>
-              <!-- <a class="nav-item nav-link" href="#">留言提問</a> -->
+              <a class="nav-item nav-link" href="#">留言提問</a>
               <a class="nav-item nav-link" href="#">收斂工具</a>
               <a class="nav-item nav-link" href="#">學習歷程</a>
             </div>
           </div>
-        </nav>
+        </nav> -->
       </div>
       
     </header>
 
     <div id="cneter-content">
-      <div class="row" style="margin-top: 20px;">
+      <div class="row" style="margin-top: 54px;">
 
         <div class="col">
           <div class="card" style="min-height:83vh;">

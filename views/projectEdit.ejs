@@ -54,7 +54,7 @@
           <a class="navbar-brand" href="/">
             <img src="/stylesheets/images/atoms-science-svgrepo-com.svg" width="30" height="30" class="d-inline-block align-top" alt="">
             Science Fair科學探究專題系統
-             <!-- > <%= groups_name %> -->
+             <!-- <%= groups_name %> -->
           </a>
           <div class="navbar-nav">
             <a class="nav-item nav-link" href="/groups">離開專題</a>
@@ -62,7 +62,7 @@
             <a class="nav-item nav-link" href="#">專題管理</a>
             <a class="nav-item nav-link" href="/resource/<%= gid %>">資源管理</a>
             <!-- <a class="nav-item nav-link" href="#">留言提問</a> -->
-            <a class="nav-item nav-link" href="/convergence/<%= gid %>">收斂工具</a>
+            <!-- <a class="nav-item nav-link" href="/convergence/<%= gid %>">收斂工具</a> -->
             <a class="nav-item nav-link" href="#">學習歷程</a>
           </div>
           
@@ -81,7 +81,7 @@
               <% if(member_id){ %>
                 <% if (locals.member_name) { %>
                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    您好,  <%= member_name %>
+                    <%= groups_name %> &nbsp; &nbsp;   <%= member_name %> , 您好
                   </a>
                 <% } %>
                 <!-- .dropdown-menu 下拉選單內容 -->
@@ -123,7 +123,7 @@
     </header>
 
     <div id="cneter-content">
-      <div class="row">
+      <!-- <div class="row">
         <div class="col-1">
           <div  class="stage-switch-box position-fixed">
             <div class="btn-group stage-switch-btn" role="group" aria-label="Basic example">
@@ -133,26 +133,26 @@
           </div>
           
         </div>
-        <!-- 內容撰寫和想法討論的切換按鈕 -->
+        內容撰寫和想法討論的切換按鈕
         <div class="col-11">          
           <div class="row" >
             <div>
 
               
 
-                <!-- <div class=" btn-group btn-group-toggle stage-switch-btn" data-toggle="buttons">
+                <div class=" btn-group btn-group-toggle stage-switch-btn" data-toggle="buttons">
                   <label class="btn btn-success active" id="option11">
                     <input type="radio" name="statusOptions" id="option1" autocomplete="off" value="內容撰寫" checked> 內容撰寫
                   </label>
                   <label class="btn btn-success"  id="option22">
                     <input type="radio" name="statusOptions" id="option2" autocomplete="off" value="想法討論"> 想法討論
                   </label>
-                </div>      -->
+                </div>     
 
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
       
       <input type='hidden' id="groups_id" value="<%= gid %>">
       <input type="hidden" id="member_id" value="<%= member_id %>">
