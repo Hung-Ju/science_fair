@@ -177,7 +177,12 @@
         <% if(mode == "內容撰寫"){ %>
           <%- include("include/science_fair_content2.ejs"); -%>
         <% }else{ %>
-          <%- include("include/science_fair_discussion.ejs"); -%>
+          
+          <% if(mode2 == "發散"){ %>
+            <%- include("include/science_fair_discussion.ejs"); -%>
+          <% }else{ %>
+            <%- include("include/science_fair_convergence.ejs"); -%>
+          <% } %>
         <% } %>
         <!-- <div class="col-1 choose-stage"> -->
           <!-- <div class="row justify-content-center"> -->

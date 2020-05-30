@@ -28,6 +28,7 @@ window.operateEvents = {
             $("#savePurposesModalButton").click(function(){
                 var gid = document.getElementById("groups_id").value;
                 var mode = "內容撰寫";
+                var mode2 = "實作";
                 console.log(row.project_data_id);
                 $.ajax({  
                     type: "POST",
@@ -43,7 +44,8 @@ window.operateEvents = {
                             if(data.message=="true"){
                                 alert('修改成功');
                                 // window.location.href="/project/?gid="+gid;
-                                window.location.href = "/project/"+gid+"/"+mode;
+                                // window.location.href = "/project/"+gid+"/"+mode;
+                                window.location.href = "/project/"+gid+"/"+mode+"/"+mode2;
                             }
                             else{
                                 alert('修改失敗請重新輸入');
@@ -64,6 +66,7 @@ window.operateEvents = {
 function deletePurposes(project_data_id){
     var gid = document.getElementById("groups_id").value;
     var mode = "內容撰寫";
+    var mode2 = "實作";
     $.ajax({  
         type: "POST",
         url: "/project/deletePurposes",
@@ -77,7 +80,8 @@ function deletePurposes(project_data_id){
                 if(data.message=="true"){
                     alert('刪除成功');
                     // window.location.href="/project/?gid="+gid;
-                    window.location.href = "/project/"+gid+"/"+mode;
+                    // window.location.href = "/project/"+gid+"/"+mode;
+                    window.location.href = "/project/"+gid+"/"+mode+"/"+mode2;
                 }
                 else{
                     alert('帳號已被系統自動登出，請重新登入');
@@ -175,6 +179,7 @@ window.operateEvents2 = {
             $("#saveExperimentModalButton").click(function(){
                 var gid = document.getElementById("groups_id").value;
                 var mode = "內容撰寫";
+                var mode2 = "實作";
                 var cbxPurposesSelect = [];
                 $('input[name="purposes_select2"]:checked').each(function() { 
                     cbxPurposesSelect.push($(this).val());
@@ -196,7 +201,8 @@ window.operateEvents2 = {
                             if(data.message=="true"){
                                 alert('修改成功');
                                 // window.location.href="/project/?gid="+gid;
-                                window.location.href = "/project/"+gid+"/"+mode;
+                                // window.location.href = "/project/"+gid+"/"+mode;
+                                window.location.href = "/project/"+gid+"/"+mode+"/"+mode2;
                             }
                             else{
                                 alert('帳號已被系統自動登出，請重新登入');
@@ -217,6 +223,7 @@ window.operateEvents2 = {
 function deleteExperiment(project_data_multi_id){
     var gid = document.getElementById("groups_id").value;
     var mode = "內容撰寫";
+    var mode2 = "實作";
     $.ajax({  
         type: "POST",
         url: "/project/deleteExperiment",
@@ -230,7 +237,8 @@ function deleteExperiment(project_data_multi_id){
                 if(data.message=="true"){
                     alert('刪除成功');
                     // window.location.href="/project/?gid="+gid;
-                    window.location.href = "/project/"+gid+"/"+mode;
+                    // window.location.href = "/project/"+gid+"/"+mode;
+                    window.location.href = "/project/"+gid+"/"+mode+"/"+mode2;
                 }
                 else{
                     alert('帳號已被系統自動登出，請重新登入');
@@ -283,6 +291,7 @@ window.operateEventsMaterial = {
             $("#editMaterialModalButton").click(function(){
                 var gid = document.getElementById("groups_id").value;
                 var mode = "內容撰寫";
+                var mode2 = "實作";
                 // console.log(row.project_data_id);
                 $.ajax({  
                     type: "POST",
@@ -299,7 +308,8 @@ window.operateEventsMaterial = {
                             if(data.message=="true"){
                                 alert('修改成功');
                                 // window.location.href="/project/?gid="+gid;
-                                window.location.href = "/project/"+gid+"/"+mode;
+                                // window.location.href = "/project/"+gid+"/"+mode;
+                                window.location.href = "/project/"+gid+"/"+mode+"/"+mode2;
                             }
                             else{
                                 alert('帳號已被系統自動登出，請重新登入');
@@ -320,6 +330,7 @@ window.operateEventsMaterial = {
 function deleteMaterial(material_id){
     var gid = document.getElementById("groups_id").value;
     var mode = "內容撰寫";
+    var mode2 = "實作";
     $.ajax({  
         type: "POST",
         url: "/project/deleteMaterial",
@@ -332,7 +343,8 @@ function deleteMaterial(material_id){
                 if(data.message=="true"){
                     alert('刪除成功');
                     // window.location.href="/project/?gid="+gid;
-                    window.location.href = "/project/"+gid+"/"+mode;
+                    // window.location.href = "/project/"+gid+"/"+mode;
+                    window.location.href = "/project/"+gid+"/"+mode+"/"+mode2;
                 }
                 else{
                     alert('帳號已被系統自動登出，請重新登入');
@@ -417,6 +429,7 @@ window.operateEventsRecord = {
             $("#editRecordModalButton").click(function(){
                 var gid = document.getElementById("groups_id").value;
                 var mode = "內容撰寫";
+                var mode2 = "實作";
                 var cbxExperimentSelect = [];
                 $('input[name="experiment_select2"]:checked').each(function() { 
                     cbxExperimentSelect.push($(this).val());
@@ -436,7 +449,8 @@ window.operateEventsRecord = {
                             if(data.message=="true"){
                                 alert('修改成功');
                                 // window.location.href="/project/?gid="+gid;
-                                window.location.href = "/project/"+gid+"/"+mode;
+                                // window.location.href = "/project/"+gid+"/"+mode;
+                                window.location.href = "/project/"+gid+"/"+mode+"/"+mode2;
                             }
                             else{
                                 alert('帳號已被系統自動登出，請重新登入');
@@ -457,6 +471,7 @@ window.operateEventsRecord = {
 function deleteRecord(project_data_multi_id){
     var gid = document.getElementById("groups_id").value;
     var mode = "內容撰寫";
+    var mode2 = "實作";
     $.ajax({  
         type: "POST",
         url: "/project/deleteRecord",
@@ -468,7 +483,8 @@ function deleteRecord(project_data_multi_id){
                 if(data.message=="true"){
                     alert('刪除成功');
                     // window.location.href="/project/?gid="+gid;
-                    window.location.href = "/project/"+gid+"/"+mode;
+                    // window.location.href = "/project/"+gid+"/"+mode;
+                    window.location.href = "/project/"+gid+"/"+mode+"/"+mode2;
                 }
                 else{
                     alert('帳號已被系統自動登出，請重新登入');
@@ -553,6 +569,7 @@ window.operateEventsAnalysis = {
             $("#editAnalysisModalButton").click(function(){
                 var gid = document.getElementById("groups_id").value;
                 var mode = "內容撰寫";
+                var mode2 = "實作";
                 var cbxExperimentSelect = [];
                 $('input[name="purposes_select4"]:checked').each(function() { 
                     cbxExperimentSelect.push($(this).val());
@@ -572,7 +589,8 @@ window.operateEventsAnalysis = {
                             if(data.message=="true"){
                                 alert('修改成功');
                                 // window.location.href="/project/?gid="+gid;
-                                window.location.href = "/project/"+gid+"/"+mode;
+                                // window.location.href = "/project/"+gid+"/"+mode;
+                                window.location.href = "/project/"+gid+"/"+mode+"/"+mode2;
                             }
                             else{
                                 alert('帳號已被系統自動登出，請重新登入');
@@ -593,6 +611,7 @@ window.operateEventsAnalysis = {
 function deleteAnalysis(project_data_multi_id){
     var gid = document.getElementById("groups_id").value;
     var mode = "內容撰寫";
+    var mode2 = "實作";
     $.ajax({  
         type: "POST",
         url: "/project/deleteAnalysis",
@@ -604,7 +623,8 @@ function deleteAnalysis(project_data_multi_id){
                 if(data.message=="true"){
                     alert('刪除成功');
                     // window.location.href="/project/?gid="+gid;
-                    window.location.href = "/project/"+gid+"/"+mode;
+                    // window.location.href = "/project/"+gid+"/"+mode;
+                    window.location.href = "/project/"+gid+"/"+mode+"/"+mode2;
                 }
                 else{
                     alert('帳號已被系統自動登出，請重新登入');
@@ -654,6 +674,7 @@ window.operateEventsDiscussion = {
             $("#editDiscussionModalButton").click(function(){
                 var gid = document.getElementById("groups_id").value;
                 var mode = "內容撰寫";
+                var mode2 = "實作";
 
                 $.ajax({  
                     type: "POST",
@@ -669,7 +690,8 @@ window.operateEventsDiscussion = {
                             if(data.message=="true"){
                                 alert('修改成功');
                                 // window.location.href="/project/?gid="+gid;
-                                window.location.href = "/project/"+gid+"/"+mode;
+                                // window.location.href = "/project/"+gid+"/"+mode;
+                                window.location.href = "/project/"+gid+"/"+mode+"/"+mode2;
                             }
                             else{
                                 alert('帳號已被系統自動登出，請重新登入');
@@ -690,6 +712,7 @@ window.operateEventsDiscussion = {
 function deleteDiscussion(project_data_id){
     var gid = document.getElementById("groups_id").value;
     var mode = "內容撰寫";
+    var mode2 = "實作";
     $.ajax({  
         type: "POST",
         url: "/project/deleteDiscussion",
@@ -701,7 +724,8 @@ function deleteDiscussion(project_data_id){
                 if(data.message=="true"){
                     alert('刪除成功');
                     // window.location.href="/project/?gid="+gid;
-                    window.location.href = "/project/"+gid+"/"+mode;
+                    // window.location.href = "/project/"+gid+"/"+mode;
+                    window.location.href = "/project/"+gid+"/"+mode+"/"+mode2;
                 }
                 else{
                     alert('帳號已被系統自動登出，請重新登入');
@@ -809,6 +833,7 @@ function refereceTableButton(index, row){
 function deleteReference(reference_id){
     var gid = document.getElementById("groups_id").value;
     var mode = "內容撰寫";
+    var mode2 = "實作";
     $.ajax({  
         type: "POST",
         url: "/project/deleteReference",
@@ -820,7 +845,8 @@ function deleteReference(reference_id){
                 if(data.message=="true"){
                     alert('刪除成功');
                     // window.location.href="/project/?gid="+gid;
-                    window.location.href = "/project/"+gid+"/"+mode;
+                    // window.location.href = "/project/"+gid+"/"+mode;
+                    window.location.href = "/project/"+gid+"/"+mode+"/"+mode2;
                 }
                 else{
                     alert('帳號已被系統自動登出，請重新登入');
@@ -1324,14 +1350,16 @@ $(function(){
         //alert("內容撰寫");
         var gid = document.getElementById("groups_id").value;
         var mode = "內容撰寫";
-        window.location.href = "/project/"+gid+"/"+mode;
+        var mode2 = "實作";
+        window.location.href = "/project/"+gid+"/"+mode+"/"+mode2;
     });
 
     $('#option2').on('click', function() {
         //alert("想法討論");
         var gid = document.getElementById("groups_id").value;
         var mode = "想法討論";
-        window.location.href = "/project/"+gid+"/"+mode;
+        var mode2 = "發散";
+        window.location.href = "/project/"+gid+"/"+mode+"/"+mode2;
     });
 
     if($('#mode').val() == "想法討論"){
@@ -1376,6 +1404,7 @@ $(function(){
     $("#addDiscussionModalButton").click(function () {
         var gid = document.getElementById("groups_id").value;
         var mode = "內容撰寫";
+        var mode2 = "實作";
               
         $.ajax({  
             type: "POST",
@@ -1390,7 +1419,8 @@ $(function(){
                     if(data.message=="true"){
                         alert('新增成功');
                         // window.location.href="/project/?gid="+gid;
-                        window.location.href = "/project/"+gid+"/"+mode;
+                        // window.location.href = "/project/"+gid+"/"+mode;
+                        window.location.href = "/project/"+gid+"/"+mode+"/"+mode2;
                     }
                     else{
                         alert('帳號已被系統自動登出，請重新登入');
@@ -1408,6 +1438,7 @@ $(function(){
     $("#addAnalysisModalButton").click(function () {
         var gid = document.getElementById("groups_id").value;
         var mode = "內容撰寫";
+        var mode2 = "實作";
         // console.log(gid);
         var cbxExperimentSelect = [];
         $('input[name="purposes_select3"]:checked').each(function() { 
@@ -1428,7 +1459,8 @@ $(function(){
                     if(data.message=="true"){
                         alert('新增成功');
                         // window.location.href="/project/?gid="+gid;
-                        window.location.href = "/project/"+gid+"/"+mode;
+                        // window.location.href = "/project/"+gid+"/"+mode;
+                        window.location.href = "/project/"+gid+"/"+mode+"/"+mode2;
                     }
                     else{
                         alert('帳號已被系統自動登出，請重新登入');
@@ -1446,6 +1478,7 @@ $(function(){
     $("#addRecordModalButton").click(function () {
         var gid = document.getElementById("groups_id").value;
         var mode = "內容撰寫";
+        var mode2 = "實作";
         // console.log(gid);
         var cbxExperimentSelect = [];
         $('input[name="experiment_select"]:checked').each(function() { 
@@ -1466,7 +1499,8 @@ $(function(){
                     if(data.message=="true"){
                         alert('新增成功');
                         // window.location.href="/project/?gid="+gid;
-                        window.location.href = "/project/"+gid+"/"+mode;
+                        // window.location.href = "/project/"+gid+"/"+mode;
+                        window.location.href = "/project/"+gid+"/"+mode+"/"+mode2;
                     }
                     else{
                         alert('帳號已被系統自動登出，請重新登入');
@@ -1484,6 +1518,7 @@ $(function(){
     $("#addMaterialModalButton").click(function () {
         var gid = document.getElementById("groups_id").value;
         var mode = "內容撰寫";
+        var mode2 = "實作";
 
         $.ajax({  
             type: "POST",
@@ -1499,7 +1534,8 @@ $(function(){
                     if(data.message=="true"){
                         alert('新增成功');
                         // window.location.href="/project/?gid="+gid;
-                        window.location.href = "/project/"+gid+"/"+mode;
+                        // window.location.href = "/project/"+gid+"/"+mode;
+                        window.location.href = "/project/"+gid+"/"+mode+"/"+mode2;
                     }
                     else{
                         alert('帳號已被系統自動登出，請重新登入');
@@ -1517,6 +1553,7 @@ $(function(){
     $("#addExperimentModalButton").click(function () {
         var gid = document.getElementById("groups_id").value;
         var mode = "內容撰寫";
+        var mode2 = "實作";
         // console.log(gid);
         var cbxPurposesSelect = [];
         $('input[name="purposes_select"]:checked').each(function() { 
@@ -1538,7 +1575,8 @@ $(function(){
                     if(data.message=="true"){
                         alert('新增成功');
                         // window.location.href="/project/?gid="+gid;
-                        window.location.href = "/project/"+gid+"/"+mode;
+                        // window.location.href = "/project/"+gid+"/"+mode;
+                        window.location.href = "/project/"+gid+"/"+mode+"/"+mode2;
                     }
                     else{
                         alert('帳號已被系統自動登出，請重新登入');
@@ -1556,6 +1594,7 @@ $(function(){
     $("#addPurposesModalButton").click(function () {
         var gid = document.getElementById("groups_id").value;
         var mode = "內容撰寫";
+        var mode2 = "實作";
 
         $.ajax({  
             type: "POST",
@@ -1570,7 +1609,8 @@ $(function(){
                     if(data.message=="true"){
                         alert('新增成功');
                         // window.location.href="/project/?gid="+gid;
-                        window.location.href = "/project/"+gid+"/"+mode;
+                        // window.location.href = "/project/"+gid+"/"+mode;
+                        window.location.href = "/project/"+gid+"/"+mode+"/"+mode2;
                     }
                     else{
                         alert('帳號已被系統自動登出，請重新登入');
@@ -1621,6 +1661,7 @@ $(function(){
     $("#stageSwitchBtn").click(function () {
         var gid = document.getElementById("groups_id").value;
         var mode = "內容撰寫";
+        var mode2 = "實作";
         var stage_switch_now = document.getElementById("groups_stage").value;
         var stage_after = $("#selectStage").val();
         var stage_switch_reason = $("#changeStageReason").val();
@@ -1640,7 +1681,8 @@ $(function(){
                     if(data.message=="true"){
                         alert('切換成功');
                         // $('.create-conculsion-summernote').removeClass("editing");
-                        window.location.href = "/project/"+gid+"/"+mode;
+                        // window.location.href = "/project/"+gid+"/"+mode;
+                        window.location.href = "/project/"+gid+"/"+mode+"/"+mode2;
                         // window.location.href="/project/?gid="+gid;
                     }
                     else{
@@ -1659,7 +1701,7 @@ $(function(){
     $("#addReference").click(function (){
         var gid = document.getElementById("groups_id").value;
         var mode = "內容撰寫";
-
+        var mode2 = "實作";
         $.ajax({  
             type: "POST",
             url: "/project/addReference",
@@ -1674,7 +1716,8 @@ $(function(){
                     if(data.message=="true"){
                         alert('新增成功');
                         // window.location.href="/project/?gid="+gid;
-                        window.location.href = "/project/"+gid+"/"+mode;
+                        // window.location.href = "/project/"+gid+"/"+mode;
+                        window.location.href = "/project/"+gid+"/"+mode+"/"+mode2;
                     }else if(data.message=="null"){
                         alert("請確實填入參考資料來源");
                     }

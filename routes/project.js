@@ -42,11 +42,12 @@ router.post('/summernoteUploadImage/:gid', upload.array('imageData',5), function
 })
 
 //進入組別實作頁面
-router.get('/:gid/:mode',function(req, res, next) {
+router.get('/:gid/:mode/:mode2',function(req, res, next) {
     var gid = req.params.gid;
     //var gname = req.query.gname;
     var member_id = req.session.member_id;
     var mode = req.params.mode;
+    var mode2 = req.params.mode2;
     //要記得寫登入的人是否有進入該gid的權限判斷!!!
 
     if(!member_id){
@@ -255,7 +256,7 @@ router.get('/:gid/:mode',function(req, res, next) {
                     referenceArray.push(referenceData);
                 }
             }
-            res.render('projectEdit',  {title: 'Science Fair科學探究專題系統', gid:gid, groups_name:groups_name, mode:mode, member_id:req.session.member_id, member_name:req.session.member_name, researchTitle:researchTitleArray, researchMotivation:researchMotivationArray, researchPurposes:researchPurposesArray, researchExperiment:researchExperimentArray, researchMaterial:researchMaterialArray, researchRecord:researchRecordArray, researchAnalysis:researchAnalysisArray, researchDiscussion:researchDiscussionArray, researchConclusion:researchConclusionArray, groups_stage:groups_stage, AllNodeData:groupsAllNodeDataArray, reference: referenceArray, edge:groupsAllEdgeDataArray, groups_create_student_id:groupsCreateStudentId, groupsStageCheck:groupsStageCheck});
+            res.render('projectEdit',  {title: 'Science Fair科學探究專題系統', gid:gid, groups_name:groups_name, mode:mode, mode2:mode2, member_id:req.session.member_id, member_name:req.session.member_name, researchTitle:researchTitleArray, researchMotivation:researchMotivationArray, researchPurposes:researchPurposesArray, researchExperiment:researchExperimentArray, researchMaterial:researchMaterialArray, researchRecord:researchRecordArray, researchAnalysis:researchAnalysisArray, researchDiscussion:researchDiscussionArray, researchConclusion:researchConclusionArray, groups_stage:groups_stage, AllNodeData:groupsAllNodeDataArray, reference: referenceArray, edge:groupsAllEdgeDataArray, groups_create_student_id:groupsCreateStudentId, groupsStageCheck:groupsStageCheck});
         })
     }
 });

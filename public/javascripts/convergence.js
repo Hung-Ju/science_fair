@@ -64,11 +64,7 @@ function summernoteCreate(){
 $(function(){
     summernoteCreate();
     
-    //接收改變的summernote資料
-    socket.on('update summernote content',function(data){
-        console.log(data);
-        $('.create-summernote').summernote('code', data);
-        // updateNodeData(data);
-        console.log('<update summernote content>');
-    })
+    $('html, body').css('overflowY', 'hidden');
+    $('html, body').css('overflowX', 'hidden');
+    
 })

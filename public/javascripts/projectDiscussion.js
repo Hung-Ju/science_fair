@@ -754,6 +754,8 @@ $(function(){
     modalHidden();
     referenceNodeSummernote();
 
+    // $('html, body').css('overflowY', 'hidden');
+
 
     if ($("#groups_stage").val() == "形成問題"){
         $('#title1').toast('show');

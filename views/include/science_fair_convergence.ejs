@@ -1,0 +1,112 @@
+<!-- <script src="https://visjs.github.io/vis-network/dist/vis-network.min.js"></script> -->
+<!-- <link href="https://unpkg.com/vis-network@latest/dist/vis-network.min.css" rel="stylesheet" type="text/css" /> -->
+<!-- <link href="https://visjs.github.io/vis-network/dist/vis-network.min.css" rel="stylesheet" type="text/css" /> -->
+<!-- <script type="text/javascript" src="/stylesheets/tagsinput/tagsinput.js"></script>
+<script type="text/javascript" src="/stylesheets/tagsinput/bloodhound.js"></script>
+<link rel='stylesheet' href='/stylesheets/tagsinput/tagsinput.css' /> -->
+
+<!-- vis.js -->
+<script type="text/javascript" src="https://unpkg.com/vis-network@latest/dist/vis-network.min.js"></script>
+<!-- <link href="https://unpkg.com/vis-network@latest/dist/vis-network.min.css" rel="stylesheet" type="text/css" /> -->
+
+<div class="col choose-stage">
+  <div class="row justify-content-center">
+    <!-- 左邊的階段切換選單 -->
+
+
+    <div id="left_nav" class="list-group  text-center position-fixed2">
+
+      <!-- <div  class="stage-switch-box position-fixed"> -->
+          <div class="btn-group stage-switch-btn" role="group" aria-label="Basic example">
+            <button type="button" style="font-size: 16px;" class="btn btn-sm btn-outline-success" id="option1">內容撰寫</button>
+            <button type="button" style="font-size: 16px;" class="btn btn-sm btn-success" id="option2">想法討論</button>
+          </div>
+      <!-- </div> -->
+
+      <a class="changet2 nav-link" href="/project/<%= gid %>/想法討論/發散">想法發散</a>
+      <a class="changet2 nav-link nowStage" href="#">想法收斂</a>
+
+    </div>
+
+  </div>
+  
+</div>
+
+
+<div class="col discussionCol">
+    <!-- <div class="row" style="margin-top: 53px;"> -->
+    <!-- <div class="col"> -->
+        <!-- 選擇要收斂的標籤 <input class="form-control" type="text" name="tags" id="tags"> -->
+    <div class="margin-bottom10 form-group row" style="margin-top: 53px;">
+        <label class="col-sm-2 text-center">選擇要收斂的標籤：</label>
+        <input class="col-sm-9 form-control" style="max-width: 90%;" type="text" name="tags" id="tags">
+    </div>
+    <!-- </div> -->
+    <!-- </div> -->
+    <div class="row">
+        <div class="col-3">
+            <div class="card ideaList" style="min-height:83vh;">
+              <h6 class="card-header" style="background-color: #F1D4BB; color: black;"><i class="fas fa-lightbulb pr-1" aria-hidden="true"></i>想法列表</h6>
+              <div class="card-body" style="padding: 0">
+                  
+                <div class="card">
+
+                </div>
+
+                <!-- <div class="card">
+                    <p class="card-header">
+                        <a class="collapsed d-block ideaTitle" data-toggle="collapse" href="#670" aria-expanded="true" aria-controls="670"><b>123</b><i class="fa fa-chevron-down float-right chevron" aria-hidden="true"></i>
+                        </a>
+                    </p>
+                    <div id="670" class="collapse">
+                        <div class="card-body">123</div>
+                        <div class="card-footer text-right">
+                            <small class="text-muted pr-2">建立者： 王小明</small>
+                            <button type="button" class="btn btn-removeFavorite btn-sm pr-2" data-toggle="modal" data-target="#checkRemoveFavorite">取消收藏</button>&nbsp;
+                            <button type="button" class="btn btn-info btn-sm quoteNote">引用至個人筆記</button>
+                        </div>
+                    </div>
+                </div> -->
+                
+              </div>
+            </div>
+  
+        </div>
+
+        <div class="col" style="padding-left: 0;">
+            <div class="card" style="min-height:83vh;">
+              <h6 class="card-header" style="background-color: #ECBF96; color: black;"><i class="fas fa-clipboard pr-1" aria-hidden="true"></i>收斂空間</h6>
+              <div class="card-body" style="flex: 0;">
+                <textarea id="title-summernote" class="form-control create-summernote" value=""></textarea>
+                <div class="btn-save-box margin-bottom10 mt-2">
+                    <button id="saveIdeaConvergence" class="btn btn-sm btn-primary">更新收斂結果</button>
+                </div>
+              </div>
+              
+              <div class="card"></div>
+              
+              <div class="card-body">
+                <!-- 討論留言：<input class="form-control" type="text" name="message" id="message"> -->
+                <div class="margin-bottom10 form-group row">
+                    <label class="col-sm-2 text-center">討論留言：</label>
+                    <input class="col-sm-9 form-control" type="text" name="message" id="message">
+                    <div class="col-sm-1"><button id="saveMessage" class="btn btn-sm btn-primary">留言</button></div>
+                    
+                </div>
+                
+              </div>
+            </div>
+  
+        </div>
+    </div>
+
+  
+
+</div>
+
+
+
+
+<script src="/socket.io/socket.io.js"></script>
+<script type="text/javascript" src="/javascripts/convergence.js"></script>
+<!-- <script type="text/javascript" src="/javascripts/projectDiscussion.js"></script> -->

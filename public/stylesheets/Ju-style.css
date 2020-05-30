@@ -222,7 +222,25 @@ a.tool:hover {
   border-radius: 5px;
 }
 
+.changet2{
+  padding: 5px 15px;
+  /* color: #fff;
+  background-color:#31625C; */
+  color: black;
+  border-color: #31625C;
+  border-radius: 5px;
+}
+
 .changet:hover{
+  padding: 5px 15px;
+  color: black;
+  border-color: #31625C;
+  border-radius: 5px;
+  /* background-color:#31625C; */
+  text-decoration: none;
+}
+
+.changet2:hover{
   padding: 5px 15px;
   color: black;
   border-color: #31625C;
@@ -272,7 +290,8 @@ a.tool:hover {
 }
 
 .discussionCol{
-  padding: 0;
+  padding: 0 ;
+  margin-left: 15px;
 }
 
 .showTag{
@@ -307,6 +326,10 @@ a.tool:hover {
     color: white;
     border-color: #6c757d;
     background-color: #a8aaac;
+}
+
+.ideaList {
+  border: none;
 }
 
 /* #nodeFiles{
