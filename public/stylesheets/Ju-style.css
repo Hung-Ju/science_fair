@@ -290,8 +290,8 @@ a.tool:hover {
 }
 
 .discussionCol{
-  padding: 0 ;
-  margin-left: 15px;
+  padding: 0 15px 15px 15px ;
+  /* margin-left: 15px; */
 }
 
 .showTag{
@@ -334,8 +334,14 @@ a.tool:hover {
 
 .ideaListAll .card-header{
   border-bottom: 1px solid rgba(0,0,0,.125);
+  background-color: rgba(221, 220, 220, 0.5);
   margin-bottom: 0;
   padding: 0.5rem 1.25rem;
+  
+}
+
+.ideaListAll{
+  border: none;
 }
 
 .ideaListAll .card-header a{
@@ -350,6 +356,18 @@ a.tool:hover {
 .card-header .fa.chevron {
   transition: .3s transform ease-in-out;
 }
+
+.ideaListAll .card-footer{
+  background-color: rgba(0,0,0,.03);
+  border-top: 1px solid rgba(0,0,0,.125);
+  padding: 0.5rem 1.25rem;
+}
+
+.scroll {
+  max-height: 82vh;
+  overflow-y: auto;
+}
+
 
 /* #nodeFiles{
   margin-top: 8px;

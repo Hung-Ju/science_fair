@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var project = require('../models/project');
 var projectDiscussion = require('../models/projectDiscussion');
+var convergence = require('../models/convergence');
 var fs = require("fs");
 var multer = require("multer");
 
@@ -1503,6 +1504,42 @@ router.post('/:gid/:mode/discussion/editReferenceNode', upload.array('files',5),
     }
 });
 
+
+
+//想法收斂工具
+router.post('/convergence/selectConvergenceTag', function(req, res, next){
+    //console.log(req.body);
+    var groups_id_groups = req.body.groups_id_groups;
+    var tag = req.body.tag;
+    var member_id_member = req.session.member_id;
+    var convergenceData;
+    var nodeListData;
+
+    if(!member_id_member){
+        res.send({message:"false"});
+    }else{
+        convergence.selectTagConvergence(groups_id_groups, tag)
+        .then(function(convergenceData1){
+            convergenceData = convergenceData1;
+            if(convergenceData.length == 0){
+                return convergence.insertTagConvergence(groups_id_groups, tag)
+                .then(function(newConvergenceData){
+                    console.log(newConvergenceData.insertId)
+                    // res.send({message:"true", convergenceData:convergenceData})
+                })
+            }
+            return convergence.selectTagIdea(groups_id_groups, tag)
+            // res.send({message:"true", convergenceData:convergenceData})
+        })
+        .then(function(nodeListData1){
+            nodeListData = nodeListData1;
+            return convergence.selectMessage(groups_id_groups, tag)
+        })
+        .then(function(messageData){
+            res.send({message:"true", convergenceData:convergenceData, nodeListData:nodeListData, messageData:messageData})
+        })
+    }
+})
 
 
 

@@ -37,19 +37,32 @@
     <!-- <div class="row" style="margin-top: 53px;"> -->
     <!-- <div class="col"> -->
         <!-- 選擇要收斂的標籤 <input class="form-control" type="text" name="tags" id="tags"> -->
-    <div class="margin-bottom10 form-group row" style="margin-top: 53px;">
+    <div class="margin-bottom10  row" style="margin-top: 53px;">
         <label class="col-sm-2 text-center">選擇要收斂的標籤：</label>
-        <input class="col-sm-9 form-control" style="max-width: 90%;" type="text" name="tags" id="tags">
+        <select class="col-sm-9 custom-select" name="tags" id="tags">
+          <option value="研究題目與動機">研究題目與動機</option>
+          <option value="研究問題">研究問題</option>
+          <option value="實驗項目">實驗項目</option>
+          <option value="研究設備及器材">研究設備及器材</option>
+          <option value="實驗記錄">實驗記錄</option>
+          <option value="研究結果(分析及圖表)">研究結果(分析及圖表)</option>
+          <option value="研究討論">研究討論</option>
+          <option value="結論">結論</option>
+        </select>
+        <div class="col-sm-1">
+          <button id="changeConvergenceTag" style="margin-right: 15px;" class="btn btn-sm btn-primary float-right changeConvergenceTag">確定</button>
+        </div>
+        
     </div>
     <!-- </div> -->
     <!-- </div> -->
     <div class="row">
         <div class="col-3">
-            <div class="card ideaList" style="min-height:83vh;">
-              <h6 class="card-header" style="background-color: #F1D4BB; color: black;"><i class="fas fa-lightbulb pr-1" aria-hidden="true"></i>想法列表</h6>
-              <div class="card-body" style="padding: 0">
+            <div class="card ideaList" style="min-height:82vh;">
+              <h6 class="card-header nodeList" style="background-color: #F1D4BB; color: black;"><i class="fas fa-lightbulb pr-1" aria-hidden="true"></i>想法列表</h6>
+              <div class="card-body scroll ideaListBody" style="padding: 0">
                   
-                <div class="card ideaListAll">
+                <!-- <div class="card ideaListAll">
                   <p class="card-header">
                     <a class="d-block collapsed" data-toggle="collapse" href="#test" aria-controls="test" role="button" aria-expanded="false">
                       <b>123</b>
@@ -61,25 +74,28 @@
                     <div class="card-body">123</div>
                     <div class="card-footer text-right">
                         <small class="text-muted pr-2">建立者： 王小明</small>
-                        <button type="button" class="btn btn-info btn-sm quoteNote">引用至個人筆記</button>
+                        <button type="button" class="btn btn-primary btn-sm quoteNote">引用至個人筆記</button>
                     </div>
                   </div>
 
                 </div>
 
-                <!-- <div class="card">
-                    <p class="card-header">
-                        <a class="collapsed d-block ideaTitle" data-toggle="collapse" href="#670" aria-expanded="true" aria-controls="670"><b>123</b><i class="fa fa-chevron-down float-right chevron" aria-hidden="true"></i>
-                        </a>
-                    </p>
-                    <div id="670" class="collapse">
-                        <div class="card-body">123</div>
-                        <div class="card-footer text-right">
-                            <small class="text-muted pr-2">建立者： 王小明</small>
-                            <button type="button" class="btn btn-removeFavorite btn-sm pr-2" data-toggle="modal" data-target="#checkRemoveFavorite">取消收藏</button>&nbsp;
-                            <button type="button" class="btn btn-info btn-sm quoteNote">引用至個人筆記</button>
-                        </div>
+                <div class="card ideaListAll">
+                  <p class="card-header">
+                    <a class="d-block collapsed" data-toggle="collapse" href="#test2" aria-controls="test" role="button" aria-expanded="false">
+                      <b>1234</b>
+                      <i class="fa fa-chevron-down float-right chevron"></i>
+                    </a>
+                  </p>
+
+                  <div id="test2" class="collapse">
+                    <div class="card-body">1234</div>
+                    <div class="card-footer text-right">
+                        <small class="text-muted pr-2">建立者： 王小明</small>
+                        <button type="button" class="btn btn-primary btn-sm quoteNote">引用至個人筆記</button>
                     </div>
+                  </div>
+
                 </div> -->
                 
               </div>
@@ -88,33 +104,45 @@
         </div>
 
         <div class="col" style="padding-left: 0;">
-            <div class="card" style="min-height:83vh;">
-              <h6 class="card-header" style="background-color: #ECBF96; color: black;"><i class="fas fa-clipboard pr-1" aria-hidden="true"></i>收斂空間</h6>
-              <div class="card-body" style="flex: 0;">
-                <textarea id="title-summernote" class="form-control create-summernote" value=""></textarea>
+            <div class="card" style="min-height:82vh;">
+              <h6 class="card-header convergenceTitle" style="background-color: #ECBF96; color: black;"><i class="fas fa-clipboard pr-1" aria-hidden="true"></i>收斂空間</h6>
+              <div class="card-body convergenceBox" style="flex: 0;">
+                <textarea id="convergence-summernote" class="form-control create-summernote" value=""></textarea>
                 <div class="btn-save-box margin-bottom10 mt-2">
-                    <button id="saveIdeaConvergence" class="btn btn-sm btn-primary">更新收斂結果</button>
+                  <button id="saveIdeaConvergence" class="btn btn-sm btn-save">儲存</button>
+                  <button id="saveIdeaConvergenceNode" class="btn btn-sm btn-primary">產生收斂結果</button>
                 </div>
               </div>
               
-              <div class="card"></div>
-              
-              <div class="card-body">
+              <!-- <div class="card"></div> -->
+              <div style="padding: 0 15px;"><hr></div>
+              <!-- <div class="card-body scroll"> -->
                 <!-- 討論留言：<input class="form-control" type="text" name="message" id="message"> -->
+              <div class="col convergenceBox">
                 <div class="margin-bottom10 form-group row">
                     <label class="col-sm-2 text-center">討論留言：</label>
                     <input class="col-sm-9 form-control" type="text" name="message" id="message">
-                    <div class="col-sm-1"><button id="saveMessage" class="btn btn-sm btn-primary">留言</button></div>
-                    
+                    <div class="col-sm-1"><button id="saveMessage" class="btn btn-sm btn-primary float-right">送出</button></div>
                 </div>
+                <div class="row">
+                  <div class="col">
+                    <table id="messageTable" class="table"></table>
+                  </div>
+                  
+                </div>
+              </div>
+                
+
+                
                 
               </div>
-            </div>
+            <!-- </div> -->
   
         </div>
     </div>
 
-  
+
+    <input type='hidden' id="message" value="">
 
 </div>
 
