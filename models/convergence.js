@@ -52,7 +52,7 @@ module.exports = {
 			pool.getConnection(function(err, connection){
                 if(err) return reject(err);
                 
-				connection.query('SELECT n.*, i.*,r.*, DATE_FORMAT(n.node_createtime, "%Y-%m-%d %H:%i") AS "node_createtime" FROM node n LEFT JOIN idea i ON n.node_id=i.node_id_node LEFT JOIN reference_node r ON n.node_id=r.node_id_node WHERE n.groups_id_groups= "'+groups_id_groups+'" AND n.node_tag="'+node_tag+'" GROUP BY n.node_id',function(err, result){
+				connection.query('SELECT n.*, i.*,r.*, DATE_FORMAT(n.node_createtime, "%Y-%m-%d %H:%i") AS "node_createtime" FROM node n LEFT JOIN idea i ON n.node_id=i.node_id_node LEFT JOIN reference_node r ON n.node_id=r.node_id_node WHERE n.groups_id_groups= "'+groups_id_groups+'" AND n.node_tag="'+node_tag+'" AND n.node_type !="convergence" GROUP BY n.node_id',function(err, result){
 					if(err) return reject(err);
 					resolve(result);
 					connection.release();
@@ -113,4 +113,62 @@ module.exports = {
 		})
 	},
 
+	//新增收斂結果節點
+	addConvergenceNode :function(groups_id_groups, member_id_member, member_name, node_tag){
+		return new Promise(function(resolve, reject){
+			pool.getConnection(function(err, connection){
+				if(err) return reject(err);
+				var node_title = "收斂結果";
+				var node_type = "convergence";
+				var params = {groups_id_groups:groups_id_groups, member_id_member:member_id_member, member_name:member_name, node_title:node_title, node_tag:node_tag, node_type:node_type};
+				connection.query('INSERT INTO `node` SET ?', params, function(err, insert_res){
+					if(err) return reject(err);
+					resolve(insert_res);
+					//console.log(params);
+					connection.release();
+				})
+			})
+		})
+	},
+
+	//新增edge
+	addEdge :function(edgeDataArray){
+		return Promise.all(
+			edgeDataArray.map(function(data){
+				return new Promise(function(resolve, reject){
+					pool.getConnection(function(err, connection){
+						if(err) return reject(err);
+						var edge_from = data.edge_from;
+						var edge_to = data.edge_to;
+						var groups_id_groups = data.groups_id_groups;
+						var params = {edge_from:edge_from, edge_to:edge_to, groups_id_groups:groups_id_groups};
+						connection.query('INSERT INTO `edge` SET ?', params, function(err, insert_res){
+							if(err) return reject(err);
+							resolve(insert_res);
+							//console.log(params);
+							connection.release();
+						})
+					})
+				})
+			})
+		)
+		
+	},
+
+	//更新某tag的留言狀態為end
+	updateMessageStatus :function(groups_id_groups, message_tag){
+		return new Promise(function(resolve, reject){
+			pool.getConnection(function(err, connection){
+				if(err) return reject(err);
+				var message_status = "end";
+				var update_params = {message_status:message_status};
+				connection.query('UPDATE `message` SET ?  WHERE `groups_id_groups`="'+groups_id_groups+'" AND `message_tag`="'+message_tag+'" AND `message_status`="start"', update_params, function(err, result){
+					if(err) return reject(err);
+					// console.log(result);
+					resolve(result);
+					connection.release();
+				})
+			})
+		})
+	}
 }

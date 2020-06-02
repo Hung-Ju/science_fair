@@ -93,6 +93,10 @@ var nodeOptions = {
             shape: 'image',
             image: '/stylesheets/images/icons/reference.svg',
         },
+        convergence: {
+            shape: 'image',
+            image: '/stylesheets/images/icons/convergence.svg',
+        },
         vote: {
             shape: 'image',
             image: '/stylesheets/images/archive.svg',

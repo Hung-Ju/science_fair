@@ -1589,5 +1589,49 @@ router.post('/convergence/insertConvergenceMessage', function(req, res, next){
     }
 })
 
+//新增收斂資料節點
+router.post('/convergence/insertConvergenceNode', function(req, res, next){
+    var groups_id_groups = req.body.groups_id_groups;
+    var tagNow = req.body.tagNow;
+    var convergence_id = req.body.convergence_id;
+    var convergence_ref_node = req.body.convergence_ref_node;
+    var fromNodeId = convergence_ref_node.split(',');
+    var convergence_content = req.body.convergence_content;
+    // var node_title = "收斂結果";
+    // var node_type = "convergence";
+    var member_id_member = req.session.member_id;
+    var member_name = req.session.member_name;
+    var node_id_node;
+    console.log(req.body);
+
+    if(!member_id_member){
+        res.send({message:"false"});
+    }else{
+        convergence.addConvergenceNode(groups_id_groups, member_id_member, member_name, tagNow)
+        .then(function(newConvergenceNode){
+            var edge_to =  newConvergenceNode.insertId;
+            node_id_node = newConvergenceNode.insertId;
+            var edgeDataArray = [];
+            if(fromNodeId.length > 0){
+                for(var i = 0; i < fromNodeId.length; i++){
+                    var edge_from = fromNodeId[i];
+                    edgeDataArray.push({edge_from:edge_from, edge_to:edge_to, groups_id_groups:groups_id_groups});
+                }
+                return convergence.addEdge(edgeDataArray)
+            }
+
+        })
+        .then(function(newEdge){
+            return convergence.updateConvergenceData(groups_id_groups, tagNow, convergence_content, node_id_node, convergence_ref_node, member_id_member, member_name)
+        })
+        .then(function(updateConvergenceData){
+            return convergence.updateMessageStatus(groups_id_groups, tagNow)
+        })
+        .then(function(newMessageStatus){
+            res.send({message:"true"});
+        })
+    }
+})
+
 
 module.exports = router;

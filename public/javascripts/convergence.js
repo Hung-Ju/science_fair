@@ -183,12 +183,13 @@ $(function(){
                     
                     var convergenceData = data.convergenceData;
                     var messageData = data.messageData;
-                    console.log(messageData);
+                    console.log(convergenceData[0].convergence_ref_node);
                     
-                    if(convergenceData.length != 0){
+                    if(convergenceData[0].convergence_ref_node != ""){
                         var convergence_ref_node_string = convergenceData[0].convergence_ref_node;
                         convergence_ref_node=convergence_ref_node_string.split(',').map(Number);
                         convergence_content = convergenceData[0].convergence_content;
+                        console.log(convergence_ref_node);
                     }
 
                     if(data.nodeListData != undefined){
@@ -289,11 +290,40 @@ $(function(){
         })
     })
 
-    // $('#saveIdeaConvergenceNode').on('click', function(){
-    //     var gid = document.getElementById("groups_id").value;
-    //     var tagNow = $('#tagNow').val();
-    //     var 
-    // })
+    $('#saveIdeaConvergenceNode').on('click', function(){
+        $('#checkAddConvergenceNode').modal();
+    })
+
+    $('#checkAddConvergenceNode_btn').on('click', function(){
+        var gid = document.getElementById("groups_id").value;
+        var tagNow = $('#tagNow').val();
+        var convergence_id = $('#convergence_id').val();
+        var convergence_content = $('#convergence-summernote').val();
+        
+        $.ajax({
+            type: "POST",
+            url: "/project/convergence/insertConvergenceNode",
+            data: {
+                groups_id_groups: gid,
+                tagNow: tagNow,
+                convergence_id: convergence_id,
+                convergence_ref_node: convergence_ref_node.toString(),
+                convergence_content: convergence_content
+            },
+            success: function(data){
+                if(data.message=="true"){
+                    alert('收斂節點新增成功');
+                    window.location.href="/";
+                }else{
+                    alert('帳號已被系統自動登出，請重新登入');
+                    window.location.href="/";
+                }
+            },
+            error: function(){
+                alert('失敗');
+            }
+        })
+    })
 
     
 })
