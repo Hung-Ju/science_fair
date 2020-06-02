@@ -1507,6 +1507,8 @@ router.post('/:gid/:mode/discussion/editReferenceNode', upload.array('files',5),
 
 
 //想法收斂工具
+
+//選擇要收斂的標籤並撈出相關資料
 router.post('/convergence/selectConvergenceTag', function(req, res, next){
     //console.log(req.body);
     var groups_id_groups = req.body.groups_id_groups;
@@ -1514,6 +1516,7 @@ router.post('/convergence/selectConvergenceTag', function(req, res, next){
     var member_id_member = req.session.member_id;
     var convergenceData;
     var nodeListData;
+    var convergence_id;
 
     if(!member_id_member){
         res.send({message:"false"});
@@ -1524,9 +1527,12 @@ router.post('/convergence/selectConvergenceTag', function(req, res, next){
             if(convergenceData.length == 0){
                 return convergence.insertTagConvergence(groups_id_groups, tag)
                 .then(function(newConvergenceData){
+                    convergence_id = newConvergenceData.insertId;
                     console.log(newConvergenceData.insertId)
                     // res.send({message:"true", convergenceData:convergenceData})
                 })
+            }else{
+                convergence_id = convergenceData[0].convergence_id;
             }
             return convergence.selectTagIdea(groups_id_groups, tag)
             // res.send({message:"true", convergenceData:convergenceData})
@@ -1536,11 +1542,52 @@ router.post('/convergence/selectConvergenceTag', function(req, res, next){
             return convergence.selectMessage(groups_id_groups, tag)
         })
         .then(function(messageData){
-            res.send({message:"true", convergenceData:convergenceData, nodeListData:nodeListData, messageData:messageData})
+            res.send({message:"true", convergenceData:convergenceData, nodeListData:nodeListData, messageData:messageData, convergence_id:convergence_id})
         })
     }
 })
 
+//更新(儲存)收斂資料
+router.post('/convergence/updateConvergenceData', function(req, res, next){
+    //console.log(req.body);
+    var groups_id_groups = req.body.groups_id_groups;
+    var convergence_tag = req.body.convergence_tag;
+    var convergence_content = req.body.convergence_content;
+    var convergence_ref_node = req.body.convergence_ref_node;
+    var member_id_member = req.session.member_id;
+    var member_name = req.session.member_name;
+    var node_id_node = -1;
+
+    if(!member_id_member){
+        res.send({message:"false"});
+    }else{
+        convergence.updateConvergenceData(groups_id_groups, convergence_tag, convergence_content, node_id_node, convergence_ref_node, member_id_member, member_name)
+        .then(function(update_result){
+            res.send({message:"true"})
+        })
+    }
+})
+
+//新增留言資料
+router.post('/convergence/insertConvergenceMessage', function(req, res, next){
+    var groups_id_groups = req.body.groups_id_groups;
+    var message_tag = req.body.message_tag;
+    var message_content = req.body.message_content;
+    var convergence_id_convergence = req.body.convergence_id_convergence;
+    var member_id_member = req.session.member_id;
+    var member_name = req.session.member_name;
+    console.log(req.body);
+
+    if(!member_id_member){
+        res.send({message:"false"});
+    }else{
+        convergence.insertMessage(groups_id_groups, message_tag, message_content, convergence_id_convergence, member_id_member, member_name)
+        .then(function(newInsertMessage){
+            console.log(newInsertMessage)
+            res.send({message:"true", newInsertMessage:newInsertMessage});
+        })
+    }
+})
 
 
 module.exports = router;
