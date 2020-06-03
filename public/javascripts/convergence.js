@@ -119,7 +119,7 @@ function nodeList(nodeListData, convergence_ref_node){
 }
 
 var convergence_ref_node=[];
-//引用或取消引用
+//引用取消引用
 function quote(node_id){
     $nodetext = $(node_id).closest('.card').find('.card-body');
     var nodeContent=$nodetext.html();
@@ -134,7 +134,7 @@ function quote(node_id){
     console.log(convergence_ref_node);
 
 }
-
+//取消引用
 function requote(node_id){
     var refNodeId = $(node_id).data("node_id");
 
@@ -157,6 +157,7 @@ $(function(){
     $('.convergenceBox *').attr('disabled', true); 
     // $('html, body').css('overflowX', 'hidden');
 
+    //選擇要收斂的標籤，並把該標籤的留言和收斂中內容和想法節點抓取出來
     $('#changeConvergenceTag').on('click', function(){
         var gid = document.getElementById("groups_id").value;
         var node_tag = $('#tags').val();
@@ -229,6 +230,7 @@ $(function(){
 
     });
 
+    //儲存編輯中標籤的收斂內容
     $('#saveIdeaConvergence').on('click', function(){
         var gid = document.getElementById("groups_id").value;
         var convergence_tag = $('#tagNow').val();
@@ -259,6 +261,7 @@ $(function(){
         })
     })
 
+    //新增留言
     $('#saveMessage').on('click', function(){
         var gid = document.getElementById("groups_id").value;
         var message_tag = $('#tagNow').val();
@@ -290,10 +293,12 @@ $(function(){
         })
     })
 
+    //開啟是否要產生收斂結果的確認modal
     $('#saveIdeaConvergenceNode').on('click', function(){
         $('#checkAddConvergenceNode').modal();
     })
 
+    //產生收斂結果
     $('#checkAddConvergenceNode_btn').on('click', function(){
         var gid = document.getElementById("groups_id").value;
         var tagNow = $('#tagNow').val();

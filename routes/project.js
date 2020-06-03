@@ -69,6 +69,7 @@ router.get('/:gid/:mode/:mode2',function(req, res, next) {
         var groupsAllNodeDataArray = [];
         var groupsAllEdgeDataArray = [];
         var groupsCreateStudentId= [];
+        var allconvergenceArray = [];
         var groupsStageCheck;
         var groups_name;
         project.selectAllStageCheck(gid)
@@ -257,7 +258,20 @@ router.get('/:gid/:mode/:mode2',function(req, res, next) {
                     referenceArray.push(referenceData);
                 }
             }
-            res.render('projectEdit',  {title: 'Science Fair科學探究專題系統', gid:gid, groups_name:groups_name, mode:mode, mode2:mode2, member_id:req.session.member_id, member_name:req.session.member_name, researchTitle:researchTitleArray, researchMotivation:researchMotivationArray, researchPurposes:researchPurposesArray, researchExperiment:researchExperimentArray, researchMaterial:researchMaterialArray, researchRecord:researchRecordArray, researchAnalysis:researchAnalysisArray, researchDiscussion:researchDiscussionArray, researchConclusion:researchConclusionArray, groups_stage:groups_stage, AllNodeData:groupsAllNodeDataArray, reference: referenceArray, edge:groupsAllEdgeDataArray, groups_create_student_id:groupsCreateStudentId, groupsStageCheck:groupsStageCheck});
+            return project.selectAllConvergence(gid)
+            
+        })
+        .then(function(allconvergence){
+            if(allconvergence){
+                for (var f =0; f < allconvergence.length; f++){
+                    var convergence_id = allconvergence[f].convergence_id;
+                    var convergence_tag = allconvergence[f].convergence_tag;
+                    var convergence_content = allconvergence[f].convergence_content;
+                    allconvergenceArray.push({convergence_id:convergence_id, convergence_tag:convergence_tag, convergence_content:convergence_content})
+                }
+            }
+            // console.log(allconvergence[0]);
+            res.render('projectEdit',  {title: 'Science Fair科學探究專題系統', gid:gid, groups_name:groups_name, mode:mode, mode2:mode2, member_id:req.session.member_id, member_name:req.session.member_name, researchTitle:researchTitleArray, researchMotivation:researchMotivationArray, researchPurposes:researchPurposesArray, researchExperiment:researchExperimentArray, researchMaterial:researchMaterialArray, researchRecord:researchRecordArray, researchAnalysis:researchAnalysisArray, researchDiscussion:researchDiscussionArray, researchConclusion:researchConclusionArray, groups_stage:groups_stage, AllNodeData:groupsAllNodeDataArray, reference: referenceArray, edge:groupsAllEdgeDataArray, groups_create_student_id:groupsCreateStudentId, groupsStageCheck:groupsStageCheck, allconvergence:allconvergenceArray});
         })
     }
 });

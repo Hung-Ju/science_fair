@@ -990,6 +990,43 @@ function referenceSummernote(){
     // $('#referenceModalRoot .')
 }
 
+// var allConvergence = $('#allconvergence').val();
+//收斂結果初始化
+function convergenceList(convergenceListData){
+    console.log(convergenceListData);
+    convergenceListData.forEach(function(value,index){
+        var convergence_id = value.convergence_id;
+        var convergence_content = value.convergence_content;
+        var convergence_tag = value.convergence_tag;
+        $parentRow =  $(".ideaListAll2").parent(".row");
+        var count = $parentRow.find(".ideaListAll2").length +1;
+
+        var newConvergenceList = '<div class="card  ideaListAll ideaListAll2">'+
+                             '<p class="card-header">'+
+                             '<a class="d-block collapsed" id="aid'+convergence_id+'" data-toggle="collapse" href="#cid'+convergence_id+'" aria-controls="test" role="button" aria-expanded="true">收斂結果<i class="fa fa-chevron-down float-right chevron"></i></a>'+
+                             '</p>'+
+                             '<div id="cid'+convergence_id+'" class="collapse">'+
+                             '<div class="card-body">'+convergence_content+
+                             '</div></div></div>';
+
+        if(convergence_tag == "研究題目與動機"){
+            var count = $(".titleAndMotivationConvergence .ideaListAll2").length +1;
+            $('.titleAndMotivationConvergence').append(newConvergenceList);
+            $('#aid'+convergence_id).append(count);
+
+
+        }else if(convergence_tag == "研究問題"){
+            var count = $(".purposesConvergence .ideaListAll2").length +1;
+            $('.purposesConvergence').append(newConvergenceList);
+            $('#aid'+convergence_id).append(count);
+        }
+
+
+    })
+    
+
+}
+
 
 
 
@@ -1732,6 +1769,10 @@ $(function(){
             }
         });
     })
+
+    var allConvergence = $('#allconvergence').val();
+    console.log(JSON.parse(allConvergence));
+    convergenceList(JSON.parse(allConvergence));
 
 
     //利用錨點滑動頁面

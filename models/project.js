@@ -673,9 +673,23 @@ module.exports = {
 	selectAllStageCheck :function(groups_id_groups){
 		return new Promise(function(resolve, reject){
 			pool.getConnection(function(err, connection){
-				if(err) throw err;
+				if(err) return reject(err);
 				connection.query('SELECT * FROM `stage_check` WHERE `groups_id_groups`=?',  groups_id_groups,function(err, result){
-					if(err) throw err;
+					if(err) return reject(err);
+					resolve(result);
+					connection.release();
+				})
+			});
+		})
+	},
+
+	//抓取所有收斂結果的資料
+	selectAllConvergence :function(groups_id_groups){
+		return new Promise(function(resolve, reject){
+			pool.getConnection(function(err, connection){
+				if(err) return reject(err);
+				connection.query('SELECT * FROM `convergence` WHERE `groups_id_groups`="'+groups_id_groups+'" AND `node_id_node`!="-1"',  groups_id_groups,function(err, result){
+					if(err) return reject(err);
 					resolve(result);
 					connection.release();
 				})

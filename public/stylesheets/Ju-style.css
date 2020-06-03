@@ -337,7 +337,6 @@ a.tool:hover {
   background-color: rgba(221, 220, 220, 0.5);
   margin-bottom: 0;
   padding: 0.5rem 1.25rem;
-  
 }
 
 .ideaListAll{
@@ -348,6 +347,31 @@ a.tool:hover {
   color: black;
   text-decoration: none;
 }
+
+.ideaListAll2{
+  border: none;
+  min-width: 100%;
+}
+.ideaListAll2 .card-header{
+  background-color: rgb(248, 236, 210);
+}
+
+.ideaListAll2 .card-header a{
+  color: black;
+  text-decoration: none;
+}
+
+.ideaListAll2 .card-body{
+  border-bottom: 1px solid rgba(0,0,0,.125);
+}
+
+.ideaListAll2 .card-footer{
+  background-color: rgba(0,0,0,.03);
+  border-top: 1px solid rgba(0,0,0,.125);
+  padding: 0.5rem 1.25rem;
+}
+
+
 
 .card-header .collapsed .fa.chevron {
   transform: rotate(90deg);
@@ -364,59 +388,11 @@ a.tool:hover {
 }
 
 .scroll {
-  max-height: 82vh;
+  max-height: 78vh;
   overflow-y: auto;
 }
 
 
-/* #nodeFiles{
-  margin-top: 8px;
-} */
-/* checkbox選項item */
-/* .item{
-  display: block;
-  margin-bottom: 5px;
-}
 
-.item .item-checkbox{
-  padding: 0;
-  height: initial;
-  width: initial;
-  margin-bottom: 0;
-  display: none;
-  cursor: pointer;
-}
-
-.item label{
-  position: relative;
-  cursor: pointer;
-}
-
-.item label:before {
-  content:'';
-  -webkit-appearance: none;
-  background-color: transparent;
-  border: 2px solid #0079bf;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
-  padding: 10px;
-  display: inline-block;
-  position: relative;
-  vertical-align: middle;
-  cursor: pointer;
-  margin-right: 5px;
-}
-
-.item .item-checkbox:checked + label:after {
-  content: '';
-  display: block;
-  position: absolute;
-  top: 2px;
-  left: 9px;
-  width: 6px;
-  height: 14px;
-  border: solid #0079bf;
-  border-width: 0 2px 2px 0;
-  transform: rotate(45deg);
-} */
 
 
