@@ -429,6 +429,17 @@ function clickevent(){
                 $('#editAndReadReference').on('shown.bs.modal', function (e) {
                     $("#editAndReadReferenceLongTitle").text(ajaxNodeData[0].node_title);
                 })
+            }else if(node_group == "convergence"){
+                var ajaxConvergenceData = ajaxGetConvergenceNodeData(clickid);
+                var ajaxNodeData = ajaxConvergenceData.nodeData;
+                console.log(ajaxNodeData);
+
+                var node_read_count_plus = ajaxNodeData[0].node_read_count;
+                $readConvergenceRoot = $('#ReadConvergenceRoot');
+                $readConvergenceRoot.html("");
+                $readConvergenceRoot.append('<div class="text-right"><i class="far fa-eye" aria-hidden="true"></i>'+node_read_count_plus+'</div>')
+                $readConvergenceRoot.append(ajaxNodeData[0].convergence_content);
+                $("#readConvergence").modal();
             }else{
                 $readProjectModalRoot = $("#readProjectModalRoot");
                 if(node_group == "motivation"){
@@ -635,6 +646,30 @@ function ajaxGetReferenceNodeData(nodeId){
         }
     });
     return {nodeData,nodeFile};
+};
+
+//用AJAX抓收斂結果節點的資料
+function ajaxGetConvergenceNodeData(nodeId){
+    var nodeData;
+    var gid = document.getElementById("groups_id").value;
+    var mode = "想法討論";
+    $.ajax({
+        url: "/project/"+gid+"/"+mode+"/discussion/readConvergence",
+        type: "GET",
+        async: false,
+        //取消同步，等ajax結束後再進行後面的動作
+        data: {
+            nodeId: nodeId
+        },
+        success: function(results){
+            nodeData=results.nodeData;
+            //console.log(nodeData);
+        },
+        false: function(){
+            alert('帳號已被系統自動登出，請重新登入');
+        }
+    });
+    return {nodeData};
 };
 
 function deleteFile(file_id){

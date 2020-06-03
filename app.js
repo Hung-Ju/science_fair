@@ -131,6 +131,17 @@ io.on('connection', function(socket) {
         socket.nsp.to(roomName).emit('update summernote content',updateSummernoteData);
     });
 
+    //接收到新增的節點資料後，把資料送回指定的房間
+    socket.on("add message", function(data){
+        //console.log(data);
+        var roomName = 'groups_'+ data.gid;
+        if (data.newInsertMessage.length > 0){
+            console.log("新增的messageData"+data.newInsertMessage[0]);
+            var newInsertMessage = data.newInsertMessage[0];
+            socket.nsp.to(roomName).emit('update message data', {newInsertMessage:newInsertMessage, message_tag:data.message_tag});
+        }
+    })
+
 
 });
 

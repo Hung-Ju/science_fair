@@ -152,6 +152,24 @@ $(function(){
     summernoteCreate();
     messageTable();
 
+    //傳送要進入房間的資料
+    socket.emit('join groups', $('#groups_id').val());
+
+    //接收加入的房間資料
+    socket.on('join room：',function(data){
+        console.log(data);
+    })
+
+    //接收新增的節點資料
+    socket.on('update message data',function(data){
+        if(data.message_tag ==$('#tags').val()){
+            $('#messageTable').bootstrapTable('append', data.newInsertMessage);
+        }
+        //updateNodeData(data);
+        // console.log("新增或更新的節點資料"+data);
+    })
+
+
     // $('html, body').css('overflow', 'hidden');
     $('html, body').css('overflowY', 'hidden');
     $('.convergenceBox *').attr('disabled', true); 
@@ -184,7 +202,7 @@ $(function(){
                     
                     var convergenceData = data.convergenceData;
                     var messageData = data.messageData;
-                    console.log(convergenceData[0].convergence_ref_node);
+                    //console.log(convergenceData[0].convergence_ref_node);
                     
                     if(convergenceData[0].convergence_ref_node != ""){
                         var convergence_ref_node_string = convergenceData[0].convergence_ref_node;
@@ -281,7 +299,8 @@ $(function(){
             success: function(data){
                 if(data.message=="true"){
                     alert('留言成功');
-                    $('#messageTable').bootstrapTable('append', data.newInsertMessage);
+                    // $('#messageTable').bootstrapTable('append', data.newInsertMessage);
+                    socket.emit('add message', {gid:gid, newInsertMessage:data.newInsertMessage, message_tag:message_tag})
                 }else{
                     alert('帳號已被系統自動登出，請重新登入');
                     window.location.href="/";
@@ -318,7 +337,9 @@ $(function(){
             success: function(data){
                 if(data.message=="true"){
                     alert('收斂節點新增成功');
-                    window.location.href="/";
+                    socket.emit('add node', {gid:gid, nodeData:data.nodeData});
+                    socket.emit('add edge', {gid:gid, edgeData:data.edgeData});
+                    window.location.href="/project/"+gid+"/想法討論/收斂";
                 }else{
                     alert('帳號已被系統自動登出，請重新登入');
                     window.location.href="/";

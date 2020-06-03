@@ -990,7 +990,6 @@ function referenceSummernote(){
     // $('#referenceModalRoot .')
 }
 
-// var allConvergence = $('#allconvergence').val();
 //收斂結果初始化
 function convergenceList(convergenceListData){
     console.log(convergenceListData);
@@ -1019,6 +1018,30 @@ function convergenceList(convergenceListData){
             var count = $(".purposesConvergence .ideaListAll2").length +1;
             $('.purposesConvergence').append(newConvergenceList);
             $('#aid'+convergence_id).append(count);
+        }else if(convergence_tag == "實驗項目"){
+            var count = $(".experimentConvergence .ideaListAll2").length +1;
+            $('.experimentConvergence').append(newConvergenceList);
+            $('#aid'+convergence_id).append(count);
+        }else if(convergence_tag == "研究設備及器材"){
+            var count = $(".materialConvergence .ideaListAll2").length +1;
+            $('.materialConvergence').append(newConvergenceList);
+            $('#aid'+convergence_id).append(count);
+        }else if(convergence_tag == "實驗記錄"){
+            var count = $(".recordConvergence .ideaListAll2").length +1;
+            $('.recordConvergence').append(newConvergenceList);
+            $('#aid'+convergence_id).append(count);
+        }else if(convergence_tag == "研究結果(分析及圖表)"){
+            var count = $(".analysisConvergence .ideaListAll2").length +1;
+            $('.analysisConvergence').append(newConvergenceList);
+            $('#aid'+convergence_id).append(count);
+        }else if(convergence_tag == "研究討論"){
+            var count = $(".discussionConvergence .ideaListAll2").length +1;
+            $('.discussionConvergence').append(newConvergenceList);
+            $('#aid'+convergence_id).append(count);
+        }else if(convergence_tag == "結論"){
+            var count = $(".conclusiocConvergence .ideaListAll2").length +1;
+            $('.conclusiocConvergence').append(newConvergenceList);
+            $('#aid'+convergence_id).append(count);
         }
 
 
@@ -1026,23 +1049,6 @@ function convergenceList(convergenceListData){
     
 
 }
-
-
-
-
-//階段切換彈出modal欄位內容
-// function changeStageInput(){
-//     var inputAdd = document.getElementById('groupsRoot');  
-//     var html = ['<p>'];
-//     groupsInputData.map(function(data){
-//         if (data.useFor=="all"){
-//             var html = ['<p>'+ data.title + '：' +'<input class="form-control" type="'+data.type+'" name="'+data.name+'"id="'+data.name+'" required="required"></p>'];
-//             $(inputAdd).append(html);
-//         }
-//         else {
-//         }
-//     })  
-// };
 
 
 $(function(){

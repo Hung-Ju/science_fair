@@ -597,7 +597,7 @@
                 </div>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-secondary">收藏</button>
+                <!-- <button type="button" class="btn btn-secondary">收藏</button> -->
                 <button type="button" class="btn btn-primary dropdown-toggle" id="dropdownMenuReplyIdea" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">回覆</button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuReplyIdea">
                   <button class="dropdown-item addIdea" type="button" data-dismiss="modal" data-toggle="modal" data-target="#addIdea">回覆一般想法</button>
@@ -611,7 +611,7 @@
             <div class="tab-pane fade" id="editIdeaTab" role="tabpanel" aria-labelledby="editIdea-tab">
               <div class="modal-body">
                 <div id="EditIdeaRoot">
-                  <p style="margin-bottom: 0;"><b>標題</b><input class="form-control" type="text" name="idea_title_edit" id="idea_title_edit" required="required"></p>
+                  <p style="margin-bottom: 0;"><b>標題</b><input class="form-control" type="text" name="idea_title_edit" id="idea_title_edit" required="required" maxlength="15"></p>
                   <p style="color: gray; font-size: 14px; margin-top: 0;">*標題字數限制15字</p>
                   <div class="ideaTagEdit"></div>
                   <div class="row">
@@ -761,7 +761,7 @@
                 </div>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-secondary">收藏</button>
+                <!-- <button type="button" class="btn btn-secondary">收藏</button> -->
                 <button type="button" class="btn btn-primary">回覆</button>
               </div>
             </div>
@@ -769,7 +769,7 @@
             <div class="tab-pane fade" id="ediReferenceTab" role="tabpanel" aria-labelledby="editReference-tab">
               <div class="modal-body">
                 <div id="EditReferenceRoot">
-                  <p style="margin-bottom: 0;"><b>標題</b><input class="form-control" type="text" name="reference_title_edit" id="reference_title_edit" required="required"></p>
+                  <p style="margin-bottom: 0;"><b>標題</b><input class="form-control" type="text" name="reference_title_edit" id="reference_title_edit" required="required" maxlength="15"></p>
                   <p style="color: gray; font-size: 14px; margin-top: 0;">*標題字數限制15字</p>
                   <div class="referenceTagEdit"></div>
                   <div class="form-row">
@@ -860,6 +860,39 @@
       </div>
     </div> -->
     <!-- 新增昇華的想法的彈出視窗 -->
+
+    <!-- 閱讀收斂結果的彈出視窗 -->
+    <div class="modal fade" id="readConvergence" tabindex="-1" role="dialog" aria-labelledby="readConvergenceCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="readConvergenceLongTitle">閱讀收斂結果</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>    
+        
+          <div class="modal-body"  style="min-height: 200px;">
+            <div id="ReadConvergenceRoot">
+            閱讀
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary dropdown-toggle" id="dropdownMenuReplyConvergence" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">回覆</button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuReplyConvergence">
+              <button class="dropdown-item addIdea" type="button" data-dismiss="modal" data-toggle="modal" data-target="#addIdea">回覆一般想法</button>
+              <button class="dropdown-item addRiseAbove" type="button" data-dismiss="modal" data-toggle="modal" data-target="#addIdea">提出昇華的想法</button>
+              <button class="dropdown-item" type="button">提出參考文獻</button>
+            </div>
+            <!-- <button type="button" class="btn btn-primary" data-dismiss="modal" data-toggle="modal" data-target="#addIdea">回覆</button> -->
+          </div>
+            
+          </div>
+          
+        </div>
+      
+    </div>
+    <!-- 閱讀收斂結果的彈出視窗 -->
 
     <div aria-live="polite" aria-atomic="true" style="position: relative; min-height: 200px;">
       

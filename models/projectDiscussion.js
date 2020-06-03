@@ -465,6 +465,20 @@ module.exports = {
 				})
 			})
 		})
-    },
+	},
+	
+	//抓取點擊單一收斂節點的內容
+	getConvergenceNodeData :function(node_id_node){
+		return new Promise(function(resolve, reject){
+			pool.getConnection(function(err, connection){
+				if(err) return reject(err);
+				connection.query('SELECT `node`.*, `convergence`.* FROM `node` INNER JOIN `convergence` ON `node`.`node_id` WHERE `convergence`.`node_id_node`="'+node_id_node+'" AND `node`.`node_id`="'+node_id_node+'"',function(err, result){
+					if(err) return reject(err);
+					resolve(result);
+					connection.release();
+				})
+			});
+		})
+	},
 
 }
