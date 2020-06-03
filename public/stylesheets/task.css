@@ -1,0 +1,20 @@
+.task-card{
+    cursor: pointer;
+    transition: transform 250ms
+}
+
+
+.task-card.selected{
+    transform: scale(1.15);
+    z-index: 200;
+}
+
+.column{
+    margin-right: 15px;
+    /* padding: 1%; */
+    width: 100%;
+    float: left;
+    /* height: 83; */
+}
+
+  

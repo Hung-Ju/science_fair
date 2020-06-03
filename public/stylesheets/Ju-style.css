@@ -390,6 +390,7 @@ a.tool:hover {
 .scroll {
   max-height: 78vh;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 
