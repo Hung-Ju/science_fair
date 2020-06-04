@@ -18,10 +18,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.ui.position.js"></script>
 
-    <!--inputTag-->
-    <script type="text/javascript" src="/stylesheets/inputTags-jQuery-plugin-master/inputTags.jquery.js"></script>
-    <link rel='stylesheet' href='/stylesheets/inputTags-jQuery-plugin-master/inputTags.css' />
-
     <!-- summernote -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <link href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css" />
@@ -59,9 +55,9 @@
           <div class="navbar-nav">
             <a class="nav-item nav-link" href="/groups">離開專題</a>
             <a class="nav-item nav-link" href="/project/<%= gid %>/內容撰寫/實作">專題寫作</a>
-            <a class="nav-item nav-link" href="#">專題管理</a>
+            <a class="nav-item nav-link active" href="#">專題管理</a>
             <a class="nav-item nav-link" href="/resource/<%= gid %>">資源管理</a>
-            <a class="nav-item nav-link active" href="#">任務管理</a>
+            <a class="nav-item nav-link" href="/task/<%= gid %>">任務管理</a>
             <!-- <a class="nav-item nav-link" href="#">留言提問</a> -->
             <!-- <a class="nav-item nav-link" href="#">收斂工具</a> -->
             <a class="nav-item nav-link" href="#">學習歷程</a>
@@ -109,52 +105,14 @@
 
     <div id="cneter-content">
       <div class="row" style="margin-top: 35px;">
-        <button class="col btn btn-outline-success" style="margin:15px 15px"  type='submit' data-toggle="modal" data-target="#addTask">新增任務</button>
+        <div class="jumbotron col">
+            <h1 class="display-4"><%= groups_name %></h1>
+            <p class="lead"><%= groups_introduction %></p>
+        </div>
+
 
       </div>
       <div class="row">
-
-          <div class="col card column" style="min-height:80vh; margin-left: 10px; padding: 0;">
-            <h5 class="card-header" style="background-color: rgba(238, 235, 229, 0.822); border-bottom: none;"><b>暫存區</b></h5>
-            <div class="card-body tasks backlog" data-status="backlog"  style="background-color: rgba(238, 235, 229, 0.822);">
-
-              
-            </div>
-          </div>
-
-
-            <div class="col card column" style="min-height:80vh; padding: 0;">
-              <h5 class="card-header" style="background-color: rgba(212, 209, 203, 0.74); border-bottom: none;"><b>待辦</b></h5>
-              <div class="card-body tasks todo" data-status="todo" style="background-color: rgba(212, 209, 203, 0.74);">
-  
-                
-              </div>
-            </div>
-  
-
-            <div class="col card column" style="min-height:80vh; padding: 0;">
-              <h5 class="card-header" style="background-color: rgba(190, 189, 185, 0.774); border-bottom: none;"><b>進行中</b></h5>
-              <div class="card-body tasks doing" data-status="doing" style="background-color: rgba(190, 189, 185, 0.774);">
-  
-                
-              </div>
-            </div>
-  
-              <div class="col card column" style="min-height:80vh; padding: 0;">
-                <h5 class="card-header" style="background-color: rgba(168, 166, 162, 0.747); border-bottom: none;"><b>完成</b></h5>
-                <div class="card-body tasks done" data-status="done" style="background-color: rgba(168, 166, 162, 0.747);">
-                    
-                    <!-- <div class="card task-card"  style="margin-bottom: 15px;">
-                        <div class="card-body ">研究題目和動機撰寫</div>
-                        <div class="card-footer text-right" data-taskidnow="30" style="padding: 0.3rem 1.25rem;">
-                            王小明 2020-06-03 12:36 <i class="fas fa-pencil-alt mr-1 editTaskIcon" style="color: rgb(4, 4, 194);"></i><i class="far fa-trash-alt deleteTaskIcon" style="color: rgb(207, 0, 0);" aria-hidden="true"></i>
-                        </div>
-                    </div> -->
-                  
-                </div>
-              </div>
-    
-
 
       <!-- 新增任務的彈出視窗 -->
       <div class="modal fade" id="addTask" tabindex="-1" role="dialog" aria-labelledby="addTaskCenterTitle" aria-hidden="true">
@@ -258,11 +216,8 @@
     <input type="hidden" id="member_id" value="<%= member_id %>">
     <input type="hidden" id="member_name" value="<%= member_name %>">
 
-    <input type="hidden" id="groupsMemberData" value="<%= JSON.stringify(groupsMemberData) %>">
-    <input type="hidden" id="groupsTaskData" value="<%= JSON.stringify(groupsTaskData) %>">
   </body>
 </html>
 
-<script src="/socket.io/socket.io.js"></script>
-<script type="text/javascript" src="/javascripts/task.js"></script>
-<link rel='stylesheet' href='/stylesheets/task.css' />
+<script type="text/javascript" src="/javascripts/projectManage.js"></script>
+<!-- <link rel='stylesheet' href='/stylesheets/task.css' /> -->

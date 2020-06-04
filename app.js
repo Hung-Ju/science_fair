@@ -11,6 +11,7 @@ var projectRouter = require('./routes/project');
 var resourceRouter = require('./routes/resource');
 var convergenceRouter = require('./routes/convergence');
 var taskRouter = require('./routes/task');
+var projectManageRouter = require('./routes/projectManage');
 
 var projectDiscussion = require('./models/projectDiscussion');
 
@@ -141,7 +142,34 @@ io.on('connection', function(socket) {
             var newInsertMessage = data.newInsertMessage[0];
             socket.nsp.to(roomName).emit('update message data', {newInsertMessage:newInsertMessage, message_tag:data.message_tag});
         }
-    })
+    });
+
+    //接收到新增的任務資料後，把資料送回指定的房間
+    socket.on("add task", function(data){
+        //console.log(data);
+        var roomName = 'groups_'+ data.gid;
+        if (data.taskData.length > 0){
+            console.log("新增的taskData"+data.taskData);
+            var taskData = data.taskData
+            socket.nsp.to(roomName).emit('add task data', taskData);
+        }
+    });
+
+    //接收到刪除的任務資料後，把資料送回指定的房間
+    socket.on("delete task", function(data){
+        //console.log(data);
+        var roomName = 'groups_'+ data.gid;
+        var tid = data.task_id
+        socket.nsp.to(roomName).emit('delete task data', tid);
+    });
+
+    //接收到更新狀態的任務資料後，把資料送回指定的房間
+    socket.on("update task status", function(data){
+        // console.log(data);
+        var roomName = 'groups_'+ data.gid;
+        var taskData = data.taskData
+        socket.nsp.to(roomName).emit('update task position', taskData);
+    });
 
 
 });
@@ -173,6 +201,7 @@ app.use('/project', projectRouter);
 app.use('/resource', resourceRouter);
 app.use('/convergence', convergenceRouter);
 app.use('/task', taskRouter);
+app.use('/projectManage', projectManageRouter);
 
 app.use(function(req, res, next){
     // 如果session中存在，則說明已經登入
