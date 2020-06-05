@@ -6,6 +6,16 @@ function randomRgba(transparency) {
     return ['rgb('+color_r+','+color_g+','+color_b+')', 'rgba('+color_r+','+color_g+','+color_b+','+transparency+')'];
     // return 'rgba(' + o(r()*s) + ',' + o(r()*s) + ',' + o(r()*s) + ',' + r().toFixed(1) + ')';
 }
+function getOldestDate(data){
+    return data.reduce(function(prev, curr){
+        return (prev.day< curr.day)?prev:curr;
+    });
+}
+function getLatestDate(data){
+    return data.reduce(function(prev, curr){
+        return (prev.day> curr.day)?prev:curr;
+    });
+}
 
 function getCountScaffold(textContent){
     var countScaffold = [];
@@ -28,8 +38,11 @@ $(function(){
     var ideaActionData = JSON.parse(ideaAction);
     var ideaScaffold = $('#ideaScaffoldData').val();
     var ideaScaffoldData = JSON.parse(ideaScaffold);
+    var increaseData = $('#ideaIncreaseData').val();
+    var ideaIncreaseData = JSON.parse(increaseData);
     console.log(ideaActionData);
     console.log(ideaScaffoldData);
+    console.log(ideaIncreaseData);
 
     var ideaActionMemberList= ideaActionData.addNodeData.map(function(value,index){
         if(value.member_name == member_name){
@@ -155,4 +168,62 @@ $(function(){
         });
         ideaScaffoldChart.update();
     })
+
+    
+    let container = document.getElementById("ideaIncreaseGraph");
+    let names= {};
+    var groups = new vis.DataSet();
+    ideaScaffoldData.scaffoldData.forEach(function(value, index){
+        let dataId= value.member_name == member_name?value.member_name:(String.fromCharCode(65+index));
+        names[value.member_id]= dataId;
+        console.log(names);
+        groups.add({
+            id: dataId,
+            content: dataId,
+            options: {
+                drawPoints: {
+                    style: "square", // square, circle
+                },
+                shaded: {
+                    orientation: "bottom", // top, bottom
+                },
+            }
+        });
+    });
+    console.log(names);
+    let items= [];
+    let sum= {};
+    ideaIncreaseData.forEach(function(value, index){
+        console.log(value);
+        console.log(sum);
+        let dataId= names[value.member_id_member];
+        if(sum.hasOwnProperty(value.member_id_member)){
+            sum[value.member_id_member]+= value.node_count;
+        }else{
+            sum[value.member_id_member]= value.node_count;
+        }        
+        items.push({ 
+            x: value.day,
+            y: sum[value.member_id_member], 
+            group: dataId, 
+            label: {
+                content: sum[value.member_id_member],
+                xyOffset: 5
+            }});
+    });
+    let startDate= getOldestDate(ideaIncreaseData).day;
+    console.log(startDate);
+    let endtDate= getLatestDate(ideaIncreaseData).day;
+    console.log(endtDate);
+    var dataset = new vis.DataSet(items);
+    var options = {
+        defaultGroup: "ungrouped",
+        legend: true,
+        start: startDate,
+        end: endtDate,
+        timeAxis: {
+            scale: 'day'
+        }
+    };
+    var graph2d = new vis.Graph2d(container, dataset, groups, options);
 })

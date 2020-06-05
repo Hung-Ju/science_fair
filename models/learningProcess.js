@@ -199,5 +199,18 @@ module.exports = {
                 resolve({scaffoldData:scaffoldData})
             })
         })
-    }
+    },
+
+    getGroupIdeaIncrease: function(groups_id_groups){
+        return new Promise(function(resolve, reject){
+			pool.getConnection(function(err, connection){
+                if(err) return reject(err);
+				connection.query('SELECT DATE_FORMAT(n.node_createtime, "%Y-%m-%d") AS day, n.member_id_member, n.member_name, count(*) AS node_count FROM `node` n INNER JOIN `groups_member` m ON n.member_id_member=m.member_id_member WHERE n.groups_id_groups=? AND (n.node_type= "idea" || n.node_type= "rise_above") GROUP BY n.member_id_member, DATE_FORMAT(n.node_createtime, "%Y-%m-%d")',groups_id_groups,function(err, result){
+					if(err) return reject(err);
+					resolve(result);
+					connection.release();
+				})
+			});
+		})
+    },
 }
