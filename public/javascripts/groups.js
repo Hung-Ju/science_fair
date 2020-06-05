@@ -57,7 +57,23 @@ function enterProject(groups_id){
     //依據 id 值加在網址後面，讓編輯頁面能以 get 方式取得 key
     var mode = "內容撰寫";
     var mode2 = "實作";
-    window.location.href = "/project/"+groups_id+"/"+mode+"/"+mode2;
+    $.ajax({
+        url: "/project/addLoginCount",
+        type: "POST",
+        async: false,
+        //取消同步，等ajax結束後再進行後面的動作
+        data: {
+            groups_id:groups_id
+        },
+        success: function(results){
+            console.log("增加登入次數成功");
+            window.location.href = "/project/"+groups_id+"/"+mode+"/"+mode2;
+        },
+        false: function(){
+            alert('帳號已被系統自動登出，請重新登入');
+        }
+    });
+    
 }
 
 //用bootstrap-table創已加入組別table

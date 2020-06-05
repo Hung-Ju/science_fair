@@ -12,6 +12,7 @@ var resourceRouter = require('./routes/resource');
 var convergenceRouter = require('./routes/convergence');
 var taskRouter = require('./routes/task');
 var projectManageRouter = require('./routes/projectManage');
+var learningProcessRouter = require('./routes/learningProcess');
 
 var projectDiscussion = require('./models/projectDiscussion');
 
@@ -202,6 +203,7 @@ app.use('/resource', resourceRouter);
 app.use('/convergence', convergenceRouter);
 app.use('/task', taskRouter);
 app.use('/projectManage', projectManageRouter);
+app.use('/learningProcess', learningProcessRouter);
 
 app.use(function(req, res, next){
     // 如果session中存在，則說明已經登入

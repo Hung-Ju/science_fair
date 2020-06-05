@@ -322,6 +322,20 @@ module.exports = {
 		})
 	},
 
+	//新增節點修改次數
+	updateNodReviseCount :function(node_id_node, node_revised_count){
+		return new Promise(function(resolve, reject){
+			pool.getConnection(function(err, connection){
+				if(err) return reject(err);
+				connection.query('UPDATE `node` SET `node_revised_count`="'+node_revised_count+'"  WHERE `node_id`="'+node_id_node+'"', function(err, result){
+					if(err) return reject(err);
+					resolve(result);
+					connection.release();
+				})
+			})
+		})
+	},
+
 	//刪除節點中的檔案
 	deleteFile :function(file_id){
 		return new Promise(function(resolve, reject){
@@ -478,6 +492,48 @@ module.exports = {
 					connection.release();
 				})
 			});
+		})
+	},
+
+	//抓取正在使用系統的組員資料
+	selectGroupsMemberData :function(groups_id_groups, member_id_member){
+		return new Promise(function(resolve, reject){
+			pool.getConnection(function(err, connection){
+				if(err) return reject(err);
+				connection.query('SELECT * FROM `groups_member` WHERE `groups_id_groups`="'+groups_id_groups+'" AND `member_id_member`="'+member_id_member+'"',function(err, result){
+					if(err) return reject(err);
+					resolve(result);
+					connection.release();
+				})
+			});
+		})
+	},
+
+	//更新組員閱讀節點次數
+	updateMemberNodeReadCount :function(groups_member_id, member_node_read_count){
+		return new Promise(function(resolve, reject){
+			pool.getConnection(function(err, connection){
+				if(err) return reject(err);
+				connection.query('UPDATE `groups_member` SET `member_node_read_count`="'+member_node_read_count+'"  WHERE `groups_member_id`="'+groups_member_id+'"', function(err, result){
+					if(err) return reject(err);
+					resolve(result);
+					connection.release();
+				})
+			})
+		})
+	},
+
+	//更新組員登入組別次數
+	updateMemberLoginCount :function(groups_member_id, groups_member_logincount){
+		return new Promise(function(resolve, reject){
+			pool.getConnection(function(err, connection){
+				if(err) return reject(err);
+				connection.query('UPDATE `groups_member` SET `groups_member_logincount`="'+groups_member_logincount+'"  WHERE `groups_member_id`="'+groups_member_id+'"', function(err, result){
+					if(err) return reject(err);
+					resolve(result);
+					connection.release();
+				})
+			})
 		})
 	},
 

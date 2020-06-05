@@ -985,7 +985,8 @@ $(function(){
         var node_tag = $('.idea_tag').val();
 
         //console.log(node_tag);
-        var idea_content = $('#editIdeaSummernote').val();
+        var idea_content = $('#editIdeaSummernote').summernote('code');
+        console.log(idea_content);
         var node_id = $('#node_id').val();
         var mode = "想法討論";
         var files = document.getElementById('inputGroupFileEdit').files.length;

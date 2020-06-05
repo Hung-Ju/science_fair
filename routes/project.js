@@ -276,6 +276,26 @@ router.get('/:gid/:mode/:mode2',function(req, res, next) {
     }
 });
 
+router.post('/addLoginCount', function(req, res, next){
+    var groups_id_groups = req.body.groups_id;
+    var member_id_member = req.session.member_id;
+    if(!member_id_member){
+        res.send({message:"false"});
+    }else{
+        projectDiscussion.selectGroupsMemberData(groups_id_groups, member_id_member)
+        .then(function(memberData){
+            // console.log(memberData)
+            var groups_member_id = memberData[0].groups_member_id;
+            var groups_member_logincount = memberData[0].groups_member_logincount+1;
+            return projectDiscussion.updateMemberLoginCount(groups_member_id, groups_member_logincount)
+        })
+        .then(function(result4){
+            // console.log(result4)
+            res.send({message:"true"});
+        })
+    }
+})
+
 //新增或修改研究題目和研究動機
 router.post('/updateResearchTitle', function(req, res, next){
     var gid = req.body.gid;
@@ -1153,6 +1173,7 @@ router.post('/discussion/addIdea', upload.array('files',5), function(req, res, n
 
 //抓取想法節點資料
 router.get('/:gid/:mode/discussion/readIdea', function(req, res, next){
+    var groups_id_groups = req.params.gid;
     var node_id_node = req.query.nodeId;
     var member_id_member = req.session.member_id;
     var nodeData;
@@ -1175,6 +1196,17 @@ router.get('/:gid/:mode/discussion/readIdea', function(req, res, next){
             
         })
         .then(function(result2){
+            return projectDiscussion.selectGroupsMemberData(groups_id_groups, member_id_member)
+            // res.send({message:"true", nodeData:nodeData, nodeFile:nodeFile});
+        })
+        .then(function(memberData){
+            // console.log(memberData)
+            var groups_member_id = memberData[0].groups_member_id;
+            var member_node_read_count = memberData[0].member_node_read_count+1;
+            return projectDiscussion.updateMemberNodeReadCount(groups_member_id, member_node_read_count)
+        })
+        .then(function(result4){
+            // console.log(result4)
             res.send({message:"true", nodeData:nodeData, nodeFile:nodeFile});
         })
     }
@@ -1212,6 +1244,7 @@ router.post('/:gid/:mode/discussion/editIdeaNode', upload.array('files',5), func
     var fileData = req.files;
     var node_id = req.body.node_id;
     var nodeDataSelect = [];
+    var allNodeDataSelect;
 
     if(!member_id_member){
         res.send({message:"false"});
@@ -1229,20 +1262,25 @@ router.post('/:gid/:mode/discussion/editIdeaNode', upload.array('files',5), func
                     return projectDiscussion.selectNewNodeData(node_id)
                 })
                 .then(function(nodeData){
-                    if(nodeData){
-                        for (var k = 0; k < nodeData.length; k++){
+                    allNodeDataSelect = nodeData;
+                    var node_revised_count = nodeData[0].node_revised_count;
+                    return projectDiscussion.updateNodReviseCount(node_id,node_revised_count+1) 
+                })
+                .then(function(update_revise){
+                    if(update_revise){
+                        for (var k = 0; k < allNodeDataSelect.length; k++){
                             // var day = new Date(allGroupsNode[d].node_createtime);
-                            var id = nodeData[k].node_id;
-                            var group = nodeData[k].node_type;
-                            var x = nodeData[k].node_x;
-                            var y = nodeData[k].node_y;
-                            var member_id = nodeData[k].member_id_member;
-                            var member_name = nodeData[k].member_name;
-                            var node_title = nodeData[k].node_title;
-                            var node_tag = nodeData[k].node_tag;
-                            var node_createtime = nodeData[k].node_createtime2;
-                            var node_revised_count = nodeData[k].node_revised_count;
-                            var node_read_count = nodeData[k].node_read_count;
+                            var id = allNodeDataSelect[k].node_id;
+                            var group = allNodeDataSelect[k].node_type;
+                            var x = allNodeDataSelect[k].node_x;
+                            var y = allNodeDataSelect[k].node_y;
+                            var member_id = allNodeDataSelect[k].member_id_member;
+                            var member_name = allNodeDataSelect[k].member_name;
+                            var node_title = allNodeDataSelect[k].node_title;
+                            var node_tag = allNodeDataSelect[k].node_tag;
+                            var node_createtime = allNodeDataSelect[k].node_createtime2;
+                            var node_revised_count = allNodeDataSelect[k].node_revised_count;
+                            var node_read_count = allNodeDataSelect[k].node_read_count;
                             allNodeData = {id:id, group:group, x:x, y:y, member_id:member_id, member_name:member_name, node_title:node_title, node_tag:node_tag, node_createtime:node_createtime, node_revised_count:node_revised_count, node_read_count:node_read_count};
                             nodeDataSelect.push(allNodeData);
                         }
@@ -1402,6 +1440,7 @@ router.post('/discussion/addReferenceNode', upload.array('files',5), function(re
 
 //抓取參考文獻節點資料
 router.get('/:gid/:mode/discussion/readReference', function(req, res, next){
+    var groups_id_groups = req.params.gid;
     var node_id_node = req.query.nodeId;
     var member_id_member = req.session.member_id;
     var nodeData;
@@ -1424,6 +1463,17 @@ router.get('/:gid/:mode/discussion/readReference', function(req, res, next){
             
         })
         .then(function(result2){
+            return projectDiscussion.selectGroupsMemberData(groups_id_groups, member_id_member)
+            // res.send({message:"true", nodeData:nodeData, nodeFile:nodeFile});
+        })
+        .then(function(memberData){
+            // console.log(memberData)
+            var groups_member_id = memberData[0].groups_member_id;
+            var member_node_read_count = memberData[0].member_node_read_count+1;
+            return projectDiscussion.updateMemberNodeReadCount(groups_member_id, member_node_read_count)
+        })
+        .then(function(result4){
+            // console.log(result4)
             res.send({message:"true", nodeData:nodeData, nodeFile:nodeFile});
         })
     }
@@ -1520,6 +1570,7 @@ router.post('/:gid/:mode/discussion/editReferenceNode', upload.array('files',5),
 
 //抓取收斂節點資料
 router.get('/:gid/:mode/discussion/readConvergence', function(req, res, next){
+    var groups_id_groups = req.params.gid;
     var node_id_node = req.query.nodeId;
     var member_id_member = req.session.member_id;
     var nodeData;
@@ -1533,6 +1584,17 @@ router.get('/:gid/:mode/discussion/readConvergence', function(req, res, next){
             return projectDiscussion.updateNodeReadCount(node_id_node, node_read_count)
         })
         .then(function(result2){
+            // res.send({message:"true", nodeData:nodeData});
+            return projectDiscussion.selectGroupsMemberData(groups_id_groups, member_id_member)
+        })
+        .then(function(memberData){
+            // console.log(memberData)
+            var groups_member_id = memberData[0].groups_member_id;
+            var member_node_read_count = memberData[0].member_node_read_count+1;
+            return projectDiscussion.updateMemberNodeReadCount(groups_member_id, member_node_read_count)
+        })
+        .then(function(result4){
+            // console.log(result4)
             res.send({message:"true", nodeData:nodeData});
         })
     }
