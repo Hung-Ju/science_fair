@@ -32,7 +32,71 @@ function getCountScaffold(textContent){
     return countScaffold;
 }
 
+
+//表格的初始化設定
+function scaffoldTable(){
+    var ideaScaffold = $('#ideaScaffoldData').val();
+    var ideaScaffoldData = JSON.parse(ideaScaffold);
+    var $ideaScaffoldTable = $('#ideaScaffoldTable');
+    var member_name = $('#member_name').val();
+
+    var tableData =[];
+    ideaScaffoldData.scaffoldData.forEach(function(value, index){
+        var table_member_name;
+        if(value.member_name == member_name){
+            table_member_name =  value.member_name;
+        }else{
+            table_member_name = (String.fromCharCode(65+index));
+        }
+
+        var ideaScaffoldTableData ={
+            member_id: value.member_id,
+            member_name: table_member_name,
+            "我想知道":0,
+            "我的想法":0,
+            "我的理論":0,
+            "新資源或參考來源":0,
+            "另一個觀點是":0,
+            "我覺得更好的想法":0,
+            "有發展性的想法":0
+        };
+
+        value.count.forEach(function(value){
+            var strToJson= JSON.parse(value);
+            knowledgeBuildScaffold.forEach(function(value, index){
+                if(strToJson[value]){
+                    ideaScaffoldTableData[value] = strToJson[value];
+                }
+            });
+        });
+        tableData.push(ideaScaffoldTableData);
+        console.log(ideaScaffoldTableData);
+
+    })
+    
+    $ideaScaffoldTable.bootstrapTable({
+        columns: [
+            {title: '成員', field: 'member_name',align:'center'},
+            {title: '我想知道', field: '我想知道',align:'center'},
+            {title: '我的想法', field: '我的想法',align:'center'},
+            {title: '我的理論', field: '我的理論',align:'center'},
+            {title: '新資源或參考來源', field: '新資源或參考來源',align:'center'},
+            {title: '另一個觀點是', field: '另一個觀點是',align:'center'},
+            {title: '我覺得更好的想法', field: '我覺得更好的想法',align:'center'},
+            {title: '有發展性的想法', field: '有發展性的想法',align:'center'},
+            ],
+        theadClasses: 'thead-light',
+        classes: 'table table-bordered',
+        fixedColumns: true,
+        fixedNumber: +1,
+        height:360
+    });
+    $ideaScaffoldTable.bootstrapTable('load', tableData);
+}
+
 $(function(){
+    scaffoldTable();
+
     var ideaAction = $('#ideaActionData').val();
     var member_name = $('#member_name').val();
     var ideaActionData = JSON.parse(ideaAction);
@@ -212,9 +276,9 @@ $(function(){
             }});
     });
     let startDate= getOldestDate(ideaIncreaseData).day;
-    console.log(startDate);
+    // console.log(startDate);
     let endtDate= getLatestDate(ideaIncreaseData).day;
-    console.log(endtDate);
+    // console.log(endtDate);
     var dataset = new vis.DataSet(items);
     var options = {
         defaultGroup: "ungrouped",

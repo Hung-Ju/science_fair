@@ -36,6 +36,9 @@
     <!-- vis.js -->
     <script type="text/javascript" src="https://unpkg.com/vis-timeline@latest/standalone/umd/vis-timeline-graph2d.min.js"></script>
 
+    <script src="https://unpkg.com/bootstrap-table@1.16.0/dist/extensions/fixed-columns/bootstrap-table-fixed-columns.min.js"></script>
+    <link href="https://unpkg.com/bootstrap-table@1.16.0/dist/extensions/fixed-columns/bootstrap-table-fixed-columns.min.css" rel="stylesheet">
+
 
     <link rel='stylesheet' href='/stylesheets/Ju-style.css' />
     <!-- <script type="text/javascript" src="/javascripts/projectEdit.js"></script> -->
@@ -130,14 +133,36 @@
         </div>
         <div class="col-5">
             <div class="card" style="min-height:20vh;">
+                <h6 class="card-header">個人想法貢獻數量</h6>
+                <div class="card-body">
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-1"></div>
+
+      </div>
+      <div class="row"  style="margin-top:15px;">
+        <div class="col-1"></div>
+        <div class="col-10">
+            <div class="card" style="min-height:20vh;">
                 <h6 class="card-header">想法鷹架使用</h6>
                 <div class="card-body">
-                    <canvas id="ideaScaffoldCanvas"></canvas>
+                    <div class="row">
+                        <div class="col-6">
+                            <canvas id="ideaScaffoldCanvas"></canvas>
+                        </div>
+                        <div class="col-6">
+                            <table id="ideaScaffoldTable" class="table"></table>
+                        </div>
+                    </div>
+                    
+                    
                 </div>
             </div>
         </div>
         <div class="col-1"></div>
-
       </div>
       <div class="row"  style="margin-top:15px;">
         <div class="col-1"></div>
