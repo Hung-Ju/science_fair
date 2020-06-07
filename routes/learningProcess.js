@@ -14,6 +14,7 @@ router.get('/:gid',function(req, res, next) {
     var ideaActionData;
     var ideaScaffoldData;
     var ideaIncreaseData;
+    var socialNetworkData;
 
     if(!member_id){
         res.redirect('/');
@@ -50,7 +51,12 @@ router.get('/:gid',function(req, res, next) {
         })
         .then(function(IncreaseData){
             ideaIncreaseData = IncreaseData;
-            res.render('learningProcess',{ title: 'Science Fair科學探究專題系統',gid:gid, member_id:member_id, member_name:session_member_name, groups_name:groups_name, groupsMemberData:groupsMemberArray, ideaActionData:ideaActionData, ideaScaffoldData:ideaScaffoldData,ideaIncreaseData:ideaIncreaseData});
+            return learningProcess.getGroupsSocialNetworkData(gid)
+            // res.render('learningProcess',{ title: 'Science Fair科學探究專題系統',gid:gid, member_id:member_id, member_name:session_member_name, groups_name:groups_name, groupsMemberData:groupsMemberArray, ideaActionData:ideaActionData, ideaScaffoldData:ideaScaffoldData,ideaIncreaseData:ideaIncreaseData});
+        })
+        .then(function(socialData){
+            socialNetworkData = socialData;
+            res.render('learningProcess',{ title: 'Science Fair科學探究專題系統',gid:gid, member_id:member_id, member_name:session_member_name, groups_name:groups_name, groupsMemberData:groupsMemberArray, ideaActionData:ideaActionData, ideaScaffoldData:ideaScaffoldData,ideaIncreaseData:ideaIncreaseData,socialNetworkData:socialNetworkData});
         })
         
     }

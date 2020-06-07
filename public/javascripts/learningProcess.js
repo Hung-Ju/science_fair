@@ -70,7 +70,7 @@ function scaffoldTable(){
             });
         });
         tableData.push(ideaScaffoldTableData);
-        console.log(ideaScaffoldTableData);
+        // console.log(ideaScaffoldTableData);
 
     })
     
@@ -94,8 +94,74 @@ function scaffoldTable(){
     $ideaScaffoldTable.bootstrapTable('load', tableData);
 }
 
+function draw(){
+    var socialData = $('#socialNetworkData').val();
+    var socialNetworkData = JSON.parse(socialData);
+    //社群網絡圖
+    var nodes=[], edges=[];
+    var nodesMemberData = socialNetworkData.addNodeData;
+    var edgesData = socialNetworkData.socialNetworkData;
+    nodesMemberData.forEach(function(v, index){
+        var id = v.member_id;
+        var label = "M"+v.member_id;
+        var group = index;
+        var value;
+        if(v.count.length== 0){
+            value = 0;
+        }else{
+            value = v.count.filter(function(item){return item.node_type=='idea'||item.node_type=='rise_above'})
+            .map(function(item){return item.number})[0];
+        }
+        nodes.push({id:id, label:label, group:group, value:value});
+    });
+    edgesData.forEach(function(v, index){
+        var from = v.from_member_id;
+        var to = v.to_member_id;
+        var value = v.nodecount;
+        edges.push({from:from, to:to, value:value});
+    });
+
+    var container2 = document.getElementById("socialNetworkGraph");
+    var data = {
+    nodes: nodes,
+    edges: edges
+    };
+    var options = {
+    nodes: {
+        shape: "dot",
+        font: {
+            size: 32,
+            color: "#555"
+        },
+        borderWidth: 2
+    },
+    edges: {
+        width: 2,
+        arrows: "to",
+        color: {
+            color: "#aaa",
+            highlight: "#888"
+        }
+    },
+    physics:{
+        enabled: true,
+        barnesHut: {
+            // theta: 0.5,
+            gravitationalConstant: -10000,
+            centralGravity: 0.3,
+            springLength: 95,
+            springConstant: 0.04,
+            damping: 0.09,
+            avoidOverlap: 0
+        }    
+    }
+    };
+    network = new vis.Network(container2, data, options);
+}
+
 $(function(){
     scaffoldTable();
+    draw();
 
     var ideaAction = $('#ideaActionData').val();
     var member_name = $('#member_name').val();
@@ -104,9 +170,12 @@ $(function(){
     var ideaScaffoldData = JSON.parse(ideaScaffold);
     var increaseData = $('#ideaIncreaseData').val();
     var ideaIncreaseData = JSON.parse(increaseData);
+    var socialData = $('#socialNetworkData').val();
+    var socialNetworkData = JSON.parse(socialData);
     console.log(ideaActionData);
     console.log(ideaScaffoldData);
     console.log(ideaIncreaseData);
+    console.log(socialNetworkData);
 
     var ideaActionMemberList= ideaActionData.addNodeData.map(function(value,index){
         if(value.member_name == member_name){
@@ -240,7 +309,6 @@ $(function(){
     ideaScaffoldData.scaffoldData.forEach(function(value, index){
         let dataId= value.member_name == member_name?value.member_name:(String.fromCharCode(65+index));
         names[value.member_id]= dataId;
-        console.log(names);
         groups.add({
             id: dataId,
             content: dataId,
@@ -254,12 +322,9 @@ $(function(){
             }
         });
     });
-    console.log(names);
     let items= [];
     let sum= {};
     ideaIncreaseData.forEach(function(value, index){
-        console.log(value);
-        console.log(sum);
         let dataId= names[value.member_id_member];
         if(sum.hasOwnProperty(value.member_id_member)){
             sum[value.member_id_member]+= value.node_count;
@@ -290,4 +355,85 @@ $(function(){
         }
     };
     var graph2d = new vis.Graph2d(container, dataset, groups, options);
+
+
+    //節點動作比例圓餅圖
+
+    var viewPieData=[], addPieData=[], revisePieData=[], buildOnPieData=[];
+    for(var p = 0; p < ideaActionData.addNodeData.length; p++){
+        var addNodeData = ideaActionData.addNodeData[p];
+        if(addNodeData.member_name == member_name){
+            if(addNodeData.length == 0){
+                addPieData.push(0);
+            }else{
+                addPieData.push(addNodeData.count.filter(function(item){return item.node_type=='idea'||item.node_type=='rise_above'})
+                .map(function(item){return item.number})[0]);
+            }
+        }
+    }
+    for(var q = 0; q < ideaActionData.reviseNodeData.length; q++){
+        var reviseNodeData = ideaActionData.reviseNodeData[q];
+        if(reviseNodeData.member_name == member_name){
+            if(reviseNodeData.length == 0){
+                revisePieData.push(0);
+            }else{
+                revisePieData.push(reviseNodeData.count.filter(function(item){return item.node_type=='idea'||item.node_type=='rise_above'})
+                .map(function(item){return item.number})[0]);
+            }
+        }
+    }
+    for(var r = 0; r < ideaActionData.buildOnNodeData.length; r++){
+        var buildOnNodeData = ideaActionData.buildOnNodeData[r];
+        if(buildOnNodeData.member_name == member_name){
+            if(buildOnNodeData.length == 0){
+                buildOnPieData.push(0);
+            }else{
+                buildOnPieData.push(buildOnNodeData.count.filter(function(item){return item.node_type=='idea'||item.node_type=='rise_above'})
+                .map(function(item){return item.number})[0]);
+            }
+        }
+    }
+    for(var l = 0; l < ideaActionData.readNodeData.length; l++){
+        var readNodeData = ideaActionData.readNodeData[l];
+        if(readNodeData.member_name == member_name){
+            if(readNodeData.length == 0){
+                viewPieData.push(0);
+            }else{
+                viewPieData.push(readNodeData.count.filter(function(item){return item.number})
+                .map(function(item){return item.number})[0]);
+            }
+        }
+    }
+
+    var pieData = {
+        labels: [
+          "檢視",
+          "新增",
+          "修改",
+          "回覆"
+        ],
+        datasets: [{
+          data: [viewPieData[0], addPieData[0], revisePieData[0], buildOnPieData[0]],
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.6)',
+            'rgba(54, 162, 235, 0.6)',
+            'rgba(255, 206, 86, 0.6)',
+            'rgba(75, 192, 192, 0.6)'
+          ],
+          hoverBackgroundColor: [
+            'rgba(255, 99, 132, 0.6)',
+            'rgba(54, 162, 235, 0.6)',
+            'rgba(255, 206, 86, 0.6)',
+            'rgba(75, 192, 192, 0.6)'
+          ]
+        }]
+      };
+      var nodePieCTX = $("#nodePercentCanvas");
+      var nodePie = new Chart(nodePieCTX, {
+        type: 'pie',
+        data: pieData
+      });
+
+
+    
 })

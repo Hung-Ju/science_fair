@@ -34,7 +34,10 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
 
     <!-- vis.js -->
+    <script type="text/javascript" src="https://unpkg.com/vis-network@latest/dist/vis-network.min.js"></script>
     <script type="text/javascript" src="https://unpkg.com/vis-timeline@latest/standalone/umd/vis-timeline-graph2d.min.js"></script>
+    
+
 
     <script src="https://unpkg.com/bootstrap-table@1.16.0/dist/extensions/fixed-columns/bootstrap-table-fixed-columns.min.js"></script>
     <link href="https://unpkg.com/bootstrap-table@1.16.0/dist/extensions/fixed-columns/bootstrap-table-fixed-columns.min.css" rel="stylesheet">
@@ -133,9 +136,9 @@
         </div>
         <div class="col-5">
             <div class="card" style="min-height:20vh;">
-                <h6 class="card-header">個人想法貢獻數量</h6>
+                <h6 class="card-header">組別內節點動作所佔比例</h6>
                 <div class="card-body">
-
+                    <canvas id="nodePercentCanvas"></canvas>
                 </div>
             </div>
         </div>
@@ -176,6 +179,18 @@
         </div>
         <div class="col-1"></div>
       </div>
+      <div class="row"  style="margin-top:15px;">
+        <div class="col-1"></div>
+        <div class="col-10">
+            <div class="card" style="min-height:20vh;">
+                <h6 class="card-header">社群網絡圖</h6>
+                <div class="card-body">
+                    <div id="socialNetworkGraph"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-1"></div>
+      </div>
 
 
     <input type="hidden" id="gid" value="<%= gid %>">
@@ -184,6 +199,7 @@
     <input type="hidden" id="ideaActionData" value="<%= JSON.stringify(ideaActionData) %>">
     <input type="hidden" id="ideaScaffoldData" value="<%= JSON.stringify(ideaScaffoldData) %>">
     <input type="hidden" id="ideaIncreaseData" value="<%= JSON.stringify(ideaIncreaseData) %>">
+    <input type="hidden" id="socialNetworkData" value="<%= JSON.stringify(socialNetworkData) %>">
 
   </body>
 </html>

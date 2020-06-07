@@ -110,7 +110,6 @@ function selectScaffoldData(groups_id_groups, member_id_member){
                 if(err) return reject(err);
                 connection.query('SELECT member_name FROM `member` WHERE member_id=?', member_id_member, function(err, result2){
                     if(err) return reject(err);
-                    console.log(result);
                     var scaffoldCountTest = [];
                     if(result.length != 0){
                         for(var i=0; i< result.length; i++){
@@ -123,6 +122,20 @@ function selectScaffoldData(groups_id_groups, member_id_member){
                     resolve(scaffoldNodeData);
                     connection.release();
                 })
+            })
+        });
+    })
+}
+
+//抓取社群網路資料
+function selectSocialNetwork(groups_id_groups){
+    return new Promise(function(resolve, reject){
+        pool.getConnection(function(err, connection){
+            if(err) return reject(err);
+            connection.query('SELECT n.`member_id_member` as from_member_id ,n2.`member_id_member` AS to_member_id, COUNT(`edge_id`) AS nodecount FROM `edge` e INNER JOIN `node` n on e.`edge_from` = n.`node_id` INNER JOIN `node` n2 on e.`edge_to` = n2.`node_id` WHERE e.groups_id_groups ="'+groups_id_groups+'"GROUP BY from_member_id,to_member_id',function(err, result){
+                if(err) return reject(err);
+                resolve(result);
+                connection.release();
             })
         });
     })
@@ -180,6 +193,7 @@ module.exports = {
         })
     },
 
+    //抓取鷹架使用資料
     getScaffoldData :function(groups_id_groups){
         return new Promise(function(resolve, reject){
             var groupsMemberListData;
@@ -201,6 +215,7 @@ module.exports = {
         })
     },
 
+    //抓取節點貢獻資料
     getGroupIdeaIncrease: function(groups_id_groups){
         return new Promise(function(resolve, reject){
 			pool.getConnection(function(err, connection){
@@ -213,4 +228,32 @@ module.exports = {
 			});
 		})
     },
+
+    //抓取社群網絡資料
+    getGroupsSocialNetworkData: function(groups_id_groups){
+        return new Promise(function(resolve, reject){
+            var groupsMemberListData;
+            var socialNetworkData;
+            var addNodeData;
+            getGroupsMemberList(groups_id_groups)
+            .then(function(memberList){
+                groupsMemberListData = memberList;
+                var temp = groupsMemberListData;
+                var addNodeDataList = temp.map(function(value){
+                    return selectAddNodeData(groups_id_groups, value.member_id_member);
+                })
+                return Promise.all(addNodeDataList);
+                
+            })
+            .then(function(data){
+                addNodeData = data;
+                return selectSocialNetwork(groups_id_groups)
+                // resolve({groupsMemberListData:groupsMemberListData, socialNetworkData:socialNetworkData})
+            })
+            .then(function(data){
+                socialNetworkData = data;
+                resolve({addNodeData:addNodeData, socialNetworkData:socialNetworkData})
+            })
+        })
+    }
 }
