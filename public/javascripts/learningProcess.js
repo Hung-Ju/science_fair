@@ -94,16 +94,25 @@ function scaffoldTable(){
     $ideaScaffoldTable.bootstrapTable('load', tableData);
 }
 
+
+var nodes=[], edges=[];
+//社群網絡圖
 function draw(){
     var socialData = $('#socialNetworkData').val();
     var socialNetworkData = JSON.parse(socialData);
     //社群網絡圖
-    var nodes=[], edges=[];
+    // var nodes=[], edges=[];
     var nodesMemberData = socialNetworkData.addNodeData;
     var edgesData = socialNetworkData.socialNetworkData;
+    var member_name = $('#member_name').val();
     nodesMemberData.forEach(function(v, index){
         var id = v.member_id;
-        var label = "M"+v.member_id;
+        var label;
+        if( v.member_name == member_name){
+            label = v.member_name;
+        }else{
+            label = "M"+v.member_id;
+        }
         var group = index;
         var value;
         if(v.count.length== 0){
@@ -120,6 +129,9 @@ function draw(){
         var value = v.nodecount;
         edges.push({from:from, to:to, value:value});
     });
+
+    console.log(nodes);
+    console.log(edges);
 
     var container2 = document.getElementById("socialNetworkGraph");
     var data = {
@@ -159,9 +171,107 @@ function draw(){
     network = new vis.Network(container2, data, options);
 }
 
+function clickevent(){
+    network.on("click", function(params) {
+      params.event = "[click]";
+      //var clickid = this.getNodeAt(params.pointer.DOM);
+      
+      var clickid = params.nodes;
+      var fromSum = 0;
+      var toSum = 0;
+      var fromArray = [];
+      var toArray = [];
+      console.log(clickid);
+      if(clickid !== undefined){
+        nodes.forEach(function(val, index){
+            if(clickid == val.id){
+                $("#social_name").text(val.label);
+                $("#addCount").text("總共建立"+val.value+"個想法");
+            }
+        })
+
+        edges.forEach(function(val){
+            //自己是to，要算from
+            if(clickid == val.to){
+                fromSum += val.value;
+                nodes.forEach(function(value){
+                    var id = value.id;
+                    var label = value.label;
+                    if(val.from == id){
+                        fromArray.push({from:label, num:val.value})
+                    }
+                })
+            }
+        })
+
+        edges.forEach(function(val){
+            //自己是from，要算to
+            if(clickid == val.from){
+                toSum += val.value;
+                nodes.forEach(function(value){
+                    var id = value.id;
+                    var label = value.label;
+                    if(val.to == id){
+                        toArray.push({to:label, num:val.value})
+                    }
+                })
+            }
+        })
+
+        $("#replyCount").text("回覆過"+fromSum+"個節點");
+        $("#rereplyCount").text("且建立的節點被"+toSum+"個節點回覆");
+
+        var $socialNetworkReplyTable = $("#socialNetworkReplyTable");
+        var $socialNetworkreReplyTable = $("#socialNetworkreReplyTable");
+
+        $socialNetworkReplyTable.bootstrapTable('load', fromArray);
+        $socialNetworkreReplyTable.bootstrapTable('load', toArray);
+
+      }
+    });
+}
+
+//社群網絡互動表格(回覆)
+function socialNetworkReplyTable(){
+    var socialData = $('#socialNetworkData').val();
+    var socialNetworkData = JSON.parse(socialData);
+    var $socialNetworkReplyTable = $("#socialNetworkReplyTable");
+
+    $socialNetworkReplyTable.bootstrapTable({
+        columns: [
+            {title: '來源', field: 'from',align:'center'},
+            {title: '數量', field: 'num',align:'center'},
+            ],
+        theadClasses: 'thead-light',
+        classes: 'table table-bordered',
+        fixedColumns: true,
+        fixedNumber: +1,
+    });
+    $socialNetworkReplyTable.bootstrapTable();
+}
+
+//社群網絡互動表格(被回覆)
+function socialNetworkreReplyTable(){
+    var $socialNetworkreReplyTable = $("#socialNetworkreReplyTable");
+    $socialNetworkreReplyTable.bootstrapTable({
+        columns: [
+            {title: '來源', field: 'to',align:'center'},
+            {title: '數量', field: 'num',align:'center'},
+            ],
+        theadClasses: 'thead-light',
+        classes: 'table table-bordered',
+        fixedColumns: true,
+        fixedNumber: +1,
+    });
+    $socialNetworkreReplyTable.bootstrapTable();
+}
+
 $(function(){
     scaffoldTable();
     draw();
+    socialNetworkReplyTable();
+    socialNetworkreReplyTable();
+    clickevent();
 
     var ideaAction = $('#ideaActionData').val();
     var member_name = $('#member_name').val();

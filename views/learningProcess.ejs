@@ -185,7 +185,21 @@
             <div class="card" style="min-height:20vh;">
                 <h6 class="card-header">社群網絡圖</h6>
                 <div class="card-body">
-                    <div id="socialNetworkGraph"></div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div id="socialNetworkGraph"></div>
+                        </div>
+                        <div class="col-6">
+                            <p class="showSocialData" id="social_name"></p>
+                            <p class="showSocialData" id="addCount">總共建立  個想法</p>
+                            <p class="showSocialData" id="replyCount">回覆過  個節點</p>
+                            <table id="socialNetworkReplyTable" class="table"></table>
+                            <p class="showSocialData" id="rereplyCount">且建立的節點被  個節點回覆</p>
+                            <table id="socialNetworkreReplyTable" class="table"></table>
+                        </div>
+                    </div>
+                    
+                    
                 </div>
             </div>
         </div>
