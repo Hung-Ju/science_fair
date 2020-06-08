@@ -50,57 +50,64 @@
       <!-- <h1 id="logo"><a href="/">Science Fair <span>科展系統</span></a></h1> -->
       <div class="fixed-top">
         <nav id="nav" class="navbar navbar-expand-lg navbar-light" style="background-color: #AACBBA;">
-          <!-- .navbar-brand 左上LOGO位置 -->
-          <a class="navbar-brand" href="/">
-            <img src="/stylesheets/images/atoms-science-svgrepo-com.svg" width="30" height="30" class="d-inline-block align-top" alt="">
-            Science Fair科學探究專題系統
-             <!-- > <%= groups_name %> -->
-          </a>
-          <div class="navbar-nav">
-            <a class="nav-item nav-link" href="/groups">離開專題</a>
-            <a class="nav-item nav-link" href="/project/<%= gid %>/內容撰寫/實作">專題寫作</a>
-            <!-- <a class="nav-item nav-link" href="#">專題管理</a> -->
-            <a class="nav-item nav-link" href="/resource/<%= gid %>">資源管理</a>
-            <a class="nav-item nav-link active" href="#">任務管理</a>
-            <!-- <a class="nav-item nav-link" href="#">留言提問</a> -->
-            <!-- <a class="nav-item nav-link" href="#">收斂工具</a> -->
-            <a class="nav-item nav-link" href="/learningProcess/<%= gid %>">學習歷程</a>
-          </div>
-          <!-- <a class="">
-            
-          </a> -->
-  
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#topBar" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           
-          <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
-            <ul class="navbar-nav">
-              <!-- .dropdown Navbar選項使用下拉式選單 -->
-              <li class="nav-item dropdown">
-              <% if(member_id){ %>
-                <% if (locals.member_name) { %>
+          <!-- .navbar-brand 左上LOGO位置 -->
+          <div  id="topBar" class="navbar-collapse collapse">
+            <a class="navbar-brand" href="/">
+              <img src="/stylesheets/images/atoms-science-svgrepo-com.svg" width="30" height="30" class="d-inline-block align-top" alt="">
+              Science Fair科學探究專題系統
+              <!-- > <%= groups_name %> -->
+            </a>
+            <div class="navbar-nav">
+              <a class="nav-item nav-link" href="/groups">離開專題</a>
+              <a class="nav-item nav-link" href="/project/<%= gid %>/內容撰寫/實作">專題寫作</a>
+              <!-- <a class="nav-item nav-link" href="#">專題管理</a> -->
+              <a class="nav-item nav-link" href="/resource/<%= gid %>">資源管理</a>
+              <a class="nav-item nav-link active" href="#">任務管理</a>
+              <!-- <a class="nav-item nav-link" href="#">留言提問</a> -->
+              <!-- <a class="nav-item nav-link" href="#">收斂工具</a> -->
+              <a class="nav-item nav-link" href="/learningProcess/<%= gid %>">學習歷程</a>
+            </div>
+            <!-- <a class="">
+              
+            </a> -->
+    
+            <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button> -->
+            
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
+              <ul class="navbar-nav">
+                <!-- .dropdown Navbar選項使用下拉式選單 -->
+                <li class="nav-item dropdown">
+                <% if(member_id){ %>
+                  <% if (locals.member_name) { %>
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <%= groups_name %> &nbsp; &nbsp;   <%= member_name %> , 您好
+                    </a>
+                  <% } %>
+                  <!-- .dropdown-menu 下拉選單內容 -->
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" onclick="javascript: location.href='/member/logout'">登出</a>
+                  </div>
+                <% }else{ %>
                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <%= groups_name %> &nbsp; &nbsp;   <%= member_name %> , 您好
+                    您好, 遊客使用者
                   </a>
+                  <!-- .dropdown-menu 下拉選單內容 -->
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" onclick="javascript: location.href='member/login'">登入</a>
+                    <a class="dropdown-item" onclick="javascript: location.href='member/reg'">註冊</a>
+                  </div>
                 <% } %>
-                <!-- .dropdown-menu 下拉選單內容 -->
-                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <a class="dropdown-item" onclick="javascript: location.href='/member/logout'">登出</a>
-                </div>
-              <% }else{ %>
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  您好, 遊客使用者
-                </a>
-                <!-- .dropdown-menu 下拉選單內容 -->
-                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <a class="dropdown-item" onclick="javascript: location.href='member/login'">登入</a>
-                  <a class="dropdown-item" onclick="javascript: location.href='member/reg'">註冊</a>
-                </div>
-              <% } %>
-              </li>
-            </ul>
+                </li>
+              </ul>
+            </div>
           </div>
+          
         </nav>
 
       </div>
@@ -108,23 +115,29 @@
     </header>
 
     <div id="cneter-content">
-      <div class="row" style="margin-top: 35px;">
-        <button class="col btn btn-outline-success" style="margin:15px 15px"  type='submit' data-toggle="modal" data-target="#addTask">新增任務</button>
+      <!-- <div class="row"> -->
+        <!-- <button class="col btn btn-outline-success" style="margin:15px 15px"  type='submit' data-toggle="modal" data-target="#addTask">新增任務</button> -->
 
-      </div>
-      <div class="row">
+      <!-- </div> -->
+      <div class="row" style="margin-top: 55px;">
 
-          <div class="col card column" style="min-height:80vh; margin-left: 10px; padding: 0;">
-            <h5 class="card-header" style="background-color: rgba(238, 235, 229, 0.822); border-bottom: none;"><b>暫存區</b></h5>
-            <div class="card-body tasks backlog" data-status="backlog"  style="background-color: rgba(238, 235, 229, 0.822);">
+          <div class="col card column" style="min-height:87vh; margin-left: 10px; padding: 0;">
+            <h5 class="card-header" style="background-color: rgba(238, 235, 229, 0.822); border-bottom: none;">
+              <b>暫存區</b>
+              <i class="fas fa-plus addTask" data-status="backlog" style="float: right; font: 25px;" type='submit' data-toggle="modal" data-target="#addTask"></i>
+            </h5>
+            <div class="card-body tasks backlog" data-status="backlog" style="background-color: rgba(238, 235, 229, 0.822);">
 
               
             </div>
           </div>
 
 
-            <div class="col card column" style="min-height:80vh; padding: 0;">
-              <h5 class="card-header" style="background-color: rgba(212, 209, 203, 0.74); border-bottom: none;"><b>待辦</b></h5>
+            <div class="col card column" style="min-height:87vh; padding: 0;">
+              <h5 class="card-header" style="background-color: rgba(212, 209, 203, 0.74); border-bottom: none;">
+                <b>待辦</b>
+                <i class="fas fa-plus addTask" data-status="todo" style="float: right; font: 25px;" type='submit' data-toggle="modal" data-target="#addTask"></i>
+              </h5>
               <div class="card-body tasks todo" data-status="todo" style="background-color: rgba(212, 209, 203, 0.74);">
   
                 
@@ -132,7 +145,7 @@
             </div>
   
 
-            <div class="col card column" style="min-height:80vh; padding: 0;">
+            <div class="col card column" style="min-height:87vh; padding: 0;">
               <h5 class="card-header" style="background-color: rgba(190, 189, 185, 0.774); border-bottom: none;"><b>進行中</b></h5>
               <div class="card-body tasks doing" data-status="doing" style="background-color: rgba(190, 189, 185, 0.774);">
   
@@ -140,7 +153,7 @@
               </div>
             </div>
   
-              <div class="col card column" style="min-height:80vh; padding: 0;">
+              <div class="col card column" style="min-height:87vh; padding: 0;">
                 <h5 class="card-header" style="background-color: rgba(168, 166, 162, 0.747); border-bottom: none;"><b>完成</b></h5>
                 <div class="card-body tasks done" data-status="done" style="background-color: rgba(168, 166, 162, 0.747);">
                     

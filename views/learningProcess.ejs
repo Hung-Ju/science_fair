@@ -124,7 +124,78 @@
     </header>
 
     <div id="cneter-content">
-      <div class="row" style="margin-top:55px;">
+        <div class="row" style="margin-top: 43px;">
+            <div class="col-1"></div>
+            <div class="col-10">
+                <ul class="nav nav-tabs" id="processTab" role="tablist">
+                    <li class="nav-item">
+                      <a class="nav-link active" id="ideaAction-tab" data-toggle="tab" href="#ideaAction" role="tab" aria-controls="ideaAction" aria-selected="true">個人想法貢獻數量</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" id="nodePercent-tab" data-toggle="tab" href="#nodePercent" role="tab" aria-controls="nodePercent" aria-selected="false">組別內節點動作所佔比例</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="ideaScaffold-tab" data-toggle="tab" href="#ideaScaffold" role="tab" aria-controls="ideaScaffold" aria-selected="false">想法鷹架使用</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" id="socialNetwork-tab" data-toggle="tab" href="#socialNetwork" role="tab" aria-controls="socialNetwork" aria-selected="false">社群網絡圖</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" id="ideaIncrease-tab" data-toggle="tab" href="#ideaIncrease" role="tab" aria-controls="ideaIncrease" aria-selected="false">個人想法貢獻數量變化</a>
+                      </li>
+                  </ul>
+
+            </div>
+            <div class="col-1"></div>
+        </div>
+        <div class="row" style="margin-top: 8px;">
+            <div class="col-1"></div>
+            <div class="col-10 scroll" style="max-height: 83vh;">
+                <div class="tab-content">    
+                    <div class="tab-pane fade show active" id="ideaAction" role="tabpanel" aria-labelledby="ideaAction-tab">
+                        <canvas id="ideaActionCanvas" ></canvas>
+                    </div>
+
+                    <div class="tab-pane fade" id="nodePercent" role="tabpanel" aria-labelledby="nodePercent-tab">
+                        <canvas id="nodePercentCanvas"></canvas>
+                    </div>
+
+                    <div class="tab-pane fade" id="ideaScaffold" role="tabpanel" aria-labelledby="ideaScaffold-tab">
+                        <canvas id="ideaScaffoldCanvas"></canvas>
+                        <table id="ideaScaffoldTable" class="table"></table>
+                    </div>
+
+                    <div class="tab-pane fade" id="socialNetwork" role="tabpanel" aria-labelledby="socialNetwork-tab">
+                        <div>
+                            <div class="row" style="margin-top: 10px;">
+                                <div class="col-6">
+                                    <div id="socialNetworkGraph"></div>
+                                </div>
+                                <div class="col-6">
+                                    <p class="showSocialData" id="social_name"></p>
+                                    <p class="showSocialData" id="addCount">總共建立  個想法</p>
+                                    <p class="showSocialData" id="replyCount">回覆過  個節點</p>
+                                    <table id="socialNetworkReplyTable" class="table"></table>
+                                    <p class="showSocialData" id="rereplyCount">且建立的節點被  個節點回覆</p>
+                                    <table id="socialNetworkreReplyTable" class="table"></table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="ideaIncrease" role="tabpanel" aria-labelledby="ideaIncrease-tab">
+                        <div id="ideaIncreaseGraph"></div>
+                    </div>
+
+                    
+                </div>
+            </div>
+            <div class="col-1"></div>
+        </div>
+        
+
+
+      <!-- <div class="row" style="margin-top:55px;">
         <div class="col-1"></div>
         <div class="col-5">
             <div class="card" style="min-height:20vh;">
@@ -145,8 +216,8 @@
 
         <div class="col-1"></div>
 
-      </div>
-      <div class="row"  style="margin-top:15px;">
+      </div> -->
+      <!-- <div class="row"  style="margin-top:15px;">
         <div class="col-1"></div>
         <div class="col-10">
             <div class="card" style="min-height:20vh;">
@@ -166,20 +237,9 @@
             </div>
         </div>
         <div class="col-1"></div>
-      </div>
-      <div class="row"  style="margin-top:15px;">
-        <div class="col-1"></div>
-        <div class="col-10">
-            <div class="card" style="min-height:20vh;">
-                <h6 class="card-header">個人想法貢獻數量變化</h6>
-                <div class="card-body">
-                    <div id="ideaIncreaseGraph"></div>
-                </div>
-            </div>
-        </div>
-        <div class="col-1"></div>
-      </div>
-      <div class="row"  style="margin-top:15px;">
+      </div> -->
+      
+      <!-- <div class="row"  style="margin-top:15px;">
         <div class="col-1"></div>
         <div class="col-10">
             <div class="card" style="min-height:20vh;">
@@ -204,7 +264,19 @@
             </div>
         </div>
         <div class="col-1"></div>
-      </div>
+      </div> -->
+      <!-- <div class="row"  style="margin-top:15px;">
+        <div class="col-1"></div>
+        <div class="col-10">
+            <div class="card" style="min-height:20vh;">
+                <h6 class="card-header">個人想法貢獻數量變化</h6>
+                <div class="card-body">
+                    <div id="ideaIncreaseGraph"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-1"></div>
+      </div> -->
 
 
     <input type="hidden" id="gid" value="<%= gid %>">

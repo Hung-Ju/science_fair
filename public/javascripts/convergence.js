@@ -1,11 +1,13 @@
 var socket = io();
 
+var convergence_ref_node=[];
+var isCheckArray = [];
 //summernote編輯器的初始化新增
 function summernoteCreate(){
     // var $summernoteNow = $(this).closest('.create-summernote');
     $('.create-summernote').summernote({
-        minHeight: 200,
-        maxHeight: 200,
+        minHeight: 180,
+        maxHeight: 180,
         disable:true,
         // width: 600,
         toolbar: [
@@ -36,7 +38,7 @@ function summernoteCreate(){
                     contentType: false,
                     processData: false,
                     success: function (result) {
-                        alert("123");
+                        // alert("123");
 
                         var imageUrlArray = result.imageUrl;
                         if (result.status = "success") {
@@ -96,14 +98,12 @@ function nodeList(nodeListData, convergence_ref_node){
             var content = value.reference_node_idea;
         }
 
-        if(convergence_ref_node.includes(node_id) == false){
-            var quoteBtn = '<button type="button" data-node_id="'+node_id+'" class="btn btn-primary btn-sm quoteNote" onclick="quote(this)">引用至收斂空間</button>'
-        }else{
-            var quoteBtn = '<button type="button" data-node_id="'+node_id+'" class="btn btn-secondary btn-sm reQuoteNote" onclick="requote(this)">取消引用</button>'
-        }
         var newList = '<div class="card ideaListAll">'+
                           '<p class="card-header">'+
-                          '<a class="d-block collapsed" data-toggle="collapse" href="#id'+node_id+'" aria-controls="test" role="button" aria-expanded="false">'+
+
+                            '<input type="checkbox" class="float-left" style="margin:3px 3px 0 0 " id="'+node_id+'s'+'" name="select_node_id" value="'+node_id+'">'+
+                          
+                            '<a class="d-block collapsed" data-toggle="collapse" href="#id'+node_id+'" aria-controls="test" role="button" aria-expanded="false">'+
                           node_title+
                           '<i class="fa fa-chevron-down float-right chevron"></i>'+
                           '</a>'+
@@ -112,26 +112,33 @@ function nodeList(nodeListData, convergence_ref_node){
                           '<div class="card-body">'+content+'</div>'+
                           '<div class="card-footer text-right">'+
                           '<small class="text-muted pr-2">建立者： '+member_name+'</small>'+
-                          quoteBtn+
+                          '<button type="button" data-node_id="'+node_id+'" class="btn btn-primary btn-sm quoteNote" onclick="quote(this)">引用至收斂空間</button>'+
                           '</div></div></div>';
         $('.ideaListBody').append(newList);
+        if(convergence_ref_node.includes(node_id) !== false){
+            $("#"+node_id+"s").attr("checked", "checked");
+        }
     })
+
+    
+
 }
 
-var convergence_ref_node=[];
+
 //引用取消引用
 function quote(node_id){
     $nodetext = $(node_id).closest('.card').find('.card-body');
     var nodeContent=$nodetext.html();
-    alert(nodeContent);
+    // alert(nodeContent);
     var refNodeId = $(node_id).data("node_id");
     convergence_ref_node.push(refNodeId);
     $('#convergence-summernote').summernote('pasteHTML', nodeContent);
-    $(node_id).removeClass('btn-primary quoteNote');
-    $(node_id).addClass('btn-secondary reQuoteNote');
-    $(node_id).html('取消引用');
-    $(node_id).attr("onclick", "requote(this)");
-    console.log(convergence_ref_node);
+    // $(node_id).removeClass('btn-primary quoteNote');
+    // $(node_id).addClass('btn-secondary reQuoteNote');
+    // $(node_id).html('取消引用');
+    // $(node_id).attr("onclick", "requote(this)");
+    // console.log(convergence_ref_node);
+
 
 }
 //取消引用
@@ -174,14 +181,15 @@ $(function(){
     $('html, body').css('overflowY', 'hidden');
     $('.convergenceBox *').attr('disabled', true); 
     // $('html, body').css('overflowX', 'hidden');
-
+    var isCheckArray = [];
     //選擇要收斂的標籤，並把該標籤的留言和收斂中內容和想法節點抓取出來
-    $('#changeConvergenceTag').on('click', function(){
+    $('#changeConvergenceTag').unbind('click').click(function(){
         var gid = document.getElementById("groups_id").value;
         var node_tag = $('#tags').val();
         var nodeListTitle = '【'+node_tag+'】想法列表';
         var convergenceTitle = '【'+node_tag+'】收斂空間';
         $('#tagNow').val(node_tag);
+        $('.convergenceBox *').attr('disabled', true);
 
 
         $('.nodeList').html('<i class="fas fa-lightbulb pr-1" aria-hidden="true"></i>'+nodeListTitle);
@@ -209,6 +217,7 @@ $(function(){
                         convergence_ref_node=convergence_ref_node_string.split(',').map(Number);
                         convergence_content = convergenceData[0].convergence_content;
                         console.log(convergence_ref_node);
+                        isCheckArray = convergence_ref_node_string.split(',').map(Number);
                     }
 
                     if(data.nodeListData != undefined){
@@ -222,17 +231,20 @@ $(function(){
                     $messageTable.bootstrapTable('append', messageData);
                     nodeList(nodeListData, convergence_ref_node);
                     $('#convergence_id').val(data.convergence_id);
-
+                    $('#ref_count').val(0);
+                    $('#ref_count').val(isCheckArray.length);
                     
-                    $('.convergenceBox *').attr('disabled', false); 
+                     
                     $('#convergence-summernote').summernote("enable");
+                    // console.log(convergence_content);
                     $('#convergence-summernote').summernote("code", convergence_content);
+                    console.log($('#ref_count').val());
+                    // if($('#ref_count').val() == 0 ){
+                    //     $('.convergenceBox *').attr('disabled', true);
+                    // }else{
+                    //     $('.convergenceBox *').attr('disabled', false);
+                    // }
 
-                    // $('#messageTable').bootstrapTable('append', data.newInsertMessage);
-
-                    // console.log(convergenceData);
-                    // console.log(data.nodeListData);
-                    // console.log(data.messageData);
 
                 }else{
                     alert('帳號已被系統自動登出，請重新登入');
@@ -254,7 +266,20 @@ $(function(){
         var convergence_tag = $('#tagNow').val();
         var convergence_content = $('#convergence-summernote').val();
         var convergence_ref_node2 = convergence_ref_node;
-        console.log(convergence_ref_node2)
+        // console.log(convergence_ref_node2)
+        isCheckArray=[];
+
+        $('input[name="select_node_id"]:checked').each(function() {
+            isCheckArray.push($(this).val());
+        });
+        // convert the array to a string
+        // isChecked = isChecked.toString();
+        isCheckArray = isCheckArray.toString();
+        isCheckArray = isCheckArray.split(',').map(Number);
+        // alert(isCheckArray);
+    
+        // convergence_ref_node=isChecked;
+        console.log(isCheckArray)
 
         $.ajax({
             type: "POST",
@@ -263,7 +288,7 @@ $(function(){
                 groups_id_groups: gid,
                 convergence_tag: convergence_tag,
                 convergence_content: convergence_content,
-                convergence_ref_node: convergence_ref_node2.toString()
+                convergence_ref_node: isCheckArray.toString()
             },
             success: function(data){
                 if(data.message=="true"){
@@ -298,7 +323,7 @@ $(function(){
             },
             success: function(data){
                 if(data.message=="true"){
-                    alert('留言成功');
+                    // alert('留言成功');
                     // $('#messageTable').bootstrapTable('append', data.newInsertMessage);
                     socket.emit('add message', {gid:gid, newInsertMessage:data.newInsertMessage, message_tag:message_tag})
                 }else{
@@ -351,5 +376,10 @@ $(function(){
         })
     })
 
+    // if($('#ref_count').val() == 0 ){
+    //     $('.convergenceBox *').attr('disabled', true);
+    // }else{
+    //     $('.convergenceBox *').attr('disabled', false);
+    // }
     
 })

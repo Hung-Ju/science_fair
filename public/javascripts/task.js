@@ -11,6 +11,10 @@ function memberSelect(){
     $('.task_member_name').append(options);
     $('.task_member_name2').append(options);
   })
+  var options2='<option data-memberid="'+0+'" value="所有人">所有人</option>';
+  $('.task_member_name').append(options2);
+    $('.task_member_name2').append(options2);
+
 }
 
 //任務方塊的顯示
@@ -118,7 +122,7 @@ function clickEvents() {
       var task_id_edit = task_id_now;
       $('.edit_task_content2').val(task_content);
 
-      $("#editTaskBtn").click(function(){
+      $("#editTaskBtn").unbind('click').click(function(){
         var task_id_edit = task_id_now;
         var task_content2 = $('.edit_task_content2').val();
         var task_member_id2 = $('.task_member_name2 option:selected').data('memberid')
@@ -155,18 +159,15 @@ function clickEvents() {
           }
         });
       })
-
-      
-
-      // console.log(task_id_edit);
     })
   })
+
   //點選刪除任務Icon
   $('.deleteTaskIcon').click(function(){
     $taskCardFooter = $(this).parent('.card-footer');
     var task_id_now = $taskCardFooter.data('taskidnow');
     $("#checkRemoveTask").on("show.bs.modal",function(event){
-      $("#deleteTaskBtn").click(function(){
+      $("#deleteTaskBtn").unbind('click').click(function(){
         var task_id_delete = task_id_now;
         $.ajax({  
           type: "POST",
@@ -197,6 +198,7 @@ function clickEvents() {
     })
   })
 }
+
 
 $(function() {
   addListeners();
@@ -230,43 +232,50 @@ $(function() {
     showTaskBox(data);
   })
 
-  //新增任務
-  $('#addTaskBtn').on('click', function(){
-    var gid = document.getElementById("gid").value;
-    var task_content = $('.task_content').val();
-    var task_member_id = $('.task_member_name option:selected').data('memberid')
-    var task_member_name = $('.task_member_name').val();
-    console.log(gid);
-    
-    $.ajax({
-      type: "POST",
-        url: "/task/addTask",
-        data: {
-            groups_id_groups: gid,
-            task_content: task_content,
-            task_member_id:task_member_id, 
-            task_member_name:task_member_name
-        },
-        success: function(data){
-            if(data.message=="true"){
-              socket.emit('add task', {gid:gid, taskData: data.taskData})
-            }else{
-              alert('帳號已被系統自動登出，請重新登入');
-              window.location.href="/";
-            }
+  //新增任務class跳出modal
+  $('.addTask').on('click', function(){
+    var task_status = $(this).data('status');
+    $("#addTask").on("show.bs.modal",function(event){
+      //新增任務
+      $('#addTaskBtn').unbind('click').click(function(){
+        var gid = document.getElementById("gid").value;
+        var task_content = $('.task_content').val();
+        var task_member_id = $('.task_member_name option:selected').data('memberid')
+        var task_member_name = $('.task_member_name').val();
+        console.log(gid);
 
-        },
-        error: function(){
-            alert('失敗');
+        if(task_content == ""){
+          alert('請確實填入任務內容');
+        }else{
+          $.ajax({
+            type: "POST",
+              url: "/task/addTask",
+              data: {
+                  groups_id_groups: gid,
+                  task_content: task_content,
+                  task_member_id:task_member_id, 
+                  task_member_name:task_member_name,
+                  task_status:task_status
+              },
+              success: function(data){
+                  if(data.message=="true"){
+                    socket.emit('add task', {gid:gid, taskData: data.taskData})
+                  }else{
+                    alert('帳號已被系統自動登出，請重新登入');
+                    window.location.href="/";
+                  }
+
+              },
+              error: function(){
+                  alert('失敗');
+              }
+          })
         }
+      })
+      
     })
   })
 
-
-
-  // $('.task_member_name').change(function (event) {
-  //   console.log(event.target.options[event.target.selectedIndex].dataset.memberid)
-  // });
 });
 
   

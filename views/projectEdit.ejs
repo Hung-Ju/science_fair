@@ -52,58 +52,64 @@
       <!-- <h1 id="logo"><a href="/">Science Fair <span>科展系統</span></a></h1> -->
       <div class="fixed-top">
         <nav id="nav" class="navbar navbar-expand-lg navbar-light" style="background-color: #AACBBA;">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#topBar" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
           <!-- .navbar-brand 左上LOGO位置 -->
-          <a class="navbar-brand" href="/">
-            <img src="/stylesheets/images/atoms-science-svgrepo-com.svg" width="30" height="30" class="d-inline-block align-top" alt="">
-            Science Fair科學探究專題系統
-             <!-- <%= groups_name %> -->
-          </a>
-          <div class="navbar-nav">
-            <a class="nav-item nav-link" href="/groups">離開專題</a>
-            <a class="nav-item nav-link active" href="#">專題寫作</a>
-            <!-- <a class="nav-item nav-link" href="/projectManage/<%= gid %>">專題管理</a> -->
-            <a class="nav-item nav-link" href="/resource/<%= gid %>">資源管理</a>
-            <a class="nav-item nav-link" href="/task/<%= gid %>">任務管理</a>
-            <!-- <a class="nav-item nav-link" href="#">留言提問</a> -->
-            <!-- <a class="nav-item nav-link" href="/convergence/<%= gid %>">收斂工具</a> -->
-            <a class="nav-item nav-link" href="/learningProcess/<%= gid %>">學習歷程</a>
-          </div>
-          
-          <!-- <a class="">
-            第一組
-          </a> -->
-  
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          
-          <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
-            <ul class="navbar-nav">
-              <!-- .dropdown Navbar選項使用下拉式選單 -->
-              <li class="nav-item dropdown">
-              <% if(member_id){ %>
-                <% if (locals.member_name) { %>
+          <div  id="topBar" class="navbar-collapse collapse">
+            <a class="navbar-brand" href="/">
+              <img src="/stylesheets/images/atoms-science-svgrepo-com.svg" width="30" height="30" class="d-inline-block align-top" alt="">
+              Science Fair科學探究專題系統
+              <!-- <%= groups_name %> -->
+            </a>
+            <div class="navbar-nav">
+              <a class="nav-item nav-link" href="/groups">離開專題</a>
+              <a class="nav-item nav-link active" href="#">專題寫作</a>
+              <!-- <a class="nav-item nav-link" href="/projectManage/<%= gid %>">專題管理</a> -->
+              <a class="nav-item nav-link" href="/resource/<%= gid %>">資源管理</a>
+              <a class="nav-item nav-link" href="/task/<%= gid %>">任務管理</a>
+              <!-- <a class="nav-item nav-link" href="#">留言提問</a> -->
+              <!-- <a class="nav-item nav-link" href="/convergence/<%= gid %>">收斂工具</a> -->
+              <a class="nav-item nav-link" href="/learningProcess/<%= gid %>">學習歷程</a>
+            </div>
+            
+            <!-- <a class="">
+              第一組
+            </a> -->
+    
+            <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button> -->
+            
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
+              <ul class="navbar-nav">
+                <!-- .dropdown Navbar選項使用下拉式選單 -->
+                <li class="nav-item dropdown">
+                <% if(member_id){ %>
+                  <% if (locals.member_name) { %>
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <%= groups_name %> &nbsp; &nbsp;   <%= member_name %> , 您好
+                    </a>
+                  <% } %>
+                  <!-- .dropdown-menu 下拉選單內容 -->
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" onclick="javascript: location.href='/member/logout'">登出</a>
+                  </div>
+                <% }else{ %>
                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <%= groups_name %> &nbsp; &nbsp;   <%= member_name %> , 您好
+                    您好, 遊客使用者
                   </a>
+                  <!-- .dropdown-menu 下拉選單內容 -->
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" onclick="javascript: location.href='member/login'">登入</a>
+                    <a class="dropdown-item" onclick="javascript: location.href='member/reg'">註冊</a>
+                  </div>
                 <% } %>
-                <!-- .dropdown-menu 下拉選單內容 -->
-                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <a class="dropdown-item" onclick="javascript: location.href='/member/logout'">登出</a>
-                </div>
-              <% }else{ %>
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  您好, 遊客使用者
-                </a>
-                <!-- .dropdown-menu 下拉選單內容 -->
-                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <a class="dropdown-item" onclick="javascript: location.href='member/login'">登入</a>
-                  <a class="dropdown-item" onclick="javascript: location.href='member/reg'">註冊</a>
-                </div>
-              <% } %>
-              </li>
-            </ul>
+                </li>
+              </ul>
+            </div>
           </div>
+          
         </nav>
         <!-- <nav id="nav" class="navbar navbar-expand-lg navbar-light" style="background-color: #64AD88; height:30px;"> -->
           <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"> -->

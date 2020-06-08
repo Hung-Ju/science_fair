@@ -397,6 +397,13 @@ a.tool:hover {
   width: 100%;
   height: 60vh;
   border: 1px solid rgba(0,0,0,.125);
+  border-radius:5px;
+}
+
+#socialNetworkGraph .vis-network{
+  /* overflow: hidden;
+  margin: 53px 0 0 0; */
+  outline: none;
 }
 
 

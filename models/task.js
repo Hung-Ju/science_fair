@@ -18,11 +18,11 @@ module.exports = {
     },
 
     //新增任務
-    addTask :function(groups_id_groups, task_content, task_member_id, task_member_name){
+    addTask :function(groups_id_groups, task_content, task_member_id, task_member_name, task_status){
         return new Promise(function(resolve, reject){
 			pool.getConnection(function(err, connection){
 				if(err) return reject(err);
-				var params = {groups_id_groups:groups_id_groups, task_content:task_content, task_member_id:task_member_id, task_member_name:task_member_name};
+				var params = {groups_id_groups:groups_id_groups, task_content:task_content, task_member_id:task_member_id, task_member_name:task_member_name, task_status:task_status};
 				connection.query('INSERT INTO `task` SET ?', params, function(err, insert_res){
 					if(err) return reject(err);
 					resolve(insert_res);

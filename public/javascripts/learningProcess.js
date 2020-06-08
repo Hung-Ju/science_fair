@@ -89,7 +89,6 @@ function scaffoldTable(){
         classes: 'table table-bordered',
         fixedColumns: true,
         fixedNumber: +1,
-        height:360
     });
     $ideaScaffoldTable.bootstrapTable('load', tableData);
 }
@@ -130,8 +129,8 @@ function draw(){
         edges.push({from:from, to:to, value:value});
     });
 
-    console.log(nodes);
-    console.log(edges);
+    // console.log(nodes);
+    // console.log(edges);
 
     var container2 = document.getElementById("socialNetworkGraph");
     var data = {
@@ -243,7 +242,7 @@ function socialNetworkReplyTable(){
             {title: '數量', field: 'num',align:'center'},
             ],
         theadClasses: 'thead-light',
-        classes: 'table table-bordered',
+        classes: 'table table-bordered table-sm',
         fixedColumns: true,
         fixedNumber: +1,
     });
@@ -259,7 +258,7 @@ function socialNetworkreReplyTable(){
             {title: '數量', field: 'num',align:'center'},
             ],
         theadClasses: 'thead-light',
-        classes: 'table table-bordered',
+        classes: 'table table-bordered table-sm',
         fixedColumns: true,
         fixedNumber: +1,
     });

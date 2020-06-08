@@ -106,7 +106,7 @@
         <div class="col" style="padding-left: 0;">
             <div class="card" style="min-height:78vh;">
               <h6 class="card-header convergenceTitle" style="background-color: #ECBF96; color: black;"><i class="fas fa-clipboard pr-1" aria-hidden="true"></i>收斂空間</h6>
-              <div class="card-body convergenceBox" style="flex: 0;">
+              <div class="card-body scroll convergenceBox" style="flex: 0;">
                 <textarea id="convergence-summernote" class="form-control create-summernote" value=""></textarea>
                 <div class="btn-save-box margin-bottom10 mt-2">
                   <button id="saveIdeaConvergence" class="btn btn-sm btn-save">儲存</button>
@@ -121,10 +121,10 @@
               <div class="col convergenceBox">
                 <div class="margin-bottom10 form-group row">
                     <label class="col-sm-2 text-center">討論留言：</label>
-                    <input class="col-sm-8 form-control" type="text" name="message" id="message" maxlength="200">
+                    <input class="col-sm-8 form-control" type="text" name="message" id="message" maxlength="100">
                     
                     <div class="col-sm-2"><button id="saveMessage" class="btn btn-sm btn-primary float-right">送出</button></div>
-                    <p style="color: gray; font-size: 14px; margin-top: 0; padding-left: 190px;">*字數限制200字</p>
+                    <p style="color: gray; font-size: 14px; margin-top: 0; padding-left: 190px;">*字數限制100字</p>
                 </div>
                 <div class="row">
                   <div class="col">
@@ -160,6 +160,7 @@
 
     <input type='hidden' id="tagNow" value="">
     <input type='hidden' id="convergence_id" value="">
+    <input type='hidden' id="ref_count" value="0">
 
 </div>
 

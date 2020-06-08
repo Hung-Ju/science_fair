@@ -56,13 +56,14 @@ router.post('/addTask', function(req, res, next) {
     var task_content = req.body.task_content;
     var task_member_id = req.body.task_member_id;
     var task_member_name = req.body.task_member_name;
+    var task_status = req.body.task_status;
 
     var member_id_member = req.session.member_id;
 
     if(!member_id_member){
         res.send({message:"false"});
     }else{
-        task.addTask(groups_id_groups, task_content, task_member_id, task_member_name)
+        task.addTask(groups_id_groups, task_content, task_member_id, task_member_name, task_status)
         .then(function(insert_params){
             return task.selectTaskChange(insert_params.insertId)
             // res.send({message:"true"});
