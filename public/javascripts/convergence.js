@@ -120,6 +120,40 @@ function nodeList(nodeListData, convergence_ref_node){
         }
     })
 
+    isCheckArray=[];
+
+    var checkChecked = $('input[name="select_node_id"]:checked').length;
+
+    // $('input[name="select_node_id"]:checked').each(function() {
+    //     isCheckArray.push($(this).val());
+    // });
+    // // convert the array to a string
+    // // isChecked = isChecked.toString();
+    // isCheckArray = isCheckArray.toString();
+    // isCheckArray = isCheckArray.split(',').map(Number);
+    // // alert(isCheckArray);
+
+    // // convergence_ref_node=isChecked;
+    // console.log(checkChecked)
+
+    if(checkChecked != 0){
+        $('.convergenceBox *').attr('disabled', false); 
+    }else{
+        $('.convergenceBox *').attr('disabled', true); 
+    }
+
+    $('input[name="select_node_id"]').change(function() {
+        var checkChecked2 = $('input[name="select_node_id"]:checked').length;
+
+        console.log(checkChecked2)
+    
+        if(checkChecked2 != 0){
+            $('.convergenceBox *').attr('disabled', false); 
+        }else{
+            $('.convergenceBox *').attr('disabled', true); 
+        }
+    });
+
     
 
 }
@@ -192,7 +226,7 @@ $(function(){
         $('.convergenceBox *').attr('disabled', true);
 
 
-        $('.nodeList').html('<i class="fas fa-lightbulb pr-1" aria-hidden="true"></i>'+nodeListTitle);
+        $('.nodeList').html('<i class="fas fa-lightbulb pr-1" aria-hidden="true"></i>'+nodeListTitle+'<p style="float: right; margin: 2px 0 0 0; font-size: 12px;">請先選擇要收斂的想法節點</p>');
         $('.convergenceTitle').html('<i class="fas fa-clipboard pr-1" aria-hidden="true"></i>'+convergenceTitle);
 
         $.ajax({
@@ -238,12 +272,6 @@ $(function(){
                     $('#convergence-summernote').summernote("enable");
                     // console.log(convergence_content);
                     $('#convergence-summernote').summernote("code", convergence_content);
-                    console.log($('#ref_count').val());
-                    // if($('#ref_count').val() == 0 ){
-                    //     $('.convergenceBox *').attr('disabled', true);
-                    // }else{
-                    //     $('.convergenceBox *').attr('disabled', false);
-                    // }
 
 
                 }else{
@@ -348,6 +376,19 @@ $(function(){
         var tagNow = $('#tagNow').val();
         var convergence_id = $('#convergence_id').val();
         var convergence_content = $('#convergence-summernote').val();
+        isCheckArray=[];
+
+        $('input[name="select_node_id"]:checked').each(function() {
+            isCheckArray.push($(this).val());
+        });
+        // convert the array to a string
+        // isChecked = isChecked.toString();
+        isCheckArray = isCheckArray.toString();
+        isCheckArray = isCheckArray.split(',').map(Number);
+        // alert(isCheckArray);
+    
+        // convergence_ref_node=isChecked;
+        console.log(isCheckArray)
         
         $.ajax({
             type: "POST",
@@ -356,7 +397,7 @@ $(function(){
                 groups_id_groups: gid,
                 tagNow: tagNow,
                 convergence_id: convergence_id,
-                convergence_ref_node: convergence_ref_node.toString(),
+                convergence_ref_node: isCheckArray.toString(),
                 convergence_content: convergence_content
             },
             success: function(data){
