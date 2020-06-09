@@ -141,11 +141,12 @@ function nodeList(nodeListData, convergence_ref_node){
     }else{
         $('.convergenceBox *').attr('disabled', true); 
     }
+    
 
     $('input[name="select_node_id"]').change(function() {
         var checkChecked2 = $('input[name="select_node_id"]:checked').length;
 
-        console.log(checkChecked2)
+        console.log("已經引用想法個數："+checkChecked2)
     
         if(checkChecked2 != 0){
             $('.convergenceBox *').attr('disabled', false); 
@@ -244,9 +245,10 @@ $(function(){
                     
                     var convergenceData = data.convergenceData;
                     var messageData = data.messageData;
-                    //console.log(convergenceData[0].convergence_ref_node);
+                    console.log(convergenceData);
+                    // console.log(convergenceData[0].convergence_ref_node);
                     
-                    if(convergenceData[0].convergence_ref_node != ""){
+                    if(convergenceData.length == 1 && convergenceData[0].convergence_ref_node != null){
                         var convergence_ref_node_string = convergenceData[0].convergence_ref_node;
                         convergence_ref_node=convergence_ref_node_string.split(',').map(Number);
                         convergence_content = convergenceData[0].convergence_content;
@@ -256,6 +258,8 @@ $(function(){
 
                     if(data.nodeListData != undefined){
                         nodeListData = data.nodeListData;
+                    }else{
+                        alert("請先到想法發散區提出想法")
                     }
 
                     //console.log(convergence_ref_node);
